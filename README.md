@@ -1,10 +1,10 @@
 # Log Pose
 
-Log Pose stores dated primary-source evidence about software companies. The first sample compares what dbt Labs and Weights & Biases said on archived pages in December 2021 and December 2024. It does not yet infer markets, customers, or winners. A page is an observation, not a classification.
+Log Pose stores dated primary-source evidence about software companies. The first sample compares what dbt Labs, Weights & Biases, and Confluent said on archived pages in December 2021 and December 2024. It does not yet infer markets, customers, or winners. A page is an observation, not a classification.
 
 This is an independent public experiment inspired by a conversation about investor research at Telescope Partners. It is not affiliated with Telescope and contains no internal Telescope material.
 
-The [public evidence preview](https://log-pose.shin86dev.chatgpt.site) is a static export of four stored captures. The local read API and Postgres database are not hosted by this preview.
+The [public evidence preview](https://log-pose.shin86dev.chatgpt.site) is a static export of six stored captures. The local read API and Postgres database are not hosted by this preview.
 
 ## Run locally
 
@@ -44,14 +44,15 @@ The schema separates `companies`, `sources`, `snapshots`, and `ingestion_attempt
 
 ## Verified source coverage
 
-The following four raw captures were fetched and normalized during setup (UTC). Their archive URLs are generated from `sources.json`.
+The following six raw captures were fetched and normalized during setup (UTC). Their archive URLs are generated from `sources.json`.
 
 | Company | 2021 capture | 2024 capture | Source |
 | --- | --- | --- | --- |
 | dbt Labs | 2021-12-01 10:04:35 | 2024-12-14 01:06:20 | `https://www.getdbt.com/` |
 | Weights & Biases | 2021-12-14 13:28:09 | 2024-12-16 07:57:51 | `https://wandb.ai/site` |
+| Confluent | 2021-12-14 08:31:32 | 2024-12-14 13:43:55 | `https://www.confluent.io/` |
 
-On the verified batch run, all four captures stored successfully; an immediate rerun reported four duplicates and stored no additional captures. The SQL integration test passed after fixing UTC formatting. Captures are days or weeks before the month-end comparison cutoff; the UI exposes exact dates rather than implying a December 31 observation. Homepages can change independently of product positioning, and these four pages are insufficient to infer the entire market.
+On the verified batch run, all six captures stored successfully; an immediate rerun reported six duplicates and stored no additional captures. The SQL integration test passed after fixing UTC formatting. Captures are days or weeks before the month-end comparison cutoff; the UI exposes exact dates rather than implying a December 31 observation. Homepages can change independently of product positioning, and these six pages are insufficient to infer the entire market.
 
 ## Pre-existing source options
 

@@ -82,5 +82,47 @@
         }
       }
     ]
+  },
+  {
+    "company": "confluent",
+    "name": "Confluent",
+    "cutoff": "2021-12-31T23:59:59+00:00",
+    "sources": [
+      {
+        "original_url": "https://www.confluent.io/",
+        "purpose": "Company homepage",
+        "status": "available",
+        "snapshot": {
+          "snapshot_id": 45,
+          "archive_url": "https://web.archive.org/web/20211214083132id_/https://www.confluent.io/",
+          "captured_at": "2021-12-14T08:31:32+00:00",
+          "ingested_at": "2026-09-22T23:23:49.098000+00:00",
+          "raw_sha256": "d9966f40a54540b55e4bb8817a37241941cf1d322fa0cc5b4ddae08f22e246de",
+          "text_sha256": "63b62dff78a42dc11cb3e25aba7f28b6126f25bc403c334c1d36816bc5dd00eb",
+          "normalized_text": "Build your real-time bridge to the cloud with Confluent Platform 7.0 and Cluster Linking | Read the blog Contact Us Set Your Data in Motion Your business is in motion. Now, you have a data platform for it. Confluent makes it easy to connect your apps, systems, and your entire organization with real-time data flow and p\u2026"
+        }
+      }
+    ]
+  },
+  {
+    "company": "confluent",
+    "name": "Confluent",
+    "cutoff": "2024-12-31T23:59:59+00:00",
+    "sources": [
+      {
+        "original_url": "https://www.confluent.io/",
+        "purpose": "Company homepage",
+        "status": "available",
+        "snapshot": {
+          "snapshot_id": 46,
+          "archive_url": "https://web.archive.org/web/20241214134355id_/https://www.confluent.io/",
+          "captured_at": "2024-12-14T13:43:55+00:00",
+          "ingested_at": "2026-09-22T23:23:56.001000+00:00",
+          "raw_sha256": "5d89c0785fa3674b39ebf6091865b6fb38c04e8db1417b721f390e87b9494c27",
+          "text_sha256": "a1ea880d06f78b9804d238d011179bd5b5cb422168cf77ca1861d2761e3ed10a",
+          "normalized_text": "Build Predictive Machine Learning with Flink | Workshop on Dec 18 | Register Now Login Contact Us Introducing Confluent Platform 7.8 Elevate stream processing capabilities with Confluent Platform for Apache Flink\u00ae, scale security with mTLS identity for RBAC authorization, and more. Watch Demo Learn More Announcing the \u2026"
+        }
+      }
+    ]
   }
 ]
