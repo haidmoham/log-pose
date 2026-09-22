@@ -1,0 +1,86 @@
+[
+  {
+    "company": "dbt-labs",
+    "name": "dbt Labs",
+    "cutoff": "2021-12-31T23:59:59+00:00",
+    "sources": [
+      {
+        "original_url": "https://www.getdbt.com/",
+        "purpose": "Company homepage",
+        "status": "available",
+        "snapshot": {
+          "snapshot_id": 15,
+          "archive_url": "https://web.archive.org/web/20211201100435id_/https://www.getdbt.com/",
+          "captured_at": "2021-12-01T10:04:35+00:00",
+          "ingested_at": "2026-09-22T23:15:14.514000+00:00",
+          "raw_sha256": "f242b5c92f356603a48a8cf85ac65490a3c16505fbd9b3ee0932129079adfd3e",
+          "text_sha256": "d5112ed8c8725ae1fdd11240075e38b4fdcb4134cf976e20a19972efdbc85f4b",
+          "normalized_text": "Dec 6 - 10, 2021 Register for Free Scaling Knowledge > Scaling Bodies: Why dbt Labs is making the bet on a data literate organization - Erica Louie Keynote: How big is this wave? - Martin Casado & Tristan Handy dbt 101: Stories from real-life data practitioners + a live look at dbt - Natty (Jon Natkins) & Alexis Wong B\u2026"
+        }
+      }
+    ]
+  },
+  {
+    "company": "dbt-labs",
+    "name": "dbt Labs",
+    "cutoff": "2024-12-31T23:59:59+00:00",
+    "sources": [
+      {
+        "original_url": "https://www.getdbt.com/",
+        "purpose": "Company homepage",
+        "status": "available",
+        "snapshot": {
+          "snapshot_id": 16,
+          "archive_url": "https://web.archive.org/web/20241214010620id_/https://www.getdbt.com/",
+          "captured_at": "2024-12-14T01:06:20+00:00",
+          "ingested_at": "2026-09-22T23:15:22.465000+00:00",
+          "raw_sha256": "4c678b9b35abaddf168212aea83714a6604687f4d0b45cb3c235ad91268a82a0",
+          "text_sha256": "b27e348ff03f66bc1ccc8b8f52743b899e51c25d201213d9eb48d82112a9f174",
+          "normalized_text": "Join our virtual event: Data collaboration built on trust with dbt Explorer View Brightside Health's embedded strategy on-demand! Deliver reliable data with the dbt Semantic Layer. Boost delivery 20x, cut inconsistencies 80%, and build trust with dbt Cloud - check out the Business Case Guide Login Open menu Trusted by \u2026"
+        }
+      }
+    ]
+  },
+  {
+    "company": "weights-and-biases",
+    "name": "Weights & Biases",
+    "cutoff": "2021-12-31T23:59:59+00:00",
+    "sources": [
+      {
+        "original_url": "https://wandb.ai/site",
+        "purpose": "Product overview",
+        "status": "available",
+        "snapshot": {
+          "snapshot_id": 17,
+          "archive_url": "https://web.archive.org/web/20211214132809id_/https://wandb.ai/site",
+          "captured_at": "2021-12-14T13:28:09+00:00",
+          "ingested_at": "2026-09-22T23:15:29.039000+00:00",
+          "raw_sha256": "574b3def58a217899205e56e37c20883fcc28666b1adadb6e762354f9372e69d",
+          "text_sha256": "5424cbac5f3bdac03f36a14ff55e0a5d3128b0f76fc8411a53fcca05f6293f5b",
+          "normalized_text": "The developer-first \u200d MLOps platform Build better models faster with experiment tracking, dataset versioning, and model management Sign up Request demo Explore the Weights & Biases products Experiments Experiment tracking Reports Collaborative dashboards Artifacts Dataset and model versioning Tables Interactive data vi\u2026"
+        }
+      }
+    ]
+  },
+  {
+    "company": "weights-and-biases",
+    "name": "Weights & Biases",
+    "cutoff": "2024-12-31T23:59:59+00:00",
+    "sources": [
+      {
+        "original_url": "https://wandb.ai/site",
+        "purpose": "Product overview",
+        "status": "available",
+        "snapshot": {
+          "snapshot_id": 18,
+          "archive_url": "https://web.archive.org/web/20241216075751id_/https://wandb.ai/site/",
+          "captured_at": "2024-12-16T07:57:51+00:00",
+          "ingested_at": "2026-09-22T23:15:41.351000+00:00",
+          "raw_sha256": "9ca30af746b297de3c8faf522dfe1a382836e0c10fb6a7917d2ce4e61d9eebbd",
+          "text_sha256": "fe339accdd0a4f5a09deb6967439f971c8551ffb8ad694692f70dd0c875ea176",
+          "normalized_text": "Skip to content LOG IN Sign up ko ja en de AI is easy to productionize The AI developer platform to build AI applications and models with confidence W&B Weave: Develop AI applications import weave weave.init(\"quickstart\") @weave.op() def llm_app(prompt): pass # Track LLM calls, document retrieval, agent steps get start\u2026"
+        }
+      }
+    ]
+  }
+]
