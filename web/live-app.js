@@ -108,6 +108,9 @@ function coverageButton(row, year) {
   const coverage = row.coverage[year];
   const button = el('button', '', 'coverage-button');
   button.type = 'button';
+  button.dataset.company = row.slug;
+  button.dataset.year = year;
+  button.setAttribute('aria-pressed', 'false');
   button.append(el('span', `Dec ${year}`, 'coverage-year'));
   button.append(el('strong', `${coverage.available_sources} / ${row.source_count} sources`));
   button.append(el('small', coverage.latest_capture_at
@@ -248,6 +251,13 @@ function selectionFromUrl() {
   return { slug: url.searchParams.get('company'), year: url.searchParams.get('year') };
 }
 
+function markSelectedRoute(slug, year) {
+  for (const button of inventory.querySelectorAll('.coverage-button')) {
+    const selected = button.dataset.company === slug && button.dataset.year === year;
+    button.setAttribute('aria-pressed', String(selected));
+  }
+}
+
 function scrollToSection(section) {
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   section.scrollIntoView({ behavior: reducedMotion ? 'instant' : 'smooth', block: 'start' });
@@ -257,6 +267,7 @@ function syncSelection(scroll = false) {
   if (!overviewData) return;
   const { slug, year } = selectionFromUrl();
   if (!slug && !year) {
+    markSelectedRoute(null, null);
     detail.hidden = true;
     notice.hidden = true;
     if (evidenceRequest) evidenceRequest.abort();
@@ -264,6 +275,7 @@ function syncSelection(scroll = false) {
     return;
   }
   if (!overviewData.companies.some(item => item.slug === slug) || !['2021', '2024'].includes(year)) {
+    markSelectedRoute(null, null);
     if (evidenceRequest) evidenceRequest.abort();
     evidenceVersion += 1;
     detail.hidden = true;
@@ -272,6 +284,7 @@ function syncSelection(scroll = false) {
     return;
   }
   notice.hidden = true;
+  markSelectedRoute(slug, year);
   detail.hidden = false;
   company.value = slug;
   cutoff.value = year;
