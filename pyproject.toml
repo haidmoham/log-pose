@@ -7,7 +7,7 @@ name = "log-pose"
 version = "0.1.0"
 description = "Dated evidence about software markets"
 requires-python = ">=3.11"
-dependencies = ["psycopg[binary]>=3.2,<4", "beautifulsoup4>=4.12,<5"]
+dependencies = ["psycopg[binary]>=3.2,<4", "beautifulsoup4>=4.12,<5", "warcio>=1.8.1,<2"]
 
 [project.optional-dependencies]
 test = ["pytest>=8,<9"]
@@ -19,4 +19,4 @@ log-pose = "log_pose.cli:main"
 where = ["src"]
 
 [tool.pytest.ini_options]
-pythonpath = ["src"]
+pythonpath = ["src", "."]

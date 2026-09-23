@@ -1,0 +1,14 @@
+[
+  {"slug":"snowflake","year":2022,"url":"https://www.snowflake.com/","crawl":"CC-MAIN-2022-33","purpose":"homepage","reason":"earlier same-year crawl after selected-crawl miss"},
+  {"slug":"snowflake","year":2023,"url":"https://www.snowflake.com/en/","crawl":"CC-MAIN-2023-50","purpose":"historical homepage path candidate","reason":"language path after exact-homepage miss"},
+  {"slug":"snowflake","year":2024,"url":"https://www.snowflake.com/en/","crawl":"CC-MAIN-2024-51","purpose":"historical homepage path candidate","reason":"language path after exact-homepage miss"},
+  {"slug":"crowdstrike","year":2024,"url":"https://www.crowdstrike.com/en-us/","crawl":"CC-MAIN-2024-51","purpose":"historical homepage path candidate","reason":"language path after exact-homepage miss"},
+  {"slug":"palantir","year":2021,"url":"https://www.palantir.com/","crawl":"CC-MAIN-2021-43","purpose":"homepage","reason":"earlier same-year crawl after selected-crawl miss"},
+  {"slug":"gitlab","year":2022,"url":"https://about.gitlab.com/","crawl":"CC-MAIN-2022-40","purpose":"homepage","reason":"earlier same-year crawl after truncated selected capture"},
+  {"slug":"postman","year":2021,"url":"https://www.postman.com/","crawl":"CC-MAIN-2021-43","purpose":"homepage","reason":"earlier same-year crawl after short selected capture"},
+  {"slug":"postman","year":2022,"url":"https://www.postman.com/","crawl":"CC-MAIN-2022-40","purpose":"homepage","reason":"earlier same-year crawl after short selected capture"},
+  {"slug":"postman","year":2023,"url":"https://www.postman.com/","crawl":"CC-MAIN-2023-40","purpose":"homepage","reason":"earlier same-year crawl after short selected capture"},
+  {"slug":"palantir","year":2022,"url":"https://www.palantir.com/","crawl":"CC-MAIN-2022-40","purpose":"homepage","reason":"earlier same-year crawl after short selected capture"},
+  {"slug":"palantir","year":2023,"url":"https://www.palantir.com/","crawl":"CC-MAIN-2023-40","purpose":"homepage","reason":"earlier same-year crawl after short selected capture"},
+  {"slug":"palantir","year":2024,"url":"https://www.palantir.com/","crawl":"CC-MAIN-2024-46","purpose":"homepage","reason":"earlier same-year crawl after short selected capture"}
+]

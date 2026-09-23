@@ -1,6 +1,6 @@
 import hashlib
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from html import unescape
 from urllib.parse import urlparse
@@ -16,6 +16,9 @@ class Capture:
     raw_html: bytes
     content_type: str
     status_code: int
+    provider: str = "wayback"
+    provider_record_id: str | None = None
+    provenance: dict = field(default_factory=dict)
 
 
 def archive_url(timestamp: str, original_url: str) -> str:

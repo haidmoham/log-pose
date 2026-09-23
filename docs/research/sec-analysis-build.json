@@ -1,0 +1,3526 @@
+{
+  "policy_version": "sec-annual-earliest-filed-v1",
+  "policy": "USD only; one exact period per cell; preferred tag order; earliest eligible annual filing; same-day conflicts unresolved",
+  "as_of": "2025-04-01",
+  "source_artifact": {
+    "version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01",
+    "url": "https://www.sec.gov/Archives/edgar/daily-index/xbrl/companyfacts.zip",
+    "etag": "\"84367dba6f7eef28098736779a850cd3-169\"",
+    "last_modified": "Wed, 23 Sep 2026 04:23:59 GMT",
+    "content_length": 1409331196,
+    "observed_at": "2026-09-23 13:19:49.574249-04:00"
+  },
+  "cohort_count": 10,
+  "candidate_fact_count": 369,
+  "statuses": {
+    "selected": 120
+  },
+  "cells": [
+    {
+      "slug": "confluent",
+      "cik": "0001699838",
+      "period_end_year": 2021,
+      "concept": "revenue",
+      "status": "selected",
+      "candidate_count": 3,
+      "candidate_tags": [
+        "RevenueFromContractWithCustomerExcludingAssessedTax"
+      ],
+      "first_filed": "2022-02-24",
+      "selected": {
+        "fact_id": 1,
+        "taxonomy": "us-gaap",
+        "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+        "unit": "USD",
+        "value": "387864000",
+        "start_date": "2021-01-01",
+        "end_date": "2021-12-31",
+        "filed_date": "2022-02-24",
+        "accession_number": "0000950170-22-002008",
+        "form": "10-K",
+        "fy": 2021,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "ec400a28470ff4da0a4cb4f2715b2531ddf7c0225df0a11cfef70f3c7ffabcb4",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "confluent",
+      "cik": "0001699838",
+      "period_end_year": 2021,
+      "concept": "net_income",
+      "status": "selected",
+      "candidate_count": 3,
+      "candidate_tags": [
+        "NetIncomeLoss"
+      ],
+      "first_filed": "2022-02-24",
+      "selected": {
+        "fact_id": 12,
+        "taxonomy": "us-gaap",
+        "tag": "NetIncomeLoss",
+        "unit": "USD",
+        "value": "-342801000",
+        "start_date": "2021-01-01",
+        "end_date": "2021-12-31",
+        "filed_date": "2022-02-24",
+        "accession_number": "0000950170-22-002008",
+        "form": "10-K",
+        "fy": 2021,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "ec400a28470ff4da0a4cb4f2715b2531ddf7c0225df0a11cfef70f3c7ffabcb4",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "confluent",
+      "cik": "0001699838",
+      "period_end_year": 2021,
+      "concept": "assets",
+      "status": "selected",
+      "candidate_count": 2,
+      "candidate_tags": [
+        "Assets"
+      ],
+      "first_filed": "2022-02-24",
+      "selected": {
+        "fact_id": 23,
+        "taxonomy": "us-gaap",
+        "tag": "Assets",
+        "unit": "USD",
+        "value": "2342729000",
+        "start_date": null,
+        "end_date": "2021-12-31",
+        "filed_date": "2022-02-24",
+        "accession_number": "0000950170-22-002008",
+        "form": "10-K",
+        "fy": 2021,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "ec400a28470ff4da0a4cb4f2715b2531ddf7c0225df0a11cfef70f3c7ffabcb4",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "confluent",
+      "cik": "0001699838",
+      "period_end_year": 2022,
+      "concept": "revenue",
+      "status": "selected",
+      "candidate_count": 3,
+      "candidate_tags": [
+        "RevenueFromContractWithCustomerExcludingAssessedTax"
+      ],
+      "first_filed": "2023-02-28",
+      "selected": {
+        "fact_id": 4,
+        "taxonomy": "us-gaap",
+        "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+        "unit": "USD",
+        "value": "585944000",
+        "start_date": "2022-01-01",
+        "end_date": "2022-12-31",
+        "filed_date": "2023-02-28",
+        "accession_number": "0000950170-23-004815",
+        "form": "10-K",
+        "fy": 2022,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "ec400a28470ff4da0a4cb4f2715b2531ddf7c0225df0a11cfef70f3c7ffabcb4",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "confluent",
+      "cik": "0001699838",
+      "period_end_year": 2022,
+      "concept": "net_income",
+      "status": "selected",
+      "candidate_count": 3,
+      "candidate_tags": [
+        "NetIncomeLoss"
+      ],
+      "first_filed": "2023-02-28",
+      "selected": {
+        "fact_id": 15,
+        "taxonomy": "us-gaap",
+        "tag": "NetIncomeLoss",
+        "unit": "USD",
+        "value": "-452551000",
+        "start_date": "2022-01-01",
+        "end_date": "2022-12-31",
+        "filed_date": "2023-02-28",
+        "accession_number": "0000950170-23-004815",
+        "form": "10-K",
+        "fy": 2022,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "ec400a28470ff4da0a4cb4f2715b2531ddf7c0225df0a11cfef70f3c7ffabcb4",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "confluent",
+      "cik": "0001699838",
+      "period_end_year": 2022,
+      "concept": "assets",
+      "status": "selected",
+      "candidate_count": 2,
+      "candidate_tags": [
+        "Assets"
+      ],
+      "first_filed": "2023-02-28",
+      "selected": {
+        "fact_id": 25,
+        "taxonomy": "us-gaap",
+        "tag": "Assets",
+        "unit": "USD",
+        "value": "2344849000",
+        "start_date": null,
+        "end_date": "2022-12-31",
+        "filed_date": "2023-02-28",
+        "accession_number": "0000950170-23-004815",
+        "form": "10-K",
+        "fy": 2022,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "ec400a28470ff4da0a4cb4f2715b2531ddf7c0225df0a11cfef70f3c7ffabcb4",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "confluent",
+      "cik": "0001699838",
+      "period_end_year": 2023,
+      "concept": "revenue",
+      "status": "selected",
+      "candidate_count": 3,
+      "candidate_tags": [
+        "RevenueFromContractWithCustomerExcludingAssessedTax"
+      ],
+      "first_filed": "2024-02-21",
+      "selected": {
+        "fact_id": 7,
+        "taxonomy": "us-gaap",
+        "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+        "unit": "USD",
+        "value": "776952000",
+        "start_date": "2023-01-01",
+        "end_date": "2023-12-31",
+        "filed_date": "2024-02-21",
+        "accession_number": "0000950170-24-018036",
+        "form": "10-K",
+        "fy": 2023,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "ec400a28470ff4da0a4cb4f2715b2531ddf7c0225df0a11cfef70f3c7ffabcb4",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "confluent",
+      "cik": "0001699838",
+      "period_end_year": 2023,
+      "concept": "net_income",
+      "status": "selected",
+      "candidate_count": 3,
+      "candidate_tags": [
+        "NetIncomeLoss"
+      ],
+      "first_filed": "2024-02-21",
+      "selected": {
+        "fact_id": 18,
+        "taxonomy": "us-gaap",
+        "tag": "NetIncomeLoss",
+        "unit": "USD",
+        "value": "-442746000",
+        "start_date": "2023-01-01",
+        "end_date": "2023-12-31",
+        "filed_date": "2024-02-21",
+        "accession_number": "0000950170-24-018036",
+        "form": "10-K",
+        "fy": 2023,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "ec400a28470ff4da0a4cb4f2715b2531ddf7c0225df0a11cfef70f3c7ffabcb4",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "confluent",
+      "cik": "0001699838",
+      "period_end_year": 2023,
+      "concept": "assets",
+      "status": "selected",
+      "candidate_count": 2,
+      "candidate_tags": [
+        "Assets"
+      ],
+      "first_filed": "2024-02-21",
+      "selected": {
+        "fact_id": 27,
+        "taxonomy": "us-gaap",
+        "tag": "Assets",
+        "unit": "USD",
+        "value": "2460809000",
+        "start_date": null,
+        "end_date": "2023-12-31",
+        "filed_date": "2024-02-21",
+        "accession_number": "0000950170-24-018036",
+        "form": "10-K",
+        "fy": 2023,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "ec400a28470ff4da0a4cb4f2715b2531ddf7c0225df0a11cfef70f3c7ffabcb4",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "confluent",
+      "cik": "0001699838",
+      "period_end_year": 2024,
+      "concept": "revenue",
+      "status": "selected",
+      "candidate_count": 2,
+      "candidate_tags": [
+        "RevenueFromContractWithCustomerExcludingAssessedTax"
+      ],
+      "first_filed": "2025-02-18",
+      "selected": {
+        "fact_id": 10,
+        "taxonomy": "us-gaap",
+        "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+        "unit": "USD",
+        "value": "963642000",
+        "start_date": "2024-01-01",
+        "end_date": "2024-12-31",
+        "filed_date": "2025-02-18",
+        "accession_number": "0000950170-25-022369",
+        "form": "10-K",
+        "fy": 2024,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "ec400a28470ff4da0a4cb4f2715b2531ddf7c0225df0a11cfef70f3c7ffabcb4",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "confluent",
+      "cik": "0001699838",
+      "period_end_year": 2024,
+      "concept": "net_income",
+      "status": "selected",
+      "candidate_count": 2,
+      "candidate_tags": [
+        "NetIncomeLoss"
+      ],
+      "first_filed": "2025-02-18",
+      "selected": {
+        "fact_id": 21,
+        "taxonomy": "us-gaap",
+        "tag": "NetIncomeLoss",
+        "unit": "USD",
+        "value": "-345065000",
+        "start_date": "2024-01-01",
+        "end_date": "2024-12-31",
+        "filed_date": "2025-02-18",
+        "accession_number": "0000950170-25-022369",
+        "form": "10-K",
+        "fy": 2024,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "ec400a28470ff4da0a4cb4f2715b2531ddf7c0225df0a11cfef70f3c7ffabcb4",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "confluent",
+      "cik": "0001699838",
+      "period_end_year": 2024,
+      "concept": "assets",
+      "status": "selected",
+      "candidate_count": 2,
+      "candidate_tags": [
+        "Assets"
+      ],
+      "first_filed": "2025-02-18",
+      "selected": {
+        "fact_id": 29,
+        "taxonomy": "us-gaap",
+        "tag": "Assets",
+        "unit": "USD",
+        "value": "2694911000",
+        "start_date": null,
+        "end_date": "2024-12-31",
+        "filed_date": "2025-02-18",
+        "accession_number": "0000950170-25-022369",
+        "form": "10-K",
+        "fy": 2024,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "ec400a28470ff4da0a4cb4f2715b2531ddf7c0225df0a11cfef70f3c7ffabcb4",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "snowflake",
+      "cik": "0001640147",
+      "period_end_year": 2021,
+      "concept": "revenue",
+      "status": "selected",
+      "candidate_count": 3,
+      "candidate_tags": [
+        "RevenueFromContractWithCustomerExcludingAssessedTax"
+      ],
+      "first_filed": "2021-03-31",
+      "selected": {
+        "fact_id": 31,
+        "taxonomy": "us-gaap",
+        "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+        "unit": "USD",
+        "value": "592049000",
+        "start_date": "2020-02-01",
+        "end_date": "2021-01-31",
+        "filed_date": "2021-03-31",
+        "accession_number": "0001640147-21-000073",
+        "form": "10-K",
+        "fy": 2021,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "9d2289f4d9810ef19dfd4f5eef8c90b406db14947ca4b6fcb36dca6c41383144",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "snowflake",
+      "cik": "0001640147",
+      "period_end_year": 2021,
+      "concept": "net_income",
+      "status": "selected",
+      "candidate_count": 4,
+      "candidate_tags": [
+        "NetIncomeLoss",
+        "ProfitLoss"
+      ],
+      "first_filed": "2021-03-31",
+      "selected": {
+        "fact_id": 43,
+        "taxonomy": "us-gaap",
+        "tag": "NetIncomeLoss",
+        "unit": "USD",
+        "value": "-539102000",
+        "start_date": "2020-02-01",
+        "end_date": "2021-01-31",
+        "filed_date": "2021-03-31",
+        "accession_number": "0001640147-21-000073",
+        "form": "10-K",
+        "fy": 2021,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "9d2289f4d9810ef19dfd4f5eef8c90b406db14947ca4b6fcb36dca6c41383144",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "snowflake",
+      "cik": "0001640147",
+      "period_end_year": 2021,
+      "concept": "assets",
+      "status": "selected",
+      "candidate_count": 2,
+      "candidate_tags": [
+        "Assets"
+      ],
+      "first_filed": "2021-03-31",
+      "selected": {
+        "fact_id": 64,
+        "taxonomy": "us-gaap",
+        "tag": "Assets",
+        "unit": "USD",
+        "value": "5921739000",
+        "start_date": null,
+        "end_date": "2021-01-31",
+        "filed_date": "2021-03-31",
+        "accession_number": "0001640147-21-000073",
+        "form": "10-K",
+        "fy": 2021,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "9d2289f4d9810ef19dfd4f5eef8c90b406db14947ca4b6fcb36dca6c41383144",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "snowflake",
+      "cik": "0001640147",
+      "period_end_year": 2022,
+      "concept": "revenue",
+      "status": "selected",
+      "candidate_count": 3,
+      "candidate_tags": [
+        "RevenueFromContractWithCustomerExcludingAssessedTax"
+      ],
+      "first_filed": "2022-03-30",
+      "selected": {
+        "fact_id": 34,
+        "taxonomy": "us-gaap",
+        "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+        "unit": "USD",
+        "value": "1219327000",
+        "start_date": "2021-02-01",
+        "end_date": "2022-01-31",
+        "filed_date": "2022-03-30",
+        "accession_number": "0001640147-22-000023",
+        "form": "10-K",
+        "fy": 2022,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "9d2289f4d9810ef19dfd4f5eef8c90b406db14947ca4b6fcb36dca6c41383144",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "snowflake",
+      "cik": "0001640147",
+      "period_end_year": 2022,
+      "concept": "net_income",
+      "status": "selected",
+      "candidate_count": 5,
+      "candidate_tags": [
+        "NetIncomeLoss",
+        "ProfitLoss"
+      ],
+      "first_filed": "2022-03-30",
+      "selected": {
+        "fact_id": 46,
+        "taxonomy": "us-gaap",
+        "tag": "NetIncomeLoss",
+        "unit": "USD",
+        "value": "-679948000",
+        "start_date": "2021-02-01",
+        "end_date": "2022-01-31",
+        "filed_date": "2022-03-30",
+        "accession_number": "0001640147-22-000023",
+        "form": "10-K",
+        "fy": 2022,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "9d2289f4d9810ef19dfd4f5eef8c90b406db14947ca4b6fcb36dca6c41383144",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "snowflake",
+      "cik": "0001640147",
+      "period_end_year": 2022,
+      "concept": "assets",
+      "status": "selected",
+      "candidate_count": 2,
+      "candidate_tags": [
+        "Assets"
+      ],
+      "first_filed": "2022-03-30",
+      "selected": {
+        "fact_id": 66,
+        "taxonomy": "us-gaap",
+        "tag": "Assets",
+        "unit": "USD",
+        "value": "6649698000",
+        "start_date": null,
+        "end_date": "2022-01-31",
+        "filed_date": "2022-03-30",
+        "accession_number": "0001640147-22-000023",
+        "form": "10-K",
+        "fy": 2022,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "9d2289f4d9810ef19dfd4f5eef8c90b406db14947ca4b6fcb36dca6c41383144",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "snowflake",
+      "cik": "0001640147",
+      "period_end_year": 2023,
+      "concept": "revenue",
+      "status": "selected",
+      "candidate_count": 3,
+      "candidate_tags": [
+        "RevenueFromContractWithCustomerExcludingAssessedTax"
+      ],
+      "first_filed": "2023-03-29",
+      "selected": {
+        "fact_id": 37,
+        "taxonomy": "us-gaap",
+        "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+        "unit": "USD",
+        "value": "2065659000",
+        "start_date": "2022-02-01",
+        "end_date": "2023-01-31",
+        "filed_date": "2023-03-29",
+        "accession_number": "0001640147-23-000030",
+        "form": "10-K",
+        "fy": 2023,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "9d2289f4d9810ef19dfd4f5eef8c90b406db14947ca4b6fcb36dca6c41383144",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "snowflake",
+      "cik": "0001640147",
+      "period_end_year": 2023,
+      "concept": "net_income",
+      "status": "selected",
+      "candidate_count": 6,
+      "candidate_tags": [
+        "NetIncomeLoss",
+        "ProfitLoss"
+      ],
+      "first_filed": "2023-03-29",
+      "selected": {
+        "fact_id": 49,
+        "taxonomy": "us-gaap",
+        "tag": "NetIncomeLoss",
+        "unit": "USD",
+        "value": "-796705000",
+        "start_date": "2022-02-01",
+        "end_date": "2023-01-31",
+        "filed_date": "2023-03-29",
+        "accession_number": "0001640147-23-000030",
+        "form": "10-K",
+        "fy": 2023,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "9d2289f4d9810ef19dfd4f5eef8c90b406db14947ca4b6fcb36dca6c41383144",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "snowflake",
+      "cik": "0001640147",
+      "period_end_year": 2023,
+      "concept": "assets",
+      "status": "selected",
+      "candidate_count": 2,
+      "candidate_tags": [
+        "Assets"
+      ],
+      "first_filed": "2023-03-29",
+      "selected": {
+        "fact_id": 68,
+        "taxonomy": "us-gaap",
+        "tag": "Assets",
+        "unit": "USD",
+        "value": "7722322000",
+        "start_date": null,
+        "end_date": "2023-01-31",
+        "filed_date": "2023-03-29",
+        "accession_number": "0001640147-23-000030",
+        "form": "10-K",
+        "fy": 2023,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "9d2289f4d9810ef19dfd4f5eef8c90b406db14947ca4b6fcb36dca6c41383144",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "snowflake",
+      "cik": "0001640147",
+      "period_end_year": 2024,
+      "concept": "revenue",
+      "status": "selected",
+      "candidate_count": 3,
+      "candidate_tags": [
+        "RevenueFromContractWithCustomerExcludingAssessedTax"
+      ],
+      "first_filed": "2024-03-26",
+      "selected": {
+        "fact_id": 40,
+        "taxonomy": "us-gaap",
+        "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+        "unit": "USD",
+        "value": "2806489000",
+        "start_date": "2023-02-01",
+        "end_date": "2024-01-31",
+        "filed_date": "2024-03-26",
+        "accession_number": "0001640147-24-000101",
+        "form": "10-K",
+        "fy": 2024,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "9d2289f4d9810ef19dfd4f5eef8c90b406db14947ca4b6fcb36dca6c41383144",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "snowflake",
+      "cik": "0001640147",
+      "period_end_year": 2024,
+      "concept": "net_income",
+      "status": "selected",
+      "candidate_count": 6,
+      "candidate_tags": [
+        "NetIncomeLoss",
+        "ProfitLoss"
+      ],
+      "first_filed": "2024-03-26",
+      "selected": {
+        "fact_id": 52,
+        "taxonomy": "us-gaap",
+        "tag": "NetIncomeLoss",
+        "unit": "USD",
+        "value": "-836097000",
+        "start_date": "2023-02-01",
+        "end_date": "2024-01-31",
+        "filed_date": "2024-03-26",
+        "accession_number": "0001640147-24-000101",
+        "form": "10-K",
+        "fy": 2024,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "9d2289f4d9810ef19dfd4f5eef8c90b406db14947ca4b6fcb36dca6c41383144",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "snowflake",
+      "cik": "0001640147",
+      "period_end_year": 2024,
+      "concept": "assets",
+      "status": "selected",
+      "candidate_count": 2,
+      "candidate_tags": [
+        "Assets"
+      ],
+      "first_filed": "2024-03-26",
+      "selected": {
+        "fact_id": 70,
+        "taxonomy": "us-gaap",
+        "tag": "Assets",
+        "unit": "USD",
+        "value": "8223383000",
+        "start_date": null,
+        "end_date": "2024-01-31",
+        "filed_date": "2024-03-26",
+        "accession_number": "0001640147-24-000101",
+        "form": "10-K",
+        "fy": 2024,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "9d2289f4d9810ef19dfd4f5eef8c90b406db14947ca4b6fcb36dca6c41383144",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "mongodb",
+      "cik": "0001441816",
+      "period_end_year": 2021,
+      "concept": "revenue",
+      "status": "selected",
+      "candidate_count": 3,
+      "candidate_tags": [
+        "RevenueFromContractWithCustomerExcludingAssessedTax"
+      ],
+      "first_filed": "2021-03-22",
+      "selected": {
+        "fact_id": 72,
+        "taxonomy": "us-gaap",
+        "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+        "unit": "USD",
+        "value": "590380000",
+        "start_date": "2020-02-01",
+        "end_date": "2021-01-31",
+        "filed_date": "2021-03-22",
+        "accession_number": "0001441816-21-000051",
+        "form": "10-K",
+        "fy": 2021,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "8947052d6912d9ac6b35470f5e331ef6fe1f4b4cf782fab20822c9cb66738997",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "mongodb",
+      "cik": "0001441816",
+      "period_end_year": 2021,
+      "concept": "net_income",
+      "status": "selected",
+      "candidate_count": 3,
+      "candidate_tags": [
+        "NetIncomeLoss"
+      ],
+      "first_filed": "2021-03-22",
+      "selected": {
+        "fact_id": 84,
+        "taxonomy": "us-gaap",
+        "tag": "NetIncomeLoss",
+        "unit": "USD",
+        "value": "-266944000",
+        "start_date": "2020-02-01",
+        "end_date": "2021-01-31",
+        "filed_date": "2021-03-22",
+        "accession_number": "0001441816-21-000051",
+        "form": "10-K",
+        "fy": 2021,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "8947052d6912d9ac6b35470f5e331ef6fe1f4b4cf782fab20822c9cb66738997",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "mongodb",
+      "cik": "0001441816",
+      "period_end_year": 2021,
+      "concept": "assets",
+      "status": "selected",
+      "candidate_count": 2,
+      "candidate_tags": [
+        "Assets"
+      ],
+      "first_filed": "2021-03-22",
+      "selected": {
+        "fact_id": 96,
+        "taxonomy": "us-gaap",
+        "tag": "Assets",
+        "unit": "USD",
+        "value": "1407495000",
+        "start_date": null,
+        "end_date": "2021-01-31",
+        "filed_date": "2021-03-22",
+        "accession_number": "0001441816-21-000051",
+        "form": "10-K",
+        "fy": 2021,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "8947052d6912d9ac6b35470f5e331ef6fe1f4b4cf782fab20822c9cb66738997",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "mongodb",
+      "cik": "0001441816",
+      "period_end_year": 2022,
+      "concept": "revenue",
+      "status": "selected",
+      "candidate_count": 3,
+      "candidate_tags": [
+        "RevenueFromContractWithCustomerExcludingAssessedTax"
+      ],
+      "first_filed": "2022-03-18",
+      "selected": {
+        "fact_id": 75,
+        "taxonomy": "us-gaap",
+        "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+        "unit": "USD",
+        "value": "873782000",
+        "start_date": "2021-02-01",
+        "end_date": "2022-01-31",
+        "filed_date": "2022-03-18",
+        "accession_number": "0001441816-22-000059",
+        "form": "10-K",
+        "fy": 2022,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "8947052d6912d9ac6b35470f5e331ef6fe1f4b4cf782fab20822c9cb66738997",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "mongodb",
+      "cik": "0001441816",
+      "period_end_year": 2022,
+      "concept": "net_income",
+      "status": "selected",
+      "candidate_count": 3,
+      "candidate_tags": [
+        "NetIncomeLoss"
+      ],
+      "first_filed": "2022-03-18",
+      "selected": {
+        "fact_id": 87,
+        "taxonomy": "us-gaap",
+        "tag": "NetIncomeLoss",
+        "unit": "USD",
+        "value": "-306866000",
+        "start_date": "2021-02-01",
+        "end_date": "2022-01-31",
+        "filed_date": "2022-03-18",
+        "accession_number": "0001441816-22-000059",
+        "form": "10-K",
+        "fy": 2022,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "8947052d6912d9ac6b35470f5e331ef6fe1f4b4cf782fab20822c9cb66738997",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "mongodb",
+      "cik": "0001441816",
+      "period_end_year": 2022,
+      "concept": "assets",
+      "status": "selected",
+      "candidate_count": 2,
+      "candidate_tags": [
+        "Assets"
+      ],
+      "first_filed": "2022-03-18",
+      "selected": {
+        "fact_id": 98,
+        "taxonomy": "us-gaap",
+        "tag": "Assets",
+        "unit": "USD",
+        "value": "2449588000",
+        "start_date": null,
+        "end_date": "2022-01-31",
+        "filed_date": "2022-03-18",
+        "accession_number": "0001441816-22-000059",
+        "form": "10-K",
+        "fy": 2022,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "8947052d6912d9ac6b35470f5e331ef6fe1f4b4cf782fab20822c9cb66738997",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "mongodb",
+      "cik": "0001441816",
+      "period_end_year": 2023,
+      "concept": "revenue",
+      "status": "selected",
+      "candidate_count": 3,
+      "candidate_tags": [
+        "RevenueFromContractWithCustomerExcludingAssessedTax"
+      ],
+      "first_filed": "2023-03-17",
+      "selected": {
+        "fact_id": 78,
+        "taxonomy": "us-gaap",
+        "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+        "unit": "USD",
+        "value": "1284040000",
+        "start_date": "2022-02-01",
+        "end_date": "2023-01-31",
+        "filed_date": "2023-03-17",
+        "accession_number": "0001441816-23-000027",
+        "form": "10-K",
+        "fy": 2023,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "8947052d6912d9ac6b35470f5e331ef6fe1f4b4cf782fab20822c9cb66738997",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "mongodb",
+      "cik": "0001441816",
+      "period_end_year": 2023,
+      "concept": "net_income",
+      "status": "selected",
+      "candidate_count": 3,
+      "candidate_tags": [
+        "NetIncomeLoss"
+      ],
+      "first_filed": "2023-03-17",
+      "selected": {
+        "fact_id": 90,
+        "taxonomy": "us-gaap",
+        "tag": "NetIncomeLoss",
+        "unit": "USD",
+        "value": "-345398000",
+        "start_date": "2022-02-01",
+        "end_date": "2023-01-31",
+        "filed_date": "2023-03-17",
+        "accession_number": "0001441816-23-000027",
+        "form": "10-K",
+        "fy": 2023,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "8947052d6912d9ac6b35470f5e331ef6fe1f4b4cf782fab20822c9cb66738997",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "mongodb",
+      "cik": "0001441816",
+      "period_end_year": 2023,
+      "concept": "assets",
+      "status": "selected",
+      "candidate_count": 2,
+      "candidate_tags": [
+        "Assets"
+      ],
+      "first_filed": "2023-03-17",
+      "selected": {
+        "fact_id": 100,
+        "taxonomy": "us-gaap",
+        "tag": "Assets",
+        "unit": "USD",
+        "value": "2588893000",
+        "start_date": null,
+        "end_date": "2023-01-31",
+        "filed_date": "2023-03-17",
+        "accession_number": "0001441816-23-000027",
+        "form": "10-K",
+        "fy": 2023,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "8947052d6912d9ac6b35470f5e331ef6fe1f4b4cf782fab20822c9cb66738997",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "mongodb",
+      "cik": "0001441816",
+      "period_end_year": 2024,
+      "concept": "revenue",
+      "status": "selected",
+      "candidate_count": 3,
+      "candidate_tags": [
+        "RevenueFromContractWithCustomerExcludingAssessedTax"
+      ],
+      "first_filed": "2024-03-15",
+      "selected": {
+        "fact_id": 81,
+        "taxonomy": "us-gaap",
+        "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+        "unit": "USD",
+        "value": "1683011000",
+        "start_date": "2023-02-01",
+        "end_date": "2024-01-31",
+        "filed_date": "2024-03-15",
+        "accession_number": "0001441816-24-000049",
+        "form": "10-K",
+        "fy": 2024,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "8947052d6912d9ac6b35470f5e331ef6fe1f4b4cf782fab20822c9cb66738997",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "mongodb",
+      "cik": "0001441816",
+      "period_end_year": 2024,
+      "concept": "net_income",
+      "status": "selected",
+      "candidate_count": 3,
+      "candidate_tags": [
+        "NetIncomeLoss"
+      ],
+      "first_filed": "2024-03-15",
+      "selected": {
+        "fact_id": 93,
+        "taxonomy": "us-gaap",
+        "tag": "NetIncomeLoss",
+        "unit": "USD",
+        "value": "-176600000",
+        "start_date": "2023-02-01",
+        "end_date": "2024-01-31",
+        "filed_date": "2024-03-15",
+        "accession_number": "0001441816-24-000049",
+        "form": "10-K",
+        "fy": 2024,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "8947052d6912d9ac6b35470f5e331ef6fe1f4b4cf782fab20822c9cb66738997",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "mongodb",
+      "cik": "0001441816",
+      "period_end_year": 2024,
+      "concept": "assets",
+      "status": "selected",
+      "candidate_count": 2,
+      "candidate_tags": [
+        "Assets"
+      ],
+      "first_filed": "2024-03-15",
+      "selected": {
+        "fact_id": 102,
+        "taxonomy": "us-gaap",
+        "tag": "Assets",
+        "unit": "USD",
+        "value": "2869642000",
+        "start_date": null,
+        "end_date": "2024-01-31",
+        "filed_date": "2024-03-15",
+        "accession_number": "0001441816-24-000049",
+        "form": "10-K",
+        "fy": 2024,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "8947052d6912d9ac6b35470f5e331ef6fe1f4b4cf782fab20822c9cb66738997",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "gitlab",
+      "cik": "0001653482",
+      "period_end_year": 2021,
+      "concept": "revenue",
+      "status": "selected",
+      "candidate_count": 2,
+      "candidate_tags": [
+        "RevenueFromContractWithCustomerExcludingAssessedTax"
+      ],
+      "first_filed": "2022-04-08",
+      "selected": {
+        "fact_id": 104,
+        "taxonomy": "us-gaap",
+        "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+        "unit": "USD",
+        "value": "152176000",
+        "start_date": "2020-02-01",
+        "end_date": "2021-01-31",
+        "filed_date": "2022-04-08",
+        "accession_number": "0001628280-22-008836",
+        "form": "10-K",
+        "fy": 2022,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "5f900199621c5922f358c542d0fb942df930d4fe391724686f2625149fc1ee54",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "gitlab",
+      "cik": "0001653482",
+      "period_end_year": 2021,
+      "concept": "net_income",
+      "status": "selected",
+      "candidate_count": 4,
+      "candidate_tags": [
+        "NetIncomeLoss",
+        "ProfitLoss"
+      ],
+      "first_filed": "2022-04-08",
+      "selected": {
+        "fact_id": 115,
+        "taxonomy": "us-gaap",
+        "tag": "NetIncomeLoss",
+        "unit": "USD",
+        "value": "-192194000",
+        "start_date": "2020-02-01",
+        "end_date": "2021-01-31",
+        "filed_date": "2022-04-08",
+        "accession_number": "0001628280-22-008836",
+        "form": "10-K",
+        "fy": 2022,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "5f900199621c5922f358c542d0fb942df930d4fe391724686f2625149fc1ee54",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "gitlab",
+      "cik": "0001653482",
+      "period_end_year": 2021,
+      "concept": "assets",
+      "status": "selected",
+      "candidate_count": 1,
+      "candidate_tags": [
+        "Assets"
+      ],
+      "first_filed": "2022-04-08",
+      "selected": {
+        "fact_id": 137,
+        "taxonomy": "us-gaap",
+        "tag": "Assets",
+        "unit": "USD",
+        "value": "362566000",
+        "start_date": null,
+        "end_date": "2021-01-31",
+        "filed_date": "2022-04-08",
+        "accession_number": "0001628280-22-008836",
+        "form": "10-K",
+        "fy": 2022,
+        "fp": "FY",
+        "frame": "CY2020Q4I",
+        "raw_sha256": "5f900199621c5922f358c542d0fb942df930d4fe391724686f2625149fc1ee54",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "gitlab",
+      "cik": "0001653482",
+      "period_end_year": 2022,
+      "concept": "revenue",
+      "status": "selected",
+      "candidate_count": 3,
+      "candidate_tags": [
+        "RevenueFromContractWithCustomerExcludingAssessedTax"
+      ],
+      "first_filed": "2022-04-08",
+      "selected": {
+        "fact_id": 106,
+        "taxonomy": "us-gaap",
+        "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+        "unit": "USD",
+        "value": "252653000",
+        "start_date": "2021-02-01",
+        "end_date": "2022-01-31",
+        "filed_date": "2022-04-08",
+        "accession_number": "0001628280-22-008836",
+        "form": "10-K",
+        "fy": 2022,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "5f900199621c5922f358c542d0fb942df930d4fe391724686f2625149fc1ee54",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "gitlab",
+      "cik": "0001653482",
+      "period_end_year": 2022,
+      "concept": "net_income",
+      "status": "selected",
+      "candidate_count": 6,
+      "candidate_tags": [
+        "NetIncomeLoss",
+        "ProfitLoss"
+      ],
+      "first_filed": "2022-04-08",
+      "selected": {
+        "fact_id": 117,
+        "taxonomy": "us-gaap",
+        "tag": "NetIncomeLoss",
+        "unit": "USD",
+        "value": "-155138000",
+        "start_date": "2021-02-01",
+        "end_date": "2022-01-31",
+        "filed_date": "2022-04-08",
+        "accession_number": "0001628280-22-008836",
+        "form": "10-K",
+        "fy": 2022,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "5f900199621c5922f358c542d0fb942df930d4fe391724686f2625149fc1ee54",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "gitlab",
+      "cik": "0001653482",
+      "period_end_year": 2022,
+      "concept": "assets",
+      "status": "selected",
+      "candidate_count": 2,
+      "candidate_tags": [
+        "Assets"
+      ],
+      "first_filed": "2022-04-08",
+      "selected": {
+        "fact_id": 138,
+        "taxonomy": "us-gaap",
+        "tag": "Assets",
+        "unit": "USD",
+        "value": "1091438000",
+        "start_date": null,
+        "end_date": "2022-01-31",
+        "filed_date": "2022-04-08",
+        "accession_number": "0001628280-22-008836",
+        "form": "10-K",
+        "fy": 2022,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "5f900199621c5922f358c542d0fb942df930d4fe391724686f2625149fc1ee54",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "gitlab",
+      "cik": "0001653482",
+      "period_end_year": 2023,
+      "concept": "revenue",
+      "status": "selected",
+      "candidate_count": 3,
+      "candidate_tags": [
+        "RevenueFromContractWithCustomerExcludingAssessedTax"
+      ],
+      "first_filed": "2023-03-30",
+      "selected": {
+        "fact_id": 109,
+        "taxonomy": "us-gaap",
+        "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+        "unit": "USD",
+        "value": "424336000",
+        "start_date": "2022-02-01",
+        "end_date": "2023-01-31",
+        "filed_date": "2023-03-30",
+        "accession_number": "0001628280-23-009925",
+        "form": "10-K",
+        "fy": 2023,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "5f900199621c5922f358c542d0fb942df930d4fe391724686f2625149fc1ee54",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "gitlab",
+      "cik": "0001653482",
+      "period_end_year": 2023,
+      "concept": "net_income",
+      "status": "selected",
+      "candidate_count": 6,
+      "candidate_tags": [
+        "NetIncomeLoss",
+        "ProfitLoss"
+      ],
+      "first_filed": "2023-03-30",
+      "selected": {
+        "fact_id": 120,
+        "taxonomy": "us-gaap",
+        "tag": "NetIncomeLoss",
+        "unit": "USD",
+        "value": "-172311000",
+        "start_date": "2022-02-01",
+        "end_date": "2023-01-31",
+        "filed_date": "2023-03-30",
+        "accession_number": "0001628280-23-009925",
+        "form": "10-K",
+        "fy": 2023,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "5f900199621c5922f358c542d0fb942df930d4fe391724686f2625149fc1ee54",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "gitlab",
+      "cik": "0001653482",
+      "period_end_year": 2023,
+      "concept": "assets",
+      "status": "selected",
+      "candidate_count": 2,
+      "candidate_tags": [
+        "Assets"
+      ],
+      "first_filed": "2023-03-30",
+      "selected": {
+        "fact_id": 140,
+        "taxonomy": "us-gaap",
+        "tag": "Assets",
+        "unit": "USD",
+        "value": "1169200000",
+        "start_date": null,
+        "end_date": "2023-01-31",
+        "filed_date": "2023-03-30",
+        "accession_number": "0001628280-23-009925",
+        "form": "10-K",
+        "fy": 2023,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "5f900199621c5922f358c542d0fb942df930d4fe391724686f2625149fc1ee54",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "gitlab",
+      "cik": "0001653482",
+      "period_end_year": 2024,
+      "concept": "revenue",
+      "status": "selected",
+      "candidate_count": 3,
+      "candidate_tags": [
+        "RevenueFromContractWithCustomerExcludingAssessedTax"
+      ],
+      "first_filed": "2024-03-26",
+      "selected": {
+        "fact_id": 112,
+        "taxonomy": "us-gaap",
+        "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+        "unit": "USD",
+        "value": "579906000",
+        "start_date": "2023-02-01",
+        "end_date": "2024-01-31",
+        "filed_date": "2024-03-26",
+        "accession_number": "0001628280-24-012963",
+        "form": "10-K",
+        "fy": 2024,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "5f900199621c5922f358c542d0fb942df930d4fe391724686f2625149fc1ee54",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "gitlab",
+      "cik": "0001653482",
+      "period_end_year": 2024,
+      "concept": "net_income",
+      "status": "selected",
+      "candidate_count": 6,
+      "candidate_tags": [
+        "NetIncomeLoss",
+        "ProfitLoss"
+      ],
+      "first_filed": "2024-03-26",
+      "selected": {
+        "fact_id": 123,
+        "taxonomy": "us-gaap",
+        "tag": "NetIncomeLoss",
+        "unit": "USD",
+        "value": "-424174000",
+        "start_date": "2023-02-01",
+        "end_date": "2024-01-31",
+        "filed_date": "2024-03-26",
+        "accession_number": "0001628280-24-012963",
+        "form": "10-K",
+        "fy": 2024,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "5f900199621c5922f358c542d0fb942df930d4fe391724686f2625149fc1ee54",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "gitlab",
+      "cik": "0001653482",
+      "period_end_year": 2024,
+      "concept": "assets",
+      "status": "selected",
+      "candidate_count": 2,
+      "candidate_tags": [
+        "Assets"
+      ],
+      "first_filed": "2024-03-26",
+      "selected": {
+        "fact_id": 142,
+        "taxonomy": "us-gaap",
+        "tag": "Assets",
+        "unit": "USD",
+        "value": "1317861000",
+        "start_date": null,
+        "end_date": "2024-01-31",
+        "filed_date": "2024-03-26",
+        "accession_number": "0001628280-24-012963",
+        "form": "10-K",
+        "fy": 2024,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "5f900199621c5922f358c542d0fb942df930d4fe391724686f2625149fc1ee54",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "atlassian",
+      "cik": "0001650372",
+      "period_end_year": 2021,
+      "concept": "revenue",
+      "status": "selected",
+      "candidate_count": 3,
+      "candidate_tags": [
+        "RevenueFromContractWithCustomerExcludingAssessedTax",
+        "RevenueFromContractsWithCustomers"
+      ],
+      "first_filed": "2021-08-13",
+      "selected": {
+        "fact_id": 144,
+        "taxonomy": "us-gaap",
+        "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+        "unit": "USD",
+        "value": "2089132000",
+        "start_date": "2020-07-01",
+        "end_date": "2021-06-30",
+        "filed_date": "2023-08-18",
+        "accession_number": "0001650372-23-000040",
+        "form": "10-K",
+        "fy": 2023,
+        "fp": "FY",
+        "frame": "CY2021",
+        "raw_sha256": "4a2efe51ce98d780879cf2bee5128ff8e06d7d89e61b09e1af42e11bab7feb7d",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "atlassian",
+      "cik": "0001650372",
+      "period_end_year": 2021,
+      "concept": "net_income",
+      "status": "selected",
+      "candidate_count": 1,
+      "candidate_tags": [
+        "NetIncomeLoss"
+      ],
+      "first_filed": "2023-08-18",
+      "selected": {
+        "fact_id": 156,
+        "taxonomy": "us-gaap",
+        "tag": "NetIncomeLoss",
+        "unit": "USD",
+        "value": "-578979000",
+        "start_date": "2020-07-01",
+        "end_date": "2021-06-30",
+        "filed_date": "2023-08-18",
+        "accession_number": "0001650372-23-000040",
+        "form": "10-K",
+        "fy": 2023,
+        "fp": "FY",
+        "frame": "CY2021",
+        "raw_sha256": "4a2efe51ce98d780879cf2bee5128ff8e06d7d89e61b09e1af42e11bab7feb7d",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "atlassian",
+      "cik": "0001650372",
+      "period_end_year": 2021,
+      "concept": "assets",
+      "status": "selected",
+      "candidate_count": 2,
+      "candidate_tags": [
+        "Assets"
+      ],
+      "first_filed": "2021-08-13",
+      "selected": {
+        "fact_id": 170,
+        "taxonomy": "ifrs-full",
+        "tag": "Assets",
+        "unit": "USD",
+        "value": "2945344000",
+        "start_date": null,
+        "end_date": "2021-06-30",
+        "filed_date": "2021-08-13",
+        "accession_number": "0001650372-21-000028",
+        "form": "20-F",
+        "fy": 2021,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "4a2efe51ce98d780879cf2bee5128ff8e06d7d89e61b09e1af42e11bab7feb7d",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "atlassian",
+      "cik": "0001650372",
+      "period_end_year": 2022,
+      "concept": "revenue",
+      "status": "selected",
+      "candidate_count": 3,
+      "candidate_tags": [
+        "RevenueFromContractWithCustomerExcludingAssessedTax",
+        "RevenueFromContractsWithCustomers"
+      ],
+      "first_filed": "2022-08-19",
+      "selected": {
+        "fact_id": 145,
+        "taxonomy": "us-gaap",
+        "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+        "unit": "USD",
+        "value": "2802882000",
+        "start_date": "2021-07-01",
+        "end_date": "2022-06-30",
+        "filed_date": "2023-08-18",
+        "accession_number": "0001650372-23-000040",
+        "form": "10-K",
+        "fy": 2023,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "4a2efe51ce98d780879cf2bee5128ff8e06d7d89e61b09e1af42e11bab7feb7d",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "atlassian",
+      "cik": "0001650372",
+      "period_end_year": 2022,
+      "concept": "net_income",
+      "status": "selected",
+      "candidate_count": 2,
+      "candidate_tags": [
+        "NetIncomeLoss"
+      ],
+      "first_filed": "2023-08-18",
+      "selected": {
+        "fact_id": 157,
+        "taxonomy": "us-gaap",
+        "tag": "NetIncomeLoss",
+        "unit": "USD",
+        "value": "-519510000",
+        "start_date": "2021-07-01",
+        "end_date": "2022-06-30",
+        "filed_date": "2023-08-18",
+        "accession_number": "0001650372-23-000040",
+        "form": "10-K",
+        "fy": 2023,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "4a2efe51ce98d780879cf2bee5128ff8e06d7d89e61b09e1af42e11bab7feb7d",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "atlassian",
+      "cik": "0001650372",
+      "period_end_year": 2022,
+      "concept": "assets",
+      "status": "selected",
+      "candidate_count": 2,
+      "candidate_tags": [
+        "Assets"
+      ],
+      "first_filed": "2022-08-19",
+      "selected": {
+        "fact_id": 172,
+        "taxonomy": "ifrs-full",
+        "tag": "Assets",
+        "unit": "USD",
+        "value": "3361206000",
+        "start_date": null,
+        "end_date": "2022-06-30",
+        "filed_date": "2022-08-19",
+        "accession_number": "0001650372-22-000060",
+        "form": "20-F",
+        "fy": 2021,
+        "fp": "FY",
+        "frame": "CY2022Q2I",
+        "raw_sha256": "4a2efe51ce98d780879cf2bee5128ff8e06d7d89e61b09e1af42e11bab7feb7d",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "atlassian",
+      "cik": "0001650372",
+      "period_end_year": 2023,
+      "concept": "revenue",
+      "status": "selected",
+      "candidate_count": 3,
+      "candidate_tags": [
+        "RevenueFromContractWithCustomerExcludingAssessedTax"
+      ],
+      "first_filed": "2023-08-18",
+      "selected": {
+        "fact_id": 147,
+        "taxonomy": "us-gaap",
+        "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+        "unit": "USD",
+        "value": "3534647000",
+        "start_date": "2022-07-01",
+        "end_date": "2023-06-30",
+        "filed_date": "2023-08-18",
+        "accession_number": "0001650372-23-000040",
+        "form": "10-K",
+        "fy": 2023,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "4a2efe51ce98d780879cf2bee5128ff8e06d7d89e61b09e1af42e11bab7feb7d",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "atlassian",
+      "cik": "0001650372",
+      "period_end_year": 2023,
+      "concept": "net_income",
+      "status": "selected",
+      "candidate_count": 3,
+      "candidate_tags": [
+        "NetIncomeLoss"
+      ],
+      "first_filed": "2023-08-18",
+      "selected": {
+        "fact_id": 159,
+        "taxonomy": "us-gaap",
+        "tag": "NetIncomeLoss",
+        "unit": "USD",
+        "value": "-486761000",
+        "start_date": "2022-07-01",
+        "end_date": "2023-06-30",
+        "filed_date": "2023-08-18",
+        "accession_number": "0001650372-23-000040",
+        "form": "10-K",
+        "fy": 2023,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "4a2efe51ce98d780879cf2bee5128ff8e06d7d89e61b09e1af42e11bab7feb7d",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "atlassian",
+      "cik": "0001650372",
+      "period_end_year": 2023,
+      "concept": "assets",
+      "status": "selected",
+      "candidate_count": 2,
+      "candidate_tags": [
+        "Assets"
+      ],
+      "first_filed": "2023-08-18",
+      "selected": {
+        "fact_id": 166,
+        "taxonomy": "us-gaap",
+        "tag": "Assets",
+        "unit": "USD",
+        "value": "4106779000",
+        "start_date": null,
+        "end_date": "2023-06-30",
+        "filed_date": "2023-08-18",
+        "accession_number": "0001650372-23-000040",
+        "form": "10-K",
+        "fy": 2023,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "4a2efe51ce98d780879cf2bee5128ff8e06d7d89e61b09e1af42e11bab7feb7d",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "atlassian",
+      "cik": "0001650372",
+      "period_end_year": 2024,
+      "concept": "revenue",
+      "status": "selected",
+      "candidate_count": 3,
+      "candidate_tags": [
+        "RevenueFromContractWithCustomerExcludingAssessedTax"
+      ],
+      "first_filed": "2024-08-16",
+      "selected": {
+        "fact_id": 150,
+        "taxonomy": "us-gaap",
+        "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+        "unit": "USD",
+        "value": "4358603000",
+        "start_date": "2023-07-01",
+        "end_date": "2024-06-30",
+        "filed_date": "2024-08-16",
+        "accession_number": "0001650372-24-000036",
+        "form": "10-K",
+        "fy": 2024,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "4a2efe51ce98d780879cf2bee5128ff8e06d7d89e61b09e1af42e11bab7feb7d",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "atlassian",
+      "cik": "0001650372",
+      "period_end_year": 2024,
+      "concept": "net_income",
+      "status": "selected",
+      "candidate_count": 3,
+      "candidate_tags": [
+        "NetIncomeLoss"
+      ],
+      "first_filed": "2024-08-16",
+      "selected": {
+        "fact_id": 162,
+        "taxonomy": "us-gaap",
+        "tag": "NetIncomeLoss",
+        "unit": "USD",
+        "value": "-300519000",
+        "start_date": "2023-07-01",
+        "end_date": "2024-06-30",
+        "filed_date": "2024-08-16",
+        "accession_number": "0001650372-24-000036",
+        "form": "10-K",
+        "fy": 2024,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "4a2efe51ce98d780879cf2bee5128ff8e06d7d89e61b09e1af42e11bab7feb7d",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "atlassian",
+      "cik": "0001650372",
+      "period_end_year": 2024,
+      "concept": "assets",
+      "status": "selected",
+      "candidate_count": 2,
+      "candidate_tags": [
+        "Assets"
+      ],
+      "first_filed": "2024-08-16",
+      "selected": {
+        "fact_id": 168,
+        "taxonomy": "us-gaap",
+        "tag": "Assets",
+        "unit": "USD",
+        "value": "5212133000",
+        "start_date": null,
+        "end_date": "2024-06-30",
+        "filed_date": "2024-08-16",
+        "accession_number": "0001650372-24-000036",
+        "form": "10-K",
+        "fy": 2024,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "4a2efe51ce98d780879cf2bee5128ff8e06d7d89e61b09e1af42e11bab7feb7d",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "datadog",
+      "cik": "0001561550",
+      "period_end_year": 2021,
+      "concept": "revenue",
+      "status": "selected",
+      "candidate_count": 3,
+      "candidate_tags": [
+        "RevenueFromContractWithCustomerExcludingAssessedTax"
+      ],
+      "first_filed": "2022-02-25",
+      "selected": {
+        "fact_id": 173,
+        "taxonomy": "us-gaap",
+        "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+        "unit": "USD",
+        "value": "1028784000",
+        "start_date": "2021-01-01",
+        "end_date": "2021-12-31",
+        "filed_date": "2022-02-25",
+        "accession_number": "0001561550-22-000009",
+        "form": "10-K",
+        "fy": 2021,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "d3c4561fd839e25b1cde245ff3ca1f821b2a70e70d34688c5ede40bbc0f600a2",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "datadog",
+      "cik": "0001561550",
+      "period_end_year": 2021,
+      "concept": "net_income",
+      "status": "selected",
+      "candidate_count": 6,
+      "candidate_tags": [
+        "NetIncomeLoss",
+        "ProfitLoss"
+      ],
+      "first_filed": "2022-02-25",
+      "selected": {
+        "fact_id": 184,
+        "taxonomy": "us-gaap",
+        "tag": "NetIncomeLoss",
+        "unit": "USD",
+        "value": "-20745000",
+        "start_date": "2021-01-01",
+        "end_date": "2021-12-31",
+        "filed_date": "2022-02-25",
+        "accession_number": "0001561550-22-000009",
+        "form": "10-K",
+        "fy": 2021,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "d3c4561fd839e25b1cde245ff3ca1f821b2a70e70d34688c5ede40bbc0f600a2",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "datadog",
+      "cik": "0001561550",
+      "period_end_year": 2021,
+      "concept": "assets",
+      "status": "selected",
+      "candidate_count": 2,
+      "candidate_tags": [
+        "Assets"
+      ],
+      "first_filed": "2022-02-25",
+      "selected": {
+        "fact_id": 206,
+        "taxonomy": "us-gaap",
+        "tag": "Assets",
+        "unit": "USD",
+        "value": "2380794000",
+        "start_date": null,
+        "end_date": "2021-12-31",
+        "filed_date": "2022-02-25",
+        "accession_number": "0001561550-22-000009",
+        "form": "10-K",
+        "fy": 2021,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "d3c4561fd839e25b1cde245ff3ca1f821b2a70e70d34688c5ede40bbc0f600a2",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "datadog",
+      "cik": "0001561550",
+      "period_end_year": 2022,
+      "concept": "revenue",
+      "status": "selected",
+      "candidate_count": 3,
+      "candidate_tags": [
+        "RevenueFromContractWithCustomerExcludingAssessedTax"
+      ],
+      "first_filed": "2023-02-24",
+      "selected": {
+        "fact_id": 176,
+        "taxonomy": "us-gaap",
+        "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+        "unit": "USD",
+        "value": "1675100000",
+        "start_date": "2022-01-01",
+        "end_date": "2022-12-31",
+        "filed_date": "2023-02-24",
+        "accession_number": "0001561550-23-000006",
+        "form": "10-K",
+        "fy": 2022,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "d3c4561fd839e25b1cde245ff3ca1f821b2a70e70d34688c5ede40bbc0f600a2",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "datadog",
+      "cik": "0001561550",
+      "period_end_year": 2022,
+      "concept": "net_income",
+      "status": "selected",
+      "candidate_count": 6,
+      "candidate_tags": [
+        "NetIncomeLoss",
+        "ProfitLoss"
+      ],
+      "first_filed": "2023-02-24",
+      "selected": {
+        "fact_id": 187,
+        "taxonomy": "us-gaap",
+        "tag": "NetIncomeLoss",
+        "unit": "USD",
+        "value": "-50160000",
+        "start_date": "2022-01-01",
+        "end_date": "2022-12-31",
+        "filed_date": "2023-02-24",
+        "accession_number": "0001561550-23-000006",
+        "form": "10-K",
+        "fy": 2022,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "d3c4561fd839e25b1cde245ff3ca1f821b2a70e70d34688c5ede40bbc0f600a2",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "datadog",
+      "cik": "0001561550",
+      "period_end_year": 2022,
+      "concept": "assets",
+      "status": "selected",
+      "candidate_count": 2,
+      "candidate_tags": [
+        "Assets"
+      ],
+      "first_filed": "2023-02-24",
+      "selected": {
+        "fact_id": 208,
+        "taxonomy": "us-gaap",
+        "tag": "Assets",
+        "unit": "USD",
+        "value": "3004852000",
+        "start_date": null,
+        "end_date": "2022-12-31",
+        "filed_date": "2023-02-24",
+        "accession_number": "0001561550-23-000006",
+        "form": "10-K",
+        "fy": 2022,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "d3c4561fd839e25b1cde245ff3ca1f821b2a70e70d34688c5ede40bbc0f600a2",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "datadog",
+      "cik": "0001561550",
+      "period_end_year": 2023,
+      "concept": "revenue",
+      "status": "selected",
+      "candidate_count": 3,
+      "candidate_tags": [
+        "RevenueFromContractWithCustomerExcludingAssessedTax"
+      ],
+      "first_filed": "2024-02-23",
+      "selected": {
+        "fact_id": 179,
+        "taxonomy": "us-gaap",
+        "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+        "unit": "USD",
+        "value": "2128359000",
+        "start_date": "2023-01-01",
+        "end_date": "2023-12-31",
+        "filed_date": "2024-02-23",
+        "accession_number": "0001561550-24-000009",
+        "form": "10-K",
+        "fy": 2023,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "d3c4561fd839e25b1cde245ff3ca1f821b2a70e70d34688c5ede40bbc0f600a2",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "datadog",
+      "cik": "0001561550",
+      "period_end_year": 2023,
+      "concept": "net_income",
+      "status": "selected",
+      "candidate_count": 6,
+      "candidate_tags": [
+        "NetIncomeLoss",
+        "ProfitLoss"
+      ],
+      "first_filed": "2024-02-23",
+      "selected": {
+        "fact_id": 190,
+        "taxonomy": "us-gaap",
+        "tag": "NetIncomeLoss",
+        "unit": "USD",
+        "value": "48568000",
+        "start_date": "2023-01-01",
+        "end_date": "2023-12-31",
+        "filed_date": "2024-02-23",
+        "accession_number": "0001561550-24-000009",
+        "form": "10-K",
+        "fy": 2023,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "d3c4561fd839e25b1cde245ff3ca1f821b2a70e70d34688c5ede40bbc0f600a2",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "datadog",
+      "cik": "0001561550",
+      "period_end_year": 2023,
+      "concept": "assets",
+      "status": "selected",
+      "candidate_count": 2,
+      "candidate_tags": [
+        "Assets"
+      ],
+      "first_filed": "2024-02-23",
+      "selected": {
+        "fact_id": 210,
+        "taxonomy": "us-gaap",
+        "tag": "Assets",
+        "unit": "USD",
+        "value": "3936072000",
+        "start_date": null,
+        "end_date": "2023-12-31",
+        "filed_date": "2024-02-23",
+        "accession_number": "0001561550-24-000009",
+        "form": "10-K",
+        "fy": 2023,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "d3c4561fd839e25b1cde245ff3ca1f821b2a70e70d34688c5ede40bbc0f600a2",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "datadog",
+      "cik": "0001561550",
+      "period_end_year": 2024,
+      "concept": "revenue",
+      "status": "selected",
+      "candidate_count": 2,
+      "candidate_tags": [
+        "RevenueFromContractWithCustomerExcludingAssessedTax"
+      ],
+      "first_filed": "2025-02-20",
+      "selected": {
+        "fact_id": 182,
+        "taxonomy": "us-gaap",
+        "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+        "unit": "USD",
+        "value": "2684275000",
+        "start_date": "2024-01-01",
+        "end_date": "2024-12-31",
+        "filed_date": "2025-02-20",
+        "accession_number": "0001561550-25-000025",
+        "form": "10-K",
+        "fy": 2024,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "d3c4561fd839e25b1cde245ff3ca1f821b2a70e70d34688c5ede40bbc0f600a2",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "datadog",
+      "cik": "0001561550",
+      "period_end_year": 2024,
+      "concept": "net_income",
+      "status": "selected",
+      "candidate_count": 4,
+      "candidate_tags": [
+        "NetIncomeLoss",
+        "ProfitLoss"
+      ],
+      "first_filed": "2025-02-20",
+      "selected": {
+        "fact_id": 193,
+        "taxonomy": "us-gaap",
+        "tag": "NetIncomeLoss",
+        "unit": "USD",
+        "value": "183746000",
+        "start_date": "2024-01-01",
+        "end_date": "2024-12-31",
+        "filed_date": "2025-02-20",
+        "accession_number": "0001561550-25-000025",
+        "form": "10-K",
+        "fy": 2024,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "d3c4561fd839e25b1cde245ff3ca1f821b2a70e70d34688c5ede40bbc0f600a2",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "datadog",
+      "cik": "0001561550",
+      "period_end_year": 2024,
+      "concept": "assets",
+      "status": "selected",
+      "candidate_count": 2,
+      "candidate_tags": [
+        "Assets"
+      ],
+      "first_filed": "2025-02-20",
+      "selected": {
+        "fact_id": 212,
+        "taxonomy": "us-gaap",
+        "tag": "Assets",
+        "unit": "USD",
+        "value": "5785339000",
+        "start_date": null,
+        "end_date": "2024-12-31",
+        "filed_date": "2025-02-20",
+        "accession_number": "0001561550-25-000025",
+        "form": "10-K",
+        "fy": 2024,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "d3c4561fd839e25b1cde245ff3ca1f821b2a70e70d34688c5ede40bbc0f600a2",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "crowdstrike",
+      "cik": "0001535527",
+      "period_end_year": 2021,
+      "concept": "revenue",
+      "status": "selected",
+      "candidate_count": 3,
+      "candidate_tags": [
+        "RevenueFromContractWithCustomerIncludingAssessedTax"
+      ],
+      "first_filed": "2021-03-18",
+      "selected": {
+        "fact_id": 214,
+        "taxonomy": "us-gaap",
+        "tag": "RevenueFromContractWithCustomerIncludingAssessedTax",
+        "unit": "USD",
+        "value": "874438000",
+        "start_date": "2020-02-01",
+        "end_date": "2021-01-31",
+        "filed_date": "2021-03-18",
+        "accession_number": "0001535527-21-000007",
+        "form": "10-K",
+        "fy": 2021,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "a71a92f1f11bd3032271ca55be7a7770a96a846ec809f925829ef952fd5f3fa1",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "crowdstrike",
+      "cik": "0001535527",
+      "period_end_year": 2021,
+      "concept": "net_income",
+      "status": "selected",
+      "candidate_count": 5,
+      "candidate_tags": [
+        "NetIncomeLoss",
+        "ProfitLoss"
+      ],
+      "first_filed": "2021-03-18",
+      "selected": {
+        "fact_id": 226,
+        "taxonomy": "us-gaap",
+        "tag": "NetIncomeLoss",
+        "unit": "USD",
+        "value": "-92629000",
+        "start_date": "2020-02-01",
+        "end_date": "2021-01-31",
+        "filed_date": "2022-03-16",
+        "accession_number": "0001535527-22-000006",
+        "form": "10-K",
+        "fy": 2022,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "a71a92f1f11bd3032271ca55be7a7770a96a846ec809f925829ef952fd5f3fa1",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "crowdstrike",
+      "cik": "0001535527",
+      "period_end_year": 2021,
+      "concept": "assets",
+      "status": "selected",
+      "candidate_count": 2,
+      "candidate_tags": [
+        "Assets"
+      ],
+      "first_filed": "2021-03-18",
+      "selected": {
+        "fact_id": 249,
+        "taxonomy": "us-gaap",
+        "tag": "Assets",
+        "unit": "USD",
+        "value": "2732533000",
+        "start_date": null,
+        "end_date": "2021-01-31",
+        "filed_date": "2021-03-18",
+        "accession_number": "0001535527-21-000007",
+        "form": "10-K",
+        "fy": 2021,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "a71a92f1f11bd3032271ca55be7a7770a96a846ec809f925829ef952fd5f3fa1",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "crowdstrike",
+      "cik": "0001535527",
+      "period_end_year": 2022,
+      "concept": "revenue",
+      "status": "selected",
+      "candidate_count": 3,
+      "candidate_tags": [
+        "RevenueFromContractWithCustomerIncludingAssessedTax"
+      ],
+      "first_filed": "2022-03-16",
+      "selected": {
+        "fact_id": 217,
+        "taxonomy": "us-gaap",
+        "tag": "RevenueFromContractWithCustomerIncludingAssessedTax",
+        "unit": "USD",
+        "value": "1451594000",
+        "start_date": "2021-02-01",
+        "end_date": "2022-01-31",
+        "filed_date": "2022-03-16",
+        "accession_number": "0001535527-22-000006",
+        "form": "10-K",
+        "fy": 2022,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "a71a92f1f11bd3032271ca55be7a7770a96a846ec809f925829ef952fd5f3fa1",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "crowdstrike",
+      "cik": "0001535527",
+      "period_end_year": 2022,
+      "concept": "net_income",
+      "status": "selected",
+      "candidate_count": 6,
+      "candidate_tags": [
+        "NetIncomeLoss",
+        "ProfitLoss"
+      ],
+      "first_filed": "2022-03-16",
+      "selected": {
+        "fact_id": 228,
+        "taxonomy": "us-gaap",
+        "tag": "NetIncomeLoss",
+        "unit": "USD",
+        "value": "-234802000",
+        "start_date": "2021-02-01",
+        "end_date": "2022-01-31",
+        "filed_date": "2022-03-16",
+        "accession_number": "0001535527-22-000006",
+        "form": "10-K",
+        "fy": 2022,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "a71a92f1f11bd3032271ca55be7a7770a96a846ec809f925829ef952fd5f3fa1",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "crowdstrike",
+      "cik": "0001535527",
+      "period_end_year": 2022,
+      "concept": "assets",
+      "status": "selected",
+      "candidate_count": 2,
+      "candidate_tags": [
+        "Assets"
+      ],
+      "first_filed": "2022-03-16",
+      "selected": {
+        "fact_id": 251,
+        "taxonomy": "us-gaap",
+        "tag": "Assets",
+        "unit": "USD",
+        "value": "3618381000",
+        "start_date": null,
+        "end_date": "2022-01-31",
+        "filed_date": "2022-03-16",
+        "accession_number": "0001535527-22-000006",
+        "form": "10-K",
+        "fy": 2022,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "a71a92f1f11bd3032271ca55be7a7770a96a846ec809f925829ef952fd5f3fa1",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "crowdstrike",
+      "cik": "0001535527",
+      "period_end_year": 2023,
+      "concept": "revenue",
+      "status": "selected",
+      "candidate_count": 3,
+      "candidate_tags": [
+        "RevenueFromContractWithCustomerIncludingAssessedTax"
+      ],
+      "first_filed": "2023-03-09",
+      "selected": {
+        "fact_id": 220,
+        "taxonomy": "us-gaap",
+        "tag": "RevenueFromContractWithCustomerIncludingAssessedTax",
+        "unit": "USD",
+        "value": "2241236000",
+        "start_date": "2022-02-01",
+        "end_date": "2023-01-31",
+        "filed_date": "2023-03-09",
+        "accession_number": "0001535527-23-000008",
+        "form": "10-K",
+        "fy": 2022,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "a71a92f1f11bd3032271ca55be7a7770a96a846ec809f925829ef952fd5f3fa1",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "crowdstrike",
+      "cik": "0001535527",
+      "period_end_year": 2023,
+      "concept": "net_income",
+      "status": "selected",
+      "candidate_count": 6,
+      "candidate_tags": [
+        "NetIncomeLoss",
+        "ProfitLoss"
+      ],
+      "first_filed": "2023-03-09",
+      "selected": {
+        "fact_id": 231,
+        "taxonomy": "us-gaap",
+        "tag": "NetIncomeLoss",
+        "unit": "USD",
+        "value": "-183245000",
+        "start_date": "2022-02-01",
+        "end_date": "2023-01-31",
+        "filed_date": "2023-03-09",
+        "accession_number": "0001535527-23-000008",
+        "form": "10-K",
+        "fy": 2022,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "a71a92f1f11bd3032271ca55be7a7770a96a846ec809f925829ef952fd5f3fa1",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "crowdstrike",
+      "cik": "0001535527",
+      "period_end_year": 2023,
+      "concept": "assets",
+      "status": "selected",
+      "candidate_count": 2,
+      "candidate_tags": [
+        "Assets"
+      ],
+      "first_filed": "2023-03-09",
+      "selected": {
+        "fact_id": 253,
+        "taxonomy": "us-gaap",
+        "tag": "Assets",
+        "unit": "USD",
+        "value": "5026540000",
+        "start_date": null,
+        "end_date": "2023-01-31",
+        "filed_date": "2023-03-09",
+        "accession_number": "0001535527-23-000008",
+        "form": "10-K",
+        "fy": 2022,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "a71a92f1f11bd3032271ca55be7a7770a96a846ec809f925829ef952fd5f3fa1",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "crowdstrike",
+      "cik": "0001535527",
+      "period_end_year": 2024,
+      "concept": "revenue",
+      "status": "selected",
+      "candidate_count": 3,
+      "candidate_tags": [
+        "RevenueFromContractWithCustomerIncludingAssessedTax"
+      ],
+      "first_filed": "2024-03-07",
+      "selected": {
+        "fact_id": 223,
+        "taxonomy": "us-gaap",
+        "tag": "RevenueFromContractWithCustomerIncludingAssessedTax",
+        "unit": "USD",
+        "value": "3055555000",
+        "start_date": "2023-02-01",
+        "end_date": "2024-01-31",
+        "filed_date": "2024-03-07",
+        "accession_number": "0001535527-24-000007",
+        "form": "10-K",
+        "fy": 2023,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "a71a92f1f11bd3032271ca55be7a7770a96a846ec809f925829ef952fd5f3fa1",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "crowdstrike",
+      "cik": "0001535527",
+      "period_end_year": 2024,
+      "concept": "net_income",
+      "status": "selected",
+      "candidate_count": 6,
+      "candidate_tags": [
+        "NetIncomeLoss",
+        "ProfitLoss"
+      ],
+      "first_filed": "2024-03-07",
+      "selected": {
+        "fact_id": 234,
+        "taxonomy": "us-gaap",
+        "tag": "NetIncomeLoss",
+        "unit": "USD",
+        "value": "89327000",
+        "start_date": "2023-02-01",
+        "end_date": "2024-01-31",
+        "filed_date": "2024-03-07",
+        "accession_number": "0001535527-24-000007",
+        "form": "10-K",
+        "fy": 2023,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "a71a92f1f11bd3032271ca55be7a7770a96a846ec809f925829ef952fd5f3fa1",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "crowdstrike",
+      "cik": "0001535527",
+      "period_end_year": 2024,
+      "concept": "assets",
+      "status": "selected",
+      "candidate_count": 2,
+      "candidate_tags": [
+        "Assets"
+      ],
+      "first_filed": "2024-03-07",
+      "selected": {
+        "fact_id": 255,
+        "taxonomy": "us-gaap",
+        "tag": "Assets",
+        "unit": "USD",
+        "value": "6646520000",
+        "start_date": null,
+        "end_date": "2024-01-31",
+        "filed_date": "2024-03-07",
+        "accession_number": "0001535527-24-000007",
+        "form": "10-K",
+        "fy": 2023,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "a71a92f1f11bd3032271ca55be7a7770a96a846ec809f925829ef952fd5f3fa1",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "elastic",
+      "cik": "0001707753",
+      "period_end_year": 2021,
+      "concept": "revenue",
+      "status": "selected",
+      "candidate_count": 3,
+      "candidate_tags": [
+        "RevenueFromContractWithCustomerExcludingAssessedTax"
+      ],
+      "first_filed": "2021-06-25",
+      "selected": {
+        "fact_id": 257,
+        "taxonomy": "us-gaap",
+        "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+        "unit": "USD",
+        "value": "608489000",
+        "start_date": "2020-05-01",
+        "end_date": "2021-04-30",
+        "filed_date": "2021-06-25",
+        "accession_number": "0001707753-21-000026",
+        "form": "10-K",
+        "fy": 2021,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "bf67dc8bc9dd23758c9e2dc067477dca9ae9f8041beaa79a7143ad61919b1e29",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "elastic",
+      "cik": "0001707753",
+      "period_end_year": 2021,
+      "concept": "net_income",
+      "status": "selected",
+      "candidate_count": 6,
+      "candidate_tags": [
+        "NetIncomeLoss",
+        "ProfitLoss"
+      ],
+      "first_filed": "2021-06-25",
+      "selected": {
+        "fact_id": 269,
+        "taxonomy": "us-gaap",
+        "tag": "NetIncomeLoss",
+        "unit": "USD",
+        "value": "-129434000",
+        "start_date": "2020-05-01",
+        "end_date": "2021-04-30",
+        "filed_date": "2021-06-25",
+        "accession_number": "0001707753-21-000026",
+        "form": "10-K",
+        "fy": 2021,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "bf67dc8bc9dd23758c9e2dc067477dca9ae9f8041beaa79a7143ad61919b1e29",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "elastic",
+      "cik": "0001707753",
+      "period_end_year": 2021,
+      "concept": "assets",
+      "status": "selected",
+      "candidate_count": 2,
+      "candidate_tags": [
+        "Assets"
+      ],
+      "first_filed": "2021-06-25",
+      "selected": {
+        "fact_id": 293,
+        "taxonomy": "us-gaap",
+        "tag": "Assets",
+        "unit": "USD",
+        "value": "973172000",
+        "start_date": null,
+        "end_date": "2021-04-30",
+        "filed_date": "2021-06-25",
+        "accession_number": "0001707753-21-000026",
+        "form": "10-K",
+        "fy": 2021,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "bf67dc8bc9dd23758c9e2dc067477dca9ae9f8041beaa79a7143ad61919b1e29",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "elastic",
+      "cik": "0001707753",
+      "period_end_year": 2022,
+      "concept": "revenue",
+      "status": "selected",
+      "candidate_count": 3,
+      "candidate_tags": [
+        "RevenueFromContractWithCustomerExcludingAssessedTax"
+      ],
+      "first_filed": "2022-06-21",
+      "selected": {
+        "fact_id": 260,
+        "taxonomy": "us-gaap",
+        "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+        "unit": "USD",
+        "value": "862374000",
+        "start_date": "2021-05-01",
+        "end_date": "2022-04-30",
+        "filed_date": "2022-06-21",
+        "accession_number": "0001707753-22-000025",
+        "form": "10-K",
+        "fy": 2022,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "bf67dc8bc9dd23758c9e2dc067477dca9ae9f8041beaa79a7143ad61919b1e29",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "elastic",
+      "cik": "0001707753",
+      "period_end_year": 2022,
+      "concept": "net_income",
+      "status": "selected",
+      "candidate_count": 6,
+      "candidate_tags": [
+        "NetIncomeLoss",
+        "ProfitLoss"
+      ],
+      "first_filed": "2022-06-21",
+      "selected": {
+        "fact_id": 272,
+        "taxonomy": "us-gaap",
+        "tag": "NetIncomeLoss",
+        "unit": "USD",
+        "value": "-203848000",
+        "start_date": "2021-05-01",
+        "end_date": "2022-04-30",
+        "filed_date": "2022-06-21",
+        "accession_number": "0001707753-22-000025",
+        "form": "10-K",
+        "fy": 2022,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "bf67dc8bc9dd23758c9e2dc067477dca9ae9f8041beaa79a7143ad61919b1e29",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "elastic",
+      "cik": "0001707753",
+      "period_end_year": 2022,
+      "concept": "assets",
+      "status": "selected",
+      "candidate_count": 2,
+      "candidate_tags": [
+        "Assets"
+      ],
+      "first_filed": "2022-06-21",
+      "selected": {
+        "fact_id": 295,
+        "taxonomy": "us-gaap",
+        "tag": "Assets",
+        "unit": "USD",
+        "value": "1642931000",
+        "start_date": null,
+        "end_date": "2022-04-30",
+        "filed_date": "2022-06-21",
+        "accession_number": "0001707753-22-000025",
+        "form": "10-K",
+        "fy": 2022,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "bf67dc8bc9dd23758c9e2dc067477dca9ae9f8041beaa79a7143ad61919b1e29",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "elastic",
+      "cik": "0001707753",
+      "period_end_year": 2023,
+      "concept": "revenue",
+      "status": "selected",
+      "candidate_count": 3,
+      "candidate_tags": [
+        "RevenueFromContractWithCustomerExcludingAssessedTax"
+      ],
+      "first_filed": "2023-06-16",
+      "selected": {
+        "fact_id": 263,
+        "taxonomy": "us-gaap",
+        "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+        "unit": "USD",
+        "value": "1068989000",
+        "start_date": "2022-05-01",
+        "end_date": "2023-04-30",
+        "filed_date": "2023-06-16",
+        "accession_number": "0001707753-23-000021",
+        "form": "10-K",
+        "fy": 2023,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "bf67dc8bc9dd23758c9e2dc067477dca9ae9f8041beaa79a7143ad61919b1e29",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "elastic",
+      "cik": "0001707753",
+      "period_end_year": 2023,
+      "concept": "net_income",
+      "status": "selected",
+      "candidate_count": 6,
+      "candidate_tags": [
+        "NetIncomeLoss",
+        "ProfitLoss"
+      ],
+      "first_filed": "2023-06-16",
+      "selected": {
+        "fact_id": 275,
+        "taxonomy": "us-gaap",
+        "tag": "NetIncomeLoss",
+        "unit": "USD",
+        "value": "-236161000",
+        "start_date": "2022-05-01",
+        "end_date": "2023-04-30",
+        "filed_date": "2023-06-16",
+        "accession_number": "0001707753-23-000021",
+        "form": "10-K",
+        "fy": 2023,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "bf67dc8bc9dd23758c9e2dc067477dca9ae9f8041beaa79a7143ad61919b1e29",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "elastic",
+      "cik": "0001707753",
+      "period_end_year": 2023,
+      "concept": "assets",
+      "status": "selected",
+      "candidate_count": 2,
+      "candidate_tags": [
+        "Assets"
+      ],
+      "first_filed": "2023-06-16",
+      "selected": {
+        "fact_id": 297,
+        "taxonomy": "us-gaap",
+        "tag": "Assets",
+        "unit": "USD",
+        "value": "1743482000",
+        "start_date": null,
+        "end_date": "2023-04-30",
+        "filed_date": "2023-06-16",
+        "accession_number": "0001707753-23-000021",
+        "form": "10-K",
+        "fy": 2023,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "bf67dc8bc9dd23758c9e2dc067477dca9ae9f8041beaa79a7143ad61919b1e29",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "elastic",
+      "cik": "0001707753",
+      "period_end_year": 2024,
+      "concept": "revenue",
+      "status": "selected",
+      "candidate_count": 3,
+      "candidate_tags": [
+        "RevenueFromContractWithCustomerExcludingAssessedTax"
+      ],
+      "first_filed": "2024-06-14",
+      "selected": {
+        "fact_id": 266,
+        "taxonomy": "us-gaap",
+        "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+        "unit": "USD",
+        "value": "1267321000",
+        "start_date": "2023-05-01",
+        "end_date": "2024-04-30",
+        "filed_date": "2024-06-14",
+        "accession_number": "0001707753-24-000014",
+        "form": "10-K",
+        "fy": 2024,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "bf67dc8bc9dd23758c9e2dc067477dca9ae9f8041beaa79a7143ad61919b1e29",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "elastic",
+      "cik": "0001707753",
+      "period_end_year": 2024,
+      "concept": "net_income",
+      "status": "selected",
+      "candidate_count": 6,
+      "candidate_tags": [
+        "NetIncomeLoss",
+        "ProfitLoss"
+      ],
+      "first_filed": "2024-06-14",
+      "selected": {
+        "fact_id": 278,
+        "taxonomy": "us-gaap",
+        "tag": "NetIncomeLoss",
+        "unit": "USD",
+        "value": "61720000",
+        "start_date": "2023-05-01",
+        "end_date": "2024-04-30",
+        "filed_date": "2024-06-14",
+        "accession_number": "0001707753-24-000014",
+        "form": "10-K",
+        "fy": 2024,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "bf67dc8bc9dd23758c9e2dc067477dca9ae9f8041beaa79a7143ad61919b1e29",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "elastic",
+      "cik": "0001707753",
+      "period_end_year": 2024,
+      "concept": "assets",
+      "status": "selected",
+      "candidate_count": 2,
+      "candidate_tags": [
+        "Assets"
+      ],
+      "first_filed": "2024-06-14",
+      "selected": {
+        "fact_id": 299,
+        "taxonomy": "us-gaap",
+        "tag": "Assets",
+        "unit": "USD",
+        "value": "2242566000",
+        "start_date": null,
+        "end_date": "2024-04-30",
+        "filed_date": "2024-06-14",
+        "accession_number": "0001707753-24-000014",
+        "form": "10-K",
+        "fy": 2024,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "bf67dc8bc9dd23758c9e2dc067477dca9ae9f8041beaa79a7143ad61919b1e29",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "uipath",
+      "cik": "0001734722",
+      "period_end_year": 2021,
+      "concept": "revenue",
+      "status": "selected",
+      "candidate_count": 2,
+      "candidate_tags": [
+        "RevenueFromContractWithCustomerExcludingAssessedTax"
+      ],
+      "first_filed": "2022-04-04",
+      "selected": {
+        "fact_id": 301,
+        "taxonomy": "us-gaap",
+        "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+        "unit": "USD",
+        "value": "607643000",
+        "start_date": "2020-02-01",
+        "end_date": "2021-01-31",
+        "filed_date": "2022-04-04",
+        "accession_number": "0001734722-22-000006",
+        "form": "10-K",
+        "fy": 2022,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "46643c85f69e600a7fc474b819669859d04515314a69915eeda8f73ec465c0cb",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "uipath",
+      "cik": "0001734722",
+      "period_end_year": 2021,
+      "concept": "net_income",
+      "status": "selected",
+      "candidate_count": 2,
+      "candidate_tags": [
+        "NetIncomeLoss"
+      ],
+      "first_filed": "2022-04-04",
+      "selected": {
+        "fact_id": 312,
+        "taxonomy": "us-gaap",
+        "tag": "NetIncomeLoss",
+        "unit": "USD",
+        "value": "-92393000",
+        "start_date": "2020-02-01",
+        "end_date": "2021-01-31",
+        "filed_date": "2022-04-04",
+        "accession_number": "0001734722-22-000006",
+        "form": "10-K",
+        "fy": 2022,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "46643c85f69e600a7fc474b819669859d04515314a69915eeda8f73ec465c0cb",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "uipath",
+      "cik": "0001734722",
+      "period_end_year": 2021,
+      "concept": "assets",
+      "status": "selected",
+      "candidate_count": 1,
+      "candidate_tags": [
+        "Assets"
+      ],
+      "first_filed": "2022-04-04",
+      "selected": {
+        "fact_id": 323,
+        "taxonomy": "us-gaap",
+        "tag": "Assets",
+        "unit": "USD",
+        "value": "866461000",
+        "start_date": null,
+        "end_date": "2021-01-31",
+        "filed_date": "2022-04-04",
+        "accession_number": "0001734722-22-000006",
+        "form": "10-K",
+        "fy": 2022,
+        "fp": "FY",
+        "frame": "CY2020Q4I",
+        "raw_sha256": "46643c85f69e600a7fc474b819669859d04515314a69915eeda8f73ec465c0cb",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "uipath",
+      "cik": "0001734722",
+      "period_end_year": 2022,
+      "concept": "revenue",
+      "status": "selected",
+      "candidate_count": 3,
+      "candidate_tags": [
+        "RevenueFromContractWithCustomerExcludingAssessedTax"
+      ],
+      "first_filed": "2022-04-04",
+      "selected": {
+        "fact_id": 303,
+        "taxonomy": "us-gaap",
+        "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+        "unit": "USD",
+        "value": "892252000",
+        "start_date": "2021-02-01",
+        "end_date": "2022-01-31",
+        "filed_date": "2022-04-04",
+        "accession_number": "0001734722-22-000006",
+        "form": "10-K",
+        "fy": 2022,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "46643c85f69e600a7fc474b819669859d04515314a69915eeda8f73ec465c0cb",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "uipath",
+      "cik": "0001734722",
+      "period_end_year": 2022,
+      "concept": "net_income",
+      "status": "selected",
+      "candidate_count": 3,
+      "candidate_tags": [
+        "NetIncomeLoss"
+      ],
+      "first_filed": "2022-04-04",
+      "selected": {
+        "fact_id": 314,
+        "taxonomy": "us-gaap",
+        "tag": "NetIncomeLoss",
+        "unit": "USD",
+        "value": "-525586000",
+        "start_date": "2021-02-01",
+        "end_date": "2022-01-31",
+        "filed_date": "2022-04-04",
+        "accession_number": "0001734722-22-000006",
+        "form": "10-K",
+        "fy": 2022,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "46643c85f69e600a7fc474b819669859d04515314a69915eeda8f73ec465c0cb",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "uipath",
+      "cik": "0001734722",
+      "period_end_year": 2022,
+      "concept": "assets",
+      "status": "selected",
+      "candidate_count": 2,
+      "candidate_tags": [
+        "Assets"
+      ],
+      "first_filed": "2022-04-04",
+      "selected": {
+        "fact_id": 324,
+        "taxonomy": "us-gaap",
+        "tag": "Assets",
+        "unit": "USD",
+        "value": "2572450000",
+        "start_date": null,
+        "end_date": "2022-01-31",
+        "filed_date": "2022-04-04",
+        "accession_number": "0001734722-22-000006",
+        "form": "10-K",
+        "fy": 2022,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "46643c85f69e600a7fc474b819669859d04515314a69915eeda8f73ec465c0cb",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "uipath",
+      "cik": "0001734722",
+      "period_end_year": 2023,
+      "concept": "revenue",
+      "status": "selected",
+      "candidate_count": 3,
+      "candidate_tags": [
+        "RevenueFromContractWithCustomerExcludingAssessedTax"
+      ],
+      "first_filed": "2023-03-24",
+      "selected": {
+        "fact_id": 306,
+        "taxonomy": "us-gaap",
+        "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+        "unit": "USD",
+        "value": "1058581000",
+        "start_date": "2022-02-01",
+        "end_date": "2023-01-31",
+        "filed_date": "2023-03-24",
+        "accession_number": "0001734722-23-000017",
+        "form": "10-K",
+        "fy": 2023,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "46643c85f69e600a7fc474b819669859d04515314a69915eeda8f73ec465c0cb",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "uipath",
+      "cik": "0001734722",
+      "period_end_year": 2023,
+      "concept": "net_income",
+      "status": "selected",
+      "candidate_count": 3,
+      "candidate_tags": [
+        "NetIncomeLoss"
+      ],
+      "first_filed": "2023-03-24",
+      "selected": {
+        "fact_id": 317,
+        "taxonomy": "us-gaap",
+        "tag": "NetIncomeLoss",
+        "unit": "USD",
+        "value": "-328352000",
+        "start_date": "2022-02-01",
+        "end_date": "2023-01-31",
+        "filed_date": "2023-03-24",
+        "accession_number": "0001734722-23-000017",
+        "form": "10-K",
+        "fy": 2023,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "46643c85f69e600a7fc474b819669859d04515314a69915eeda8f73ec465c0cb",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "uipath",
+      "cik": "0001734722",
+      "period_end_year": 2023,
+      "concept": "assets",
+      "status": "selected",
+      "candidate_count": 2,
+      "candidate_tags": [
+        "Assets"
+      ],
+      "first_filed": "2023-03-24",
+      "selected": {
+        "fact_id": 326,
+        "taxonomy": "us-gaap",
+        "tag": "Assets",
+        "unit": "USD",
+        "value": "2735206000",
+        "start_date": null,
+        "end_date": "2023-01-31",
+        "filed_date": "2023-03-24",
+        "accession_number": "0001734722-23-000017",
+        "form": "10-K",
+        "fy": 2023,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "46643c85f69e600a7fc474b819669859d04515314a69915eeda8f73ec465c0cb",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "uipath",
+      "cik": "0001734722",
+      "period_end_year": 2024,
+      "concept": "revenue",
+      "status": "selected",
+      "candidate_count": 3,
+      "candidate_tags": [
+        "RevenueFromContractWithCustomerExcludingAssessedTax"
+      ],
+      "first_filed": "2024-03-27",
+      "selected": {
+        "fact_id": 309,
+        "taxonomy": "us-gaap",
+        "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+        "unit": "USD",
+        "value": "1308072000",
+        "start_date": "2023-02-01",
+        "end_date": "2024-01-31",
+        "filed_date": "2024-03-27",
+        "accession_number": "0001734722-24-000011",
+        "form": "10-K",
+        "fy": 2024,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "46643c85f69e600a7fc474b819669859d04515314a69915eeda8f73ec465c0cb",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "uipath",
+      "cik": "0001734722",
+      "period_end_year": 2024,
+      "concept": "net_income",
+      "status": "selected",
+      "candidate_count": 3,
+      "candidate_tags": [
+        "NetIncomeLoss"
+      ],
+      "first_filed": "2024-03-27",
+      "selected": {
+        "fact_id": 320,
+        "taxonomy": "us-gaap",
+        "tag": "NetIncomeLoss",
+        "unit": "USD",
+        "value": "-89883000",
+        "start_date": "2023-02-01",
+        "end_date": "2024-01-31",
+        "filed_date": "2024-03-27",
+        "accession_number": "0001734722-24-000011",
+        "form": "10-K",
+        "fy": 2024,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "46643c85f69e600a7fc474b819669859d04515314a69915eeda8f73ec465c0cb",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "uipath",
+      "cik": "0001734722",
+      "period_end_year": 2024,
+      "concept": "assets",
+      "status": "selected",
+      "candidate_count": 2,
+      "candidate_tags": [
+        "Assets"
+      ],
+      "first_filed": "2024-03-27",
+      "selected": {
+        "fact_id": 328,
+        "taxonomy": "us-gaap",
+        "tag": "Assets",
+        "unit": "USD",
+        "value": "2954758000",
+        "start_date": null,
+        "end_date": "2024-01-31",
+        "filed_date": "2024-03-27",
+        "accession_number": "0001734722-24-000011",
+        "form": "10-K",
+        "fy": 2024,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "46643c85f69e600a7fc474b819669859d04515314a69915eeda8f73ec465c0cb",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "palantir",
+      "cik": "0001321655",
+      "period_end_year": 2021,
+      "concept": "revenue",
+      "status": "selected",
+      "candidate_count": 3,
+      "candidate_tags": [
+        "RevenueFromContractWithCustomerExcludingAssessedTax"
+      ],
+      "first_filed": "2022-02-24",
+      "selected": {
+        "fact_id": 330,
+        "taxonomy": "us-gaap",
+        "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+        "unit": "USD",
+        "value": "1541889000",
+        "start_date": "2021-01-01",
+        "end_date": "2021-12-31",
+        "filed_date": "2022-02-24",
+        "accession_number": "0001193125-22-050913",
+        "form": "10-K",
+        "fy": 2021,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "43014a2e04fa2784dd669d337a65c9eac9374ea638dacb292ecf19905408651f",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "palantir",
+      "cik": "0001321655",
+      "period_end_year": 2021,
+      "concept": "net_income",
+      "status": "selected",
+      "candidate_count": 5,
+      "candidate_tags": [
+        "NetIncomeLoss",
+        "ProfitLoss"
+      ],
+      "first_filed": "2022-02-24",
+      "selected": {
+        "fact_id": 341,
+        "taxonomy": "us-gaap",
+        "tag": "NetIncomeLoss",
+        "unit": "USD",
+        "value": "-520379000",
+        "start_date": "2021-01-01",
+        "end_date": "2021-12-31",
+        "filed_date": "2022-02-24",
+        "accession_number": "0001193125-22-050913",
+        "form": "10-K",
+        "fy": 2021,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "43014a2e04fa2784dd669d337a65c9eac9374ea638dacb292ecf19905408651f",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "palantir",
+      "cik": "0001321655",
+      "period_end_year": 2021,
+      "concept": "assets",
+      "status": "selected",
+      "candidate_count": 2,
+      "candidate_tags": [
+        "Assets"
+      ],
+      "first_filed": "2022-02-24",
+      "selected": {
+        "fact_id": 362,
+        "taxonomy": "us-gaap",
+        "tag": "Assets",
+        "unit": "USD",
+        "value": "3247450000",
+        "start_date": null,
+        "end_date": "2021-12-31",
+        "filed_date": "2022-02-24",
+        "accession_number": "0001193125-22-050913",
+        "form": "10-K",
+        "fy": 2021,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "43014a2e04fa2784dd669d337a65c9eac9374ea638dacb292ecf19905408651f",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "palantir",
+      "cik": "0001321655",
+      "period_end_year": 2022,
+      "concept": "revenue",
+      "status": "selected",
+      "candidate_count": 3,
+      "candidate_tags": [
+        "RevenueFromContractWithCustomerExcludingAssessedTax"
+      ],
+      "first_filed": "2023-02-21",
+      "selected": {
+        "fact_id": 333,
+        "taxonomy": "us-gaap",
+        "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+        "unit": "USD",
+        "value": "1905871000",
+        "start_date": "2022-01-01",
+        "end_date": "2022-12-31",
+        "filed_date": "2023-02-21",
+        "accession_number": "0001321655-23-000011",
+        "form": "10-K",
+        "fy": 2022,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "43014a2e04fa2784dd669d337a65c9eac9374ea638dacb292ecf19905408651f",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "palantir",
+      "cik": "0001321655",
+      "period_end_year": 2022,
+      "concept": "net_income",
+      "status": "selected",
+      "candidate_count": 6,
+      "candidate_tags": [
+        "NetIncomeLoss",
+        "ProfitLoss"
+      ],
+      "first_filed": "2023-02-21",
+      "selected": {
+        "fact_id": 344,
+        "taxonomy": "us-gaap",
+        "tag": "NetIncomeLoss",
+        "unit": "USD",
+        "value": "-373705000",
+        "start_date": "2022-01-01",
+        "end_date": "2022-12-31",
+        "filed_date": "2023-02-21",
+        "accession_number": "0001321655-23-000011",
+        "form": "10-K",
+        "fy": 2022,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "43014a2e04fa2784dd669d337a65c9eac9374ea638dacb292ecf19905408651f",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "palantir",
+      "cik": "0001321655",
+      "period_end_year": 2022,
+      "concept": "assets",
+      "status": "selected",
+      "candidate_count": 2,
+      "candidate_tags": [
+        "Assets"
+      ],
+      "first_filed": "2023-02-21",
+      "selected": {
+        "fact_id": 364,
+        "taxonomy": "us-gaap",
+        "tag": "Assets",
+        "unit": "USD",
+        "value": "3461239000",
+        "start_date": null,
+        "end_date": "2022-12-31",
+        "filed_date": "2023-02-21",
+        "accession_number": "0001321655-23-000011",
+        "form": "10-K",
+        "fy": 2022,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "43014a2e04fa2784dd669d337a65c9eac9374ea638dacb292ecf19905408651f",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "palantir",
+      "cik": "0001321655",
+      "period_end_year": 2023,
+      "concept": "revenue",
+      "status": "selected",
+      "candidate_count": 3,
+      "candidate_tags": [
+        "RevenueFromContractWithCustomerExcludingAssessedTax"
+      ],
+      "first_filed": "2024-02-20",
+      "selected": {
+        "fact_id": 336,
+        "taxonomy": "us-gaap",
+        "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+        "unit": "USD",
+        "value": "2225012000",
+        "start_date": "2023-01-01",
+        "end_date": "2023-12-31",
+        "filed_date": "2024-02-20",
+        "accession_number": "0001321655-24-000022",
+        "form": "10-K",
+        "fy": 2023,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "43014a2e04fa2784dd669d337a65c9eac9374ea638dacb292ecf19905408651f",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "palantir",
+      "cik": "0001321655",
+      "period_end_year": 2023,
+      "concept": "net_income",
+      "status": "selected",
+      "candidate_count": 6,
+      "candidate_tags": [
+        "NetIncomeLoss",
+        "ProfitLoss"
+      ],
+      "first_filed": "2024-02-20",
+      "selected": {
+        "fact_id": 347,
+        "taxonomy": "us-gaap",
+        "tag": "NetIncomeLoss",
+        "unit": "USD",
+        "value": "209825000",
+        "start_date": "2023-01-01",
+        "end_date": "2023-12-31",
+        "filed_date": "2024-02-20",
+        "accession_number": "0001321655-24-000022",
+        "form": "10-K",
+        "fy": 2023,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "43014a2e04fa2784dd669d337a65c9eac9374ea638dacb292ecf19905408651f",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "palantir",
+      "cik": "0001321655",
+      "period_end_year": 2023,
+      "concept": "assets",
+      "status": "selected",
+      "candidate_count": 2,
+      "candidate_tags": [
+        "Assets"
+      ],
+      "first_filed": "2024-02-20",
+      "selected": {
+        "fact_id": 366,
+        "taxonomy": "us-gaap",
+        "tag": "Assets",
+        "unit": "USD",
+        "value": "4522425000",
+        "start_date": null,
+        "end_date": "2023-12-31",
+        "filed_date": "2024-02-20",
+        "accession_number": "0001321655-24-000022",
+        "form": "10-K",
+        "fy": 2023,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "43014a2e04fa2784dd669d337a65c9eac9374ea638dacb292ecf19905408651f",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "palantir",
+      "cik": "0001321655",
+      "period_end_year": 2024,
+      "concept": "revenue",
+      "status": "selected",
+      "candidate_count": 2,
+      "candidate_tags": [
+        "RevenueFromContractWithCustomerExcludingAssessedTax"
+      ],
+      "first_filed": "2025-02-18",
+      "selected": {
+        "fact_id": 339,
+        "taxonomy": "us-gaap",
+        "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+        "unit": "USD",
+        "value": "2865507000",
+        "start_date": "2024-01-01",
+        "end_date": "2024-12-31",
+        "filed_date": "2025-02-18",
+        "accession_number": "0001321655-25-000022",
+        "form": "10-K",
+        "fy": 2024,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "43014a2e04fa2784dd669d337a65c9eac9374ea638dacb292ecf19905408651f",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "palantir",
+      "cik": "0001321655",
+      "period_end_year": 2024,
+      "concept": "net_income",
+      "status": "selected",
+      "candidate_count": 4,
+      "candidate_tags": [
+        "NetIncomeLoss",
+        "ProfitLoss"
+      ],
+      "first_filed": "2025-02-18",
+      "selected": {
+        "fact_id": 350,
+        "taxonomy": "us-gaap",
+        "tag": "NetIncomeLoss",
+        "unit": "USD",
+        "value": "462190000",
+        "start_date": "2024-01-01",
+        "end_date": "2024-12-31",
+        "filed_date": "2025-02-18",
+        "accession_number": "0001321655-25-000022",
+        "form": "10-K",
+        "fy": 2024,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "43014a2e04fa2784dd669d337a65c9eac9374ea638dacb292ecf19905408651f",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    },
+    {
+      "slug": "palantir",
+      "cik": "0001321655",
+      "period_end_year": 2024,
+      "concept": "assets",
+      "status": "selected",
+      "candidate_count": 2,
+      "candidate_tags": [
+        "Assets"
+      ],
+      "first_filed": "2025-02-18",
+      "selected": {
+        "fact_id": 368,
+        "taxonomy": "us-gaap",
+        "tag": "Assets",
+        "unit": "USD",
+        "value": "6340884000",
+        "start_date": null,
+        "end_date": "2024-12-31",
+        "filed_date": "2025-02-18",
+        "accession_number": "0001321655-25-000022",
+        "form": "10-K",
+        "fy": 2024,
+        "fp": "FY",
+        "frame": null,
+        "raw_sha256": "43014a2e04fa2784dd669d337a65c9eac9374ea638dacb292ecf19905408651f",
+        "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+      }
+    }
+  ]
+}
