@@ -28,6 +28,7 @@ ANNUAL_DURATION_MAX_DAYS = 400
 _CONCEPTS = {
     "revenue": (
         ("us-gaap", "RevenueFromContractWithCustomerExcludingAssessedTax"),
+        ("us-gaap", "RevenueFromContractWithCustomerIncludingAssessedTax"),
         ("us-gaap", "Revenues"),
         ("us-gaap", "SalesRevenueNet"),
         ("ifrs-full", "Revenue"),
@@ -315,12 +316,12 @@ def read_companyfacts_member(
 
 
 def select_annual_facts(document: dict, year_from: int = 2021, year_to: int = 2024) -> list[dict]:
-    """Select preferred standard revenue, net income, and assets facts.
+    """Retain eligible standard revenue, net income, and assets candidates.
 
     Flow facts need a 330–400 day duration; assets facts are instantaneous.
     Only annual SEC forms and three-letter monetary units are retained. The
-    filing attributes remain attached so callers can impose a filing-date
-    cutoff and distinguish restatements or fiscal calendars later.
+    filing attributes remain attached so a separate, versioned analysis policy
+    can impose filing-date cutoffs and choose between tags or restatements.
     """
     if year_from > year_to:
         raise ValueError("year_from must not exceed year_to")
@@ -340,9 +341,7 @@ def select_annual_facts(document: dict, year_from: int = 2021, year_to: int = 20
                     if record is None or not _is_annual(record, concept_group, year_from, year_to):
                         continue
                     observations.append(record)
-            if observations:
-                selected.extend(observations)
-                break
+            selected.extend(observations)
     return selected
 
 

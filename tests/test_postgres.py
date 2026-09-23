@@ -130,7 +130,7 @@ def test_migration_preserves_existing_wayback_snapshot():
                 assert cur.fetchone() == {"provider": "wayback", "provider_record_id": archive,
                                           "raw_sha256": sha256(raw)}
                 cur.execute("SELECT count(*) AS count FROM schema_migrations")
-                assert cur.fetchone()["count"] == 5
+                assert cur.fetchone()["count"] == 6
         finally:
             conn.rollback()
             with conn.cursor() as cur:

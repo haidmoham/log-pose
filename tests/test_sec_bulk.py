@@ -123,7 +123,7 @@ class FakeRangeServer:
         return FakeResponse(206, headers, body)
 
 
-def test_normalize_cik_and_choose_preferred_annual_facts():
+def test_normalize_cik_and_retain_annual_candidates():
     assert normalize_cik("1699838") == "0001699838"
     assert normalize_cik(1699838) == "0001699838"
     with pytest.raises(ValueError):
@@ -132,6 +132,7 @@ def test_normalize_cik_and_choose_preferred_annual_facts():
     facts = select_annual_facts(_companyfacts(), 2021, 2024)
     assert {(fact["concept_group"], fact["tag"]) for fact in facts} == {
         ("revenue", "RevenueFromContractWithCustomerExcludingAssessedTax"),
+        ("revenue", "Revenues"),
         ("net_income", "NetIncomeLoss"),
         ("assets", "Assets"),
     }
@@ -145,6 +146,16 @@ def test_normalize_cik_and_choose_preferred_annual_facts():
     assert all(fact["end_date"].year in range(2021, 2025) for fact in facts)
     assert all(not (fact["concept_group"] == "assets" and fact["start_date"])
                for fact in facts)
+
+
+def test_revenue_candidate_for_including_assessed_tax_is_retained():
+    document = _companyfacts()
+    document["facts"]["us-gaap"]["RevenueFromContractWithCustomerIncludingAssessedTax"] = {
+        "units": {"USD": [_fact(2000, "2022-12-31", start="2022-01-01")]}
+    }
+    facts = select_annual_facts(document)
+    assert any(fact["tag"] == "RevenueFromContractWithCustomerIncludingAssessedTax"
+               and fact["end_date"].year == 2022 for fact in facts)
 
 
 def test_seekable_reader_fetches_ranges_and_extracts_exact_member():
