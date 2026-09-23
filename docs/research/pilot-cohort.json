@@ -1,0 +1,277 @@
+[
+  {
+    "slug": "confluent",
+    "name": "Confluent",
+    "url": "https://www.confluent.io/",
+    "category": "data_infrastructure",
+    "purpose": "Company homepage candidate; data streaming platform.",
+    "captures": {},
+    "market_status_as_of_2024-12-31": "Public company by the study cutoff; SEC registrant identity confirmed. SEC submissions currently identify CIK 0001699838 as Confluent, Inc. but return no ticker/exchange values; confirm cutoff status from period-specific filings before market calculations.",
+    "cik": "0001699838",
+    "evidence_sources": [
+      "https://www.confluent.io/about/",
+      "https://data.sec.gov/submissions/CIK0001699838.json"
+    ]
+  },
+  {
+    "slug": "snowflake",
+    "name": "Snowflake",
+    "url": "https://www.snowflake.com/",
+    "category": "data_infrastructure",
+    "purpose": "Company homepage candidate; cloud data platform.",
+    "captures": {},
+    "market_status_as_of_2024-12-31": "Public SEC registrant; CIK verified from SEC company ticker list. Validate any as-of listing interval from filings.",
+    "cik": "0001640147",
+    "evidence_sources": [
+      "https://www.snowflake.com/en/company/overview/about-snowflake/",
+      "https://www.sec.gov/files/company_tickers.json"
+    ]
+  },
+  {
+    "slug": "mongodb",
+    "name": "MongoDB",
+    "url": "https://www.mongodb.com/",
+    "category": "data_infrastructure",
+    "purpose": "Company homepage candidate; database and developer data platform.",
+    "captures": {},
+    "market_status_as_of_2024-12-31": "Public SEC registrant; CIK verified from SEC company ticker list.",
+    "cik": "0001441816",
+    "historical_identity_note": "Company says it was formerly 10gen and renamed itself MongoDB in 2013.",
+    "evidence_sources": [
+      "https://www.mongodb.com/company/our-story",
+      "https://www.sec.gov/files/company_tickers.json"
+    ]
+  },
+  {
+    "slug": "clickhouse",
+    "name": "ClickHouse",
+    "url": "https://clickhouse.com/",
+    "category": "data_infrastructure",
+    "purpose": "Company homepage candidate; open-source analytical database and cloud service.",
+    "captures": {},
+    "market_status_as_of_2024-12-31": "Private status supported by company financing history through its 2021 funding announcement; no claim that this source alone establishes legal or ownership status at the cutoff.",
+    "evidence_sources": [
+      "https://clickhouse.com/company/our-story",
+      "https://clickhouse.com/clickhouse"
+    ]
+  },
+  {
+    "slug": "dbt-labs",
+    "name": "dbt Labs",
+    "url": "https://www.getdbt.com/",
+    "category": "data_infrastructure",
+    "purpose": "Company homepage candidate; analytics engineering and data transformation software.",
+    "captures": {},
+    "market_status_as_of_2024-12-31": "Private status supported by company funding releases in the study period; no claim that funding alone proves status on the exact cutoff date.",
+    "historical_identity_note": "Use dbt Labs as the entity label. Verify any older Fishtown Analytics alias from dated company material before joining historical pages.",
+    "evidence_sources": [
+      "https://www.getdbt.com/",
+      "https://www.getdbt.com/blog/dbt-labs-raises-222m-in-series-d-funding-at-4-2b-valuation-led-by-altimeter-with-participation-from-databricks-and-snowflake"
+    ]
+  },
+  {
+    "slug": "gitlab",
+    "name": "GitLab",
+    "url": "https://about.gitlab.com/",
+    "category": "developer_tools",
+    "purpose": "Company homepage candidate; software development and DevSecOps platform.",
+    "captures": {},
+    "market_status_as_of_2024-12-31": "Public SEC registrant; CIK verified from SEC company ticker list.",
+    "cik": "0001653482",
+    "evidence_sources": [
+      "https://about.gitlab.com/",
+      "https://www.sec.gov/files/company_tickers.json"
+    ]
+  },
+  {
+    "slug": "atlassian",
+    "name": "Atlassian",
+    "url": "https://www.atlassian.com/",
+    "category": "developer_tools",
+    "purpose": "Company homepage candidate; collaboration and software development tools.",
+    "captures": {},
+    "market_status_as_of_2024-12-31": "Public SEC registrant; CIK verified from SEC company ticker list.",
+    "cik": "0001650372",
+    "evidence_sources": [
+      "https://www.atlassian.com/company",
+      "https://www.sec.gov/files/company_tickers.json"
+    ]
+  },
+  {
+    "slug": "linear",
+    "name": "Linear",
+    "url": "https://linear.app/",
+    "category": "developer_tools",
+    "purpose": "Company homepage candidate; issue tracking and product development software.",
+    "captures": {},
+    "market_status_as_of_2024-12-31": "Private status supported by the company's 2023 Series B announcement; exact cutoff ownership status not independently established here.",
+    "evidence_sources": [
+      "https://linear.app/now/series-b",
+      "https://linear.app/docs/creating-issues"
+    ]
+  },
+  {
+    "slug": "postman",
+    "name": "Postman",
+    "url": "https://www.postman.com/",
+    "category": "developer_tools",
+    "purpose": "Company homepage candidate; API development platform.",
+    "captures": {},
+    "market_status_as_of_2024-12-31": "Private status supported by company financing announcement; verify an exact cutoff ownership status separately.",
+    "evidence_sources": [
+      "https://www.postman.com/company/about-postman/",
+      "https://www.postman.com/product/"
+    ]
+  },
+  {
+    "slug": "invision",
+    "name": "InVision",
+    "url": "https://www.invisionapp.com/",
+    "category": "developer_tools",
+    "purpose": "Historical homepage candidate; design collaboration and prototyping service, retained as a discontinued-product case.",
+    "captures": {},
+    "market_status_as_of_2024-12-31": "Miro's January 2024 transition update says InVision announced design products, including Prototype and DSM, would end effective December 31, 2024. This is a product/service sunset, not evidence that the legal company dissolved.",
+    "historical_identity_note": "The Freehand product was acquired by Miro before the service shutdown; distinguish Freehand's ownership from InVision's remaining design collaboration services.",
+    "evidence_sources": [
+      "https://miro.com/newsroom/miro-acquires-freehand-app-from-invision/",
+      "https://miro.com/blog/future-miro-freehand/"
+    ]
+  },
+  {
+    "slug": "datadog",
+    "name": "Datadog",
+    "url": "https://www.datadoghq.com/",
+    "category": "security_observability",
+    "purpose": "Company homepage candidate; cloud monitoring and observability software.",
+    "captures": {},
+    "market_status_as_of_2024-12-31": "Public SEC registrant; CIK verified from SEC company ticker list.",
+    "cik": "0001561550",
+    "evidence_sources": [
+      "https://www.datadoghq.com/product/",
+      "https://www.sec.gov/files/company_tickers.json"
+    ]
+  },
+  {
+    "slug": "crowdstrike",
+    "name": "CrowdStrike",
+    "url": "https://www.crowdstrike.com/",
+    "category": "security_observability",
+    "purpose": "Company homepage candidate; cybersecurity software and services.",
+    "captures": {},
+    "market_status_as_of_2024-12-31": "Public SEC registrant; CIK verified from SEC company ticker list.",
+    "cik": "0001535527",
+    "evidence_sources": [
+      "https://www.crowdstrike.com/en-us/about-us/",
+      "https://www.sec.gov/files/company_tickers.json"
+    ]
+  },
+  {
+    "slug": "elastic",
+    "name": "Elastic",
+    "url": "https://www.elastic.co/",
+    "category": "security_observability",
+    "purpose": "Company homepage candidate; search, observability, and security software.",
+    "captures": {},
+    "market_status_as_of_2024-12-31": "Public SEC registrant; CIK verified from SEC company ticker list.",
+    "cik": "0001707753",
+    "evidence_sources": [
+      "https://www.elastic.co/products",
+      "https://www.sec.gov/files/company_tickers.json"
+    ]
+  },
+  {
+    "slug": "snyk",
+    "name": "Snyk",
+    "url": "https://snyk.io/",
+    "category": "security_observability",
+    "purpose": "Company homepage candidate; developer security software.",
+    "captures": {},
+    "market_status_as_of_2024-12-31": "Private status supported by company financing announcement during the study period; exact cutoff ownership status not independently established here.",
+    "evidence_sources": [
+      "https://snyk.io/news/snyk-closes-196-5-million-series-g-funding-at-7-4-billion-valuation/",
+      "https://go.snyk.io/rs/677-THP-415/images/2023%20Software%20Supply%20Chain%20Attack%20Report%20Snyk.pdf"
+    ]
+  },
+  {
+    "slug": "vanta",
+    "name": "Vanta",
+    "url": "https://www.vanta.com/",
+    "category": "security_observability",
+    "purpose": "Company homepage candidate; security and compliance automation software.",
+    "captures": {},
+    "market_status_as_of_2024-12-31": "Private status supported by company Series C announcement in 2024; exact cutoff ownership status not independently established here.",
+    "evidence_sources": [
+      "https://www.vanta.com/resources/vanta-announces-series-c",
+      "https://www.vanta.com/vanta-platform"
+    ]
+  },
+  {
+    "slug": "uipath",
+    "name": "UiPath",
+    "url": "https://www.uipath.com/",
+    "category": "ai_automation",
+    "purpose": "Company homepage candidate; robotic process and business automation software.",
+    "captures": {},
+    "market_status_as_of_2024-12-31": "Public SEC registrant; CIK verified from SEC company ticker list.",
+    "cik": "0001734722",
+    "evidence_sources": [
+      "https://www.uipath.com/rpa/robotic-process-automation",
+      "https://www.sec.gov/files/company_tickers.json"
+    ]
+  },
+  {
+    "slug": "palantir",
+    "name": "Palantir",
+    "url": "https://www.palantir.com/",
+    "category": "ai_automation",
+    "purpose": "Company homepage candidate; data operations and AI software platform.",
+    "captures": {},
+    "market_status_as_of_2024-12-31": "Public SEC registrant; CIK verified from SEC company ticker list.",
+    "cik": "0001321655",
+    "evidence_sources": [
+      "https://www.palantir.com/docs/",
+      "https://www.sec.gov/files/company_tickers.json"
+    ]
+  },
+  {
+    "slug": "weights-and-biases",
+    "name": "Weights & Biases",
+    "url": "https://wandb.ai/site",
+    "category": "ai_automation",
+    "purpose": "Historical homepage candidate; AI developer platform for model training, evaluation, and monitoring.",
+    "captures": {},
+    "market_status_as_of_2024-12-31": "Private status reflected in its 2025 acquisition announcement, which describes Weights & Biases as a privately backed company; cutoff status should still be checked against date-specific corporate records.",
+    "post_period_status_note": "CoreWeave announced an agreement to acquire Weights & Biases on 2025-03-04; the announcement then described closing as expected in 2025. Later CoreWeave materials describe the acquisition as completed. This post-period event does not alter the 2021–2024 cohort definition.",
+    "evidence_sources": [
+      "https://wandb.ai/site",
+      "https://investors.coreweave.com/news/news-details/2025/CoreWeave-to-Acquire-Weights--Biases---Industry-Leading-AI-Developer-Platform-for-Building-and-Deploying-AI-Applications/default.aspx",
+      "https://www.coreweave.com/solutions/ai-model-training"
+    ]
+  },
+  {
+    "slug": "replit",
+    "name": "Replit",
+    "url": "https://replit.com/",
+    "category": "ai_automation",
+    "purpose": "Company homepage candidate; cloud software development platform with AI-assisted creation.",
+    "captures": {},
+    "market_status_as_of_2024-12-31": "Private status supported by company financing releases in 2023; exact cutoff ownership status not independently established here.",
+    "evidence_sources": [
+      "https://replit.com/blog/b-extension",
+      "https://replit.com/blog/replit-core"
+    ]
+  },
+  {
+    "slug": "datarobot",
+    "name": "DataRobot",
+    "url": "https://www.datarobot.com/",
+    "category": "ai_automation",
+    "purpose": "Company homepage candidate; enterprise AI and machine learning software.",
+    "captures": {},
+    "market_status_as_of_2024-12-31": "Private status supported by its 2021 Series G financing announcement; exact cutoff ownership status not independently established here.",
+    "evidence_sources": [
+      "https://www.datarobot.com/newsroom/press/datarobot-unveils-major-milestones-including-300m-series-g-funding-investment/",
+      "https://www.datarobot.com/"
+    ]
+  }
+]
