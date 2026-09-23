@@ -15,6 +15,7 @@ STATIC_FILES = {
     "/app.js": ("live-app.js", "text/javascript; charset=utf-8"),
     "/style.css": ("style.css", "text/css; charset=utf-8"),
     "/favicon.svg": ("favicon.svg", "image/svg+xml"),
+    "/fonts/bricolage-grotesque-variable.woff2": ("fonts/bricolage-grotesque-variable.woff2", "font/woff2"),
 }
 
 
