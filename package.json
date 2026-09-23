@@ -1,0 +1,7 @@
+{
+  "name": "log-pose-local",
+  "private": true,
+  "scripts": {
+    "dev": "bash scripts/dev.sh"
+  }
+}

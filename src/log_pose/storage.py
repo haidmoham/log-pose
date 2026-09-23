@@ -78,3 +78,54 @@ def evidence(conn, slug: str, cutoff: datetime) -> dict:
         "status":"available" if s["snapshot_id"] else "missing",
         "snapshot":({k:(v.astimezone(timezone.utc).isoformat() if isinstance(v,datetime) else v) for k,v in s.items() if k in ("snapshot_id","archive_url","captured_at","ingested_at","raw_sha256","text_sha256","normalized_text")}) if s["snapshot_id"] else None
     } for s in sources]}
+
+
+def list_companies(conn) -> list[dict]:
+    with conn.cursor() as cur:
+        cur.execute("SELECT slug, name FROM companies ORDER BY name")
+        return cur.fetchall()
+
+
+def overview(conn) -> dict:
+    cutoff_2021 = datetime(2021, 12, 31, 23, 59, 59, tzinfo=timezone.utc)
+    cutoff_2024 = datetime(2024, 12, 31, 23, 59, 59, tzinfo=timezone.utc)
+    with conn.cursor() as cur:
+        cur.execute("""SELECT
+            (SELECT count(*) FROM companies) AS companies,
+            (SELECT count(*) FROM sources) AS sources,
+            (SELECT count(*) FROM snapshots) AS captures,
+            (SELECT count(*) FROM ingestion_attempts WHERE outcome = 'failed') AS failed_attempts""")
+        totals = cur.fetchone()
+        cur.execute("""SELECT company.slug, company.name,
+            count(DISTINCT source.id) AS source_count,
+            count(DISTINCT snapshot.id) AS capture_count,
+            count(DISTINCT source.id) FILTER (WHERE snapshot.captured_at <= %s) AS available_2021,
+            max(snapshot.captured_at) FILTER (WHERE snapshot.captured_at <= %s) AS latest_2021,
+            count(DISTINCT source.id) FILTER (WHERE snapshot.captured_at <= %s) AS available_2024,
+            max(snapshot.captured_at) FILTER (WHERE snapshot.captured_at <= %s) AS latest_2024
+            FROM companies AS company
+            LEFT JOIN sources AS source ON source.company_id = company.id
+            LEFT JOIN snapshots AS snapshot ON snapshot.source_id = source.id
+            GROUP BY company.id, company.slug, company.name
+            ORDER BY company.name""", (cutoff_2021, cutoff_2021, cutoff_2024, cutoff_2024))
+        rows = cur.fetchall()
+
+    companies = []
+    for row in rows:
+        companies.append({
+            "slug": row["slug"],
+            "name": row["name"],
+            "source_count": row["source_count"],
+            "capture_count": row["capture_count"],
+            "coverage": {
+                "2021": {
+                    "available_sources": row["available_2021"],
+                    "latest_capture_at": row["latest_2021"].astimezone(timezone.utc).isoformat() if row["latest_2021"] else None,
+                },
+                "2024": {
+                    "available_sources": row["available_2024"],
+                    "latest_capture_at": row["latest_2024"].astimezone(timezone.utc).isoformat() if row["latest_2024"] else None,
+                },
+            },
+        })
+    return {"totals": totals, "companies": companies}
