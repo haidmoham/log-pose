@@ -12,11 +12,16 @@ from log_pose.storage import connect
 YEARS = (2021, 2022, 2023, 2024)
 
 
-def summarize(cohort: list[dict], connection) -> dict:
+def summarize(cohort: list[dict], connection, homepage_aliases: list[dict]) -> dict:
+    homepage_urls = {item["slug"]: {item["url"]} for item in cohort}
+    for alias in homepage_aliases:
+        if alias["purpose"] == "historical homepage path candidate":
+            homepage_urls[alias["slug"]].add(alias["url"])
     attempts = defaultdict(list)
     captures = defaultdict(list)
     with connection.cursor() as cursor:
-        cursor.execute("""SELECT company.slug, EXTRACT(YEAR FROM attempt.target_cutoff)::integer AS year,
+        cursor.execute("""SELECT company.slug, source.original_url,
+            EXTRACT(YEAR FROM attempt.target_cutoff)::integer AS year,
             attempt.outcome, attempt.detail, attempt.index_attempts, attempt.index_rows,
             attempt.compressed_bytes, attempt.elapsed_ms, attempt.requested_at
             FROM ingestion_attempts AS attempt
@@ -25,7 +30,8 @@ def summarize(cohort: list[dict], connection) -> dict:
             WHERE attempt.requested_capture LIKE 'CC-MAIN-%'
             ORDER BY attempt.id""")
         for row in cursor.fetchall():
-            attempts[(row["slug"], row["year"])].append(row)
+            if row["original_url"] in homepage_urls.get(row["slug"], set()):
+                attempts[(row["slug"], row["year"])].append(row)
         cursor.execute("""SELECT company.slug, source.original_url, snapshot.id,
             snapshot.captured_at, snapshot.provider_record_id, snapshot.raw_sha256,
             snapshot.text_status, snapshot.provenance->>'crawl' AS crawl,
@@ -36,7 +42,8 @@ def summarize(cohort: list[dict], connection) -> dict:
             JOIN companies AS company ON company.id=source.company_id
             WHERE snapshot.provider='commoncrawl'""")
         for row in cursor.fetchall():
-            captures[(row["slug"], row["captured_at"].year)].append(row)
+            if row["original_url"] in homepage_urls.get(row["slug"], set()):
+                captures[(row["slug"], row["captured_at"].year)].append(row)
         cursor.execute("""SELECT file.study_year, file.source_url, file.raw_sha256,
             file.retrieved_at, octet_length(file.raw_csv) AS file_bytes,
             count(daily.row_number) AS rows, count(DISTINCT daily.trade_date) AS trading_days
@@ -111,11 +118,14 @@ def summarize(cohort: list[dict], connection) -> dict:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--cohort", type=Path, default=Path("docs/research/pilot-cohort.json"))
+    parser.add_argument("--homepage-aliases", type=Path,
+                        default=Path("docs/research/recovery-plan.json"))
     parser.add_argument("--output", type=Path, help="write JSON report here; otherwise print it")
     args = parser.parse_args()
     cohort = json.loads(args.cohort.read_text())
+    homepage_aliases = json.loads(args.homepage_aliases.read_text())
     with connect() as connection:
-        report = summarize(cohort, connection)
+        report = summarize(cohort, connection, homepage_aliases)
     output = json.dumps(report, indent=2) + "\n"
     if args.output:
         args.output.parent.mkdir(parents=True, exist_ok=True)
