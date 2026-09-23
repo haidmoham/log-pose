@@ -3,12 +3,13 @@ set -euo pipefail
 
 cd "$(dirname "$0")/.."
 output="${1:-$HOME/Desktop/demos/log-pose-local-preview.mp4}"
+preview_url="${LOG_POSE_PREVIEW_URL:-http://127.0.0.1:8000/}"
 raw="${TMPDIR:-/tmp}/log-pose-local-preview-raw.webm"
 mkdir -p "$(dirname "$output")"
 browser=(npx -y agent-browser)
 
 "${browser[@]}" set viewport 1080 1350
-"${browser[@]}" record start "$raw" http://127.0.0.1:8000/
+"${browser[@]}" record start "$raw" "$preview_url"
 "${browser[@]}" wait --load networkidle
 sleep 1
 "${browser[@]}" click '.company-card:first-child .coverage-button:last-child'
