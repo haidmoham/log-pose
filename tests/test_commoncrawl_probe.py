@@ -6,14 +6,15 @@ import pytest
 from log_pose.commoncrawl import extract_html, fetch, same_source
 
 
-def record(url: str, date: str) -> bytes:
+def record(url: str, date: str, truncated: bool = False) -> bytes:
     body = b"<html><body><h1>Historical product page</h1></body></html>"
     http_record = (
         f"HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nContent-Length: {len(body)}\r\n\r\n"
     ).encode() + body
+    truncated_header = "WARC-Truncated: length\r\n" if truncated else ""
     warc_header = (
         f"WARC/1.0\r\nWARC-Type: response\r\nWARC-Date: {date}\r\n"
-        f"WARC-Target-URI: {url}\r\nContent-Length: {len(http_record)}\r\n\r\n"
+        f"WARC-Target-URI: {url}\r\n{truncated_header}Content-Length: {len(http_record)}\r\n\r\n"
     ).encode()
     raw = warc_header + http_record + b"\r\n\r\n"
     return gzip.compress(raw)
@@ -28,6 +29,7 @@ def test_warc_body_must_match_index_time_and_source():
         extract_html(compressed, {"timestamp": "20251212141558"}, url)
     with pytest.raises(ValueError, match="requested source"):
         extract_html(compressed, row, "https://another.example/")
+    assert extract_html(record(url, "2024-12-12T14:15:58Z", truncated=True), row, url)[1]["warc_truncated"] == "length"
 
 
 def test_source_match_allows_trailing_slash_but_not_host_change():

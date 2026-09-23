@@ -11,7 +11,7 @@ from datetime import datetime, timezone
 
 from warcio.archiveiterator import ArchiveIterator
 
-from .core import Capture, normalize
+from .core import Capture
 
 
 CRAWLS = {
@@ -129,6 +129,7 @@ def extract_html(record_bytes: bytes, row: dict, source_url: str) -> tuple[bytes
         "warc_record_id": warc_headers.get_header("WARC-Record-ID"),
         "warc_target_uri": target_uri,
         "warc_date": warc_headers.get_header("WARC-Date"),
+        "warc_truncated": warc_headers.get_header("WARC-Truncated"),
         "index_digest": row.get("digest"),
     }
     return body, provenance
@@ -150,8 +151,6 @@ def fetch(source_url: str, crawl: str, row: dict, cutoff: datetime) -> Capture:
     archive_url = "https://data.commoncrawl.org/" + filename
     record_bytes = request_bytes(archive_url, byte_range=(offset, length))
     body, warc_metadata = extract_html(record_bytes, row, source_url)
-    if len(normalize(body)) < 100:
-        raise ValueError("fewer than 100 visible text characters")
     record_id = f"{filename}:{offset}:{length}"
     provenance = {
         "crawl": crawl,

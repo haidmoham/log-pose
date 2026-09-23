@@ -62,13 +62,14 @@ def finish_attempt(conn, attempt_id: int, outcome: str, detail: str | None = Non
 
 def store(conn, source_id: int, capture: Capture) -> tuple[str, int]:
     text = normalize(capture.raw_html)
+    text_status = "extractable" if len(text) >= 100 else "short"
     raw_hash = sha256(capture.raw_html)
     record_id = capture.provider_record_id or capture.archive_url
     with conn.cursor() as cur:
-        cur.execute("""INSERT INTO snapshots(source_id,provider,archive_url,captured_at,status_code,content_type,raw_html,raw_sha256,normalized_text,text_sha256,normalizer_version,provider_record_id,provenance)
-            VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,1,%s,%s)
+        cur.execute("""INSERT INTO snapshots(source_id,provider,archive_url,captured_at,status_code,content_type,raw_html,raw_sha256,normalized_text,text_sha256,normalizer_version,provider_record_id,provenance,text_status)
+            VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,1,%s,%s,%s)
             ON CONFLICT (provider,provider_record_id) DO NOTHING RETURNING id""",
-            (source_id,capture.provider,capture.archive_url,capture.captured_at,capture.status_code,capture.content_type,capture.raw_html,raw_hash,text,sha256(text),record_id,json.dumps(capture.provenance)))
+            (source_id,capture.provider,capture.archive_url,capture.captured_at,capture.status_code,capture.content_type,capture.raw_html,raw_hash,text,sha256(text),record_id,json.dumps(capture.provenance),text_status))
         row = cur.fetchone()
         if row:
             result = ("stored", row["id"])
@@ -122,7 +123,7 @@ def evidence(conn, slug: str, cutoff: datetime) -> dict:
         company = cur.fetchone()
         if company is None:
             raise KeyError(slug)
-        cur.execute("""SELECT s.id,s.original_url,s.purpose, p.id AS snapshot_id,p.provider,p.provider_record_id,p.provenance,p.archive_url,p.captured_at,p.ingested_at,p.raw_sha256,p.text_sha256,p.normalized_text
+        cur.execute("""SELECT s.id,s.original_url,s.purpose, p.id AS snapshot_id,p.provider,p.provider_record_id,p.provenance,p.archive_url,p.captured_at,p.ingested_at,p.raw_sha256,p.text_sha256,p.normalized_text,p.text_status
             FROM sources s LEFT JOIN LATERAL (
                 SELECT * FROM snapshots WHERE source_id=s.id AND captured_at<=%s
                 ORDER BY captured_at DESC, CASE provider WHEN 'wayback' THEN 0 ELSE 1 END, provider_record_id, id LIMIT 1
@@ -131,5 +132,5 @@ def evidence(conn, slug: str, cutoff: datetime) -> dict:
     return {"company":slug,"name":company["name"],"cutoff":cutoff.isoformat(),"sources":[{
         "original_url":s["original_url"],"purpose":s["purpose"],
         "status":"available" if s["snapshot_id"] else "missing",
-        "snapshot":({k:(v.astimezone(timezone.utc).isoformat() if isinstance(v,datetime) else v) for k,v in s.items() if k in ("snapshot_id","provider","provider_record_id","provenance","archive_url","captured_at","ingested_at","raw_sha256","text_sha256","normalized_text")}) if s["snapshot_id"] else None
+        "snapshot":({k:(v.astimezone(timezone.utc).isoformat() if isinstance(v,datetime) else v) for k,v in s.items() if k in ("snapshot_id","provider","provider_record_id","provenance","archive_url","captured_at","ingested_at","raw_sha256","text_sha256","normalized_text","text_status")}) if s["snapshot_id"] else None
     } for s in sources]}

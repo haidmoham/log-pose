@@ -84,6 +84,22 @@ def test_commoncrawl_identity_and_market_file_are_idempotent(db):
         assert cur.fetchone()["count"] == 1
 
 
+def test_short_commoncrawl_body_keeps_raw_evidence(db):
+    source_id = ensure_source(db, "shell", "Shell", "https://example.com/", "homepage")
+    body = b"<html><head><title>Historical product</title></head><body><script>render()</script></body></html>"
+    capture = Capture("https://example.com/", "https://data.commoncrawl.org/shell.warc.gz",
+                      datetime(2022, 12, 1, tzinfo=timezone.utc), body, "text/html", 200,
+                      "commoncrawl", "shell.warc.gz:10:20", {"crawl": "CC-MAIN-2022-49"})
+    outcome, snapshot_id = store(db, source_id, capture)
+    assert outcome == "stored"
+    with db.cursor() as cur:
+        cur.execute("SELECT raw_html,normalized_text,text_status FROM snapshots WHERE id=%s", (snapshot_id,))
+        stored = cur.fetchone()
+    assert bytes(stored["raw_html"]) == body
+    assert stored["normalized_text"] == ""
+    assert stored["text_status"] == "short"
+
+
 def test_migration_preserves_existing_wayback_snapshot():
     database_url = os.getenv("LOG_POSE_TEST_DATABASE_URL")
     if not database_url:
@@ -114,7 +130,7 @@ def test_migration_preserves_existing_wayback_snapshot():
                 assert cur.fetchone() == {"provider": "wayback", "provider_record_id": archive,
                                           "raw_sha256": sha256(raw)}
                 cur.execute("SELECT count(*) AS count FROM schema_migrations")
-                assert cur.fetchone()["count"] == 4
+                assert cur.fetchone()["count"] == 5
         finally:
             conn.rollback()
             with conn.cursor() as cur:
