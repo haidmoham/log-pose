@@ -26,8 +26,9 @@ def summarize(cohort: list[dict], connection) -> dict:
             ORDER BY attempt.id""")
         for row in cursor.fetchall():
             attempts[(row["slug"], row["year"])].append(row)
-        cursor.execute("""SELECT company.slug, snapshot.id, snapshot.captured_at,
-            snapshot.raw_sha256, snapshot.text_status,
+        cursor.execute("""SELECT company.slug, source.original_url, snapshot.id,
+            snapshot.captured_at, snapshot.provider_record_id, snapshot.raw_sha256,
+            snapshot.text_status, snapshot.provenance->>'crawl' AS crawl,
             snapshot.provenance->>'warc_truncated' AS warc_truncated,
             length(snapshot.normalized_text) AS text_characters
             FROM snapshots AS snapshot
@@ -63,6 +64,14 @@ def summarize(cohort: list[dict], connection) -> dict:
                 latest_capture = None
                 status = "missing"
             cutoff = datetime(year, 12, 31, 23, 59, 59, tzinfo=timezone.utc)
+            capture_details = [
+                {"snapshot_id": row["id"], "source_url": row["original_url"],
+                 "provider_record_id": row["provider_record_id"],
+                 "crawl": row["crawl"], "captured_at": row["captured_at"].astimezone(timezone.utc).isoformat(),
+                 "text_status": row["text_status"], "warc_truncated": row["warc_truncated"],
+                 "raw_sha256": row["raw_sha256"]}
+                for row in sorted(stored, key=lambda entry: entry["captured_at"])
+            ]
             cells.append({
                 "slug": company["slug"],
                 "category": company["category"],
@@ -75,19 +84,22 @@ def summarize(cohort: list[dict], connection) -> dict:
                 "compressed_bytes": sum(row["compressed_bytes"] or 0 for row in histories),
                 "elapsed_ms": sum(row["elapsed_ms"] or 0 for row in histories),
                 "snapshot_id": latest_capture["id"] if latest_capture else None,
+                "source_url": latest_capture["original_url"] if latest_capture else None,
+                "crawl": latest_capture["crawl"] if latest_capture else None,
                 "captured_at": latest_capture["captured_at"].astimezone(timezone.utc).isoformat() if latest_capture else None,
                 "capture_age_days": round((cutoff - latest_capture["captured_at"]).total_seconds() / 86400, 1) if latest_capture else None,
                 "text_characters": latest_capture["text_characters"] if latest_capture else None,
                 "text_status": latest_capture["text_status"] if latest_capture else None,
                 "warc_truncated": latest_capture["warc_truncated"] if latest_capture else None,
                 "raw_sha256": latest_capture["raw_sha256"] if latest_capture else None,
+                "captures": capture_details,
             })
     for file in market_files:
         file["retrieved_at"] = file["retrieved_at"].astimezone(timezone.utc).isoformat()
     return {
         "planned_company_year_cells": len(cells),
         "status_counts": dict(Counter(cell["status"] for cell in cells)),
-        "warc_truncated_captures": sum(bool(cell["warc_truncated"]) for cell in cells),
+        "selected_warc_truncated_captures": sum(bool(cell["warc_truncated"]) for cell in cells),
         "by_year": {str(year): dict(Counter(cell["status"] for cell in cells if cell["year"] == year)) for year in YEARS},
         "by_category": {category: dict(Counter(cell["status"] for cell in cells if cell["category"] == category))
                         for category in sorted({company["category"] for company in cohort})},

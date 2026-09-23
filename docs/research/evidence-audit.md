@@ -24,3 +24,16 @@ The quotations below are exact spans in the stored normalized text. A homepage s
 | UiPath | 2024 | 49 | Capability | “Rapidly build AI-powered automation across any technology.” |
 
 The Datadog feature cards repeat across captures, so these quotes support category coding but do not establish year-to-year changes in those features. Confluent's 2024 quote is present in a WARC body marked `WARC-Truncated: length`; it is valid evidence of that excerpt, not evidence that the full homepage was preserved. Five other stored bodies carry the same truncation marker. The first-eight candidate extractor can over-select navigation, promotions, event headlines, and report teasers; useful Datadog statements appear later in the page. Reviews must inspect the source text beyond those candidates. Customer testimonials and advertised savings are vendor claims, not corroborated outcomes.
+
+## Supplemental recovery review
+
+The four newly extractable cells from the [bounded recovery pass](recovery-report.json) also contain exact product or workflow spans. These are additional checks chosen after seeing the retrieval failures; they do not change the fixed 16-cell audit result.
+
+| Company | Year | Snapshot | Source quotation |
+| --- | ---: | ---: | --- |
+| Snowflake | 2022 | 81 | “WHERE YOUR DATA CLOUD EXPERIENCE BEGINS: ONE PLATFORM, MANY WORKLOADS, NO DATA SILOS” |
+| Snowflake | 2023 | 82 | “Snowflake’s single platform eliminates data silos and simplifies architectures, so you can get more value from your data.” |
+| Snowflake | 2024 | 83 | “Accelerate enterprise AI with secure access to industry-leading LLMs and chat with your data AI services.” |
+| CrowdStrike | 2024 | 84 | “Stop attacks across endpoint, identity, and cloud.” |
+
+All four spans were found in the stored normalized text. The Snowflake 2023 and 2024 WARC bodies are truncated, so their quoted excerpts are evidence of the captured text only. The 2023 platform sentence also appears in 2024; do not count it as a new 2024 capability.

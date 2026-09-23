@@ -1,0 +1,59 @@
+{
+  "run_at": "2026-09-23T17:10:01.095346+00:00",
+  "planned_requests": 5,
+  "results": [
+    {
+      "slug": "snowflake",
+      "year": 2022,
+      "url": "https://www.snowflake.com/",
+      "attempt_id": 121,
+      "closest": null,
+      "method": "known_capture_replay",
+      "outcome": "stored",
+      "snapshot_id": 93,
+      "captured_at": "2022-08-23T11:55:14+00:00",
+      "raw_sha256": "63871e9215e661a6623f5f5394f20298211f6427b59a1c62d5768a4d1a5078ed",
+      "text_characters": 9996
+    },
+    {
+      "slug": "snowflake",
+      "year": 2023,
+      "url": "https://www.snowflake.com/",
+      "attempt_id": 122,
+      "closest": null,
+      "method": "availability_lookup",
+      "outcome": "missing"
+    },
+    {
+      "slug": "snowflake",
+      "year": 2024,
+      "url": "https://www.snowflake.com/",
+      "attempt_id": 123,
+      "closest": null,
+      "method": "availability_lookup",
+      "outcome": "missing"
+    },
+    {
+      "slug": "crowdstrike",
+      "year": 2024,
+      "url": "https://www.crowdstrike.com/",
+      "attempt_id": 124,
+      "closest": null,
+      "method": "availability_lookup",
+      "outcome": "missing"
+    },
+    {
+      "slug": "palantir",
+      "year": 2021,
+      "url": "https://www.palantir.com/",
+      "attempt_id": 125,
+      "closest": null,
+      "method": "known_capture_replay",
+      "outcome": "stored",
+      "snapshot_id": 94,
+      "captured_at": "2021-12-31T14:39:01+00:00",
+      "raw_sha256": "d429436853146590fe185ad65768be051a87a28facbadcff2b2f3fe7e5b8c5be",
+      "text_characters": 0
+    }
+  ]
+}

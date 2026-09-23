@@ -29,8 +29,6 @@ def fetch_capture(original_url: str, timestamp: str, cutoff: datetime) -> Captur
             if len(raw) > 2_000_000:
                 raise ValueError("expanded capture exceeds 2 MB safety limit")
         text = normalize(raw)
-        if len(text) < 100:
-            raise ValueError("capture has too little visible text")
         if "Wayback Machine doesn't have that page archived" in text:
             raise ValueError("archive returned a missing-page banner")
         return Capture(original_url, final_url, captured_at, raw, content_type, response.status)
