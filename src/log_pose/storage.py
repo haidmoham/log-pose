@@ -8,6 +8,7 @@ from psycopg.rows import dict_row
 
 from .core import Capture, normalize, sha256
 from .market import NUMBER_FIELDS
+from .sec_bulk import ArtifactMetadata, CompanyFactsMember
 
 
 def connect():
@@ -115,6 +116,88 @@ def store_market_file(conn, year: int, url: str, raw: bytes, rows: list[dict]) -
         cur.executemany(sql, values)
     conn.commit()
     return "stored", file_id
+
+
+def store_sec_companyfacts(conn, artifact: ArtifactMetadata,
+                           member: CompanyFactsMember) -> tuple[str, int]:
+    """Store one exact ZIP member and its selected facts without overwriting evidence."""
+    inserted_member = False
+    with conn.cursor() as cur:
+        cur.execute("""INSERT INTO sec_artifacts(
+                artifact_version,source_url,etag,last_modified,content_length,observed_at)
+            VALUES (%s,%s,%s,%s,%s,%s)
+            ON CONFLICT (artifact_version) DO NOTHING""",
+            (artifact.artifact_version, artifact.source_url, artifact.etag,
+             artifact.last_modified, artifact.content_length, artifact.observed_at))
+        cur.execute("""SELECT source_url,etag,last_modified,content_length
+            FROM sec_artifacts WHERE artifact_version=%s""", (artifact.artifact_version,))
+        stored_artifact = cur.fetchone()
+        expected_artifact = {
+            "source_url": artifact.source_url,
+            "etag": artifact.etag,
+            "last_modified": artifact.last_modified,
+            "content_length": artifact.content_length,
+        }
+        if stored_artifact != expected_artifact:
+            raise ValueError("SEC artifact version metadata does not match stored provenance")
+
+        cur.execute("""INSERT INTO sec_companyfacts(
+                artifact_version,cik,member_name,entity_name,raw_json,raw_sha256)
+            VALUES (%s,%s,%s,%s,%s,%s)
+            ON CONFLICT (artifact_version,cik) DO NOTHING RETURNING id""",
+            (artifact.artifact_version, member.cik, member.member_name,
+             member.entity_name, member.raw_json, member.raw_sha256))
+        inserted = cur.fetchone()
+        if inserted:
+            companyfacts_id = inserted["id"]
+            inserted_member = True
+        else:
+            cur.execute("""SELECT id,member_name,entity_name,raw_sha256
+                FROM sec_companyfacts WHERE artifact_version=%s AND cik=%s""",
+                (artifact.artifact_version, member.cik))
+            existing = cur.fetchone()
+            if (existing["member_name"] != member.member_name
+                    or existing["entity_name"] != member.entity_name
+                    or existing["raw_sha256"] != member.raw_sha256):
+                raise ValueError("SEC companyfacts member changed; existing evidence preserved")
+            companyfacts_id = existing["id"]
+
+        insert_fact_sql = """INSERT INTO sec_financial_facts(
+                companyfacts_id,concept_group,taxonomy,tag,unit,fact_index,value,
+                start_date,end_date,filed_date,accession_number,form,fy,fp,frame)
+            VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+            ON CONFLICT (companyfacts_id,taxonomy,tag,unit,fact_index) DO NOTHING"""
+        fact_values = [(
+            companyfacts_id, fact["concept_group"], fact["taxonomy"], fact["tag"],
+            fact["unit"], fact["fact_index"], fact["value"], fact["start_date"],
+            fact["end_date"], fact["filed_date"], fact["accession_number"],
+            fact["form"], fact["fy"], fact["fp"], fact["frame"],
+        ) for fact in member.facts]
+        if fact_values:
+            cur.executemany(insert_fact_sql, fact_values)
+
+        cur.execute("""SELECT concept_group,taxonomy,tag,unit,fact_index,value,
+                start_date,end_date,filed_date,accession_number,form,fy,fp,frame
+            FROM sec_financial_facts WHERE companyfacts_id=%s""", (companyfacts_id,))
+        stored_facts = {
+            (row["taxonomy"], row["tag"], row["unit"], row["fact_index"]): row
+            for row in cur.fetchall()
+        }
+        expected_facts = {
+            (fact["taxonomy"], fact["tag"], fact["unit"], fact["fact_index"]): {
+                "concept_group": fact["concept_group"],
+                "taxonomy": fact["taxonomy"], "tag": fact["tag"],
+                "unit": fact["unit"], "fact_index": fact["fact_index"],
+                "value": fact["value"], "start_date": fact["start_date"],
+                "end_date": fact["end_date"], "filed_date": fact["filed_date"],
+                "accession_number": fact["accession_number"], "form": fact["form"],
+                "fy": fact["fy"], "fp": fact["fp"], "frame": fact["frame"],
+            } for fact in member.facts
+        }
+        if stored_facts != expected_facts:
+            raise ValueError("SEC selected facts differ from immutable stored extraction")
+    conn.commit()
+    return ("stored" if inserted_member else "duplicate"), companyfacts_id
 
 
 def evidence(conn, slug: str, cutoff: datetime) -> dict:

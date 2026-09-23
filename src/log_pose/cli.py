@@ -1,14 +1,25 @@
 import argparse
 import json
+import os
 import sys
 import time
 from datetime import datetime, timezone
 from pathlib import Path
+from zipfile import ZipFile
 
 from .acquire import fetch_capture
 from .commoncrawl import CRAWLS, fetch as fetch_commoncrawl, search as search_commoncrawl
 from .market import fetch_cboe, parse_cboe
-from .storage import connect, ensure_source, evidence, finish_attempt, migrate, start_attempt, store, store_market_file
+from .sec_bulk import (
+    DEFAULT_MAX_MEMBER_BYTES,
+    COMPANYFACTS_URL,
+    RangeZipReader,
+    read_companyfacts_member,
+)
+from .storage import (
+    connect, ensure_source, evidence, finish_attempt, migrate, start_attempt,
+    store, store_market_file, store_sec_companyfacts,
+)
 
 
 def cutoff(year: int) -> datetime:
@@ -29,6 +40,17 @@ def main():
     commoncrawl.add_argument("--delay", type=float, default=1.0)
     cboe = commands.add_parser("ingest-cboe")
     cboe.add_argument("--year", type=int, choices=CRAWLS, action="append")
+    sec_bulk = commands.add_parser("sec-bulk")
+    sec_bulk.add_argument("--cohort", type=Path, default=Path("docs/research/pilot-cohort.json"))
+    sec_bulk.add_argument("--slug", action="append", help="limit to one or more cohort slugs")
+    sec_bulk.add_argument("--year-from", type=int, default=2021)
+    sec_bulk.add_argument("--year-to", type=int, default=2024)
+    sec_bulk.add_argument("--max-companies", type=int, default=20)
+    sec_bulk.add_argument("--max-member-bytes", type=int, default=DEFAULT_MAX_MEMBER_BYTES)
+    sec_bulk.add_argument("--delay", type=float, default=0.11,
+                          help="minimum seconds between SEC HTTP requests")
+    sec_bulk.add_argument("--user-agent", default=os.environ.get("SEC_USER_AGENT"),
+                          help="declared SEC User-Agent; defaults to SEC_USER_AGENT")
     inspect = commands.add_parser("inspect")
     inspect.add_argument("company")
     inspect.add_argument("--year", type=int, choices=CRAWLS, required=True)
@@ -101,6 +123,54 @@ def main():
                 except Exception:
                     conn.rollback()
                     raise
+        elif args.command == "sec-bulk":
+            if not args.user_agent or not args.user_agent.strip():
+                raise SystemExit("set SEC_USER_AGENT or pass --user-agent with a declared contact")
+            if args.year_from > args.year_to:
+                raise SystemExit("--year-from must not exceed --year-to")
+            if args.max_companies < 1 or args.max_member_bytes < 1 or args.delay < 0:
+                raise SystemExit("SEC limits must be positive and --delay cannot be negative")
+            cohort = json.loads(args.cohort.read_text())
+            selected = [item for item in cohort if item.get("cik")
+                        and (not args.slug or item["slug"] in args.slug)]
+            if not selected:
+                raise SystemExit("no cohort companies with verified CIKs matched the selection")
+            if len(selected) > args.max_companies:
+                raise SystemExit(f"selection has {len(selected)} companies; limit is {args.max_companies}")
+            ciks = [str(item["cik"]).zfill(10) for item in selected]
+            if len(ciks) != len(set(ciks)):
+                raise SystemExit("cohort contains duplicate CIK values")
+
+            migrate(conn)
+            failures = 0
+            with RangeZipReader(
+                COMPANYFACTS_URL,
+                user_agent=args.user_agent,
+                minimum_request_interval=args.delay,
+            ) as ranged_zip:
+                with ZipFile(ranged_zip, "r") as archive:
+                    for item in selected:
+                        try:
+                            member = read_companyfacts_member(
+                                archive, item["cik"],
+                                max_member_bytes=args.max_member_bytes,
+                                years=(args.year_from, args.year_to),
+                            )
+                            outcome, companyfacts_id = store_sec_companyfacts(
+                                conn, ranged_zip.metadata, member
+                            )
+                            print(f"{item['slug']}: {outcome} SEC member #{companyfacts_id}; "
+                                  f"{len(member.facts)} annual facts", flush=True)
+                        except Exception as error:
+                            conn.rollback()
+                            failures += 1
+                            print(f"{item['slug']}: failed: {type(error).__name__}: {error}",
+                                  file=sys.stderr, flush=True)
+                print(f"SEC companyfacts artifact {ranged_zip.metadata.artifact_version}; "
+                      f"{ranged_zip.bytes_transferred} bytes in {ranged_zip.request_count} requests "
+                      f"from {ranged_zip.metadata.content_length} byte ZIP", flush=True)
+            if failures:
+                raise SystemExit(f"{failures} SEC companyfacts member(s) failed; stored evidence is preserved")
         elif args.command == "ingest":
             for item in json.loads(args.sources.read_text()):
                 source_id = ensure_source(conn, item["slug"], item["name"], item["url"], item["purpose"])
