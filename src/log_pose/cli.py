@@ -6,7 +6,9 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from .acquire import fetch_capture
-from .storage import connect, ensure_source, evidence, finish_attempt, migrate, start_attempt, store
+from .commoncrawl import CRAWLS, fetch as fetch_commoncrawl, search as search_commoncrawl
+from .market import fetch_cboe, parse_cboe
+from .storage import connect, ensure_source, evidence, finish_attempt, migrate, start_attempt, store, store_market_file
 
 
 def cutoff(year: int) -> datetime:
@@ -20,9 +22,16 @@ def main():
     ingest = commands.add_parser("ingest")
     ingest.add_argument("--sources", type=Path, default=Path("sources.json"))
     ingest.add_argument("--delay", type=float, default=2.0)
+    commoncrawl = commands.add_parser("ingest-commoncrawl")
+    commoncrawl.add_argument("--cohort", type=Path, default=Path("docs/research/pilot-cohort.json"))
+    commoncrawl.add_argument("--year", type=int, choices=CRAWLS, action="append")
+    commoncrawl.add_argument("--slug", action="append", help="limit to one or more cohort slugs")
+    commoncrawl.add_argument("--delay", type=float, default=1.0)
+    cboe = commands.add_parser("ingest-cboe")
+    cboe.add_argument("--year", type=int, choices=CRAWLS, action="append")
     inspect = commands.add_parser("inspect")
     inspect.add_argument("company")
-    inspect.add_argument("--year", type=int, choices=[2021, 2024], required=True)
+    inspect.add_argument("--year", type=int, choices=CRAWLS, required=True)
     serve = commands.add_parser("serve")
     serve.add_argument("--port", type=int, default=8000)
     export = commands.add_parser("export")
@@ -36,6 +45,62 @@ def main():
         if args.command == "migrate":
             migrate(conn)
             print("schema ready")
+        elif args.command == "ingest-commoncrawl":
+            migrate(conn)
+            cohort = json.loads(args.cohort.read_text())
+            years = args.year or list(CRAWLS)
+            failures = 0
+            for item in cohort:
+                if args.slug and item["slug"] not in args.slug:
+                    continue
+                source_id = ensure_source(conn, item["slug"], item["name"], item["url"], item["purpose"])
+                for year in years:
+                    crawl = CRAWLS[year]
+                    target_cutoff = cutoff(year)
+                    attempt_id = start_attempt(conn, source_id, target_cutoff, crawl)
+                    started_at = time.monotonic()
+                    found = None
+                    try:
+                        found = search_commoncrawl(item["url"], crawl, target_cutoff)
+                        if found.status == "error":
+                            raise ValueError("index request failed: " + ", ".join(found.errors))
+                        if found.status == "missing":
+                            finish_attempt(conn, attempt_id, "missing", f"crawl={crawl}; index_errors={list(found.errors)}",
+                                           index_attempts=found.attempts, index_rows=found.index_rows,
+                                           elapsed_ms=int((time.monotonic() - started_at) * 1000))
+                            print(f"{item['slug']} {year}: missing", flush=True)
+                            continue
+                        capture = fetch_commoncrawl(item["url"], crawl, found.row, target_cutoff)
+                        outcome, snapshot_id = store(conn, source_id, capture)
+                        detail = f"snapshot_id={snapshot_id}; index_attempts={found.attempts}; index_errors={list(found.errors)}"
+                        finish_attempt(conn, attempt_id, outcome, detail, capture.archive_url,
+                                       index_attempts=found.attempts, index_rows=found.index_rows,
+                                       compressed_bytes=int(found.row["length"]),
+                                       elapsed_ms=int((time.monotonic() - started_at) * 1000))
+                        print(f"{item['slug']} {year}: {outcome} #{snapshot_id} {capture.captured_at.isoformat()}", flush=True)
+                    except Exception as error:
+                        failures += 1
+                        conn.rollback()
+                        finish_attempt(conn, attempt_id, "failed", f"{type(error).__name__}: {error}"[:1000],
+                                       index_attempts=found.attempts if found else None,
+                                       index_rows=found.index_rows if found else None,
+                                       elapsed_ms=int((time.monotonic() - started_at) * 1000))
+                        print(f"{item['slug']} {year}: failed: {error}", file=sys.stderr, flush=True)
+                    finally:
+                        time.sleep(max(0, args.delay))
+            if failures:
+                raise SystemExit(f"{failures} Common Crawl request(s) failed; stored evidence is preserved")
+        elif args.command == "ingest-cboe":
+            migrate(conn)
+            for year in args.year or list(CRAWLS):
+                try:
+                    url, raw = fetch_cboe(year)
+                    rows = parse_cboe(raw, year)
+                    outcome, file_id = store_market_file(conn, year, url, raw, rows)
+                    print(f"Cboe {year}: {outcome} file #{file_id}, {len(rows)} rows", flush=True)
+                except Exception:
+                    conn.rollback()
+                    raise
         elif args.command == "ingest":
             for item in json.loads(args.sources.read_text()):
                 source_id = ensure_source(conn, item["slug"], item["name"], item["url"], item["purpose"])
