@@ -2,7 +2,7 @@ const root = document.querySelector('#view');
 const tabs = [...document.querySelectorAll('[data-view]')];
 const state = { view: 'search', year: 2024, category: 'all', query: '', company: null, sort: 'growth',
   searchYear: 'all', searchSource: 'all', searchType: 'all', searchUs: 'all',
-  selectedCandidate: null, searchLimit: 30 };
+  selectedCandidate: null, searchLimit: 30, compareSlugs: [] };
 let data;
 let discovery;
 let occurrenceById;
@@ -196,6 +196,39 @@ function matchingFinancing(slug, terms) {
       .join(' ').toLocaleLowerCase().includes(term)));
 }
 
+function comparisonPanel(pilots) {
+  const selected = pilots.map(hit => hit.company)
+    .filter(company => state.compareSlugs.includes(company.slug));
+  if (!selected.length) return null;
+  const section = node('section', '', 'comparison-panel');
+  section.append(node('p', 'COMPARISON / SELECTED PILOT COMPANIES', 'eyebrow'),
+    node('h3', 'Review evidence side by side'));
+  const year = state.searchYear === 'all' ? 2024 : Number(state.searchYear);
+  const rows = selected.map(company => {
+    const location = locationReviewFor(company.slug);
+    const event = financingFor(company.slug)
+      .filter(item => state.searchYear === 'all'
+        || Number(item.announced_on.slice(0, 4)) === year).at(-1);
+    const reported = company.cik ? financials(company.slug, year) : null;
+    const locationCell = node('td');
+    if (location) locationCell.append(node('span', location.decision === 'documented_us_base'
+      ? location.location_kind.replaceAll('_', ' ') + ' · ' + location.place
+      : 'reviewed; unresolved'), link(' source ↗', location.source_url));
+    else locationCell.textContent = 'unreviewed';
+    const fundingCell = node('td');
+    if (event) fundingCell.append(node('span', event.announced_on + ' · ' + event.round
+      + ' · ' + money(event.amount_usd)), link(' source ↗', event.source_url));
+    else fundingCell.textContent = 'no selected announcement';
+    return append(node('tr'), node('td', company.name),
+      node('td', categoryName(company.category)), locationCell, fundingCell,
+      node('td', reported ? money(reported.revenue) : 'no SEC series'));
+  });
+  section.append(node('p', 'SEC revenue uses periods ending in ' + year
+    + '. Funding values are company announcements from their own dates. Missing evidence is not a zero.', 'muted'),
+  table(['Company', 'Pilot category', 'U.S. location evidence', 'Financing news', 'SEC revenue'], rows));
+  return section;
+}
+
 function candidateDetail(candidate) {
   const section = node('section', '', 'candidate-detail');
   section.append(node('p', 'DIRECTORY LEAD / IDENTITY AND U.S. LOCATION UNREVIEWED', 'eyebrow'),
@@ -257,6 +290,8 @@ function updateSearchResults() {
     metric(String(pilots.filter(hit => locationReviewFor(hit.company.slug)?.decision === 'documented_us_base').length),
       'With U.S. base evidence', 'Dated headquarters or principal office')));
   target.append(searchAggregation(hits, pilots));
+  const comparison = comparisonPanel(pilots);
+  if (comparison) target.append(comparison);
   const resultList = node('div', '', 'search-result-list');
   pilots.forEach(({ company: item, evidenceMatches }) => {
     const announcements = financingFor(item.slug);
@@ -276,6 +311,19 @@ function updateSearchResults() {
       ...(announcements.length ? [node('p', announcements.map(event =>
         event.announced_on + ' · ' + event.round + ' · ' + money(event.amount_usd)).join(' / '), 'search-tags')] : []),
       button);
+    const compare = node('button', state.compareSlugs.includes(item.slug)
+      ? 'Remove from comparison' : 'Add to comparison', 'quiet-button');
+    compare.type = 'button';
+    compare.setAttribute('aria-pressed', String(state.compareSlugs.includes(item.slug)));
+    compare.addEventListener('click', () => {
+      if (state.compareSlugs.includes(item.slug)) {
+        state.compareSlugs = state.compareSlugs.filter(slug => slug !== item.slug);
+      } else {
+        state.compareSlugs.push(item.slug);
+      }
+      updateSearchResults();
+    });
+    card.append(compare);
     if (locationReview) card.append(node('p', locationReview.decision === 'documented_us_base'
       ? 'U.S. ' + locationReview.location_kind.replaceAll('_', ' ') + ' · ' + locationReview.place
       : 'location review unresolved · no headquarters declared', 'search-tags'));
