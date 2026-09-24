@@ -54,6 +54,7 @@ test('URL state validates routes, years, slugs, duplicates, and pin capacity', (
     view: 'compare', year: 2023, company: 'b', pinned: ['a', 'b', 'c', 'd']
   });
   assert.equal(model.parseUrlState('?view=unknown&year=1999', slugs, [2021, 2022]).view, 'overview');
+  assert.equal(model.parseUrlState('?view=topology', slugs, [2024]).view, 'topology');
 });
 
 test('pinning is immutable and enforces the comparison cap', () => {
@@ -81,4 +82,59 @@ test('export validation catches missing arrays and broken foreign keys', () => {
     artifacts: [], candidates: [], occurrences: [], identity_reviews: [], provider_candidates: []
   };
   assert.throws(() => model.validateExports(pilot, discovery), /unknown company/);
+});
+
+function topologyClaim(id, subject, object, predicate, sourceDate) {
+  return {
+    id, subject_slug: subject, object_slug: object, predicate, direction: 'symmetric',
+    scope: 'A stated workflow', claim_status: 'documented',
+    interpretation: 'A bounded reading of the source', alternative_or_unknown: 'Current status unknown',
+    sources: [{ publisher: 'Company', source_date: sourceDate, event_date: null,
+      source_url: 'https://example.com', source_type: 'announcement',
+      evidence_text: 'Exact source passage', retrieved_on: '2026-09-24' }]
+  };
+}
+
+test('topology validation resolves optional external nodes and rejects broken claims', () => {
+  const claim = topologyClaim('one', 'pilot', 'external', 'integrates_with', '2024-03-01');
+  const topology = { nodes: [{ slug: 'external', name: 'External lead',
+    identity_status: 'provider_lead' }], claims: [claim] };
+  assert.equal(model.validateTopology(topology, new Set(['pilot'])), true);
+  assert.throws(() => model.validateTopology({ claims: [claim] }, new Set(['pilot'])),
+    /unknown company/);
+  assert.throws(() => model.validateTopology({ ...topology, claims: [claim, claim] },
+    new Set(['pilot'])), /duplicate topology claim/);
+});
+
+test('source-year filter uses publication date and preserves mixed claims on one pair', () => {
+  const competition = topologyClaim('a', 'pilot', 'external',
+    'named_competitor_of', '2024-08-01');
+  const collaboration = topologyClaim('b', 'pilot', 'external',
+    'announced_partnership_with', '2025-02-15');
+  collaboration.sources[0].event_date = '2024-12-20';
+  const claims = [competition, collaboration];
+  assert.deepEqual(model.filterTopologyClaims(claims, { sourceYear: '2024' }).map(item => item.id), ['a']);
+  assert.deepEqual(model.filterTopologyClaims(claims, { category: 'collaboration' }).map(item => item.id), ['b']);
+  assert.deepEqual(model.topologyPairGroups(claims)[0].claims.map(item => item.id), ['a', 'b']);
+});
+
+test('graph projection is bounded and keeps focused neighbors', () => {
+  const claims = Array.from({ length: 24 }, (_, index) =>
+    topologyClaim(`claim-${index}`, 'hub', `neighbor-${index}`,
+      'shared_exposure_hypothesis', '2025-01-01'));
+  const slice = model.topologyGraphSlice(claims, 'hub', 6, 4);
+  assert.equal(slice.claims.length, 4);
+  assert(slice.claims.every(claim => claim.subject_slug === 'hub'));
+  assert.equal(slice.hiddenNodes, 19);
+  assert.equal(model.topologyCategory(claims[0].predicate), 'performance_exposure');
+});
+
+test('graph coordinates stay stable when a claim filter hides an edge', () => {
+  const claims = [topologyClaim('a', 'alpha', 'beta', 'integrates_with', '2023-01-01'),
+    topologyClaim('b', 'beta', 'gamma', 'named_competitor_of', '2025-01-01')];
+  const basePositions = model.topologyPositions(claims);
+  const filtered = model.filterTopologyClaims(claims, { sourceYear: '2024' });
+  const projected = model.topologyGraphSlice(claims);
+  assert.deepEqual(model.topologyPositions(projected.claims).get('beta'), basePositions.get('beta'));
+  assert.deepEqual(filtered.map(claim => claim.id), ['a']);
 });

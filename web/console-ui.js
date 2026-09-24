@@ -107,6 +107,6 @@
   }
 
   if (globalScope) globalScope.LogPoseUI = {
-    node, append, link, title, metric, table, seriesChart
+    node, append, link, title, metric, table, svgNode, seriesChart
   };
 }(typeof globalThis !== 'undefined' ? globalThis : this));

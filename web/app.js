@@ -6,13 +6,16 @@ const { node, append, link, title, metric, table } = window.LogPoseUI;
 const seriesChart = (...args) => window.LogPoseUI.seriesChart(model, ...args);
 const state = { view: 'overview', year: 2024, category: 'all', query: '', company: null,
   searchYear: 'all', searchSource: 'all', searchType: 'all', searchUs: 'all',
-  selectedCandidate: null, selectedProvider: null, searchLimit: 30, compareSlugs: [] };
+  selectedCandidate: null, selectedProvider: null, searchLimit: 30, compareSlugs: [],
+  topologySourceYear: 'all', topologyCategory: 'all', topologyStatus: 'all',
+  topologyListLimit: 40, selectedClaim: null };
 let data;
 let discovery;
 let occurrenceById;
 let identityReviewById;
 let financialIndex;
 let exploreView;
+let topologyView;
 
 function categoryName(value) {
   return {
@@ -134,6 +137,7 @@ function companyDetail(slug) {
     grid.append(card);
   }
   section.append(grid, node('p', 'A company page records what its publisher said at capture time. It does not verify adoption, customer outcomes, or when a feature first appeared.', 'caveat'));
+  section.append(topologyView.companySummary(slug));
   const announcements = financingFor(slug);
   if (announcements.length) {
     const funding = node('section', '', 'funding-events');
@@ -420,7 +424,7 @@ function renderCompare() {
 }
 
 function render() {
-  if (!data || !exploreView) return;
+  if (!data || !exploreView || !topologyView) return;
   tabs.forEach(button => {
     if (button.dataset.view === state.view) button.setAttribute('aria-current', 'page');
     else button.removeAttribute('aria-current');
@@ -430,6 +434,7 @@ function render() {
   pinCount.textContent = String(state.compareSlugs.length);
   if (state.view === 'overview') renderOverview();
   else if (state.view === 'compare') renderCompare();
+  else if (state.view === 'topology') topologyView.render();
   else exploreView.render();
 }
 
@@ -440,7 +445,8 @@ tabs.forEach(button => button.addEventListener('click', () => {
 }));
 
 window.addEventListener('popstate', () => {
-  const slugs = new Set(data.companies.map(company => company.slug));
+  const slugs = new Set([...data.companies, ...(data.market_topology?.nodes || [])]
+    .map(company => company.slug));
   const fromUrl = model.parseUrlState(location.search, slugs, data.years);
   Object.assign(state, {
     view: fromUrl.view,
@@ -469,8 +475,10 @@ Promise.all(['./dashboard.json', './discovery.json'].map(url =>
       identityReviewFor, candidateLocationFor, providerLocationInSelectedYear,
       money, financials, companyDetail, commitState, writeUrl, pinCount
     });
+    topologyView = window.LogPoseTopology.create({ root, state, data, model, commitState });
     const fromUrl = model.parseUrlState(location.search,
-      new Set(pilot.companies.map(company => company.slug)), pilot.years);
+      new Set([...pilot.companies, ...(pilot.market_topology?.nodes || [])]
+        .map(company => company.slug)), pilot.years);
     Object.assign(state, {
       view: fromUrl.view,
       year: fromUrl.year,
