@@ -1,0 +1,3878 @@
+{
+  "years": [
+    2021,
+    2022,
+    2023,
+    2024
+  ],
+  "companies": [
+    {
+      "slug": "confluent",
+      "name": "Confluent",
+      "category": "data_infrastructure",
+      "cik": "0001699838"
+    },
+    {
+      "slug": "snowflake",
+      "name": "Snowflake",
+      "category": "data_infrastructure",
+      "cik": "0001640147"
+    },
+    {
+      "slug": "mongodb",
+      "name": "MongoDB",
+      "category": "data_infrastructure",
+      "cik": "0001441816"
+    },
+    {
+      "slug": "clickhouse",
+      "name": "ClickHouse",
+      "category": "data_infrastructure",
+      "cik": null
+    },
+    {
+      "slug": "dbt-labs",
+      "name": "dbt Labs",
+      "category": "data_infrastructure",
+      "cik": null
+    },
+    {
+      "slug": "gitlab",
+      "name": "GitLab",
+      "category": "developer_tools",
+      "cik": "0001653482"
+    },
+    {
+      "slug": "atlassian",
+      "name": "Atlassian",
+      "category": "developer_tools",
+      "cik": "0001650372"
+    },
+    {
+      "slug": "linear",
+      "name": "Linear",
+      "category": "developer_tools",
+      "cik": null
+    },
+    {
+      "slug": "postman",
+      "name": "Postman",
+      "category": "developer_tools",
+      "cik": null
+    },
+    {
+      "slug": "invision",
+      "name": "InVision",
+      "category": "developer_tools",
+      "cik": null
+    },
+    {
+      "slug": "datadog",
+      "name": "Datadog",
+      "category": "security_observability",
+      "cik": "0001561550"
+    },
+    {
+      "slug": "crowdstrike",
+      "name": "CrowdStrike",
+      "category": "security_observability",
+      "cik": "0001535527"
+    },
+    {
+      "slug": "elastic",
+      "name": "Elastic",
+      "category": "security_observability",
+      "cik": "0001707753"
+    },
+    {
+      "slug": "snyk",
+      "name": "Snyk",
+      "category": "security_observability",
+      "cik": null
+    },
+    {
+      "slug": "vanta",
+      "name": "Vanta",
+      "category": "security_observability",
+      "cik": null
+    },
+    {
+      "slug": "uipath",
+      "name": "UiPath",
+      "category": "ai_automation",
+      "cik": "0001734722"
+    },
+    {
+      "slug": "palantir",
+      "name": "Palantir",
+      "category": "ai_automation",
+      "cik": "0001321655"
+    },
+    {
+      "slug": "weights-and-biases",
+      "name": "Weights & Biases",
+      "category": "ai_automation",
+      "cik": null
+    },
+    {
+      "slug": "replit",
+      "name": "Replit",
+      "category": "ai_automation",
+      "cik": null
+    },
+    {
+      "slug": "datarobot",
+      "name": "DataRobot",
+      "category": "ai_automation",
+      "cik": null
+    }
+  ],
+  "evidence": [
+    {
+      "slug": "confluent",
+      "category": "data_infrastructure",
+      "year": 2021,
+      "status": "retrieved",
+      "snapshot_id": 3,
+      "source_url": "https://www.confluent.io/",
+      "captured_at": "2021-11-29T17:00:01+00:00",
+      "capture_age_days": 32.3,
+      "text_characters": 4907,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2021-49/segments/1637964358786.67/warc/CC-MAIN-20211129164711-20211129194711-00445.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2021-49/segments/1637964358786.67/warc/CC-MAIN-20211129164711-20211129194711-00445.warc.gz:801931205:91760",
+      "raw_sha256": "4341124a3a542e55c380d6c9fbaa101183b9047bbaabaf9d700d49e256808e6b",
+      "excerpt": "Build your real-time bridge to the cloud with Confluent Platform 7.0 and Cluster Linking | Read the blog Contact Us Set Your Data in Motion Your business is in motion. Now, you have a data platform for it. Confluent makes it easy to connect your apps, systems, and your entire organization with real-time data flow and processing. Watch Demo Try Confluent for Free > Watch Demo Try Confluent for Free > Get Started Free Play Video Get the Ultimate, Cloud-Native Apache Kafka \u00ae Experience You love Apa"
+    },
+    {
+      "slug": "confluent",
+      "category": "data_infrastructure",
+      "year": 2022,
+      "status": "retrieved",
+      "snapshot_id": 4,
+      "source_url": "https://www.confluent.io/",
+      "captured_at": "2022-12-10T09:24:56+00:00",
+      "capture_age_days": 21.6,
+      "text_characters": 5630,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2022-49/segments/1669446710421.14/warc/CC-MAIN-20221210074242-20221210104242-00626.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2022-49/segments/1669446710421.14/warc/CC-MAIN-20221210074242-20221210104242-00626.warc.gz:767884582:108279",
+      "raw_sha256": "1d4550cff68940a9367a89bd9926d62dc764af162b6fa60361b6f161a41e033b",
+      "excerpt": "Kafka In the Cloud: Why It\u2019s 10x Better With Confluent | Get free eBook Contact Us Set Your Data in Motion Your business is in motion. Now, you have a data platform for it. Confluent makes it easy to connect your apps, data systems, and entire organization with real-time data flows and processing. Watch Demo Try Confluent for Free > Watch Demo Register for Lab Try Confluent for Free > Get Started Free Michelin Fuels Real-Time Inventory Management at Scale with Confluent Learn how the manufacturi"
+    },
+    {
+      "slug": "confluent",
+      "category": "data_infrastructure",
+      "year": 2023,
+      "status": "retrieved",
+      "snapshot_id": 62,
+      "source_url": "https://www.confluent.io/",
+      "captured_at": "2023-12-10T06:40:03+00:00",
+      "capture_age_days": 21.7,
+      "text_characters": 5567,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2023-50/segments/1700679101282.74/warc/CC-MAIN-20231210060949-20231210090949-00746.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2023-50/segments/1700679101282.74/warc/CC-MAIN-20231210060949-20231210090949-00746.warc.gz:778672183:130264",
+      "raw_sha256": "dbb232e321ae2868bf70f9f8c9f50bcf0b2e5bbd15c5d2147850d7c70967710a",
+      "excerpt": "A Leader in The Forrester Wave\u2122: Streaming Data Platforms, Q4 2023 | Get Report Login Contact Us What's New Announcing Open Preview for Flink Confluent Cloud for Apache Flink\u00ae is now available for preview. Check out the announcement blog to learn how we've re-architected Flink as a cloud-native service to provide simple, serverless stream processing. Learn More What's New Kora's Win-Win: Cloud-native Efficiencies and Cost Savings Introducing Enterprise clusters - a secure, cost-effective, and se"
+    },
+    {
+      "slug": "confluent",
+      "category": "data_infrastructure",
+      "year": 2024,
+      "status": "retrieved",
+      "snapshot_id": 5,
+      "source_url": "https://www.confluent.io/",
+      "captured_at": "2024-12-13T03:06:14+00:00",
+      "capture_age_days": 18.9,
+      "text_characters": 5496,
+      "warc_truncated": "length",
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2024-51/segments/1733066115574.46/warc/CC-MAIN-20241213012212-20241213042212-00746.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2024-51/segments/1733066115574.46/warc/CC-MAIN-20241213012212-20241213042212-00746.warc.gz:643693072:146857",
+      "raw_sha256": "4c1c6b3f31a6844156a3c549ebc10e1422dff4c7a811ffba57357ab389f17739",
+      "excerpt": "Build Predictive Machine Learning with Flink | Workshop on Dec 18 | Register Now Login Contact Us Introducing Confluent Platform 7.8 Elevate stream processing capabilities with Confluent Platform for Apache Flink\u00ae, scale security with mTLS identity for RBAC authorization, and more. Watch Demo Learn More Announcing the Confluent Cloud Q3 Launch Introducing updates that make Confluent Cloud for Apache Flink\u00ae\ufe0f even more developer friendly, Client-Side Field Level Encryption, WarpStream, and more! J"
+    },
+    {
+      "slug": "snowflake",
+      "category": "data_infrastructure",
+      "year": 2021,
+      "status": "retrieved",
+      "snapshot_id": 63,
+      "source_url": "https://www.snowflake.com/",
+      "captured_at": "2021-12-04T08:31:38+00:00",
+      "capture_age_days": 27.6,
+      "text_characters": 10970,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2021-49/segments/1637964362952.24/warc/CC-MAIN-20211204063651-20211204093651-00510.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2021-49/segments/1637964362952.24/warc/CC-MAIN-20211204063651-20211204093651-00510.warc.gz:986866644:43488",
+      "raw_sha256": "ab43c161bb53180d9af3873e3bb38bc24083e8d8a4bf2a153a3bee1e6300f6c9",
+      "excerpt": "Skip to content MEDIA DATA CLOUD SUMMIT | JANUARY 19 Global Virtual Event Premiering Snowflake Solutions for Media, Advertising, and Entertainment REGISTER NOW Close Your browser does not support the video tag. Snowday the view ahead Snowflake's Product Announcement Event WATCH NOW Quick Links Weekly Demo Office Hours Virtual Labs Contact Us Pricing WHERE YOUR DATA CLOUD EXPERIENCE BEGINS: ONE PLATFORM, MANY WORKLOADS, NO DATA SILOS Your browser does not support the video tag. Data Sources Data "
+    },
+    {
+      "slug": "snowflake",
+      "category": "data_infrastructure",
+      "year": 2022,
+      "status": "retrieved",
+      "snapshot_id": 81,
+      "source_url": "https://www.snowflake.com/",
+      "captured_at": "2022-08-13T23:51:20+00:00",
+      "capture_age_days": 140.0,
+      "text_characters": 9848,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2022-33/segments/1659882571989.67/warc/CC-MAIN-20220813232744-20220814022744-00753.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2022-33/segments/1659882571989.67/warc/CC-MAIN-20220813232744-20220814022744-00753.warc.gz:840816935:30773",
+      "raw_sha256": "60ecd24ab30754bf089c8e5c5a690c741f21227a27fd796ba2ca7717935b1b89",
+      "excerpt": "Skip to content DATA CLOUD WORLD TOUR: A GLOBAL EVENT SERIES Join one of our global events for a full day of lively presentations, networking, and data collaboration. FIND AN EVENT NEAR YOU GAIN THE DATA EDGE How data collaboration, leadership and cutting-edge business analytics are critical READ THE RESEARCH Close WATCH SUMMIT SESSIONS ON DEMAND Watch Now Quick Links Pricing Weekly Demo Hands-On Lab Office Hours Contact Us WHERE YOUR DATA CLOUD EXPERIENCE BEGINS: ONE PLATFORM, MANY WORKLOADS, N"
+    },
+    {
+      "slug": "snowflake",
+      "category": "data_infrastructure",
+      "year": 2023,
+      "status": "retrieved",
+      "snapshot_id": 82,
+      "source_url": "https://www.snowflake.com/en/",
+      "captured_at": "2023-12-10T10:45:41+00:00",
+      "capture_age_days": 21.6,
+      "text_characters": 11421,
+      "warc_truncated": "length",
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2023-50/segments/1700679101779.95/warc/CC-MAIN-20231210092457-20231210122457-00053.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2023-50/segments/1700679101779.95/warc/CC-MAIN-20231210092457-20231210122457-00053.warc.gz:1070531324:151368",
+      "raw_sha256": "a843d4df5fe8d36b173f24fef79f1854f87fbe292cfc5d756f09f3c242efb1af",
+      "excerpt": "Why Snowflake The Data Cloud Solutions Resources Company Language Language Languages English Portugu\u00eas Italiano \ud55c\uad6d\uc5b4 \u65e5\u672c\u8a9e Espa\u00f1ol Deutsch Fran\u00e7ais Language Languages English Portugu\u00eas Italiano \ud55c\uad6d\uc5b4 \u65e5\u672c\u8a9e Espa\u00f1ol Deutsch Fran\u00e7ais contact start for free Why Snowflake The Data Cloud Solutions Resources Company Language Language Languages English Portugu\u00eas Italiano \ud55c\uad6d\uc5b4 \u65e5\u672c\u8a9e Espa\u00f1ol Deutsch Fran\u00e7ais Language Languages English Portugu\u00eas Italiano \ud55c\uad6d\uc5b4 \u65e5\u672c\u8a9e Espa\u00f1ol Deutsch Fran\u00e7ais contact start for free AI/ML "
+    },
+    {
+      "slug": "snowflake",
+      "category": "data_infrastructure",
+      "year": 2024,
+      "status": "retrieved",
+      "snapshot_id": 83,
+      "source_url": "https://www.snowflake.com/en/",
+      "captured_at": "2024-12-14T23:35:36+00:00",
+      "capture_age_days": 17.0,
+      "text_characters": 10998,
+      "warc_truncated": "length",
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2024-51/segments/1733066127077.38/warc/CC-MAIN-20241214212257-20241215002257-00053.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2024-51/segments/1733066127077.38/warc/CC-MAIN-20241214212257-20241215002257-00053.warc.gz:856938232:143960",
+      "raw_sha256": "f356b3496d82dc7ecf3be9edab31764a219cc5a959c52be157dd246088bb1061",
+      "excerpt": "Skip to content Featured Story Chicago Trading Company Replaces Managed Spark for 54% Savings Read Story Time is money. We save you both. Launch faster \u2014 for less \u2014 with the easy-to-use, fully managed data platform. start saving meet the platform Snowflake Summit '25: Super Early Bird Pricing Ends Soon Snowflake's annual user conference is returning to San Francisco. Register today and save on a full conference pass to our largest event of the year! Want to present a session? Call for papers is "
+    },
+    {
+      "slug": "mongodb",
+      "category": "data_infrastructure",
+      "year": 2021,
+      "status": "retrieved",
+      "snapshot_id": 6,
+      "source_url": "https://www.mongodb.com/",
+      "captured_at": "2021-12-09T12:43:19+00:00",
+      "capture_age_days": 22.5,
+      "text_characters": 4940,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2021-49/segments/1637964364169.99/warc/CC-MAIN-20211209122503-20211209152503-00401.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2021-49/segments/1637964364169.99/warc/CC-MAIN-20211209122503-20211209152503-00401.warc.gz:968505428:54176",
+      "raw_sha256": "7e1b02d0311154ad40ed1e91961abaa49aa52c08e0adfcce6df6efbe47fb0a87",
+      "excerpt": "NEW Introducing native support for time series data \u2014 Learn more Build faster. Build smarter.\u200b\u200b Get your ideas to market faster with an application data platform built on the leading modern database. Support transactional, search, analytics, and mobile use cases while using a common query interface and the data model developers love. Start Free Questions? Talk to us TRUSTED BY THOUSANDS OF ORGANIZATIONS INCLUDING Working with data doesn\u2019t need to be hard Our guiding principle is to help develope"
+    },
+    {
+      "slug": "mongodb",
+      "category": "data_infrastructure",
+      "year": 2022,
+      "status": "retrieved",
+      "snapshot_id": 7,
+      "source_url": "https://www.mongodb.com/",
+      "captured_at": "2022-12-10T06:44:49+00:00",
+      "capture_age_days": 21.7,
+      "text_characters": 4866,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2022-49/segments/1669446711712.26/warc/CC-MAIN-20221210042021-20221210072021-00721.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2022-49/segments/1669446711712.26/warc/CC-MAIN-20221210042021-20221210072021-00721.warc.gz:996800646:159661",
+      "raw_sha256": "370367e7659f120aa403a2b6a7914045457ad27f00fce18dc553661508fda3be",
+      "excerpt": "Blog {Blog} Take your skills and career to the next level with the new MongoDB University - Explore now NEW Get the latest and greatest with MongoDB 6.0 \u2014 Learn more Build faster. Build smarter.\u200b\u200b Get your ideas to market faster with a developer data platform built on the leading modern database. Support transactional, search, analytics, and mobile use cases while using a common query interface and the data model developers love. Start Free Questions? Talk to us TRUSTED BY THOUSANDS OF ORGANIZAT"
+    },
+    {
+      "slug": "mongodb",
+      "category": "data_infrastructure",
+      "year": 2023,
+      "status": "retrieved",
+      "snapshot_id": 8,
+      "source_url": "https://www.mongodb.com/",
+      "captured_at": "2023-12-11T22:20:32+00:00",
+      "capture_age_days": 20.1,
+      "text_characters": 4857,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2023-50/segments/1700679518883.99/warc/CC-MAIN-20231211210408-20231212000408-00341.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2023-50/segments/1700679518883.99/warc/CC-MAIN-20231211210408-20231212000408-00341.warc.gz:962147249:163134",
+      "raw_sha256": "ea31aa43094ef8636ec300208ad9e92111ef4978d1e54f70a829004a4b84404c",
+      "excerpt": "New {New} Announcing MongoDB Atlas Vector Search and Dedicated Search Nodes for genAI use cases NEW Get the latest and greatest with MongoDB 6.0 \u2014 Learn more Build faster. Build smarter.\u200b\u200b Get your ideas to market faster with a developer data platform built on the leading modern database. Support transactional, search, analytics, and mobile use cases while using a common query interface and the data model developers love. Start Free Questions? Talk to us TRUSTED BY THOUSANDS OF ORGANIZATIONS INC"
+    },
+    {
+      "slug": "mongodb",
+      "category": "data_infrastructure",
+      "year": 2024,
+      "status": "retrieved",
+      "snapshot_id": 9,
+      "source_url": "https://www.mongodb.com/",
+      "captured_at": "2024-12-14T00:44:53+00:00",
+      "capture_age_days": 18.0,
+      "text_characters": 1424,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2024-51/segments/1733066119841.22/warc/CC-MAIN-20241213233207-20241214023207-00341.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2024-51/segments/1733066119841.22/warc/CC-MAIN-20241213233207-20241214023207-00341.warc.gz:800055562:57397",
+      "raw_sha256": "444bb24234622972cfca26aa80fc2cc04563fc74b90ca24ce725231294e70070",
+      "excerpt": "Announcement Introducing MongoDB 8.0, the fastest MongoDB ever! Read more >> MONGODB ATLAS Loved by developers. Built for modern applications. You don't need a separate database to support transactions, rich search, or gen AI. The world's most popular document database is now the world's most versatile developer data platform. Try Atlas Free Deploy your way The most loved vector database, once again! For the second year, MongoDB Atlas Vector Search was voted #1 in the latest Retool State of AI g"
+    },
+    {
+      "slug": "clickhouse",
+      "category": "data_infrastructure",
+      "year": 2021,
+      "status": "retrieved",
+      "snapshot_id": 64,
+      "source_url": "https://clickhouse.com/",
+      "captured_at": "2021-12-06T06:03:42+00:00",
+      "capture_age_days": 25.7,
+      "text_characters": 7517,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2021-49/segments/1637964363290.39/warc/CC-MAIN-20211206042636-20211206072636-00276.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2021-49/segments/1637964363290.39/warc/CC-MAIN-20211206042636-20211206072636-00276.warc.gz:250777729:9537",
+      "raw_sha256": "17fc71e04d4cbe1ac8b2a143396cb42e02bebb253e0f3056b999d36643354166",
+      "excerpt": "ClickHouse v21.12 is coming soon! Add the Dec 16 Release Webinar to your calendar here ClickHouse v21.11 Released ClickHouse\u00ae is an open-source, high performance columnar OLAP database management system for real-time analytics using SQL. Watch on YouTube Read the Blog Post ClickHouse Announces $250 Million in Funding Raising the Company\u2019s Valuation to $2B Read the Blog Post Read the News Read the Press Release Why ClickHouse Our feature rich and hardware efficient OLAP data management system is "
+    },
+    {
+      "slug": "clickhouse",
+      "category": "data_infrastructure",
+      "year": 2022,
+      "status": "retrieved",
+      "snapshot_id": 65,
+      "source_url": "https://clickhouse.com/",
+      "captured_at": "2022-12-06T23:24:53+00:00",
+      "capture_age_days": 25.0,
+      "text_characters": 4275,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2022-49/segments/1669446711121.31/warc/CC-MAIN-20221206225143-20221207015143-00676.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2022-49/segments/1669446711121.31/warc/CC-MAIN-20221206225143-20221207015143-00676.warc.gz:202610160:26383",
+      "raw_sha256": "3b383c6f0345675658dac5eaa3d6e10d96991bf5870fbea45ba725b2ad6e7ff3",
+      "excerpt": "ClickHouse Cloud is now GA! - Read More ClickHouse Product Use Cases Company Learn Pricing Sign in Get Started Serverless. Simple. ClickHouse Cloud. Get the performance you love from open source ClickHouse in a serverless offering that takes care of the details so you can spend more time getting insight out of the fastest database on earth. \u26a1 Start free trial Get $300 with your 30-day trial Interactive SQL console The fastest and easiest way to connect, explore and query your ClickHouse database"
+    },
+    {
+      "slug": "clickhouse",
+      "category": "data_infrastructure",
+      "year": 2023,
+      "status": "retrieved",
+      "snapshot_id": 10,
+      "source_url": "https://clickhouse.com/",
+      "captured_at": "2023-12-10T07:04:01+00:00",
+      "capture_age_days": 21.7,
+      "text_characters": 1675,
+      "warc_truncated": "length",
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2023-50/segments/1700679101282.74/warc/CC-MAIN-20231210060949-20231210090949-00496.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2023-50/segments/1700679101282.74/warc/CC-MAIN-20231210060949-20231210090949-00496.warc.gz:197427878:528593",
+      "raw_sha256": "c8e2a135e771ddd531225c083ad981a39d4f32c1226d32a0db31f0f9852f23d1",
+      "excerpt": "Query billions of rows in milliseconds ClickHouse is the fastest and most resource efficient open-source database for real-time apps and analytics. Start free trial View documentation Or download open-source ClickHouse SELECT toStartOfMonth ( upload_date ) AS month , sum ( view_count ) AS ` Youtube Views ` , bar( sum ( has_subtitles ) / count ( ) , 0 . 55 , 0 . 7 , 100 ) AS ` % Subtitles ` FROM youtube WHERE ( month >= ' 2020-08-01 ' ) AND ( month <= ' 2021-08-01 ' ) GROUP BY month ORDER BY mont"
+    },
+    {
+      "slug": "clickhouse",
+      "category": "data_infrastructure",
+      "year": 2024,
+      "status": "retrieved",
+      "snapshot_id": 11,
+      "source_url": "https://clickhouse.com/",
+      "captured_at": "2024-12-13T16:24:59+00:00",
+      "capture_age_days": 18.3,
+      "text_characters": 5026,
+      "warc_truncated": "length",
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2024-51/segments/1733066117178.20/warc/CC-MAIN-20241213140137-20241213170137-00235.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2024-51/segments/1733066117178.20/warc/CC-MAIN-20241213140137-20241213170137-00235.warc.gz:142316846:440413",
+      "raw_sha256": "0725426a1a607a2cffb858e403035ca7b8f35b019a39ab01603ede887476f3ce",
+      "excerpt": "The real-time data warehouse for analytics observability ML & GenAI business intelligence financial services fraud & cybersecurity gaming analytics observability ML & GenAI business intelligence financial services fraud & cybersecurity gaming Unlock faster queries without skyrocketing costs. Start free cloud trial Download open-source Blazing-fast Postgres to ClickHouse CDC with our new ClickPipe connector \u2014 now in Private Preview. Learn more -> ClickHouse is Trusted by Build real-time data prod"
+    },
+    {
+      "slug": "dbt-labs",
+      "category": "data_infrastructure",
+      "year": 2021,
+      "status": "retrieved",
+      "snapshot_id": 12,
+      "source_url": "https://www.getdbt.com/",
+      "captured_at": "2021-12-05T17:21:48+00:00",
+      "capture_age_days": 26.3,
+      "text_characters": 6109,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2021-49/segments/1637964363215.8/warc/CC-MAIN-20211205160950-20211205190950-00565.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2021-49/segments/1637964363215.8/warc/CC-MAIN-20211205160950-20211205190950-00565.warc.gz:845871401:14525",
+      "raw_sha256": "f242b5c92f356603a48a8cf85ac65490a3c16505fbd9b3ee0932129079adfd3e",
+      "excerpt": "Dec 6 - 10, 2021 Register for Free Scaling Knowledge > Scaling Bodies: Why dbt Labs is making the bet on a data literate organization - Erica Louie Keynote: How big is this wave? - Martin Casado & Tristan Handy dbt 101: Stories from real-life data practitioners + a live look at dbt - Natty (Jon Natkins) & Alexis Wong Baird How to build a mature dbt project from scratch - Dave Connors Analytics Engineering for storytellers - Winnie Winship The modern data experience - Benn Stancil Identity Crisis"
+    },
+    {
+      "slug": "dbt-labs",
+      "category": "data_infrastructure",
+      "year": 2022,
+      "status": "retrieved",
+      "snapshot_id": 13,
+      "source_url": "https://www.getdbt.com/",
+      "captured_at": "2022-12-05T23:47:54+00:00",
+      "capture_age_days": 26.0,
+      "text_characters": 1160,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2022-49/segments/1669446711064.71/warc/CC-MAIN-20221205232822-20221206022822-00645.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2022-49/segments/1669446711064.71/warc/CC-MAIN-20221205232822-20221206022822-00645.warc.gz:821719663:9251",
+      "raw_sha256": "afbc7945c2af7e840d832df6c3c7f67f5a7f176082c29d1253d65940ccf93db4",
+      "excerpt": "Thursday, Dec 15, 2022: Don't do this, do that (with dbt)! Join our live session to dig into best practices. Login Transforming data. Transforming teams. dbt\u2122 helps data teams work like software engineers\u2014to ship trusted data, faster. Create a free account Book a demo Trusted by the best The analytics engineering workflow With dbt, data teams work directly within the warehouse to produce trusted datasets for reporting, ML modeling, and operational workflows. Learn more about dbt What is analytic"
+    },
+    {
+      "slug": "dbt-labs",
+      "category": "data_infrastructure",
+      "year": 2023,
+      "status": "retrieved",
+      "snapshot_id": 14,
+      "source_url": "https://www.getdbt.com/",
+      "captured_at": "2023-12-11T12:04:34+00:00",
+      "capture_age_days": 20.5,
+      "text_characters": 4984,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2023-50/segments/1700679511159.96/warc/CC-MAIN-20231211112008-20231211142008-00545.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2023-50/segments/1700679511159.96/warc/CC-MAIN-20231211112008-20231211142008-00545.warc.gz:838806628:13375",
+      "raw_sha256": "6a07f1668b3125205f966ad94528612e7a32ff1bfe85290ea7349f23d0faaed6",
+      "excerpt": "Learn with us at our weekly demos and see dbt Cloud in action! Achieve a 194% ROI with dbt Cloud | Read the study now! Join us for this live session: Optimizing Costs in Your Data Workflow Login Ship trusted data products faster Discover why more than 30,000 companies use dbt to accelerate their data development. Book a demo Create a free account Trusted by the best in data Experience the new standard for data transformation Empower your team with a workflow that\u2019s been adopted by thousands of t"
+    },
+    {
+      "slug": "dbt-labs",
+      "category": "data_infrastructure",
+      "year": 2024,
+      "status": "retrieved",
+      "snapshot_id": 1,
+      "source_url": "https://www.getdbt.com/",
+      "captured_at": "2024-12-12T14:15:58+00:00",
+      "capture_age_days": 19.4,
+      "text_characters": 4611,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2024-51/segments/1733066109581.15/warc/CC-MAIN-20241212124237-20241212154237-00545.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2024-51/segments/1733066109581.15/warc/CC-MAIN-20241212124237-20241212154237-00545.warc.gz:692302523:27105",
+      "raw_sha256": "52873e08f6a281ab357d909c5c8c047e6a5dc9514e4b60d3deaa065e1c4ae023",
+      "excerpt": "Sign up for the virtual event: One dbt: Accelerate data work with hybrid deployments and cross-platform dbt Mesh View Brightside Health's embedded strategy on-demand! Deliver reliable data with the dbt Semantic Layer. Login Open menu Trusted by the best in data Less data work. More data that works When your data is organized, you can deliver data products people trust. Transform data faster, cheaper, and more reliably with dbt. Deliver data that business can trust \u2014 and trace Reliable data incre"
+    },
+    {
+      "slug": "gitlab",
+      "category": "developer_tools",
+      "year": 2021,
+      "status": "retrieved",
+      "snapshot_id": 16,
+      "source_url": "https://about.gitlab.com/",
+      "captured_at": "2021-12-09T03:54:48+00:00",
+      "capture_age_days": 22.8,
+      "text_characters": 3544,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2021-49/segments/1637964363659.21/warc/CC-MAIN-20211209030858-20211209060858-00432.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2021-49/segments/1637964363659.21/warc/CC-MAIN-20211209030858-20211209060858-00432.warc.gz:140077365:38009",
+      "raw_sha256": "ef8ab62a084b26fd446c9433ae13f49765cf1d478fbc390ba1d54970a9fd91b8",
+      "excerpt": "The DevOps Platform has arrived. Deliver software faster with better security and collaboration in a single platform. Get free trial Watch demo Partners Bronwyn Hastings, VP Technology Ecosystem on Google\u2019s partnership with GitLab to deliver digital transformations for customers. Learn more \u2192 Webcast The New DevOps. Iterating and Innovating in 2021 and Beyond. Join the webcast \u2192 Blog Post GitLab\u2019s Kubernetes Operator with support for Red Hat OpenShift is now generally available. Read now \u2192 Work "
+    },
+    {
+      "slug": "gitlab",
+      "category": "developer_tools",
+      "year": 2022,
+      "status": "short",
+      "snapshot_id": 72,
+      "source_url": "https://about.gitlab.com/",
+      "captured_at": "2022-12-09T18:15:36+00:00",
+      "capture_age_days": 22.2,
+      "text_characters": 32,
+      "warc_truncated": "length",
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2022-49/segments/1669446711475.44/warc/CC-MAIN-20221209181231-20221209211231-00432.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2022-49/segments/1669446711475.44/warc/CC-MAIN-20221209181231-20221209211231-00432.warc.gz:110272637:98351",
+      "raw_sha256": "c813a67f9a37c0b4d8517cf3c7e775114ebfdc6d4550ceebf88b466ead7c158a",
+      "excerpt": "The One DevOps Platform | GitLab"
+    },
+    {
+      "slug": "gitlab",
+      "category": "developer_tools",
+      "year": 2023,
+      "status": "retrieved",
+      "snapshot_id": 17,
+      "source_url": "https://about.gitlab.com/",
+      "captured_at": "2023-12-10T17:04:13+00:00",
+      "capture_age_days": 21.3,
+      "text_characters": 5185,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2023-50/segments/1700679102612.80/warc/CC-MAIN-20231210155147-20231210185147-00547.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2023-50/segments/1700679102612.80/warc/CC-MAIN-20231210155147-20231210185147-00547.warc.gz:102501023:21851",
+      "raw_sha256": "b37b8fbd139fbd3ac67dfd05d7fafe9498e5e4c92170cb898a60ab9482b72147",
+      "excerpt": "Try GitLab Duo Code Suggestions now for free Learn more Software. Faster. GitLab is the most comprehensive AI-powered DevSecOps Platform. Get free trial Software. Faster. GitLab is the most comprehensive AI-powered DevSecOps Platform. Get free trial Industry leaders choose GitLab to build mission\u2011critical software Why GitLab? AI-powered workflows boost efficiency and reduce cycle times Meet GitLab Duo GitLab named a Leader for DevOps Platforms Read the report See what your team could do with the"
+    },
+    {
+      "slug": "gitlab",
+      "category": "developer_tools",
+      "year": 2024,
+      "status": "retrieved",
+      "snapshot_id": 18,
+      "source_url": "https://about.gitlab.com/",
+      "captured_at": "2024-12-13T21:01:15+00:00",
+      "capture_age_days": 18.1,
+      "text_characters": 5019,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2024-51/segments/1733066119651.31/warc/CC-MAIN-20241213202611-20241213232611-00547.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2024-51/segments/1733066119651.31/warc/CC-MAIN-20241213202611-20241213232611-00547.warc.gz:56207314:24716",
+      "raw_sha256": "efcd1aeef78057e3553f3113112d8e47c624b20d84966189dbf8ab96a4589376",
+      "excerpt": "New: GitLab Duo with Amazon Q AI-driven DevSecOps. Software. Faster. GitLab is the most comprehensive AI-powered DevSecOps Platform. Get free trial Software. Faster. GitLab is the most comprehensive AI-powered DevSecOps Platform. Get free trial Ship more secure software faster with AI throughout the entire software development lifecycle Discover GitLab Duo GitLab named a Leader in the 2024 Gartner\u00ae Magic Quadrant\u2122 for AI Code Assistants Read the report Industry leaders choose GitLab to build mis"
+    },
+    {
+      "slug": "atlassian",
+      "category": "developer_tools",
+      "year": 2021,
+      "status": "retrieved",
+      "snapshot_id": 19,
+      "source_url": "https://www.atlassian.com/",
+      "captured_at": "2021-12-08T15:41:17+00:00",
+      "capture_age_days": 23.3,
+      "text_characters": 3737,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2021-49/segments/1637964363515.28/warc/CC-MAIN-20211208144647-20211208174647-00181.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2021-49/segments/1637964363515.28/warc/CC-MAIN-20211208144647-20211208174647-00181.warc.gz:724370323:20917",
+      "raw_sha256": "2622c66ad355390dd3dcdf2cc2c29359f7132badb392e99966de94e864c71cc5",
+      "excerpt": "Close View this page in your language ? All languages Choose your language \u4e2d\u6587 Deutsch English Espa\u00f1ol Fran\u00e7ais Italiano \ud55c\uad6d\uc5b4 Magyar Nederlands \u65e5\u672c\u8a9e Portugu\u00eas P\u0443\u0441\u0441\u043a\u0438\u0439 Polski G\u2019day, we\u2019re Atlassian. We make tools like Jira and Trello that are used by thousands of teams worldwide. And we\u2019re serious about creating amazing products , practices , and open work for all teams. Get access to newly released ITSM Lighting Talks and level-up your service management practices. Learn more Our Solutions Plan & t"
+    },
+    {
+      "slug": "atlassian",
+      "category": "developer_tools",
+      "year": 2022,
+      "status": "retrieved",
+      "snapshot_id": 66,
+      "source_url": "https://www.atlassian.com/",
+      "captured_at": "2022-12-08T11:54:39+00:00",
+      "capture_age_days": 23.5,
+      "text_characters": 1874,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2022-49/segments/1669446711336.41/warc/CC-MAIN-20221208114402-20221208144402-00581.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2022-49/segments/1669446711336.41/warc/CC-MAIN-20221208114402-20221208144402-00581.warc.gz:654254582:19286",
+      "raw_sha256": "9a3bd15eae86a73986236862402189c11a747309cadd076498a573f60f83ddaa",
+      "excerpt": "Close View this page in your language ? All languages Choose your language \u4e2d\u6587 Deutsch English Espa\u00f1ol Fran\u00e7ais Italiano \ud55c\uad6d\uc5b4 Magyar Nederlands \u65e5\u672c\u8a9e Portugu\u00eas P\u0443\u0441\u0441\u043a\u0438\u0439 Polski Atlassian Presents: Unleash \u2014 a new event for product and platform teams. Coming to Berlin and digitally February 9, 2023. Register for free. It\u2019s possible with teamwork Atlassian solutions are designed for all types of work Work Management IT Service Management Agile and DevOps Work Management IT Service Management Agile and D"
+    },
+    {
+      "slug": "atlassian",
+      "category": "developer_tools",
+      "year": 2023,
+      "status": "retrieved",
+      "snapshot_id": 20,
+      "source_url": "https://www.atlassian.com/",
+      "captured_at": "2023-12-09T06:03:24+00:00",
+      "capture_age_days": 22.7,
+      "text_characters": 1986,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2023-50/segments/1700679100800.25/warc/CC-MAIN-20231209040008-20231209070008-00461.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2023-50/segments/1700679100800.25/warc/CC-MAIN-20231209040008-20231209070008-00461.warc.gz:721389414:81552",
+      "raw_sha256": "cbc30c9b8a7488d332032e5029c411ab1aa22aecb3463ac4da10bf36a9d1f414",
+      "excerpt": "Products Solutions Resources Try Now Support for Server products ends Feb. 15, 2024. Migrate to stay supported. Act now Impossible Alone. See how collaboration makes the impossible, possible. Play video Atlassian solutions are designed for all types of work Work Management IT Service Management Agile and DevOps Work Management IT Service Management Agile and DevOps Make work flow across teams while connecting back to company goals Work differently, together Confluence Content collaboration Trell"
+    },
+    {
+      "slug": "atlassian",
+      "category": "developer_tools",
+      "year": 2024,
+      "status": "retrieved",
+      "snapshot_id": 21,
+      "source_url": "https://www.atlassian.com/",
+      "captured_at": "2024-12-14T23:32:16+00:00",
+      "capture_age_days": 17.0,
+      "text_characters": 11562,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2024-51/segments/1733066127077.38/warc/CC-MAIN-20241214212257-20241215002257-00461.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2024-51/segments/1733066127077.38/warc/CC-MAIN-20241214212257-20241215002257-00461.warc.gz:598899834:116505",
+      "raw_sha256": "558a07d51e4834ec5513c4eee1c4fc0172890d04c1a1561323441d83e3afd56b",
+      "excerpt": "Unlock enterprise knowledge with Generative AI. Meet Rovo Back Products Featured Developers Product Managers IT professionals Business Teams Leadership Teams Teams Why Atlassian? Resources Enterprise Sign in Featured Products Jira Flexible project management Confluence Knowledge, all in one place Jira Service Management High-velocity service delivery Rovo New Unlock enterprise knowledge Jira Product Discovery New Capture & prioritize ideas Compass New Optimize software health Guard New Enhanced "
+    },
+    {
+      "slug": "linear",
+      "category": "developer_tools",
+      "year": 2021,
+      "status": "retrieved",
+      "snapshot_id": 22,
+      "source_url": "https://linear.app/",
+      "captured_at": "2021-12-06T07:18:44+00:00",
+      "capture_age_days": 25.7,
+      "text_characters": 6760,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2021-49/segments/1637964363290.39/warc/CC-MAIN-20211206042636-20211206072636-00135.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2021-49/segments/1637964363290.39/warc/CC-MAIN-20211206042636-20211206072636-00135.warc.gz:412847936:56223",
+      "raw_sha256": "71cbf9cdc95db66450efe8dfefb1c6010a3eb89a64ccf8ab2304f11a1c0c01ce",
+      "excerpt": "Linear Release 2021.06 | See what\u2019s new \u2192 The issue tracking tool you'll enjoy using Linear helps streamline software projects, sprints, tasks, and bug tracking. It\u2019s built for high-performance teams. Sign up for free -> Powering the next generation of companies An experience you'd expect from a professional tool. Opinionated and designed for daily use. < 100ms Built for speed Synchronized in real-time across all users. No spinners or waiting. Keyboard first design Optimized for efficiency with "
+    },
+    {
+      "slug": "linear",
+      "category": "developer_tools",
+      "year": 2022,
+      "status": "retrieved",
+      "snapshot_id": 23,
+      "source_url": "https://linear.app/",
+      "captured_at": "2022-11-28T22:59:05+00:00",
+      "capture_age_days": 33.0,
+      "text_characters": 3953,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2022-49/segments/1669446710662.60/warc/CC-MAIN-20221128203656-20221128233656-00695.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2022-49/segments/1669446710662.60/warc/CC-MAIN-20221128203656-20221128233656-00695.warc.gz:412564749:93040",
+      "raw_sha256": "3560eaac03e254b0c5674e5193366d90ae290ea3ffa381ad5ccd9aab06d23390",
+      "excerpt": "Skip to content \u2192 Linear 2022 Release \u22c5 Built for scale \u2192 Linear is a better way to build products Meet the new standard for modern software development. Streamline issues, sprints, and product roadmaps. Get started Powering the world\u2019s best product teams. From next-gen startups to established enterprises. Unlike any tool you\u2019ve used before Designed to the last pixel and engineered with unforgiving precision, Linear combines UI elegance with world-class performance. \u2318 K Opens command line I Assi"
+    },
+    {
+      "slug": "linear",
+      "category": "developer_tools",
+      "year": 2023,
+      "status": "retrieved",
+      "snapshot_id": 24,
+      "source_url": "https://linear.app/",
+      "captured_at": "2023-12-07T04:20:26+00:00",
+      "capture_age_days": 24.8,
+      "text_characters": 3949,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2023-50/segments/1700679100632.0/warc/CC-MAIN-20231207022257-20231207052257-00164.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2023-50/segments/1700679100632.0/warc/CC-MAIN-20231207022257-20231207052257-00164.warc.gz:398668400:94650",
+      "raw_sha256": "507589a25722bfb8f5f2d5ca84d7ce719e2f8cae32976a5073637e128bc151a7",
+      "excerpt": "Skip to content \u2192 Introducing Linear Asks Linear is a better way to build products Meet the new standard for modern software development. Streamline issues, sprints, and product roadmaps. Get started App Powering the world\u2019s best product teams. From next-gen startups to established enterprises. Unlike any tool you\u2019ve used before Designed to the last pixel and engineered with unforgiving precision, Linear combines UI elegance with world-class performance. \u2318 K Opens command line I Assign issue to "
+    },
+    {
+      "slug": "linear",
+      "category": "developer_tools",
+      "year": 2024,
+      "status": "retrieved",
+      "snapshot_id": 25,
+      "source_url": "https://linear.app/",
+      "captured_at": "2024-12-09T17:45:46+00:00",
+      "capture_age_days": 22.3,
+      "text_characters": 2040,
+      "warc_truncated": "length",
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2024-51/segments/1733066046748.1/warc/CC-MAIN-20241209152324-20241209182324-00735.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2024-51/segments/1733066046748.1/warc/CC-MAIN-20241209152324-20241209182324-00735.warc.gz:321321835:266014",
+      "raw_sha256": "919bc8e63c5e04776d5b51b4b8b4ab8bfaa4256f81c6007b66dc0e4adab82e7a",
+      "excerpt": "Skip to content \u2192 Linear is a purpose-built tool for planning and building products Linear is a purpose-built tool for planning and building products Plan and build your product Plan and build your product Meet the system for modern software development. Streamline issues, projects, and product roadmaps. Linear is a purpose-built tool for modern product development. Streamline issues, projects, and product roadmaps. Start building Start building Make the switch Start building Make the switch Pow"
+    },
+    {
+      "slug": "postman",
+      "category": "developer_tools",
+      "year": 2021,
+      "status": "short",
+      "snapshot_id": 74,
+      "source_url": "https://www.postman.com/",
+      "captured_at": "2021-11-28T23:42:33+00:00",
+      "capture_age_days": 33.0,
+      "text_characters": 0,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2021-49/segments/1637964358673.74/warc/CC-MAIN-20211128224316-20211129014316-00422.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2021-49/segments/1637964358673.74/warc/CC-MAIN-20211128224316-20211129014316-00422.warc.gz:1032270145:13086",
+      "raw_sha256": "32d00f718f7c6cae647a8ae177326bae996d3f5c8ae18fabd8bb58a5409def3b",
+      "excerpt": ""
+    },
+    {
+      "slug": "postman",
+      "category": "developer_tools",
+      "year": 2022,
+      "status": "short",
+      "snapshot_id": 75,
+      "source_url": "https://www.postman.com/",
+      "captured_at": "2022-12-07T06:45:13+00:00",
+      "capture_age_days": 24.7,
+      "text_characters": 0,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2022-49/segments/1669446711150.61/warc/CC-MAIN-20221207053157-20221207083157-00502.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2022-49/segments/1669446711150.61/warc/CC-MAIN-20221207053157-20221207083157-00502.warc.gz:953512761:13334",
+      "raw_sha256": "d66584b2c0a643d6da3e0386efa5d5ba7ed2f31a56c061878409c8d221cb2ee3",
+      "excerpt": ""
+    },
+    {
+      "slug": "postman",
+      "category": "developer_tools",
+      "year": 2023,
+      "status": "short",
+      "snapshot_id": 76,
+      "source_url": "https://www.postman.com/",
+      "captured_at": "2023-12-09T05:00:49+00:00",
+      "capture_age_days": 22.8,
+      "text_characters": 0,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2023-50/segments/1700679100800.25/warc/CC-MAIN-20231209040008-20231209070008-00525.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2023-50/segments/1700679100800.25/warc/CC-MAIN-20231209040008-20231209070008-00525.warc.gz:1007461014:14840",
+      "raw_sha256": "8a8577f7b3a3ff7e760068763edada14653eab006d8f44da36748a0bcf2ff42b",
+      "excerpt": ""
+    },
+    {
+      "slug": "postman",
+      "category": "developer_tools",
+      "year": 2024,
+      "status": "retrieved",
+      "snapshot_id": 26,
+      "source_url": "https://www.postman.com/",
+      "captured_at": "2024-12-08T08:33:51+00:00",
+      "capture_age_days": 23.6,
+      "text_characters": 2734,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2024-51/segments/1733066444677.95/warc/CC-MAIN-20241208080334-20241208110334-00525.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2024-51/segments/1733066444677.95/warc/CC-MAIN-20241208080334-20241208110334-00525.warc.gz:838159235:180865",
+      "raw_sha256": "ba55b7cdc79dc54c85f25ef51098a53df1d7cd7d4ca0f16861179a3043ab89ac",
+      "excerpt": "AI is powered by APIs. APIs are powered by Postman. Postman is your single platform for collaborative API development. Join 35+ million devs building great APIs together, across the entire API lifecycle. Download the desktop app for Speed up API development through team collaboration Prototype, document, test, and demo all your APIs in one place. Get early feedback by having conversations in the context of any API\u2014private, public, or partner\u2014not across scattered across tools. Sorry, your browser"
+    },
+    {
+      "slug": "invision",
+      "category": "developer_tools",
+      "year": 2021,
+      "status": "retrieved",
+      "snapshot_id": 27,
+      "source_url": "https://www.invisionapp.com/",
+      "captured_at": "2021-12-08T00:47:48+00:00",
+      "capture_age_days": 24.0,
+      "text_characters": 3010,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2021-49/segments/1637964363420.81/warc/CC-MAIN-20211207232140-20211208022140-00544.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2021-49/segments/1637964363420.81/warc/CC-MAIN-20211207232140-20211208022140-00544.warc.gz:869695804:54383",
+      "raw_sha256": "d5a36953b78f1335bf5c5b384cfb6729bf56172f6cef6cd1022ed199f20273f9",
+      "excerpt": "Transformative collaboration for all the work you do. Freehand is the visual collaboration tool disguised as an online whiteboard. Try Freehand \u2014 Free Request a demo Watch video Lead teams from ideas to execution with the digital whiteboard that\u2019s refreshingly simple, but surprisingly robust. \u2014 BRAINSTORM \u2014 BRAINSTORM\u2014BRAINSTORM \u2014 BRAIN STORM \u2014 BRAIN STORM \u2014 BRAIN STORM \u2014 BRAIN STORM \u2014 BRAIN STORM \u2014 BRAINSTORM\u2014BRAINSTORM Run your brainstorms like the teams at Xbox. \u201c Having a digital space to br"
+    },
+    {
+      "slug": "invision",
+      "category": "developer_tools",
+      "year": 2022,
+      "status": "retrieved",
+      "snapshot_id": 67,
+      "source_url": "https://www.invisionapp.com/",
+      "captured_at": "2022-12-10T06:50:21+00:00",
+      "capture_age_days": 21.7,
+      "text_characters": 2410,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2022-49/segments/1669446711712.26/warc/CC-MAIN-20221210042021-20221210072021-00704.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2022-49/segments/1669446711712.26/warc/CC-MAIN-20221210042021-20221210072021-00704.warc.gz:898800038:55582",
+      "raw_sha256": "eb9fa7e5ef263d1a5405c7d998c1297e3133f68936876c92969af7cc34523123",
+      "excerpt": "The all-in-one collaborative online whiteboard InVision\u2019s Freehand has everything your team needs to bring together people, tools, and work Create a whiteboard \u2013 Free Request a demo Brainstorm. Plan. Collaborate. Actually get stuff done. Try Freehand Multiplayer whiteboard A workspace for teams to get work done in real-time or asynchronously Powerful integrations Seamlessly connect to the tools you use every day Scalable solution Give everyone a seat at the table \u2013 one price for your whole team "
+    },
+    {
+      "slug": "invision",
+      "category": "developer_tools",
+      "year": 2023,
+      "status": "retrieved",
+      "snapshot_id": 68,
+      "source_url": "https://www.invisionapp.com/",
+      "captured_at": "2023-12-09T08:27:14+00:00",
+      "capture_age_days": 22.6,
+      "text_characters": 660,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2023-50/segments/1700679100873.6/warc/CC-MAIN-20231209071722-20231209101722-00383.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2023-50/segments/1700679100873.6/warc/CC-MAIN-20231209071722-20231209101722-00383.warc.gz:902749934:40961",
+      "raw_sha256": "e037ad29e240173ea676d07181190bff07897b969ac5836a03f40d2ef3e5a29d",
+      "excerpt": "Freehand \u2013 The all-in-one collaborative workspace Unlock your team\u2019s full potential \u2013 ideate, plan, execute, and track projects with Freehand Explore Freehand There is something so natural about collaborating in Freehand. It feels like you\u2019re holding a marker, and making ideas happen. I can\u2019t imagine doing that in another tool. It captures that human essence of being in person and talking to someone that is right next to you and getting work done together. Especially in today\u2019s world when everyt"
+    },
+    {
+      "slug": "invision",
+      "category": "developer_tools",
+      "year": 2024,
+      "status": "retrieved",
+      "snapshot_id": 69,
+      "source_url": "https://www.invisionapp.com/",
+      "captured_at": "2024-12-10T02:16:42+00:00",
+      "capture_age_days": 21.9,
+      "text_characters": 660,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2024-51/segments/1733066056346.32/warc/CC-MAIN-20241210005249-20241210035249-00383.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2024-51/segments/1733066056346.32/warc/CC-MAIN-20241210005249-20241210035249-00383.warc.gz:737894492:40949",
+      "raw_sha256": "2564d251814500d9e41e0ea25064739aeaffbf4dc1cc3c95ce387cae895748f6",
+      "excerpt": "Freehand \u2013 The all-in-one collaborative workspace Unlock your team\u2019s full potential \u2013 ideate, plan, execute, and track projects with Freehand Explore Freehand There is something so natural about collaborating in Freehand. It feels like you\u2019re holding a marker, and making ideas happen. I can\u2019t imagine doing that in another tool. It captures that human essence of being in person and talking to someone that is right next to you and getting work done together. Especially in today\u2019s world when everyt"
+    },
+    {
+      "slug": "datadog",
+      "category": "security_observability",
+      "year": 2021,
+      "status": "retrieved",
+      "snapshot_id": 28,
+      "source_url": "https://www.datadoghq.com/",
+      "captured_at": "2021-12-07T22:18:21+00:00",
+      "capture_age_days": 24.1,
+      "text_characters": 3432,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2021-49/segments/1637964363418.83/warc/CC-MAIN-20211207201422-20211207231422-00264.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2021-49/segments/1637964363418.83/warc/CC-MAIN-20211207201422-20211207231422-00264.warc.gz:755815587:172048",
+      "raw_sha256": "1cbc2f5b61cec83c9ccb9e3e9091cc9b198c74edf99d968b064ef2492c265111",
+      "excerpt": "Join Datadog @ AWS re:Invent: virtually and in person Join Datadog @ AWS re:Invent Product Features Integrations Dashboards Infrastructure Monitoring Log Management APM Continuous Profiler CI Visibility Synthetic Monitoring Real User Monitoring Network Performance Monitoring Network Device Monitoring Security Platform Security Monitoring CSPM Cloud Workload Security Error Tracking Incident Management Database Monitoring Serverless Alerts API Customers Pricing Solutions Industry Financial Service"
+    },
+    {
+      "slug": "datadog",
+      "category": "security_observability",
+      "year": 2022,
+      "status": "retrieved",
+      "snapshot_id": 29,
+      "source_url": "https://www.datadoghq.com/",
+      "captured_at": "2022-12-06T21:39:18+00:00",
+      "capture_age_days": 25.1,
+      "text_characters": 3893,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2022-49/segments/1669446711114.3/warc/CC-MAIN-20221206192947-20221206222947-00824.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2022-49/segments/1669446711114.3/warc/CC-MAIN-20221206192947-20221206222947-00824.warc.gz:767935888:176968",
+      "raw_sha256": "76f67404871682d15740f8e0b54a1d33859dd0e75512ed1cd96f4fa150365b26",
+      "excerpt": "Read the 2022 Container Research Report Read the 2022 Container Report Product Infrastructure Infrastructure Monitoring Network Performance Monitoring Network Device Monitoring Container Monitoring Serverless Cloud Cost Management Logs Log Management Sensitive Data Scanner Audit Trail Observability Pipelines APM Distributed Tracing Continuous Profiler Database Monitoring CI Visibility Service Catalog Universal Service Monitoring Security Cloud Security Management Application Security Management "
+    },
+    {
+      "slug": "datadog",
+      "category": "security_observability",
+      "year": 2023,
+      "status": "retrieved",
+      "snapshot_id": 30,
+      "source_url": "https://www.datadoghq.com/",
+      "captured_at": "2023-12-05T08:59:39+00:00",
+      "capture_age_days": 26.6,
+      "text_characters": 4408,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2023-50/segments/1700679100550.40/warc/CC-MAIN-20231205073336-20231205103336-00064.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2023-50/segments/1700679100550.40/warc/CC-MAIN-20231205073336-20231205103336-00064.warc.gz:805773231:126134",
+      "raw_sha256": "b3ce934191f8ac07d74d6006c6c014a9fc3f3a81d9166f665253c049f143dfe5",
+      "excerpt": "Read the 2023 State of Cloud Security Study! Read the 2023 Cloud Security Study! Product Infrastructure Infrastructure Monitoring Network Performance Monitoring Network Device Monitoring Container Monitoring Serverless Cloud Cost Management Logs Log Management Sensitive Data Scanner Audit Trail Observability Pipelines Applications Application Performance Monitoring Universal Service Monitoring Continuous Profiler Database Monitoring Data Streams Monitoring Service Catalog Dynamic Instrumentation"
+    },
+    {
+      "slug": "datadog",
+      "category": "security_observability",
+      "year": 2024,
+      "status": "retrieved",
+      "snapshot_id": 70,
+      "source_url": "https://www.datadoghq.com/",
+      "captured_at": "2024-12-14T04:40:34+00:00",
+      "capture_age_days": 17.8,
+      "text_characters": 5561,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2024-51/segments/1733066120473.54/warc/CC-MAIN-20241214024212-20241214054212-00064.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2024-51/segments/1733066120473.54/warc/CC-MAIN-20241214024212-20241214054212-00064.warc.gz:653592371:92191",
+      "raw_sha256": "40c881670f1d47d572a3668ae5fe186fc979cfe03b22f8463030f26cd5ce383f",
+      "excerpt": "Datadog named a Leader in the 2024 Gartner\u00ae Magic Quadrant\u2122 for Digital Experience Monitoring Leader in the Gartner\u00ae Magic Quadrant\u2122 Product Infrastructure Infrastructure Monitoring Metrics Container Monitoring Network Monitoring Serverless Cloud Cost Management Cloudcraft Applications Application Performance Monitoring Universal Service Monitoring Continuous Profiler Dynamic Instrumentation Data Streams Monitoring Database Monitoring Data Jobs Monitoring LLM Observability Logs Log Management Se"
+    },
+    {
+      "slug": "crowdstrike",
+      "category": "security_observability",
+      "year": 2021,
+      "status": "retrieved",
+      "snapshot_id": 31,
+      "source_url": "https://www.crowdstrike.com/",
+      "captured_at": "2021-12-09T09:56:16+00:00",
+      "capture_age_days": 22.6,
+      "text_characters": 2833,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2021-49/segments/1637964363791.16/warc/CC-MAIN-20211209091917-20211209121917-00260.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2021-49/segments/1637964363791.16/warc/CC-MAIN-20211209091917-20211209121917-00260.warc.gz:763820683:11097",
+      "raw_sha256": "1f17cd5619389ac01fae64d7e273dd076cbcd4a49b120fbd20505db61a67cee1",
+      "excerpt": "secure your cloud workloads endpoints cloud workloads identity data enterprise Secure your most critical areas of enterprise risk to stay ahead of today's threats and stop breaches. Learn how our Security Cloud powers your protection. Learn How CrowdStrike Extends Leadership in 2021 CrowdStrike named a leader across a number of security categories. Read Analyst Reports Stop Identity-Centric Attacks Learn how CrowdStrike enforces Zero Trust to prevent identity attacks. Learn More Zero Trust Data "
+    },
+    {
+      "slug": "crowdstrike",
+      "category": "security_observability",
+      "year": 2022,
+      "status": "retrieved",
+      "snapshot_id": 32,
+      "source_url": "https://www.crowdstrike.com/",
+      "captured_at": "2022-12-04T22:29:26+00:00",
+      "capture_age_days": 27.1,
+      "text_characters": 5827,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2022-49/segments/1669446710980.82/warc/CC-MAIN-20221204204504-20221204234504-00507.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2022-49/segments/1669446710980.82/warc/CC-MAIN-20221204204504-20221204234504-00507.warc.gz:753429448:31670",
+      "raw_sha256": "7fdb677e648b3636bbfd30c66ea04193aab68fdc2381d0e5ee6bd2cb36c8d3ad",
+      "excerpt": "When we are #1, our customers win CrowdStrike is recognized as a market and technology leader by independent analyst firms and third-party testing organizations Start today View bundles & pricing From the Frontlines \u2019Tis the Season for eCrime Read more CrowdStrike Named a Winner for 2022 CRN Tech Innovator Award... Read more CrowdStrike Named a Leader in Frost & Sullivan's 2022 Frost... Read more Why Your Small Business Needs to Rethink Its Cybersecurity Strategy Read more Innovate and Secure wi"
+    },
+    {
+      "slug": "crowdstrike",
+      "category": "security_observability",
+      "year": 2023,
+      "status": "retrieved",
+      "snapshot_id": 33,
+      "source_url": "https://www.crowdstrike.com/",
+      "captured_at": "2023-12-10T04:40:22+00:00",
+      "capture_age_days": 21.8,
+      "text_characters": 10814,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2023-50/segments/1700679101195.85/warc/CC-MAIN-20231210025335-20231210055335-00460.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2023-50/segments/1700679101195.85/warc/CC-MAIN-20231210025335-20231210055335-00460.warc.gz:565490655:17119",
+      "raw_sha256": "62f5033bed97d7881a4c171b145e596e14d48dbe6149e98b185bc9e9a75cc31d",
+      "excerpt": "Unstoppable Innovations from CrowdStrike FalCon 2023 CrowdCast Series: Get in the Know! Register Now Start now Platform Services Why CrowdStrike? Learn Company Contact Us Experienced a Breach? Languages Main Menu Falcon Platform Bundles Falcon Go: get started with CrowdStrike Affordable next-gen antivirus and USB device control to protect your business. Falcon Pro: optimize your defense Next-gen antivirus and threat intelligence for greater insight into your environment. Automated threat investi"
+    },
+    {
+      "slug": "crowdstrike",
+      "category": "security_observability",
+      "year": 2024,
+      "status": "retrieved",
+      "snapshot_id": 84,
+      "source_url": "https://www.crowdstrike.com/en-us/",
+      "captured_at": "2024-12-14T00:12:52+00:00",
+      "capture_age_days": 18.0,
+      "text_characters": 6409,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2024-51/segments/1733066119841.22/warc/CC-MAIN-20241213233207-20241214023207-00213.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2024-51/segments/1733066119841.22/warc/CC-MAIN-20241213233207-20241214023207-00213.warc.gz:666622265:23214",
+      "raw_sha256": "3c294a3fbe729fa7d6a648a685f5da09dfdeeef059ec750caef65db7e9b7e3f0",
+      "excerpt": "CrowdStrike Acquires Adaptive Shield, Delivering Unified Cloud and Identity Security for SaaS applications Learn more Skip to Main Content Experienced a Breach? Small Business CrowdStrike Marketplace Contact Us Blog Platform Services Why CrowdStrike Learn Company Login Your Cart Added to Cart There's nothing in your cart Explore products per endpoint / per year - + View Order{cartSize} Continue Shopping Updating cart... View bundles & pricing View bundles & pricing Platform Services Why CrowdStr"
+    },
+    {
+      "slug": "elastic",
+      "category": "security_observability",
+      "year": 2021,
+      "status": "retrieved",
+      "snapshot_id": 34,
+      "source_url": "https://www.elastic.co/",
+      "captured_at": "2021-12-06T06:27:15+00:00",
+      "capture_age_days": 25.7,
+      "text_characters": 4434,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2021-49/segments/1637964363290.39/warc/CC-MAIN-20211206042636-20211206072636-00300.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2021-49/segments/1637964363290.39/warc/CC-MAIN-20211206042636-20211206072636-00300.warc.gz:833104569:33496",
+      "raw_sha256": "5ed321d1dc2b5fa46330ad67100182c76e14353518f254adef8647b668991330",
+      "excerpt": "Crawl systems GO Effortless search implementation and website content ingestion with the native web crawler \u2014 now generally available in 7.15. Get started Analyst Reports 2021 Gartner Magic Quadrant for Insight Engines Elastic is a new entrant and has been recognized as a Challenger in the 2021 Gartner Magic Quadrant for Insight Engines. Events & Webinars RSVP. Or watch now. Search for upcoming events and browse on-demand content from past events, including roadmap sessions, user stories, commun"
+    },
+    {
+      "slug": "elastic",
+      "category": "security_observability",
+      "year": 2022,
+      "status": "retrieved",
+      "snapshot_id": 35,
+      "source_url": "https://www.elastic.co/",
+      "captured_at": "2022-12-07T12:43:49+00:00",
+      "capture_age_days": 24.5,
+      "text_characters": 4070,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2022-49/segments/1669446711162.52/warc/CC-MAIN-20221207121241-20221207151241-00620.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2022-49/segments/1669446711162.52/warc/CC-MAIN-20221207121241-20221207151241-00620.warc.gz:734695786:58713",
+      "raw_sha256": "f746f25a387663a09e1c0e04a748bc5a3aa971b3b910a2104424ff065346b28f",
+      "excerpt": "Search. Solve. Succeed. Accelerate results that matter, across any cloud. Easily deploy anywhere, and extend the value of Elastic with cloud-native features. Start free trial Security without limits Elastic\u2019s SIEM recognized by analysts In just two years, Elastic has become one of the fastest growing SIEMs Events & Webinars RSVP. Or watch now. Search for upcoming events and browse on-demand content from past events, including roadmap sessions, user stories, community meetups, and expert-led deep"
+    },
+    {
+      "slug": "elastic",
+      "category": "security_observability",
+      "year": 2023,
+      "status": "retrieved",
+      "snapshot_id": 36,
+      "source_url": "https://www.elastic.co/",
+      "captured_at": "2023-12-08T18:07:50+00:00",
+      "capture_age_days": 23.2,
+      "text_characters": 1845,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2023-50/segments/1700679100769.54/warc/CC-MAIN-20231208180539-20231208210539-00780.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2023-50/segments/1700679100769.54/warc/CC-MAIN-20231208180539-20231208210539-00780.warc.gz:829036444:95511",
+      "raw_sha256": "982b4a03098863e3c39fef9a82b8b8273c971f85756df99cf03d63a16ec25019",
+      "excerpt": "Skip to main content Accelerate time to insight with Elasticsearch and AI Elastic enables everyone to find the answers that matter. From all data. In real time. At scale. Elastic \u2014 The Search Analytics Company Drive results with AI Test drive free Trusted by 50% of the Fortune 500 to drive innovation See all customer stories Three solutions built on Elasticsearch Get relevant results at unprecedented speed with open and flexible enterprise solutions \u2014 powered by Elasticsearch Platform and AI. Yo"
+    },
+    {
+      "slug": "elastic",
+      "category": "security_observability",
+      "year": 2024,
+      "status": "retrieved",
+      "snapshot_id": 37,
+      "source_url": "https://www.elastic.co/",
+      "captured_at": "2024-12-13T23:33:18+00:00",
+      "capture_age_days": 18.0,
+      "text_characters": 2561,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2024-51/segments/1733066119841.22/warc/CC-MAIN-20241213233207-20241214023207-00780.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2024-51/segments/1733066119841.22/warc/CC-MAIN-20241213233207-20241214023207-00780.warc.gz:675562185:89614",
+      "raw_sha256": "2cda88369668a4ad1bff273b06f881e1b5e13f536370010572e7e120a6edce43",
+      "excerpt": "Skip to main content Supercharge your skills at ElasticON \u2013 join us at an event near you Register now Live log and prosper Elasticsearch's new index mode, logsdb, reduces log storage by up to 65% Learn more Get started Elastic is named a Leader in the 2024 Gartner\u00ae Magic Quadrant\u2122 for Observability Platforms. Read the blog Effortless Elasticsearch management \u2014 AutoOps is here, and it's free for Elastic Cloud customers. Read the blog Automatically migrate your legacy SIEM with AI. Cut onboarding "
+    },
+    {
+      "slug": "snyk",
+      "category": "security_observability",
+      "year": 2021,
+      "status": "retrieved",
+      "snapshot_id": 38,
+      "source_url": "https://snyk.io/",
+      "captured_at": "2021-12-03T16:14:47+00:00",
+      "capture_age_days": 28.3,
+      "text_characters": 2803,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2021-49/segments/1637964362891.54/warc/CC-MAIN-20211203151849-20211203181849-00183.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2021-49/segments/1637964362891.54/warc/CC-MAIN-20211203151849-20211203181849-00183.warc.gz:575137572:16952",
+      "raw_sha256": "fb51999952cade683d4e4e678dba807c962903e27bfdc36a309da266577c73d1",
+      "excerpt": "AWS Integrates Snyk Security Intelligence into AWS\u2019 security assessment service, Amazon Inspector, and achieves AWS Security Competency. Learn more Develop fast. Stay secure. Find and automatically fix vulnerabilities in your code, open source dependencies, containers, and infrastructure as code \u2014 all powered by Snyk\u2019s industry-leading security intelligence. Start free Book a demo Your browser does not support the video tag. millions of developers build securely with snyk Find and fix vulnerabil"
+    },
+    {
+      "slug": "snyk",
+      "category": "security_observability",
+      "year": 2022,
+      "status": "retrieved",
+      "snapshot_id": 39,
+      "source_url": "https://snyk.io/",
+      "captured_at": "2022-12-03T15:29:18+00:00",
+      "capture_age_days": 28.4,
+      "text_characters": 2821,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2022-49/segments/1669446710933.89/warc/CC-MAIN-20221203143925-20221203173925-00696.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2022-49/segments/1669446710933.89/warc/CC-MAIN-20221203143925-20221203173925-00696.warc.gz:574650311:17733",
+      "raw_sha256": "a875ca744d656939a6a56c8866e29b1ba7b2b59080c938f935585d4906a272c9",
+      "excerpt": "Developer loved, Security trusted. Find and automatically fix vulnerabilities in your code, open source dependencies, containers, and infrastructure as code \u2014 all powered by Snyk\u2019s industry-leading security intelligence. Get started with a free forever account, and scale up if needed. Start free Book a demo Your browser does not support the video tag. millions of developers build securely with snyk What is snyk Find and fix vulnerabilities in 5 minutes Integrate easily Snyk comes to you, weaving"
+    },
+    {
+      "slug": "snyk",
+      "category": "security_observability",
+      "year": 2023,
+      "status": "retrieved",
+      "snapshot_id": 40,
+      "source_url": "https://snyk.io/",
+      "captured_at": "2023-12-06T00:12:24+00:00",
+      "capture_age_days": 26.0,
+      "text_characters": 3916,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2023-50/segments/1700679100575.30/warc/CC-MAIN-20231206000253-20231206030253-00436.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2023-50/segments/1700679100575.30/warc/CC-MAIN-20231206000253-20231206030253-00436.warc.gz:582480056:24384",
+      "raw_sha256": "77e3151ce76a9809c26e24133ecb8f9c403287574202bc8b4e3555468674a7e8",
+      "excerpt": "Developer loved, Security trusted. Find and automatically fix vulnerabilities in your code, open source dependencies, containers, and IaC \u2014 powered by Snyk\u2019s industry-leading security intelligence and DeepCode AI. Start free Book a live demo Millions of developers build securely with Snyk What is Snyk Find and fix vulnerabilities in 5 minutes Integrate easily Snyk comes to you, weaving security expertise into your existing IDEs, repos, and workflows. Scan continuously Snyk monitors for vulns whi"
+    },
+    {
+      "slug": "snyk",
+      "category": "security_observability",
+      "year": 2024,
+      "status": "retrieved",
+      "snapshot_id": 41,
+      "source_url": "https://snyk.io/",
+      "captured_at": "2024-12-14T06:19:01+00:00",
+      "capture_age_days": 17.7,
+      "text_characters": 2493,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2024-51/segments/1733066124856.56/warc/CC-MAIN-20241214054842-20241214084842-00436.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2024-51/segments/1733066124856.56/warc/CC-MAIN-20241214054842-20241214084842-00436.warc.gz:490124503:25952",
+      "raw_sha256": "624dbfa67d27c802b5a5e179b7e17e5580f87d00373f99696d0ffe7c3e490afe",
+      "excerpt": "Skip to main content Snyk Acquires Developer-First DAST Provider Probely Develop fast. Stay secure. Snyk gives you the visibility, context, and control you need to work alongside developers on reducing application risk. Book a live demo Experience DevSecCon 2024 Hear from leading voices as they explore modern risks and share strategies for building safer, more secure applications. Watch the recordings Millions of developers build securely with Snyk What is Snyk Find and fix vulnerabilities in 5 "
+    },
+    {
+      "slug": "vanta",
+      "category": "security_observability",
+      "year": 2021,
+      "status": "retrieved",
+      "snapshot_id": 42,
+      "source_url": "https://www.vanta.com/",
+      "captured_at": "2021-12-04T16:24:47+00:00",
+      "capture_age_days": 27.3,
+      "text_characters": 6103,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2021-49/segments/1637964362999.66/warc/CC-MAIN-20211204154554-20211204184554-00563.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2021-49/segments/1637964362999.66/warc/CC-MAIN-20211204154554-20211204184554-00563.warc.gz:1144449776:16327",
+      "raw_sha256": "6321a06f36775f04a1cd547e2b1a5e39c36f17d95e9fb4f66d506ba38c04c828",
+      "excerpt": "By clicking \u201cAccept\u201d, you agree to the use of cookies on your device in accordance with our Privacy and Cookie policies. Manage Cookies ACCEPT Cookie Manager Privacy is important to us, so you have the option to disable cookies that may not be necessary for the basic functionality of our website. Please note, blocking categories may impact your experience on our website. View our Cookie Policy for more info. Reject all cookies Accept all cookies Manage preferences by category Essential Always ac"
+    },
+    {
+      "slug": "vanta",
+      "category": "security_observability",
+      "year": 2022,
+      "status": "retrieved",
+      "snapshot_id": 43,
+      "source_url": "https://www.vanta.com/",
+      "captured_at": "2022-12-02T22:48:17+00:00",
+      "capture_age_days": 29.0,
+      "text_characters": 8242,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2022-49/segments/1669446710916.70/warc/CC-MAIN-20221202215443-20221203005443-00563.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2022-49/segments/1669446710916.70/warc/CC-MAIN-20221202215443-20221203005443-00563.warc.gz:1112353273:23019",
+      "raw_sha256": "8ba72595c5114965f4ccf0a95ed356ab020c5c417a1b634ff6931afcb1e188f6",
+      "excerpt": "\ud83c\udf89 Introducing our Connectors API for integration builders Learn more > Automate compliance. Simplify security. Vanta helps companies scale security practices and automate compliance for the industry\u2019s most sought after standards - SOC 2, ISO 27001, HIPAA, GDPR, and other in-demand security and privacy frameworks. GET STARTED TODAY Watch our video \u203a Thousands of fast-growing businesses rely on Vanta to protect and monitor the data of hundreds of thousands of employees. What is Vanta? How does Van"
+    },
+    {
+      "slug": "vanta",
+      "category": "security_observability",
+      "year": 2023,
+      "status": "retrieved",
+      "snapshot_id": 44,
+      "source_url": "https://www.vanta.com/",
+      "captured_at": "2023-12-06T04:19:16+00:00",
+      "capture_age_days": 25.8,
+      "text_characters": 4789,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2023-50/segments/1700679100583.13/warc/CC-MAIN-20231206031946-20231206061946-00063.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2023-50/segments/1700679100583.13/warc/CC-MAIN-20231206031946-20231206061946-00063.warc.gz:1166303282:21886",
+      "raw_sha256": "54b77023ef416d0ae8c8a0c50247c69ac6bf1f5ef01776d9b8fa331654a54275",
+      "excerpt": "Login Request a Demo \ud83c\udf89 Announcing Vanta AI Learn more Your security and compliance verified Automate compliance and streamline security reviews with the leading trust management platform. Vanta helps SaaS businesses of all sizes manage risk and prove security in real time. Request a Demo Take a tour The security and compliance platform trusted by more than 6,000 customers. How does Vanta work? Vanta automates up to 90% of the work for security and privacy frameworks Real-time monitoring Know the"
+    },
+    {
+      "slug": "vanta",
+      "category": "security_observability",
+      "year": 2024,
+      "status": "retrieved",
+      "snapshot_id": 45,
+      "source_url": "https://www.vanta.com/",
+      "captured_at": "2024-12-11T15:17:52+00:00",
+      "capture_age_days": 20.4,
+      "text_characters": 4275,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2024-51/segments/1733066090825.12/warc/CC-MAIN-20241211143606-20241211173606-00063.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2024-51/segments/1733066090825.12/warc/CC-MAIN-20241211143606-20241211173606-00063.warc.gz:943695420:24758",
+      "raw_sha256": "fb95fb93d34afc7a7124a7a5bae10e0306bc0d14be07a6833a93383ff8144c08",
+      "excerpt": "Login Request a Demo \ud83d\udce3 June 4th Vanta in Action: How to streamline security reviews with Trust Center Register Trusted by thousands of customers, from startup to enterprise The all-in- one trust management platform Automated compliance Automate evidence collection for [frameworks_count] compliance frameworks like SOC 2, ISO 27001, GDPR, and more. Explore compliance Continuous GRC Move beyond point-in-time assessments with continuous controls monitoring and risk management. Explore GRC Vendor Ris"
+    },
+    {
+      "slug": "uipath",
+      "category": "ai_automation",
+      "year": 2021,
+      "status": "retrieved",
+      "snapshot_id": 46,
+      "source_url": "https://www.uipath.com/",
+      "captured_at": "2021-12-09T06:26:14+00:00",
+      "capture_age_days": 22.7,
+      "text_characters": 8190,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2021-49/segments/1637964363689.56/warc/CC-MAIN-20211209061259-20211209091259-00467.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2021-49/segments/1637964363689.56/warc/CC-MAIN-20211209061259-20211209091259-00467.warc.gz:1121356073:68584",
+      "raw_sha256": "0c00b373cfd4c466e3f4715a41df0b7897c6a7485988ac0902ff226956ea8c14",
+      "excerpt": "Hello, we\u2019re UiPath. We make software robots, so people don\u2019t have to be robots. Try UiPath Free See how 2021 Gartner\u00ae Magic Quadrant\u2122 for Robotic Process Automation UiPath named a Leader for the third consecutive year, positioned highest for ability to execute. Get the report UiPath 2021.10 Release Series: Advancing Automation for the Fully Automated Enterprise\u2122 With a new product and more than 100 feature enhancements across UiPath products, UiPath 2021.10 release sets you up to succeed with y"
+    },
+    {
+      "slug": "uipath",
+      "category": "ai_automation",
+      "year": 2022,
+      "status": "retrieved",
+      "snapshot_id": 47,
+      "source_url": "https://www.uipath.com/",
+      "captured_at": "2022-12-09T15:13:26+00:00",
+      "capture_age_days": 22.4,
+      "text_characters": 7509,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2022-49/segments/1669446711417.46/warc/CC-MAIN-20221209144722-20221209174722-00067.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2022-49/segments/1669446711417.46/warc/CC-MAIN-20221209144722-20221209174722-00067.warc.gz:1085454874:67889",
+      "raw_sha256": "8d5baa36ed16a688188e073e150655a737741fa1509cea2de6a2024b6af6f538",
+      "excerpt": "Donate to the Solidarity Fund for Ukraine with the UiPath Foundation Hello, we\u2019re UiPath. We make software robots, so people don\u2019t have to be robots. Try UiPath Free See how 2022 Gartner\u00ae Magic Quadrant\u2122 for Robotic Process Automation UiPath named a Leader for the fourth consecutive year. Gartner recognized UiPath for its completeness of vision, and ability to execute. Get the report UiPath 2022.10 Release: Where automation leads to greater innovation November 15\u2014Join us at this virtual event to"
+    },
+    {
+      "slug": "uipath",
+      "category": "ai_automation",
+      "year": 2023,
+      "status": "retrieved",
+      "snapshot_id": 48,
+      "source_url": "https://www.uipath.com/",
+      "captured_at": "2023-12-06T11:23:20+00:00",
+      "capture_age_days": 25.5,
+      "text_characters": 7661,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2023-50/segments/1700679100593.71/warc/CC-MAIN-20231206095331-20231206125331-00084.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2023-50/segments/1700679100593.71/warc/CC-MAIN-20231206095331-20231206125331-00084.warc.gz:1143342956:67901",
+      "raw_sha256": "880bea67c95403754acd06491d72f1623319e8507bd2e9f7212fa1b1fba01047",
+      "excerpt": "AI at Work Discover the power of AI at work with The Best Bits of FORWARD VI Watch now Explore AI at Work Join hosts Mary Tetlow and Geoff Anderson for UiPath Live , Dec. 13. Register now See what's new in our Gallery of Customer Achievement Join us December 6 for the UiPath Test Summit The UiPath Business Automation Platform. From insight to innovation at the speed you need. Discover Continually uncover new possibilities for improvement. Automate Build the end-to-end infrastructure that transfo"
+    },
+    {
+      "slug": "uipath",
+      "category": "ai_automation",
+      "year": 2024,
+      "status": "retrieved",
+      "snapshot_id": 49,
+      "source_url": "https://www.uipath.com/",
+      "captured_at": "2024-12-14T19:42:47+00:00",
+      "capture_age_days": 17.2,
+      "text_characters": 7862,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2024-51/segments/1733066125982.36/warc/CC-MAIN-20241214181735-20241214211735-00084.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2024-51/segments/1733066125982.36/warc/CC-MAIN-20241214181735-20241214211735-00084.warc.gz:907833963:75480",
+      "raw_sha256": "c75e368abfb46161359728729666215f71c932c4956b20abe5bb4ef5a3e99cc2",
+      "excerpt": "Agentic. Robotic. Fantastic! The future of automation is agentic and robotic . Watch how Get the future here:\u200b UiPath AI & Automation Trends 2025 Download the report Meet Autopilot\u2122 for Everyone Available on demand: UiPath 2024.10 Release Event Your AI-powered Business Automation Platform. From insight to innovation at the speed you need. Discover Continuously uncover new possibilities for improvement with the power of AI. Automate Rapidly build AI-powered automation across any technology. Opera"
+    },
+    {
+      "slug": "palantir",
+      "category": "ai_automation",
+      "year": 2021,
+      "status": "short",
+      "snapshot_id": 85,
+      "source_url": "https://www.palantir.com/",
+      "captured_at": "2021-10-19T20:28:51+00:00",
+      "capture_age_days": 73.1,
+      "text_characters": 0,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2021-43/segments/1634323585281.35/warc/CC-MAIN-20211019202148-20211019232148-00512.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2021-43/segments/1634323585281.35/warc/CC-MAIN-20211019202148-20211019232148-00512.warc.gz:1104824657:20988",
+      "raw_sha256": "62913da2a7e21efddb97264ff708dc2d771cf7407aad8044c1a8fd4ca212e2b2",
+      "excerpt": ""
+    },
+    {
+      "slug": "palantir",
+      "category": "ai_automation",
+      "year": 2022,
+      "status": "short",
+      "snapshot_id": 78,
+      "source_url": "https://www.palantir.com/",
+      "captured_at": "2022-12-09T19:09:33+00:00",
+      "capture_age_days": 22.2,
+      "text_characters": 0,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2022-49/segments/1669446711475.44/warc/CC-MAIN-20221209181231-20221209211231-00032.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2022-49/segments/1669446711475.44/warc/CC-MAIN-20221209181231-20221209211231-00032.warc.gz:988064462:35051",
+      "raw_sha256": "165f7c2b90e7b754aaedf591301d2a5d6a355f6e20cd8ca2d52f445d7216c0a6",
+      "excerpt": ""
+    },
+    {
+      "slug": "palantir",
+      "category": "ai_automation",
+      "year": 2023,
+      "status": "short",
+      "snapshot_id": 79,
+      "source_url": "https://www.palantir.com/",
+      "captured_at": "2023-12-06T00:21:06+00:00",
+      "capture_age_days": 26.0,
+      "text_characters": 0,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2023-50/segments/1700679100575.30/warc/CC-MAIN-20231206000253-20231206030253-00152.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2023-50/segments/1700679100575.30/warc/CC-MAIN-20231206000253-20231206030253-00152.warc.gz:1036140128:54161",
+      "raw_sha256": "207922e2253c8f7d08859f19971d39c0ea323720119da9b3fb01f16586c38471",
+      "excerpt": ""
+    },
+    {
+      "slug": "palantir",
+      "category": "ai_automation",
+      "year": 2024,
+      "status": "short",
+      "snapshot_id": 80,
+      "source_url": "https://www.palantir.com/",
+      "captured_at": "2024-12-10T08:05:25+00:00",
+      "capture_age_days": 21.7,
+      "text_characters": 0,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2024-51/segments/1733066057523.33/warc/CC-MAIN-20241210071103-20241210101103-00152.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2024-51/segments/1733066057523.33/warc/CC-MAIN-20241210071103-20241210101103-00152.warc.gz:849315276:57977",
+      "raw_sha256": "cbff348194ec4af5d3ebaebad1080447e353ae33d0ef76493ee2b55902051f26",
+      "excerpt": ""
+    },
+    {
+      "slug": "weights-and-biases",
+      "category": "ai_automation",
+      "year": 2021,
+      "status": "retrieved",
+      "snapshot_id": 50,
+      "source_url": "https://wandb.ai/site",
+      "captured_at": "2021-12-01T21:55:57+00:00",
+      "capture_age_days": 30.1,
+      "text_characters": 11445,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2021-49/segments/1637964360951.9/warc/CC-MAIN-20211201203843-20211201233843-00498.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2021-49/segments/1637964360951.9/warc/CC-MAIN-20211201203843-20211201233843-00498.warc.gz:665208288:18075",
+      "raw_sha256": "dfa0506bb674e21d2ecb8f3b12e1d6cda119a9345ff13e3c352d90ca05254f3f",
+      "excerpt": "The developer-first \u200d MLOps platform Build better models faster with experiment tracking, dataset versioning, and model management Sign up Request demo Explore the Weights & Biases products Experiments Experiment tracking Reports Collaborative dashboards Artifacts Dataset and model versioning Tables Interactive data visualization Sweeps Hyperparameter optimization Trusted by 100,000+ ML practitioners Weights & Biases is available in the cloud or installed on your private infrastructure. LEARN AB"
+    },
+    {
+      "slug": "weights-and-biases",
+      "category": "ai_automation",
+      "year": 2022,
+      "status": "retrieved",
+      "snapshot_id": 51,
+      "source_url": "https://wandb.ai/site",
+      "captured_at": "2022-11-26T09:17:49+00:00",
+      "capture_age_days": 35.6,
+      "text_characters": 11541,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2022-49/segments/1669446706285.92/warc/CC-MAIN-20221126080725-20221126110725-00258.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2022-49/segments/1669446706285.92/warc/CC-MAIN-20221126080725-20221126110725-00258.warc.gz:657601134:18549",
+      "raw_sha256": "2c381d0cee38897ca3b4e0f61df012900be1b0e0ece0b8b99652b4ee343bdf73",
+      "excerpt": "The developer-first \u200d MLOps platform Build better models faster with experiment tracking, dataset versioning, and model management Sign up Request demo Explore the Weights & Biases platform Experiments Experiment tracking Reports Collaborative dashboards Artifacts Dataset and model versioning Tables Interactive data visualization Sweeps Hyperparameter optimization Models Centralized model registry Launch Automated ML workflows Trusted by 300,000+ ML practitioners Weights & Biases is available in"
+    },
+    {
+      "slug": "weights-and-biases",
+      "category": "ai_automation",
+      "year": 2023,
+      "status": "retrieved",
+      "snapshot_id": 52,
+      "source_url": "https://wandb.ai/site",
+      "captured_at": "2023-12-11T15:44:12+00:00",
+      "capture_age_days": 20.3,
+      "text_characters": 6548,
+      "warc_truncated": "length",
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2023-50/segments/1700679515260.97/warc/CC-MAIN-20231211143258-20231211173258-00058.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2023-50/segments/1700679515260.97/warc/CC-MAIN-20231211143258-20231211173258-00058.warc.gz:660878538:561918",
+      "raw_sha256": "9777f50608b79d2362272a2f791e48dd7e072e71e9899d41656486bce9c6e430",
+      "excerpt": "Skip to content SIGN IN Sign up The AI Developer Platform Weights & Biases helps AI developers build better models faster. Quickly track experiments, version and iterate on datasets, evaluate model performance, reproduce models, and manage your ML workflows end-to-end. SIGN UP REQUEST DEMO Loved by 800,000+ ML practitioners The world\u2019s leading ML teams trust W&B Meet our customers The Weights & Biases platform helps you streamline your ML workflow from end to end Experiments Experiment tracking "
+    },
+    {
+      "slug": "weights-and-biases",
+      "category": "ai_automation",
+      "year": 2024,
+      "status": "retrieved",
+      "snapshot_id": 53,
+      "source_url": "https://wandb.ai/site",
+      "captured_at": "2024-12-10T20:41:58+00:00",
+      "capture_age_days": 21.1,
+      "text_characters": 5157,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2024-51/segments/1733066067826.3/warc/CC-MAIN-20241210194529-20241210224529-00058.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2024-51/segments/1733066067826.3/warc/CC-MAIN-20241210194529-20241210224529-00058.warc.gz:569623132:101412",
+      "raw_sha256": "1cccfac64b2bcdac3cde4c249335f20ed088866fed3fa86e43e268fffa238cf3",
+      "excerpt": "Skip to content LOG IN Sign up ko ja en de AI is easy to productionize The AI developer platform to build AI applications and models with confidence W&B Weave: Develop AI applications import weave weave.init(\"quickstart\") @weave.op() def llm_app(prompt): pass # Track LLM calls, document retrieval, agent steps get started with weave W&B Models: Build AI models import wandb run = wandb.init(project=\"my-model-training-project\") run.config = {\"epochs\": 1337, \"learning_rate\": 3e-4} run.log({\"metric\":"
+    },
+    {
+      "slug": "replit",
+      "category": "ai_automation",
+      "year": 2021,
+      "status": "retrieved",
+      "snapshot_id": 54,
+      "source_url": "https://replit.com/",
+      "captured_at": "2021-12-09T10:37:18+00:00",
+      "capture_age_days": 22.6,
+      "text_characters": 2125,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2021-49/segments/1637964363791.16/warc/CC-MAIN-20211209091917-20211209121917-00402.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2021-49/segments/1637964363791.16/warc/CC-MAIN-20211209091917-20211209121917-00402.warc.gz:535351056:39912",
+      "raw_sha256": "388f265eb9d0b773efd8d970d44bad127ca8010674618a087d867ac66b94f4de",
+      "excerpt": "Code, create, and learn together Use our free, collaborative, in-browser IDE to code in 50+ languages \u2014 without spending a second on setup. Start coding Features for all skill levels In-browser IDE Start coding with your favorite language on any platform, OS, and device. Real-time collaboration Invite your friends, teammates, and colleagues right into your code with Google-docs like editing. GitHub integration Import, run, and collaborate on millions of GitHub repos with 0 manual setup. 50+ lang"
+    },
+    {
+      "slug": "replit",
+      "category": "ai_automation",
+      "year": 2022,
+      "status": "retrieved",
+      "snapshot_id": 55,
+      "source_url": "https://replit.com/",
+      "captured_at": "2022-12-09T10:37:39+00:00",
+      "capture_age_days": 22.6,
+      "text_characters": 10965,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2022-49/segments/1669446711394.73/warc/CC-MAIN-20221209080025-20221209110025-00242.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2022-49/segments/1669446711394.73/warc/CC-MAIN-20221209080025-20221209110025-00242.warc.gz:512990854:66941",
+      "raw_sha256": "45ced05f902d9268864a30edbf0a77bce7e7dbb305a06f433431ac7aae95a5ac",
+      "excerpt": "Skip to content Make something great. Build software collaboratively from anywhere in the world, on any device, without spending a second on setup Start creating Join a community of 15 million software creators building on Replit Share to, learn from, and remix the work of top builders around the world Featured work SSSPICY! torcado Award-Winning Game A hungry snake went looking for food, and stumbled upon a peculiar, spicy pepper. Help the snake eat all the food and get back to its home! Stripe"
+    },
+    {
+      "slug": "replit",
+      "category": "ai_automation",
+      "year": 2023,
+      "status": "retrieved",
+      "snapshot_id": 56,
+      "source_url": "https://replit.com/",
+      "captured_at": "2023-12-11T05:27:37+00:00",
+      "capture_age_days": 20.8,
+      "text_characters": 11350,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2023-50/segments/1700679103558.93/warc/CC-MAIN-20231211045204-20231211075204-00502.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2023-50/segments/1700679103558.93/warc/CC-MAIN-20231211045204-20231211075204-00502.warc.gz:519894234:181869",
+      "raw_sha256": "a0394d0a9f28b29ee5ff169bc99487ae1f8875fe10ba9f5b2bae12b6fb4cdf60",
+      "excerpt": "Skip to content Idea to software, fast Build software collaboratively with the power of AI, on any device, without spending a second on setup Start creating Join 20 million software creators building on Replit Generate, edit, and explain code with Replit AI. Collaborate in our real-time multiplayer editor. Build, test, and deploy directly from the browser. OpenAI GPT-4 Chat UI zahid AI Build your own GPT-4 frontend with this open source Next.js template! Simply add your OpenAI API key and you're"
+    },
+    {
+      "slug": "replit",
+      "category": "ai_automation",
+      "year": 2024,
+      "status": "retrieved",
+      "snapshot_id": 57,
+      "source_url": "https://replit.com/",
+      "captured_at": "2024-12-09T17:37:07+00:00",
+      "capture_age_days": 22.3,
+      "text_characters": 3425,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2024-51/segments/1733066046748.1/warc/CC-MAIN-20241209152324-20241209182324-00502.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2024-51/segments/1733066046748.1/warc/CC-MAIN-20241209152324-20241209182324-00502.warc.gz:447415566:53970",
+      "raw_sha256": "205b7580fed962578541ba0a359e776fae957e0a3416472b65570e5e20ba83e0",
+      "excerpt": "I d e a to a pp, fa s t. Create beautiful, modern web applications at the speed of thought. Describe what you need and Replit's AI Agent builds it for you. \ud83d\udecd\ufe0f Online shop \u270d\ufe0f Personal blog \u23f0 Waitlist site \ud83d\udcaa Workout tracker \ud83e\udd16 AI debate app Attach Start building Loved by 30 million software creators, including teams at: Replit Agent: The best AI for apps and websites Your own automated web developer Meet Replit Agent, an advanced AI making programming accessible to everyone . Build at the speed of "
+    },
+    {
+      "slug": "datarobot",
+      "category": "ai_automation",
+      "year": 2021,
+      "status": "retrieved",
+      "snapshot_id": 58,
+      "source_url": "https://www.datarobot.com/",
+      "captured_at": "2021-12-08T16:33:31+00:00",
+      "capture_age_days": 23.3,
+      "text_characters": 5240,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2021-49/segments/1637964363515.28/warc/CC-MAIN-20211208144647-20211208174647-00556.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2021-49/segments/1637964363515.28/warc/CC-MAIN-20211208144647-20211208174647-00556.warc.gz:770959753:29262",
+      "raw_sha256": "5677e1b54e7c395d438e57c7d66586b3f85143d671665ead2980ecd5e3d67503",
+      "excerpt": "Skip to content Announcing AI Cloud for Industries Discover More Introducing AI Cloud The Next Generation of AI Discover More Empowering YOU Data Scientists Business Analysts Data Engineers Software Developers IT Professionals Business Leaders Curious Individuals YOU to Leverage Augmented Intelligence See It In Action Quick Links Take a Tour Demo Live Sessions Webinars Hands-on Labs Data Robot AI Cloud Platform Collaboration for all users Data Science & Analytics Experts IT & DevOps Teams Execut"
+    },
+    {
+      "slug": "datarobot",
+      "category": "ai_automation",
+      "year": 2022,
+      "status": "retrieved",
+      "snapshot_id": 59,
+      "source_url": "https://www.datarobot.com/",
+      "captured_at": "2022-12-09T18:14:18+00:00",
+      "capture_age_days": 22.2,
+      "text_characters": 7632,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2022-49/segments/1669446711475.44/warc/CC-MAIN-20221209181231-20221209211231-00595.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2022-49/segments/1669446711475.44/warc/CC-MAIN-20221209181231-20221209211231-00595.warc.gz:762449660:31398",
+      "raw_sha256": "57ba138f5d0cdfb1c15979229f2490b5aec107cc49bbca6c2c2b709781d845b3",
+      "excerpt": "Skip to content Empowering YOU Data Scientists Business Analysts Data Engineers Software Developers IT Professionals Business Leaders Curious Individuals YOU to Leverage Augmented Intelligence See It in Action Deloitte Technology Fast 500 We're honored to be named to the Deloitte Technology Fast 500 list for the second consecutive year. Learn More Data Robot Named a Leader Download The Forrester Wave\u2122: AI/ML Platforms, Q3 2022 to receive a detailed assessment of the top vendors in the market. Do"
+    },
+    {
+      "slug": "datarobot",
+      "category": "ai_automation",
+      "year": 2023,
+      "status": "retrieved",
+      "snapshot_id": 60,
+      "source_url": "https://www.datarobot.com/",
+      "captured_at": "2023-12-11T05:09:56+00:00",
+      "capture_age_days": 20.8,
+      "text_characters": 6822,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2023-50/segments/1700679103558.93/warc/CC-MAIN-20231211045204-20231211075204-00435.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2023-50/segments/1700679103558.93/warc/CC-MAIN-20231211045204-20231211075204-00435.warc.gz:786927880:37919",
+      "raw_sha256": "9b206c88e191f84f0026d59a65c0190dd55fba1f070eeea9e29b7b232d04bf74",
+      "excerpt": "Skip to content The Fastest Path to AI Value The AI Platform That Lets You Focus on Tangible Business Outcomes, Not Infrastructure. Discover the AI Platform INDUSTRY ANALYST REPORT DataRobot is Recognized as a Leader in IDC MarketScape: Worldwide AI Governance Platforms 2023 Download the Excerpt Closing the Generative AI Confidence Gap Watch now Complimentary Gartner\u00ae Report How to Choose an Approach for Deploying Generative AI A Report on Choosing the Right Deployment Approach to Ensure AI Gove"
+    },
+    {
+      "slug": "datarobot",
+      "category": "ai_automation",
+      "year": 2024,
+      "status": "retrieved",
+      "snapshot_id": 61,
+      "source_url": "https://www.datarobot.com/",
+      "captured_at": "2024-12-12T16:31:30+00:00",
+      "capture_age_days": 19.3,
+      "text_characters": 2273,
+      "warc_truncated": null,
+      "provider": "commoncrawl",
+      "archive_url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2024-51/segments/1733066110042.43/warc/CC-MAIN-20241212155226-20241212185226-00435.warc.gz",
+      "provider_record_id": "crawl-data/CC-MAIN-2024-51/segments/1733066110042.43/warc/CC-MAIN-20241212155226-20241212185226-00435.warc.gz:661930985:25397",
+      "raw_sha256": "e01f534cda1b87ce8972d9f0cec325682629448cc5e522d89ea7f6e15a55a418",
+      "excerpt": "Skip to content Maximize impact \u00b7 minimize risk AI that makes business sense. Request a demo It\u2019s time for a new approach The next evolution of AI for business is here. Learn more Introducing the enterprise AI suite Maximize impact with AI apps. Tour the product DataRobot delivers the industry-leading AI applications and platform that maximize impact and minimize risk for your business. Infuse AI into your business Integrate AI into your existing business processes Explore our products Secure yo"
+    }
+  ],
+  "reviewed_quotes": [
+    {
+      "snapshot_id": 3,
+      "quote": "connect your apps, systems, and your entire organization with real-time data flow and processing."
+    },
+    {
+      "snapshot_id": 4,
+      "quote": "With 120+ connectors, stream processing, security & data governance, and global availability for all of your data in motion needs."
+    },
+    {
+      "snapshot_id": 62,
+      "quote": "a secure, cost-effective, and serverless Kafka cluster that autoscales to meet any demand, powered by the Kora engine"
+    },
+    {
+      "snapshot_id": 5,
+      "quote": "Shift left by moving processing and governance closer to the source with a complete Data Streaming Platform."
+    },
+    {
+      "snapshot_id": 16,
+      "quote": "Deliver software faster with better security and collaboration in a single platform."
+    },
+    {
+      "snapshot_id": 17,
+      "quote": "All the essential DevSecOps tools in one place."
+    },
+    {
+      "snapshot_id": 18,
+      "quote": "Automate software delivery, boost productivity, and secure your end-to-end software supply chain."
+    },
+    {
+      "snapshot_id": 28,
+      "quote": "Analyze and explore your logs for rapid troubleshooting"
+    },
+    {
+      "snapshot_id": 29,
+      "quote": "Monitor, optimize, and investigate app performance"
+    },
+    {
+      "snapshot_id": 30,
+      "quote": "Identify potential threats to your systems in real time"
+    },
+    {
+      "snapshot_id": 70,
+      "quote": "Monitor user journeys and frontend performance in one place"
+    },
+    {
+      "snapshot_id": 46,
+      "quote": "We make software robots, so people don\u2019t have to be robots."
+    },
+    {
+      "snapshot_id": 47,
+      "quote": "UiPath streamlines processes, uncovers efficiencies and provides insights"
+    },
+    {
+      "snapshot_id": 48,
+      "quote": "Deploy and manage AI-powered automation across your enterprise."
+    },
+    {
+      "snapshot_id": 49,
+      "quote": "Rapidly build AI-powered automation across any technology."
+    },
+    {
+      "snapshot_id": 81,
+      "quote": "WHERE YOUR DATA CLOUD EXPERIENCE BEGINS: ONE PLATFORM, MANY WORKLOADS, NO DATA SILOS"
+    },
+    {
+      "snapshot_id": 82,
+      "quote": "Snowflake\u2019s single platform eliminates data silos and simplifies architectures, so you can get more value from your data."
+    },
+    {
+      "snapshot_id": 83,
+      "quote": "Accelerate enterprise AI with secure access to industry-leading LLMs and chat with your data AI services."
+    },
+    {
+      "snapshot_id": 84,
+      "quote": "Stop attacks across endpoint, identity, and cloud."
+    }
+  ],
+  "financials": {
+    "as_of": "2025-04-01",
+    "policy_version": "sec-annual-earliest-filed-v1",
+    "artifact_url": "https://www.sec.gov/Archives/edgar/daily-index/xbrl/companyfacts.zip",
+    "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01",
+    "candidate_fact_count": 369,
+    "cells": [
+      {
+        "slug": "confluent",
+        "year": 2021,
+        "concept": "revenue",
+        "status": "selected",
+        "candidate_count": 3,
+        "selected": {
+          "value": "387864000",
+          "unit": "USD",
+          "start_date": "2021-01-01",
+          "end_date": "2021-12-31",
+          "filed_date": "2022-02-24",
+          "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+          "accession_number": "0000950170-22-002008",
+          "raw_sha256": "ec400a28470ff4da0a4cb4f2715b2531ddf7c0225df0a11cfef70f3c7ffabcb4",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "confluent",
+        "year": 2021,
+        "concept": "net_income",
+        "status": "selected",
+        "candidate_count": 3,
+        "selected": {
+          "value": "-342801000",
+          "unit": "USD",
+          "start_date": "2021-01-01",
+          "end_date": "2021-12-31",
+          "filed_date": "2022-02-24",
+          "tag": "NetIncomeLoss",
+          "accession_number": "0000950170-22-002008",
+          "raw_sha256": "ec400a28470ff4da0a4cb4f2715b2531ddf7c0225df0a11cfef70f3c7ffabcb4",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "confluent",
+        "year": 2021,
+        "concept": "assets",
+        "status": "selected",
+        "candidate_count": 2,
+        "selected": {
+          "value": "2342729000",
+          "unit": "USD",
+          "start_date": null,
+          "end_date": "2021-12-31",
+          "filed_date": "2022-02-24",
+          "tag": "Assets",
+          "accession_number": "0000950170-22-002008",
+          "raw_sha256": "ec400a28470ff4da0a4cb4f2715b2531ddf7c0225df0a11cfef70f3c7ffabcb4",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "confluent",
+        "year": 2022,
+        "concept": "revenue",
+        "status": "selected",
+        "candidate_count": 3,
+        "selected": {
+          "value": "585944000",
+          "unit": "USD",
+          "start_date": "2022-01-01",
+          "end_date": "2022-12-31",
+          "filed_date": "2023-02-28",
+          "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+          "accession_number": "0000950170-23-004815",
+          "raw_sha256": "ec400a28470ff4da0a4cb4f2715b2531ddf7c0225df0a11cfef70f3c7ffabcb4",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "confluent",
+        "year": 2022,
+        "concept": "net_income",
+        "status": "selected",
+        "candidate_count": 3,
+        "selected": {
+          "value": "-452551000",
+          "unit": "USD",
+          "start_date": "2022-01-01",
+          "end_date": "2022-12-31",
+          "filed_date": "2023-02-28",
+          "tag": "NetIncomeLoss",
+          "accession_number": "0000950170-23-004815",
+          "raw_sha256": "ec400a28470ff4da0a4cb4f2715b2531ddf7c0225df0a11cfef70f3c7ffabcb4",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "confluent",
+        "year": 2022,
+        "concept": "assets",
+        "status": "selected",
+        "candidate_count": 2,
+        "selected": {
+          "value": "2344849000",
+          "unit": "USD",
+          "start_date": null,
+          "end_date": "2022-12-31",
+          "filed_date": "2023-02-28",
+          "tag": "Assets",
+          "accession_number": "0000950170-23-004815",
+          "raw_sha256": "ec400a28470ff4da0a4cb4f2715b2531ddf7c0225df0a11cfef70f3c7ffabcb4",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "confluent",
+        "year": 2023,
+        "concept": "revenue",
+        "status": "selected",
+        "candidate_count": 3,
+        "selected": {
+          "value": "776952000",
+          "unit": "USD",
+          "start_date": "2023-01-01",
+          "end_date": "2023-12-31",
+          "filed_date": "2024-02-21",
+          "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+          "accession_number": "0000950170-24-018036",
+          "raw_sha256": "ec400a28470ff4da0a4cb4f2715b2531ddf7c0225df0a11cfef70f3c7ffabcb4",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "confluent",
+        "year": 2023,
+        "concept": "net_income",
+        "status": "selected",
+        "candidate_count": 3,
+        "selected": {
+          "value": "-442746000",
+          "unit": "USD",
+          "start_date": "2023-01-01",
+          "end_date": "2023-12-31",
+          "filed_date": "2024-02-21",
+          "tag": "NetIncomeLoss",
+          "accession_number": "0000950170-24-018036",
+          "raw_sha256": "ec400a28470ff4da0a4cb4f2715b2531ddf7c0225df0a11cfef70f3c7ffabcb4",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "confluent",
+        "year": 2023,
+        "concept": "assets",
+        "status": "selected",
+        "candidate_count": 2,
+        "selected": {
+          "value": "2460809000",
+          "unit": "USD",
+          "start_date": null,
+          "end_date": "2023-12-31",
+          "filed_date": "2024-02-21",
+          "tag": "Assets",
+          "accession_number": "0000950170-24-018036",
+          "raw_sha256": "ec400a28470ff4da0a4cb4f2715b2531ddf7c0225df0a11cfef70f3c7ffabcb4",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "confluent",
+        "year": 2024,
+        "concept": "revenue",
+        "status": "selected",
+        "candidate_count": 2,
+        "selected": {
+          "value": "963642000",
+          "unit": "USD",
+          "start_date": "2024-01-01",
+          "end_date": "2024-12-31",
+          "filed_date": "2025-02-18",
+          "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+          "accession_number": "0000950170-25-022369",
+          "raw_sha256": "ec400a28470ff4da0a4cb4f2715b2531ddf7c0225df0a11cfef70f3c7ffabcb4",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "confluent",
+        "year": 2024,
+        "concept": "net_income",
+        "status": "selected",
+        "candidate_count": 2,
+        "selected": {
+          "value": "-345065000",
+          "unit": "USD",
+          "start_date": "2024-01-01",
+          "end_date": "2024-12-31",
+          "filed_date": "2025-02-18",
+          "tag": "NetIncomeLoss",
+          "accession_number": "0000950170-25-022369",
+          "raw_sha256": "ec400a28470ff4da0a4cb4f2715b2531ddf7c0225df0a11cfef70f3c7ffabcb4",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "confluent",
+        "year": 2024,
+        "concept": "assets",
+        "status": "selected",
+        "candidate_count": 2,
+        "selected": {
+          "value": "2694911000",
+          "unit": "USD",
+          "start_date": null,
+          "end_date": "2024-12-31",
+          "filed_date": "2025-02-18",
+          "tag": "Assets",
+          "accession_number": "0000950170-25-022369",
+          "raw_sha256": "ec400a28470ff4da0a4cb4f2715b2531ddf7c0225df0a11cfef70f3c7ffabcb4",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "snowflake",
+        "year": 2021,
+        "concept": "revenue",
+        "status": "selected",
+        "candidate_count": 3,
+        "selected": {
+          "value": "592049000",
+          "unit": "USD",
+          "start_date": "2020-02-01",
+          "end_date": "2021-01-31",
+          "filed_date": "2021-03-31",
+          "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+          "accession_number": "0001640147-21-000073",
+          "raw_sha256": "9d2289f4d9810ef19dfd4f5eef8c90b406db14947ca4b6fcb36dca6c41383144",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "snowflake",
+        "year": 2021,
+        "concept": "net_income",
+        "status": "selected",
+        "candidate_count": 4,
+        "selected": {
+          "value": "-539102000",
+          "unit": "USD",
+          "start_date": "2020-02-01",
+          "end_date": "2021-01-31",
+          "filed_date": "2021-03-31",
+          "tag": "NetIncomeLoss",
+          "accession_number": "0001640147-21-000073",
+          "raw_sha256": "9d2289f4d9810ef19dfd4f5eef8c90b406db14947ca4b6fcb36dca6c41383144",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "snowflake",
+        "year": 2021,
+        "concept": "assets",
+        "status": "selected",
+        "candidate_count": 2,
+        "selected": {
+          "value": "5921739000",
+          "unit": "USD",
+          "start_date": null,
+          "end_date": "2021-01-31",
+          "filed_date": "2021-03-31",
+          "tag": "Assets",
+          "accession_number": "0001640147-21-000073",
+          "raw_sha256": "9d2289f4d9810ef19dfd4f5eef8c90b406db14947ca4b6fcb36dca6c41383144",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "snowflake",
+        "year": 2022,
+        "concept": "revenue",
+        "status": "selected",
+        "candidate_count": 3,
+        "selected": {
+          "value": "1219327000",
+          "unit": "USD",
+          "start_date": "2021-02-01",
+          "end_date": "2022-01-31",
+          "filed_date": "2022-03-30",
+          "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+          "accession_number": "0001640147-22-000023",
+          "raw_sha256": "9d2289f4d9810ef19dfd4f5eef8c90b406db14947ca4b6fcb36dca6c41383144",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "snowflake",
+        "year": 2022,
+        "concept": "net_income",
+        "status": "selected",
+        "candidate_count": 5,
+        "selected": {
+          "value": "-679948000",
+          "unit": "USD",
+          "start_date": "2021-02-01",
+          "end_date": "2022-01-31",
+          "filed_date": "2022-03-30",
+          "tag": "NetIncomeLoss",
+          "accession_number": "0001640147-22-000023",
+          "raw_sha256": "9d2289f4d9810ef19dfd4f5eef8c90b406db14947ca4b6fcb36dca6c41383144",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "snowflake",
+        "year": 2022,
+        "concept": "assets",
+        "status": "selected",
+        "candidate_count": 2,
+        "selected": {
+          "value": "6649698000",
+          "unit": "USD",
+          "start_date": null,
+          "end_date": "2022-01-31",
+          "filed_date": "2022-03-30",
+          "tag": "Assets",
+          "accession_number": "0001640147-22-000023",
+          "raw_sha256": "9d2289f4d9810ef19dfd4f5eef8c90b406db14947ca4b6fcb36dca6c41383144",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "snowflake",
+        "year": 2023,
+        "concept": "revenue",
+        "status": "selected",
+        "candidate_count": 3,
+        "selected": {
+          "value": "2065659000",
+          "unit": "USD",
+          "start_date": "2022-02-01",
+          "end_date": "2023-01-31",
+          "filed_date": "2023-03-29",
+          "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+          "accession_number": "0001640147-23-000030",
+          "raw_sha256": "9d2289f4d9810ef19dfd4f5eef8c90b406db14947ca4b6fcb36dca6c41383144",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "snowflake",
+        "year": 2023,
+        "concept": "net_income",
+        "status": "selected",
+        "candidate_count": 6,
+        "selected": {
+          "value": "-796705000",
+          "unit": "USD",
+          "start_date": "2022-02-01",
+          "end_date": "2023-01-31",
+          "filed_date": "2023-03-29",
+          "tag": "NetIncomeLoss",
+          "accession_number": "0001640147-23-000030",
+          "raw_sha256": "9d2289f4d9810ef19dfd4f5eef8c90b406db14947ca4b6fcb36dca6c41383144",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "snowflake",
+        "year": 2023,
+        "concept": "assets",
+        "status": "selected",
+        "candidate_count": 2,
+        "selected": {
+          "value": "7722322000",
+          "unit": "USD",
+          "start_date": null,
+          "end_date": "2023-01-31",
+          "filed_date": "2023-03-29",
+          "tag": "Assets",
+          "accession_number": "0001640147-23-000030",
+          "raw_sha256": "9d2289f4d9810ef19dfd4f5eef8c90b406db14947ca4b6fcb36dca6c41383144",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "snowflake",
+        "year": 2024,
+        "concept": "revenue",
+        "status": "selected",
+        "candidate_count": 3,
+        "selected": {
+          "value": "2806489000",
+          "unit": "USD",
+          "start_date": "2023-02-01",
+          "end_date": "2024-01-31",
+          "filed_date": "2024-03-26",
+          "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+          "accession_number": "0001640147-24-000101",
+          "raw_sha256": "9d2289f4d9810ef19dfd4f5eef8c90b406db14947ca4b6fcb36dca6c41383144",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "snowflake",
+        "year": 2024,
+        "concept": "net_income",
+        "status": "selected",
+        "candidate_count": 6,
+        "selected": {
+          "value": "-836097000",
+          "unit": "USD",
+          "start_date": "2023-02-01",
+          "end_date": "2024-01-31",
+          "filed_date": "2024-03-26",
+          "tag": "NetIncomeLoss",
+          "accession_number": "0001640147-24-000101",
+          "raw_sha256": "9d2289f4d9810ef19dfd4f5eef8c90b406db14947ca4b6fcb36dca6c41383144",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "snowflake",
+        "year": 2024,
+        "concept": "assets",
+        "status": "selected",
+        "candidate_count": 2,
+        "selected": {
+          "value": "8223383000",
+          "unit": "USD",
+          "start_date": null,
+          "end_date": "2024-01-31",
+          "filed_date": "2024-03-26",
+          "tag": "Assets",
+          "accession_number": "0001640147-24-000101",
+          "raw_sha256": "9d2289f4d9810ef19dfd4f5eef8c90b406db14947ca4b6fcb36dca6c41383144",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "mongodb",
+        "year": 2021,
+        "concept": "revenue",
+        "status": "selected",
+        "candidate_count": 3,
+        "selected": {
+          "value": "590380000",
+          "unit": "USD",
+          "start_date": "2020-02-01",
+          "end_date": "2021-01-31",
+          "filed_date": "2021-03-22",
+          "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+          "accession_number": "0001441816-21-000051",
+          "raw_sha256": "8947052d6912d9ac6b35470f5e331ef6fe1f4b4cf782fab20822c9cb66738997",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "mongodb",
+        "year": 2021,
+        "concept": "net_income",
+        "status": "selected",
+        "candidate_count": 3,
+        "selected": {
+          "value": "-266944000",
+          "unit": "USD",
+          "start_date": "2020-02-01",
+          "end_date": "2021-01-31",
+          "filed_date": "2021-03-22",
+          "tag": "NetIncomeLoss",
+          "accession_number": "0001441816-21-000051",
+          "raw_sha256": "8947052d6912d9ac6b35470f5e331ef6fe1f4b4cf782fab20822c9cb66738997",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "mongodb",
+        "year": 2021,
+        "concept": "assets",
+        "status": "selected",
+        "candidate_count": 2,
+        "selected": {
+          "value": "1407495000",
+          "unit": "USD",
+          "start_date": null,
+          "end_date": "2021-01-31",
+          "filed_date": "2021-03-22",
+          "tag": "Assets",
+          "accession_number": "0001441816-21-000051",
+          "raw_sha256": "8947052d6912d9ac6b35470f5e331ef6fe1f4b4cf782fab20822c9cb66738997",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "mongodb",
+        "year": 2022,
+        "concept": "revenue",
+        "status": "selected",
+        "candidate_count": 3,
+        "selected": {
+          "value": "873782000",
+          "unit": "USD",
+          "start_date": "2021-02-01",
+          "end_date": "2022-01-31",
+          "filed_date": "2022-03-18",
+          "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+          "accession_number": "0001441816-22-000059",
+          "raw_sha256": "8947052d6912d9ac6b35470f5e331ef6fe1f4b4cf782fab20822c9cb66738997",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "mongodb",
+        "year": 2022,
+        "concept": "net_income",
+        "status": "selected",
+        "candidate_count": 3,
+        "selected": {
+          "value": "-306866000",
+          "unit": "USD",
+          "start_date": "2021-02-01",
+          "end_date": "2022-01-31",
+          "filed_date": "2022-03-18",
+          "tag": "NetIncomeLoss",
+          "accession_number": "0001441816-22-000059",
+          "raw_sha256": "8947052d6912d9ac6b35470f5e331ef6fe1f4b4cf782fab20822c9cb66738997",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "mongodb",
+        "year": 2022,
+        "concept": "assets",
+        "status": "selected",
+        "candidate_count": 2,
+        "selected": {
+          "value": "2449588000",
+          "unit": "USD",
+          "start_date": null,
+          "end_date": "2022-01-31",
+          "filed_date": "2022-03-18",
+          "tag": "Assets",
+          "accession_number": "0001441816-22-000059",
+          "raw_sha256": "8947052d6912d9ac6b35470f5e331ef6fe1f4b4cf782fab20822c9cb66738997",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "mongodb",
+        "year": 2023,
+        "concept": "revenue",
+        "status": "selected",
+        "candidate_count": 3,
+        "selected": {
+          "value": "1284040000",
+          "unit": "USD",
+          "start_date": "2022-02-01",
+          "end_date": "2023-01-31",
+          "filed_date": "2023-03-17",
+          "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+          "accession_number": "0001441816-23-000027",
+          "raw_sha256": "8947052d6912d9ac6b35470f5e331ef6fe1f4b4cf782fab20822c9cb66738997",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "mongodb",
+        "year": 2023,
+        "concept": "net_income",
+        "status": "selected",
+        "candidate_count": 3,
+        "selected": {
+          "value": "-345398000",
+          "unit": "USD",
+          "start_date": "2022-02-01",
+          "end_date": "2023-01-31",
+          "filed_date": "2023-03-17",
+          "tag": "NetIncomeLoss",
+          "accession_number": "0001441816-23-000027",
+          "raw_sha256": "8947052d6912d9ac6b35470f5e331ef6fe1f4b4cf782fab20822c9cb66738997",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "mongodb",
+        "year": 2023,
+        "concept": "assets",
+        "status": "selected",
+        "candidate_count": 2,
+        "selected": {
+          "value": "2588893000",
+          "unit": "USD",
+          "start_date": null,
+          "end_date": "2023-01-31",
+          "filed_date": "2023-03-17",
+          "tag": "Assets",
+          "accession_number": "0001441816-23-000027",
+          "raw_sha256": "8947052d6912d9ac6b35470f5e331ef6fe1f4b4cf782fab20822c9cb66738997",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "mongodb",
+        "year": 2024,
+        "concept": "revenue",
+        "status": "selected",
+        "candidate_count": 3,
+        "selected": {
+          "value": "1683011000",
+          "unit": "USD",
+          "start_date": "2023-02-01",
+          "end_date": "2024-01-31",
+          "filed_date": "2024-03-15",
+          "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+          "accession_number": "0001441816-24-000049",
+          "raw_sha256": "8947052d6912d9ac6b35470f5e331ef6fe1f4b4cf782fab20822c9cb66738997",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "mongodb",
+        "year": 2024,
+        "concept": "net_income",
+        "status": "selected",
+        "candidate_count": 3,
+        "selected": {
+          "value": "-176600000",
+          "unit": "USD",
+          "start_date": "2023-02-01",
+          "end_date": "2024-01-31",
+          "filed_date": "2024-03-15",
+          "tag": "NetIncomeLoss",
+          "accession_number": "0001441816-24-000049",
+          "raw_sha256": "8947052d6912d9ac6b35470f5e331ef6fe1f4b4cf782fab20822c9cb66738997",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "mongodb",
+        "year": 2024,
+        "concept": "assets",
+        "status": "selected",
+        "candidate_count": 2,
+        "selected": {
+          "value": "2869642000",
+          "unit": "USD",
+          "start_date": null,
+          "end_date": "2024-01-31",
+          "filed_date": "2024-03-15",
+          "tag": "Assets",
+          "accession_number": "0001441816-24-000049",
+          "raw_sha256": "8947052d6912d9ac6b35470f5e331ef6fe1f4b4cf782fab20822c9cb66738997",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "gitlab",
+        "year": 2021,
+        "concept": "revenue",
+        "status": "selected",
+        "candidate_count": 2,
+        "selected": {
+          "value": "152176000",
+          "unit": "USD",
+          "start_date": "2020-02-01",
+          "end_date": "2021-01-31",
+          "filed_date": "2022-04-08",
+          "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+          "accession_number": "0001628280-22-008836",
+          "raw_sha256": "5f900199621c5922f358c542d0fb942df930d4fe391724686f2625149fc1ee54",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "gitlab",
+        "year": 2021,
+        "concept": "net_income",
+        "status": "selected",
+        "candidate_count": 4,
+        "selected": {
+          "value": "-192194000",
+          "unit": "USD",
+          "start_date": "2020-02-01",
+          "end_date": "2021-01-31",
+          "filed_date": "2022-04-08",
+          "tag": "NetIncomeLoss",
+          "accession_number": "0001628280-22-008836",
+          "raw_sha256": "5f900199621c5922f358c542d0fb942df930d4fe391724686f2625149fc1ee54",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "gitlab",
+        "year": 2021,
+        "concept": "assets",
+        "status": "selected",
+        "candidate_count": 1,
+        "selected": {
+          "value": "362566000",
+          "unit": "USD",
+          "start_date": null,
+          "end_date": "2021-01-31",
+          "filed_date": "2022-04-08",
+          "tag": "Assets",
+          "accession_number": "0001628280-22-008836",
+          "raw_sha256": "5f900199621c5922f358c542d0fb942df930d4fe391724686f2625149fc1ee54",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "gitlab",
+        "year": 2022,
+        "concept": "revenue",
+        "status": "selected",
+        "candidate_count": 3,
+        "selected": {
+          "value": "252653000",
+          "unit": "USD",
+          "start_date": "2021-02-01",
+          "end_date": "2022-01-31",
+          "filed_date": "2022-04-08",
+          "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+          "accession_number": "0001628280-22-008836",
+          "raw_sha256": "5f900199621c5922f358c542d0fb942df930d4fe391724686f2625149fc1ee54",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "gitlab",
+        "year": 2022,
+        "concept": "net_income",
+        "status": "selected",
+        "candidate_count": 6,
+        "selected": {
+          "value": "-155138000",
+          "unit": "USD",
+          "start_date": "2021-02-01",
+          "end_date": "2022-01-31",
+          "filed_date": "2022-04-08",
+          "tag": "NetIncomeLoss",
+          "accession_number": "0001628280-22-008836",
+          "raw_sha256": "5f900199621c5922f358c542d0fb942df930d4fe391724686f2625149fc1ee54",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "gitlab",
+        "year": 2022,
+        "concept": "assets",
+        "status": "selected",
+        "candidate_count": 2,
+        "selected": {
+          "value": "1091438000",
+          "unit": "USD",
+          "start_date": null,
+          "end_date": "2022-01-31",
+          "filed_date": "2022-04-08",
+          "tag": "Assets",
+          "accession_number": "0001628280-22-008836",
+          "raw_sha256": "5f900199621c5922f358c542d0fb942df930d4fe391724686f2625149fc1ee54",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "gitlab",
+        "year": 2023,
+        "concept": "revenue",
+        "status": "selected",
+        "candidate_count": 3,
+        "selected": {
+          "value": "424336000",
+          "unit": "USD",
+          "start_date": "2022-02-01",
+          "end_date": "2023-01-31",
+          "filed_date": "2023-03-30",
+          "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+          "accession_number": "0001628280-23-009925",
+          "raw_sha256": "5f900199621c5922f358c542d0fb942df930d4fe391724686f2625149fc1ee54",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "gitlab",
+        "year": 2023,
+        "concept": "net_income",
+        "status": "selected",
+        "candidate_count": 6,
+        "selected": {
+          "value": "-172311000",
+          "unit": "USD",
+          "start_date": "2022-02-01",
+          "end_date": "2023-01-31",
+          "filed_date": "2023-03-30",
+          "tag": "NetIncomeLoss",
+          "accession_number": "0001628280-23-009925",
+          "raw_sha256": "5f900199621c5922f358c542d0fb942df930d4fe391724686f2625149fc1ee54",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "gitlab",
+        "year": 2023,
+        "concept": "assets",
+        "status": "selected",
+        "candidate_count": 2,
+        "selected": {
+          "value": "1169200000",
+          "unit": "USD",
+          "start_date": null,
+          "end_date": "2023-01-31",
+          "filed_date": "2023-03-30",
+          "tag": "Assets",
+          "accession_number": "0001628280-23-009925",
+          "raw_sha256": "5f900199621c5922f358c542d0fb942df930d4fe391724686f2625149fc1ee54",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "gitlab",
+        "year": 2024,
+        "concept": "revenue",
+        "status": "selected",
+        "candidate_count": 3,
+        "selected": {
+          "value": "579906000",
+          "unit": "USD",
+          "start_date": "2023-02-01",
+          "end_date": "2024-01-31",
+          "filed_date": "2024-03-26",
+          "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+          "accession_number": "0001628280-24-012963",
+          "raw_sha256": "5f900199621c5922f358c542d0fb942df930d4fe391724686f2625149fc1ee54",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "gitlab",
+        "year": 2024,
+        "concept": "net_income",
+        "status": "selected",
+        "candidate_count": 6,
+        "selected": {
+          "value": "-424174000",
+          "unit": "USD",
+          "start_date": "2023-02-01",
+          "end_date": "2024-01-31",
+          "filed_date": "2024-03-26",
+          "tag": "NetIncomeLoss",
+          "accession_number": "0001628280-24-012963",
+          "raw_sha256": "5f900199621c5922f358c542d0fb942df930d4fe391724686f2625149fc1ee54",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "gitlab",
+        "year": 2024,
+        "concept": "assets",
+        "status": "selected",
+        "candidate_count": 2,
+        "selected": {
+          "value": "1317861000",
+          "unit": "USD",
+          "start_date": null,
+          "end_date": "2024-01-31",
+          "filed_date": "2024-03-26",
+          "tag": "Assets",
+          "accession_number": "0001628280-24-012963",
+          "raw_sha256": "5f900199621c5922f358c542d0fb942df930d4fe391724686f2625149fc1ee54",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "atlassian",
+        "year": 2021,
+        "concept": "revenue",
+        "status": "selected",
+        "candidate_count": 3,
+        "selected": {
+          "value": "2089132000",
+          "unit": "USD",
+          "start_date": "2020-07-01",
+          "end_date": "2021-06-30",
+          "filed_date": "2023-08-18",
+          "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+          "accession_number": "0001650372-23-000040",
+          "raw_sha256": "4a2efe51ce98d780879cf2bee5128ff8e06d7d89e61b09e1af42e11bab7feb7d",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "atlassian",
+        "year": 2021,
+        "concept": "net_income",
+        "status": "selected",
+        "candidate_count": 1,
+        "selected": {
+          "value": "-578979000",
+          "unit": "USD",
+          "start_date": "2020-07-01",
+          "end_date": "2021-06-30",
+          "filed_date": "2023-08-18",
+          "tag": "NetIncomeLoss",
+          "accession_number": "0001650372-23-000040",
+          "raw_sha256": "4a2efe51ce98d780879cf2bee5128ff8e06d7d89e61b09e1af42e11bab7feb7d",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "atlassian",
+        "year": 2021,
+        "concept": "assets",
+        "status": "selected",
+        "candidate_count": 2,
+        "selected": {
+          "value": "2945344000",
+          "unit": "USD",
+          "start_date": null,
+          "end_date": "2021-06-30",
+          "filed_date": "2021-08-13",
+          "tag": "Assets",
+          "accession_number": "0001650372-21-000028",
+          "raw_sha256": "4a2efe51ce98d780879cf2bee5128ff8e06d7d89e61b09e1af42e11bab7feb7d",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "atlassian",
+        "year": 2022,
+        "concept": "revenue",
+        "status": "selected",
+        "candidate_count": 3,
+        "selected": {
+          "value": "2802882000",
+          "unit": "USD",
+          "start_date": "2021-07-01",
+          "end_date": "2022-06-30",
+          "filed_date": "2023-08-18",
+          "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+          "accession_number": "0001650372-23-000040",
+          "raw_sha256": "4a2efe51ce98d780879cf2bee5128ff8e06d7d89e61b09e1af42e11bab7feb7d",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "atlassian",
+        "year": 2022,
+        "concept": "net_income",
+        "status": "selected",
+        "candidate_count": 2,
+        "selected": {
+          "value": "-519510000",
+          "unit": "USD",
+          "start_date": "2021-07-01",
+          "end_date": "2022-06-30",
+          "filed_date": "2023-08-18",
+          "tag": "NetIncomeLoss",
+          "accession_number": "0001650372-23-000040",
+          "raw_sha256": "4a2efe51ce98d780879cf2bee5128ff8e06d7d89e61b09e1af42e11bab7feb7d",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "atlassian",
+        "year": 2022,
+        "concept": "assets",
+        "status": "selected",
+        "candidate_count": 2,
+        "selected": {
+          "value": "3361206000",
+          "unit": "USD",
+          "start_date": null,
+          "end_date": "2022-06-30",
+          "filed_date": "2022-08-19",
+          "tag": "Assets",
+          "accession_number": "0001650372-22-000060",
+          "raw_sha256": "4a2efe51ce98d780879cf2bee5128ff8e06d7d89e61b09e1af42e11bab7feb7d",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "atlassian",
+        "year": 2023,
+        "concept": "revenue",
+        "status": "selected",
+        "candidate_count": 3,
+        "selected": {
+          "value": "3534647000",
+          "unit": "USD",
+          "start_date": "2022-07-01",
+          "end_date": "2023-06-30",
+          "filed_date": "2023-08-18",
+          "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+          "accession_number": "0001650372-23-000040",
+          "raw_sha256": "4a2efe51ce98d780879cf2bee5128ff8e06d7d89e61b09e1af42e11bab7feb7d",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "atlassian",
+        "year": 2023,
+        "concept": "net_income",
+        "status": "selected",
+        "candidate_count": 3,
+        "selected": {
+          "value": "-486761000",
+          "unit": "USD",
+          "start_date": "2022-07-01",
+          "end_date": "2023-06-30",
+          "filed_date": "2023-08-18",
+          "tag": "NetIncomeLoss",
+          "accession_number": "0001650372-23-000040",
+          "raw_sha256": "4a2efe51ce98d780879cf2bee5128ff8e06d7d89e61b09e1af42e11bab7feb7d",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "atlassian",
+        "year": 2023,
+        "concept": "assets",
+        "status": "selected",
+        "candidate_count": 2,
+        "selected": {
+          "value": "4106779000",
+          "unit": "USD",
+          "start_date": null,
+          "end_date": "2023-06-30",
+          "filed_date": "2023-08-18",
+          "tag": "Assets",
+          "accession_number": "0001650372-23-000040",
+          "raw_sha256": "4a2efe51ce98d780879cf2bee5128ff8e06d7d89e61b09e1af42e11bab7feb7d",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "atlassian",
+        "year": 2024,
+        "concept": "revenue",
+        "status": "selected",
+        "candidate_count": 3,
+        "selected": {
+          "value": "4358603000",
+          "unit": "USD",
+          "start_date": "2023-07-01",
+          "end_date": "2024-06-30",
+          "filed_date": "2024-08-16",
+          "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+          "accession_number": "0001650372-24-000036",
+          "raw_sha256": "4a2efe51ce98d780879cf2bee5128ff8e06d7d89e61b09e1af42e11bab7feb7d",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "atlassian",
+        "year": 2024,
+        "concept": "net_income",
+        "status": "selected",
+        "candidate_count": 3,
+        "selected": {
+          "value": "-300519000",
+          "unit": "USD",
+          "start_date": "2023-07-01",
+          "end_date": "2024-06-30",
+          "filed_date": "2024-08-16",
+          "tag": "NetIncomeLoss",
+          "accession_number": "0001650372-24-000036",
+          "raw_sha256": "4a2efe51ce98d780879cf2bee5128ff8e06d7d89e61b09e1af42e11bab7feb7d",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "atlassian",
+        "year": 2024,
+        "concept": "assets",
+        "status": "selected",
+        "candidate_count": 2,
+        "selected": {
+          "value": "5212133000",
+          "unit": "USD",
+          "start_date": null,
+          "end_date": "2024-06-30",
+          "filed_date": "2024-08-16",
+          "tag": "Assets",
+          "accession_number": "0001650372-24-000036",
+          "raw_sha256": "4a2efe51ce98d780879cf2bee5128ff8e06d7d89e61b09e1af42e11bab7feb7d",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "datadog",
+        "year": 2021,
+        "concept": "revenue",
+        "status": "selected",
+        "candidate_count": 3,
+        "selected": {
+          "value": "1028784000",
+          "unit": "USD",
+          "start_date": "2021-01-01",
+          "end_date": "2021-12-31",
+          "filed_date": "2022-02-25",
+          "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+          "accession_number": "0001561550-22-000009",
+          "raw_sha256": "d3c4561fd839e25b1cde245ff3ca1f821b2a70e70d34688c5ede40bbc0f600a2",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "datadog",
+        "year": 2021,
+        "concept": "net_income",
+        "status": "selected",
+        "candidate_count": 6,
+        "selected": {
+          "value": "-20745000",
+          "unit": "USD",
+          "start_date": "2021-01-01",
+          "end_date": "2021-12-31",
+          "filed_date": "2022-02-25",
+          "tag": "NetIncomeLoss",
+          "accession_number": "0001561550-22-000009",
+          "raw_sha256": "d3c4561fd839e25b1cde245ff3ca1f821b2a70e70d34688c5ede40bbc0f600a2",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "datadog",
+        "year": 2021,
+        "concept": "assets",
+        "status": "selected",
+        "candidate_count": 2,
+        "selected": {
+          "value": "2380794000",
+          "unit": "USD",
+          "start_date": null,
+          "end_date": "2021-12-31",
+          "filed_date": "2022-02-25",
+          "tag": "Assets",
+          "accession_number": "0001561550-22-000009",
+          "raw_sha256": "d3c4561fd839e25b1cde245ff3ca1f821b2a70e70d34688c5ede40bbc0f600a2",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "datadog",
+        "year": 2022,
+        "concept": "revenue",
+        "status": "selected",
+        "candidate_count": 3,
+        "selected": {
+          "value": "1675100000",
+          "unit": "USD",
+          "start_date": "2022-01-01",
+          "end_date": "2022-12-31",
+          "filed_date": "2023-02-24",
+          "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+          "accession_number": "0001561550-23-000006",
+          "raw_sha256": "d3c4561fd839e25b1cde245ff3ca1f821b2a70e70d34688c5ede40bbc0f600a2",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "datadog",
+        "year": 2022,
+        "concept": "net_income",
+        "status": "selected",
+        "candidate_count": 6,
+        "selected": {
+          "value": "-50160000",
+          "unit": "USD",
+          "start_date": "2022-01-01",
+          "end_date": "2022-12-31",
+          "filed_date": "2023-02-24",
+          "tag": "NetIncomeLoss",
+          "accession_number": "0001561550-23-000006",
+          "raw_sha256": "d3c4561fd839e25b1cde245ff3ca1f821b2a70e70d34688c5ede40bbc0f600a2",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "datadog",
+        "year": 2022,
+        "concept": "assets",
+        "status": "selected",
+        "candidate_count": 2,
+        "selected": {
+          "value": "3004852000",
+          "unit": "USD",
+          "start_date": null,
+          "end_date": "2022-12-31",
+          "filed_date": "2023-02-24",
+          "tag": "Assets",
+          "accession_number": "0001561550-23-000006",
+          "raw_sha256": "d3c4561fd839e25b1cde245ff3ca1f821b2a70e70d34688c5ede40bbc0f600a2",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "datadog",
+        "year": 2023,
+        "concept": "revenue",
+        "status": "selected",
+        "candidate_count": 3,
+        "selected": {
+          "value": "2128359000",
+          "unit": "USD",
+          "start_date": "2023-01-01",
+          "end_date": "2023-12-31",
+          "filed_date": "2024-02-23",
+          "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+          "accession_number": "0001561550-24-000009",
+          "raw_sha256": "d3c4561fd839e25b1cde245ff3ca1f821b2a70e70d34688c5ede40bbc0f600a2",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "datadog",
+        "year": 2023,
+        "concept": "net_income",
+        "status": "selected",
+        "candidate_count": 6,
+        "selected": {
+          "value": "48568000",
+          "unit": "USD",
+          "start_date": "2023-01-01",
+          "end_date": "2023-12-31",
+          "filed_date": "2024-02-23",
+          "tag": "NetIncomeLoss",
+          "accession_number": "0001561550-24-000009",
+          "raw_sha256": "d3c4561fd839e25b1cde245ff3ca1f821b2a70e70d34688c5ede40bbc0f600a2",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "datadog",
+        "year": 2023,
+        "concept": "assets",
+        "status": "selected",
+        "candidate_count": 2,
+        "selected": {
+          "value": "3936072000",
+          "unit": "USD",
+          "start_date": null,
+          "end_date": "2023-12-31",
+          "filed_date": "2024-02-23",
+          "tag": "Assets",
+          "accession_number": "0001561550-24-000009",
+          "raw_sha256": "d3c4561fd839e25b1cde245ff3ca1f821b2a70e70d34688c5ede40bbc0f600a2",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "datadog",
+        "year": 2024,
+        "concept": "revenue",
+        "status": "selected",
+        "candidate_count": 2,
+        "selected": {
+          "value": "2684275000",
+          "unit": "USD",
+          "start_date": "2024-01-01",
+          "end_date": "2024-12-31",
+          "filed_date": "2025-02-20",
+          "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+          "accession_number": "0001561550-25-000025",
+          "raw_sha256": "d3c4561fd839e25b1cde245ff3ca1f821b2a70e70d34688c5ede40bbc0f600a2",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "datadog",
+        "year": 2024,
+        "concept": "net_income",
+        "status": "selected",
+        "candidate_count": 4,
+        "selected": {
+          "value": "183746000",
+          "unit": "USD",
+          "start_date": "2024-01-01",
+          "end_date": "2024-12-31",
+          "filed_date": "2025-02-20",
+          "tag": "NetIncomeLoss",
+          "accession_number": "0001561550-25-000025",
+          "raw_sha256": "d3c4561fd839e25b1cde245ff3ca1f821b2a70e70d34688c5ede40bbc0f600a2",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "datadog",
+        "year": 2024,
+        "concept": "assets",
+        "status": "selected",
+        "candidate_count": 2,
+        "selected": {
+          "value": "5785339000",
+          "unit": "USD",
+          "start_date": null,
+          "end_date": "2024-12-31",
+          "filed_date": "2025-02-20",
+          "tag": "Assets",
+          "accession_number": "0001561550-25-000025",
+          "raw_sha256": "d3c4561fd839e25b1cde245ff3ca1f821b2a70e70d34688c5ede40bbc0f600a2",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "crowdstrike",
+        "year": 2021,
+        "concept": "revenue",
+        "status": "selected",
+        "candidate_count": 3,
+        "selected": {
+          "value": "874438000",
+          "unit": "USD",
+          "start_date": "2020-02-01",
+          "end_date": "2021-01-31",
+          "filed_date": "2021-03-18",
+          "tag": "RevenueFromContractWithCustomerIncludingAssessedTax",
+          "accession_number": "0001535527-21-000007",
+          "raw_sha256": "a71a92f1f11bd3032271ca55be7a7770a96a846ec809f925829ef952fd5f3fa1",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "crowdstrike",
+        "year": 2021,
+        "concept": "net_income",
+        "status": "selected",
+        "candidate_count": 5,
+        "selected": {
+          "value": "-92629000",
+          "unit": "USD",
+          "start_date": "2020-02-01",
+          "end_date": "2021-01-31",
+          "filed_date": "2022-03-16",
+          "tag": "NetIncomeLoss",
+          "accession_number": "0001535527-22-000006",
+          "raw_sha256": "a71a92f1f11bd3032271ca55be7a7770a96a846ec809f925829ef952fd5f3fa1",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "crowdstrike",
+        "year": 2021,
+        "concept": "assets",
+        "status": "selected",
+        "candidate_count": 2,
+        "selected": {
+          "value": "2732533000",
+          "unit": "USD",
+          "start_date": null,
+          "end_date": "2021-01-31",
+          "filed_date": "2021-03-18",
+          "tag": "Assets",
+          "accession_number": "0001535527-21-000007",
+          "raw_sha256": "a71a92f1f11bd3032271ca55be7a7770a96a846ec809f925829ef952fd5f3fa1",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "crowdstrike",
+        "year": 2022,
+        "concept": "revenue",
+        "status": "selected",
+        "candidate_count": 3,
+        "selected": {
+          "value": "1451594000",
+          "unit": "USD",
+          "start_date": "2021-02-01",
+          "end_date": "2022-01-31",
+          "filed_date": "2022-03-16",
+          "tag": "RevenueFromContractWithCustomerIncludingAssessedTax",
+          "accession_number": "0001535527-22-000006",
+          "raw_sha256": "a71a92f1f11bd3032271ca55be7a7770a96a846ec809f925829ef952fd5f3fa1",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "crowdstrike",
+        "year": 2022,
+        "concept": "net_income",
+        "status": "selected",
+        "candidate_count": 6,
+        "selected": {
+          "value": "-234802000",
+          "unit": "USD",
+          "start_date": "2021-02-01",
+          "end_date": "2022-01-31",
+          "filed_date": "2022-03-16",
+          "tag": "NetIncomeLoss",
+          "accession_number": "0001535527-22-000006",
+          "raw_sha256": "a71a92f1f11bd3032271ca55be7a7770a96a846ec809f925829ef952fd5f3fa1",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "crowdstrike",
+        "year": 2022,
+        "concept": "assets",
+        "status": "selected",
+        "candidate_count": 2,
+        "selected": {
+          "value": "3618381000",
+          "unit": "USD",
+          "start_date": null,
+          "end_date": "2022-01-31",
+          "filed_date": "2022-03-16",
+          "tag": "Assets",
+          "accession_number": "0001535527-22-000006",
+          "raw_sha256": "a71a92f1f11bd3032271ca55be7a7770a96a846ec809f925829ef952fd5f3fa1",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "crowdstrike",
+        "year": 2023,
+        "concept": "revenue",
+        "status": "selected",
+        "candidate_count": 3,
+        "selected": {
+          "value": "2241236000",
+          "unit": "USD",
+          "start_date": "2022-02-01",
+          "end_date": "2023-01-31",
+          "filed_date": "2023-03-09",
+          "tag": "RevenueFromContractWithCustomerIncludingAssessedTax",
+          "accession_number": "0001535527-23-000008",
+          "raw_sha256": "a71a92f1f11bd3032271ca55be7a7770a96a846ec809f925829ef952fd5f3fa1",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "crowdstrike",
+        "year": 2023,
+        "concept": "net_income",
+        "status": "selected",
+        "candidate_count": 6,
+        "selected": {
+          "value": "-183245000",
+          "unit": "USD",
+          "start_date": "2022-02-01",
+          "end_date": "2023-01-31",
+          "filed_date": "2023-03-09",
+          "tag": "NetIncomeLoss",
+          "accession_number": "0001535527-23-000008",
+          "raw_sha256": "a71a92f1f11bd3032271ca55be7a7770a96a846ec809f925829ef952fd5f3fa1",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "crowdstrike",
+        "year": 2023,
+        "concept": "assets",
+        "status": "selected",
+        "candidate_count": 2,
+        "selected": {
+          "value": "5026540000",
+          "unit": "USD",
+          "start_date": null,
+          "end_date": "2023-01-31",
+          "filed_date": "2023-03-09",
+          "tag": "Assets",
+          "accession_number": "0001535527-23-000008",
+          "raw_sha256": "a71a92f1f11bd3032271ca55be7a7770a96a846ec809f925829ef952fd5f3fa1",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "crowdstrike",
+        "year": 2024,
+        "concept": "revenue",
+        "status": "selected",
+        "candidate_count": 3,
+        "selected": {
+          "value": "3055555000",
+          "unit": "USD",
+          "start_date": "2023-02-01",
+          "end_date": "2024-01-31",
+          "filed_date": "2024-03-07",
+          "tag": "RevenueFromContractWithCustomerIncludingAssessedTax",
+          "accession_number": "0001535527-24-000007",
+          "raw_sha256": "a71a92f1f11bd3032271ca55be7a7770a96a846ec809f925829ef952fd5f3fa1",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "crowdstrike",
+        "year": 2024,
+        "concept": "net_income",
+        "status": "selected",
+        "candidate_count": 6,
+        "selected": {
+          "value": "89327000",
+          "unit": "USD",
+          "start_date": "2023-02-01",
+          "end_date": "2024-01-31",
+          "filed_date": "2024-03-07",
+          "tag": "NetIncomeLoss",
+          "accession_number": "0001535527-24-000007",
+          "raw_sha256": "a71a92f1f11bd3032271ca55be7a7770a96a846ec809f925829ef952fd5f3fa1",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "crowdstrike",
+        "year": 2024,
+        "concept": "assets",
+        "status": "selected",
+        "candidate_count": 2,
+        "selected": {
+          "value": "6646520000",
+          "unit": "USD",
+          "start_date": null,
+          "end_date": "2024-01-31",
+          "filed_date": "2024-03-07",
+          "tag": "Assets",
+          "accession_number": "0001535527-24-000007",
+          "raw_sha256": "a71a92f1f11bd3032271ca55be7a7770a96a846ec809f925829ef952fd5f3fa1",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "elastic",
+        "year": 2021,
+        "concept": "revenue",
+        "status": "selected",
+        "candidate_count": 3,
+        "selected": {
+          "value": "608489000",
+          "unit": "USD",
+          "start_date": "2020-05-01",
+          "end_date": "2021-04-30",
+          "filed_date": "2021-06-25",
+          "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+          "accession_number": "0001707753-21-000026",
+          "raw_sha256": "bf67dc8bc9dd23758c9e2dc067477dca9ae9f8041beaa79a7143ad61919b1e29",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "elastic",
+        "year": 2021,
+        "concept": "net_income",
+        "status": "selected",
+        "candidate_count": 6,
+        "selected": {
+          "value": "-129434000",
+          "unit": "USD",
+          "start_date": "2020-05-01",
+          "end_date": "2021-04-30",
+          "filed_date": "2021-06-25",
+          "tag": "NetIncomeLoss",
+          "accession_number": "0001707753-21-000026",
+          "raw_sha256": "bf67dc8bc9dd23758c9e2dc067477dca9ae9f8041beaa79a7143ad61919b1e29",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "elastic",
+        "year": 2021,
+        "concept": "assets",
+        "status": "selected",
+        "candidate_count": 2,
+        "selected": {
+          "value": "973172000",
+          "unit": "USD",
+          "start_date": null,
+          "end_date": "2021-04-30",
+          "filed_date": "2021-06-25",
+          "tag": "Assets",
+          "accession_number": "0001707753-21-000026",
+          "raw_sha256": "bf67dc8bc9dd23758c9e2dc067477dca9ae9f8041beaa79a7143ad61919b1e29",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "elastic",
+        "year": 2022,
+        "concept": "revenue",
+        "status": "selected",
+        "candidate_count": 3,
+        "selected": {
+          "value": "862374000",
+          "unit": "USD",
+          "start_date": "2021-05-01",
+          "end_date": "2022-04-30",
+          "filed_date": "2022-06-21",
+          "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+          "accession_number": "0001707753-22-000025",
+          "raw_sha256": "bf67dc8bc9dd23758c9e2dc067477dca9ae9f8041beaa79a7143ad61919b1e29",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "elastic",
+        "year": 2022,
+        "concept": "net_income",
+        "status": "selected",
+        "candidate_count": 6,
+        "selected": {
+          "value": "-203848000",
+          "unit": "USD",
+          "start_date": "2021-05-01",
+          "end_date": "2022-04-30",
+          "filed_date": "2022-06-21",
+          "tag": "NetIncomeLoss",
+          "accession_number": "0001707753-22-000025",
+          "raw_sha256": "bf67dc8bc9dd23758c9e2dc067477dca9ae9f8041beaa79a7143ad61919b1e29",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "elastic",
+        "year": 2022,
+        "concept": "assets",
+        "status": "selected",
+        "candidate_count": 2,
+        "selected": {
+          "value": "1642931000",
+          "unit": "USD",
+          "start_date": null,
+          "end_date": "2022-04-30",
+          "filed_date": "2022-06-21",
+          "tag": "Assets",
+          "accession_number": "0001707753-22-000025",
+          "raw_sha256": "bf67dc8bc9dd23758c9e2dc067477dca9ae9f8041beaa79a7143ad61919b1e29",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "elastic",
+        "year": 2023,
+        "concept": "revenue",
+        "status": "selected",
+        "candidate_count": 3,
+        "selected": {
+          "value": "1068989000",
+          "unit": "USD",
+          "start_date": "2022-05-01",
+          "end_date": "2023-04-30",
+          "filed_date": "2023-06-16",
+          "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+          "accession_number": "0001707753-23-000021",
+          "raw_sha256": "bf67dc8bc9dd23758c9e2dc067477dca9ae9f8041beaa79a7143ad61919b1e29",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "elastic",
+        "year": 2023,
+        "concept": "net_income",
+        "status": "selected",
+        "candidate_count": 6,
+        "selected": {
+          "value": "-236161000",
+          "unit": "USD",
+          "start_date": "2022-05-01",
+          "end_date": "2023-04-30",
+          "filed_date": "2023-06-16",
+          "tag": "NetIncomeLoss",
+          "accession_number": "0001707753-23-000021",
+          "raw_sha256": "bf67dc8bc9dd23758c9e2dc067477dca9ae9f8041beaa79a7143ad61919b1e29",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "elastic",
+        "year": 2023,
+        "concept": "assets",
+        "status": "selected",
+        "candidate_count": 2,
+        "selected": {
+          "value": "1743482000",
+          "unit": "USD",
+          "start_date": null,
+          "end_date": "2023-04-30",
+          "filed_date": "2023-06-16",
+          "tag": "Assets",
+          "accession_number": "0001707753-23-000021",
+          "raw_sha256": "bf67dc8bc9dd23758c9e2dc067477dca9ae9f8041beaa79a7143ad61919b1e29",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "elastic",
+        "year": 2024,
+        "concept": "revenue",
+        "status": "selected",
+        "candidate_count": 3,
+        "selected": {
+          "value": "1267321000",
+          "unit": "USD",
+          "start_date": "2023-05-01",
+          "end_date": "2024-04-30",
+          "filed_date": "2024-06-14",
+          "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+          "accession_number": "0001707753-24-000014",
+          "raw_sha256": "bf67dc8bc9dd23758c9e2dc067477dca9ae9f8041beaa79a7143ad61919b1e29",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "elastic",
+        "year": 2024,
+        "concept": "net_income",
+        "status": "selected",
+        "candidate_count": 6,
+        "selected": {
+          "value": "61720000",
+          "unit": "USD",
+          "start_date": "2023-05-01",
+          "end_date": "2024-04-30",
+          "filed_date": "2024-06-14",
+          "tag": "NetIncomeLoss",
+          "accession_number": "0001707753-24-000014",
+          "raw_sha256": "bf67dc8bc9dd23758c9e2dc067477dca9ae9f8041beaa79a7143ad61919b1e29",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "elastic",
+        "year": 2024,
+        "concept": "assets",
+        "status": "selected",
+        "candidate_count": 2,
+        "selected": {
+          "value": "2242566000",
+          "unit": "USD",
+          "start_date": null,
+          "end_date": "2024-04-30",
+          "filed_date": "2024-06-14",
+          "tag": "Assets",
+          "accession_number": "0001707753-24-000014",
+          "raw_sha256": "bf67dc8bc9dd23758c9e2dc067477dca9ae9f8041beaa79a7143ad61919b1e29",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "uipath",
+        "year": 2021,
+        "concept": "revenue",
+        "status": "selected",
+        "candidate_count": 2,
+        "selected": {
+          "value": "607643000",
+          "unit": "USD",
+          "start_date": "2020-02-01",
+          "end_date": "2021-01-31",
+          "filed_date": "2022-04-04",
+          "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+          "accession_number": "0001734722-22-000006",
+          "raw_sha256": "46643c85f69e600a7fc474b819669859d04515314a69915eeda8f73ec465c0cb",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "uipath",
+        "year": 2021,
+        "concept": "net_income",
+        "status": "selected",
+        "candidate_count": 2,
+        "selected": {
+          "value": "-92393000",
+          "unit": "USD",
+          "start_date": "2020-02-01",
+          "end_date": "2021-01-31",
+          "filed_date": "2022-04-04",
+          "tag": "NetIncomeLoss",
+          "accession_number": "0001734722-22-000006",
+          "raw_sha256": "46643c85f69e600a7fc474b819669859d04515314a69915eeda8f73ec465c0cb",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "uipath",
+        "year": 2021,
+        "concept": "assets",
+        "status": "selected",
+        "candidate_count": 1,
+        "selected": {
+          "value": "866461000",
+          "unit": "USD",
+          "start_date": null,
+          "end_date": "2021-01-31",
+          "filed_date": "2022-04-04",
+          "tag": "Assets",
+          "accession_number": "0001734722-22-000006",
+          "raw_sha256": "46643c85f69e600a7fc474b819669859d04515314a69915eeda8f73ec465c0cb",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "uipath",
+        "year": 2022,
+        "concept": "revenue",
+        "status": "selected",
+        "candidate_count": 3,
+        "selected": {
+          "value": "892252000",
+          "unit": "USD",
+          "start_date": "2021-02-01",
+          "end_date": "2022-01-31",
+          "filed_date": "2022-04-04",
+          "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+          "accession_number": "0001734722-22-000006",
+          "raw_sha256": "46643c85f69e600a7fc474b819669859d04515314a69915eeda8f73ec465c0cb",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "uipath",
+        "year": 2022,
+        "concept": "net_income",
+        "status": "selected",
+        "candidate_count": 3,
+        "selected": {
+          "value": "-525586000",
+          "unit": "USD",
+          "start_date": "2021-02-01",
+          "end_date": "2022-01-31",
+          "filed_date": "2022-04-04",
+          "tag": "NetIncomeLoss",
+          "accession_number": "0001734722-22-000006",
+          "raw_sha256": "46643c85f69e600a7fc474b819669859d04515314a69915eeda8f73ec465c0cb",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "uipath",
+        "year": 2022,
+        "concept": "assets",
+        "status": "selected",
+        "candidate_count": 2,
+        "selected": {
+          "value": "2572450000",
+          "unit": "USD",
+          "start_date": null,
+          "end_date": "2022-01-31",
+          "filed_date": "2022-04-04",
+          "tag": "Assets",
+          "accession_number": "0001734722-22-000006",
+          "raw_sha256": "46643c85f69e600a7fc474b819669859d04515314a69915eeda8f73ec465c0cb",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "uipath",
+        "year": 2023,
+        "concept": "revenue",
+        "status": "selected",
+        "candidate_count": 3,
+        "selected": {
+          "value": "1058581000",
+          "unit": "USD",
+          "start_date": "2022-02-01",
+          "end_date": "2023-01-31",
+          "filed_date": "2023-03-24",
+          "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+          "accession_number": "0001734722-23-000017",
+          "raw_sha256": "46643c85f69e600a7fc474b819669859d04515314a69915eeda8f73ec465c0cb",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "uipath",
+        "year": 2023,
+        "concept": "net_income",
+        "status": "selected",
+        "candidate_count": 3,
+        "selected": {
+          "value": "-328352000",
+          "unit": "USD",
+          "start_date": "2022-02-01",
+          "end_date": "2023-01-31",
+          "filed_date": "2023-03-24",
+          "tag": "NetIncomeLoss",
+          "accession_number": "0001734722-23-000017",
+          "raw_sha256": "46643c85f69e600a7fc474b819669859d04515314a69915eeda8f73ec465c0cb",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "uipath",
+        "year": 2023,
+        "concept": "assets",
+        "status": "selected",
+        "candidate_count": 2,
+        "selected": {
+          "value": "2735206000",
+          "unit": "USD",
+          "start_date": null,
+          "end_date": "2023-01-31",
+          "filed_date": "2023-03-24",
+          "tag": "Assets",
+          "accession_number": "0001734722-23-000017",
+          "raw_sha256": "46643c85f69e600a7fc474b819669859d04515314a69915eeda8f73ec465c0cb",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "uipath",
+        "year": 2024,
+        "concept": "revenue",
+        "status": "selected",
+        "candidate_count": 3,
+        "selected": {
+          "value": "1308072000",
+          "unit": "USD",
+          "start_date": "2023-02-01",
+          "end_date": "2024-01-31",
+          "filed_date": "2024-03-27",
+          "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+          "accession_number": "0001734722-24-000011",
+          "raw_sha256": "46643c85f69e600a7fc474b819669859d04515314a69915eeda8f73ec465c0cb",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "uipath",
+        "year": 2024,
+        "concept": "net_income",
+        "status": "selected",
+        "candidate_count": 3,
+        "selected": {
+          "value": "-89883000",
+          "unit": "USD",
+          "start_date": "2023-02-01",
+          "end_date": "2024-01-31",
+          "filed_date": "2024-03-27",
+          "tag": "NetIncomeLoss",
+          "accession_number": "0001734722-24-000011",
+          "raw_sha256": "46643c85f69e600a7fc474b819669859d04515314a69915eeda8f73ec465c0cb",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "uipath",
+        "year": 2024,
+        "concept": "assets",
+        "status": "selected",
+        "candidate_count": 2,
+        "selected": {
+          "value": "2954758000",
+          "unit": "USD",
+          "start_date": null,
+          "end_date": "2024-01-31",
+          "filed_date": "2024-03-27",
+          "tag": "Assets",
+          "accession_number": "0001734722-24-000011",
+          "raw_sha256": "46643c85f69e600a7fc474b819669859d04515314a69915eeda8f73ec465c0cb",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "palantir",
+        "year": 2021,
+        "concept": "revenue",
+        "status": "selected",
+        "candidate_count": 3,
+        "selected": {
+          "value": "1541889000",
+          "unit": "USD",
+          "start_date": "2021-01-01",
+          "end_date": "2021-12-31",
+          "filed_date": "2022-02-24",
+          "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+          "accession_number": "0001193125-22-050913",
+          "raw_sha256": "43014a2e04fa2784dd669d337a65c9eac9374ea638dacb292ecf19905408651f",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "palantir",
+        "year": 2021,
+        "concept": "net_income",
+        "status": "selected",
+        "candidate_count": 5,
+        "selected": {
+          "value": "-520379000",
+          "unit": "USD",
+          "start_date": "2021-01-01",
+          "end_date": "2021-12-31",
+          "filed_date": "2022-02-24",
+          "tag": "NetIncomeLoss",
+          "accession_number": "0001193125-22-050913",
+          "raw_sha256": "43014a2e04fa2784dd669d337a65c9eac9374ea638dacb292ecf19905408651f",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "palantir",
+        "year": 2021,
+        "concept": "assets",
+        "status": "selected",
+        "candidate_count": 2,
+        "selected": {
+          "value": "3247450000",
+          "unit": "USD",
+          "start_date": null,
+          "end_date": "2021-12-31",
+          "filed_date": "2022-02-24",
+          "tag": "Assets",
+          "accession_number": "0001193125-22-050913",
+          "raw_sha256": "43014a2e04fa2784dd669d337a65c9eac9374ea638dacb292ecf19905408651f",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "palantir",
+        "year": 2022,
+        "concept": "revenue",
+        "status": "selected",
+        "candidate_count": 3,
+        "selected": {
+          "value": "1905871000",
+          "unit": "USD",
+          "start_date": "2022-01-01",
+          "end_date": "2022-12-31",
+          "filed_date": "2023-02-21",
+          "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+          "accession_number": "0001321655-23-000011",
+          "raw_sha256": "43014a2e04fa2784dd669d337a65c9eac9374ea638dacb292ecf19905408651f",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "palantir",
+        "year": 2022,
+        "concept": "net_income",
+        "status": "selected",
+        "candidate_count": 6,
+        "selected": {
+          "value": "-373705000",
+          "unit": "USD",
+          "start_date": "2022-01-01",
+          "end_date": "2022-12-31",
+          "filed_date": "2023-02-21",
+          "tag": "NetIncomeLoss",
+          "accession_number": "0001321655-23-000011",
+          "raw_sha256": "43014a2e04fa2784dd669d337a65c9eac9374ea638dacb292ecf19905408651f",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "palantir",
+        "year": 2022,
+        "concept": "assets",
+        "status": "selected",
+        "candidate_count": 2,
+        "selected": {
+          "value": "3461239000",
+          "unit": "USD",
+          "start_date": null,
+          "end_date": "2022-12-31",
+          "filed_date": "2023-02-21",
+          "tag": "Assets",
+          "accession_number": "0001321655-23-000011",
+          "raw_sha256": "43014a2e04fa2784dd669d337a65c9eac9374ea638dacb292ecf19905408651f",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "palantir",
+        "year": 2023,
+        "concept": "revenue",
+        "status": "selected",
+        "candidate_count": 3,
+        "selected": {
+          "value": "2225012000",
+          "unit": "USD",
+          "start_date": "2023-01-01",
+          "end_date": "2023-12-31",
+          "filed_date": "2024-02-20",
+          "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+          "accession_number": "0001321655-24-000022",
+          "raw_sha256": "43014a2e04fa2784dd669d337a65c9eac9374ea638dacb292ecf19905408651f",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "palantir",
+        "year": 2023,
+        "concept": "net_income",
+        "status": "selected",
+        "candidate_count": 6,
+        "selected": {
+          "value": "209825000",
+          "unit": "USD",
+          "start_date": "2023-01-01",
+          "end_date": "2023-12-31",
+          "filed_date": "2024-02-20",
+          "tag": "NetIncomeLoss",
+          "accession_number": "0001321655-24-000022",
+          "raw_sha256": "43014a2e04fa2784dd669d337a65c9eac9374ea638dacb292ecf19905408651f",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "palantir",
+        "year": 2023,
+        "concept": "assets",
+        "status": "selected",
+        "candidate_count": 2,
+        "selected": {
+          "value": "4522425000",
+          "unit": "USD",
+          "start_date": null,
+          "end_date": "2023-12-31",
+          "filed_date": "2024-02-20",
+          "tag": "Assets",
+          "accession_number": "0001321655-24-000022",
+          "raw_sha256": "43014a2e04fa2784dd669d337a65c9eac9374ea638dacb292ecf19905408651f",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "palantir",
+        "year": 2024,
+        "concept": "revenue",
+        "status": "selected",
+        "candidate_count": 2,
+        "selected": {
+          "value": "2865507000",
+          "unit": "USD",
+          "start_date": "2024-01-01",
+          "end_date": "2024-12-31",
+          "filed_date": "2025-02-18",
+          "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+          "accession_number": "0001321655-25-000022",
+          "raw_sha256": "43014a2e04fa2784dd669d337a65c9eac9374ea638dacb292ecf19905408651f",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "palantir",
+        "year": 2024,
+        "concept": "net_income",
+        "status": "selected",
+        "candidate_count": 4,
+        "selected": {
+          "value": "462190000",
+          "unit": "USD",
+          "start_date": "2024-01-01",
+          "end_date": "2024-12-31",
+          "filed_date": "2025-02-18",
+          "tag": "NetIncomeLoss",
+          "accession_number": "0001321655-25-000022",
+          "raw_sha256": "43014a2e04fa2784dd669d337a65c9eac9374ea638dacb292ecf19905408651f",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      },
+      {
+        "slug": "palantir",
+        "year": 2024,
+        "concept": "assets",
+        "status": "selected",
+        "candidate_count": 2,
+        "selected": {
+          "value": "6340884000",
+          "unit": "USD",
+          "start_date": null,
+          "end_date": "2024-12-31",
+          "filed_date": "2025-02-18",
+          "tag": "Assets",
+          "accession_number": "0001321655-25-000022",
+          "raw_sha256": "43014a2e04fa2784dd669d337a65c9eac9374ea638dacb292ecf19905408651f",
+          "artifact_version": "195841c02f152dad11e5dd3eb8ee2680fa792a3b13ffcbd760c606491b61ec01"
+        }
+      }
+    ]
+  },
+  "market": [
+    {
+      "year": 2021,
+      "rows": 4788,
+      "trading_days": 252,
+      "mean_daily_shares": 11403824678.376984,
+      "mean_daily_notional": 564664855222.5892,
+      "mean_daily_trades": 68753067.53571428,
+      "trf_share": 0.436399248932288,
+      "source_url": "https://cdn.cboe.com/resources/us/equities/market-statistics/historical-market-volume/market_history_2021.csv",
+      "raw_sha256": "bb67715fe2bf9c52067b69a6a280fe7b4e827d0ec335d177b2dad3d86d4dc3ad",
+      "retrieved_at": "2026-09-23T12:08:21.784336-04:00"
+    },
+    {
+      "year": 2022,
+      "rows": 4769,
+      "trading_days": 251,
+      "mean_daily_shares": 11873972522.12749,
+      "mean_daily_notional": 573089728927.2272,
+      "mean_daily_trades": 77472614.4501992,
+      "trf_share": 0.4194805720855348,
+      "source_url": "https://cdn.cboe.com/resources/us/equities/market-statistics/historical-market-volume/market_history_2022.csv",
+      "raw_sha256": "61051498e02558ee1387ae66ca994d9e678342c89c8c1a56a43e513a7aba9788",
+      "retrieved_at": "2026-09-23T12:08:22.088806-04:00"
+    },
+    {
+      "year": 2023,
+      "rows": 4750,
+      "trading_days": 250,
+      "mean_daily_shares": 11035492081.352,
+      "mean_daily_notional": 514637037991.65314,
+      "mean_daily_trades": 70649108.004,
+      "trf_share": 0.43969272891776073,
+      "source_url": "https://cdn.cboe.com/resources/us/equities/market-statistics/historical-market-volume/market_history_2023.csv",
+      "raw_sha256": "17d673f4ea93a6938e74f41ba70e4aa8477a73e178026b27deb5fe8d704f4500",
+      "retrieved_at": "2026-09-23T12:08:22.425502-04:00"
+    },
+    {
+      "year": 2024,
+      "rows": 4786,
+      "trading_days": 252,
+      "mean_daily_shares": 12159099063.527779,
+      "mean_daily_notional": 607720314204.7267,
+      "mean_daily_trades": 77340283.09126984,
+      "trf_share": 0.4700292072195006,
+      "source_url": "https://cdn.cboe.com/resources/us/equities/market-statistics/historical-market-volume/market_history_2024.csv",
+      "raw_sha256": "da755580ecf801b6fe89854c58ead811e320f542e5b0c1dc03513c48487b0537",
+      "retrieved_at": "2026-09-23T12:08:22.752204-04:00"
+    }
+  ],
+  "universe": {
+    "checked_at": "2026-09-24",
+    "scope": "U.S. companies that offered an eligible software product at any point during 2021\u20132024",
+    "categories": [
+      "Data infrastructure",
+      "Developer tools",
+      "Security and observability",
+      "AI and automation"
+    ],
+    "membership_rule": "Count company-years after dated product, U.S. location, and historical ownership checks. Include firms later acquired, renamed, or closed.",
+    "verified_universe_count": null,
+    "manifest_checks": [
+      {
+        "name": "CNCF landscape",
+        "description": "Cloud-native products, projects, and member entries",
+        "counts": [
+          {
+            "year": 2021,
+            "items": 1841,
+            "url": "https://github.com/cncf/landscape/blob/f3ff2dc3fd73c9239eb454e189934fb150afb383/landscape.yml"
+          },
+          {
+            "year": 2024,
+            "items": 2361,
+            "url": "https://github.com/cncf/landscape/blob/e4f13c918275affaefb3dbe1a21a4a8e38ee3842/landscape.yml"
+          }
+        ]
+      },
+      {
+        "name": "LF AI & Data landscape",
+        "description": "AI and data products, projects, and member entries",
+        "counts": [
+          {
+            "year": 2021,
+            "items": 396,
+            "url": "https://github.com/lfai/lfai-landscape/blob/b7bad8d8d544f2a7dca4c933ac76652e0ae5cee0/landscape.yml"
+          },
+          {
+            "year": 2024,
+            "items": 484,
+            "url": "https://github.com/lfai/lfai-landscape/blob/9999a5ca4ddae6d202e83606ed6f84b368bc0099/landscape.yml"
+          }
+        ]
+      }
+    ],
+    "discovery_routes": [
+      {
+        "name": "Historical landscapes",
+        "role": "Find dated product and project candidates, domains, and repositories.",
+        "limit": "Project and member entries need company, U.S., and product checks. 2022\u20132023 files remain to be parsed.",
+        "status": "Two years parsed",
+        "url": "https://github.com/cncf/landscape"
+      },
+      {
+        "name": "SEC filing indexes",
+        "role": "Find in-period reporting companies and their original filings by CIK and filing date.",
+        "limit": "Filing status does not establish product fit; private companies are mostly absent.",
+        "status": "Source reviewed",
+        "url": "https://www.sec.gov/search-filings/edgar-search-assistance/accessing-edgar-data"
+      },
+      {
+        "name": "SEC Form D",
+        "role": "Find private issuer candidates in quarterly 2021\u20132024 offering notices.",
+        "limit": "Not a company or venture-round census. Amendments need deduplication.",
+        "status": "Source reviewed",
+        "url": "https://www.sec.gov/data-research/sec-markets-data/form-d-data-sets"
+      },
+      {
+        "name": "YC and dated announcements",
+        "role": "Find additional private candidates and historical company events.",
+        "limit": "Accelerator and publicity selection bias; present-day descriptions are not past evidence.",
+        "status": "Source reviewed",
+        "url": "https://www.ycombinator.com/companies"
+      },
+      {
+        "name": "Web archives",
+        "role": "Check historical product claims, domain aliases, and company activity.",
+        "limit": "A missing capture does not show that a company or product was absent.",
+        "status": "Pilot operational",
+        "url": "https://commoncrawl.org/columnar-index"
+      }
+    ],
+    "next_batch": [
+      "Freeze product, location, and historical ownership rules.",
+      "Build a source-tagged union, including firms that disappeared before 2024.",
+      "Review 50\u2013100 candidates across the four categories and record exclusions.",
+      "Measure unique eligible additions, identity ambiguity, and dated evidence by company-year."
+    ]
+  }
+}

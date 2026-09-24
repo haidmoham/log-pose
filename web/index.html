@@ -3,34 +3,30 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Log Pose · historical evidence</title>
-  <meta name="description" content="Inspect dated evidence about software companies.">
-  <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+  <title>Log Pose · software company evidence</title>
+  <meta name="description" content="Dated software company evidence, filings, and market activity from 2021 to 2024.">
   <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-  <main>
-    <header>
-      <div class="mark" aria-hidden="true">
-        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="24" cy="24" r="20.5" stroke="currentColor"/>
-          <circle cx="24" cy="24" r="15" stroke="#b9ad96" stroke-dasharray="1.5 3"/>
-          <path d="M24 3v6m0 30v6M3 24h6m30 0h6" stroke="currentColor" stroke-width="1.2"/>
-          <path d="m24 8 3.6 13.4L40 24l-12.4 2.7L24 40l-3.3-13.3L8 24l12.7-2.6L24 8Z" fill="#547b77"/>
-          <path d="m24 8 1 16-4.3 2.7L24 40l-1-16L24 8Z" fill="#b64f39"/>
-          <circle cx="24" cy="24" r="2" fill="#f5eedf" stroke="#1c2e38"/>
-        </svg>
-      </div>
-      <div><h1>Log Pose</h1><p>Company evidence across time</p></div>
+  <div class="shell">
+    <header class="site-header">
+      <div class="identity"><span class="mark" aria-hidden="true">◉</span><div><p class="eyebrow">RESEARCH DESK / 2021–2024</p><h1>Log Pose</h1></div></div>
       <a href="https://github.com/haidmoham/log-pose">Source code ↗</a>
     </header>
-    <section class="controls" aria-label="Evidence selection">
-      <label>Company <select id="company"></select></label>
-      <label>As of <select id="cutoff"><option value="2021">December 2021</option><option value="2024">December 2024</option></select></label>
+    <section class="intro" aria-labelledby="intro-title">
+      <div><p class="eyebrow">DATED SOFTWARE COMPANY EVIDENCE</p><h2 id="intro-title">Follow the source.<br><em>Question the story.</em></h2></div>
+      <p>Twenty selected companies, four years of archived pages, and reported financials for ten public companies. This is a research cohort, not a map of the software market.</p>
     </section>
-    <section id="result" aria-live="polite"><p>Loading evidence…</p></section>
-    <footer>Capture time determines eligibility. Missing evidence means no stored capture for that cutoff. This is a read-only export of short previews from the Postgres evidence store; the local API returns full normalized text.</footer>
-  </main>
+    <nav class="tabs" aria-label="Dashboard views">
+      <button type="button" data-view="companies" aria-current="page">01 <span>Companies</span></button>
+      <button type="button" data-view="fundamentals">02 <span>Public fundamentals</span></button>
+      <button type="button" data-view="market">03 <span>Market activity</span></button>
+      <button type="button" data-view="readiness">04 <span>Data readiness</span></button>
+      <button type="button" data-view="universe">05 <span>Universe build</span></button>
+    </nav>
+    <main id="view" aria-live="polite"><p>Loading pilot data…</p></main>
+    <footer><span>LOG POSE / RESEARCH PILOT</span><span>Source dates and limitations accompany each view.</span></footer>
+  </div>
   <script src="./app.js"></script>
 </body>
 </html>
