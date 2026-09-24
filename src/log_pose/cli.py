@@ -172,6 +172,7 @@ def main():
             if failures:
                 raise SystemExit(f"{failures} SEC companyfacts member(s) failed; stored evidence is preserved")
         elif args.command == "ingest":
+            failures = 0
             for item in json.loads(args.sources.read_text()):
                 source_id = ensure_source(conn, item["slug"], item["name"], item["url"], item["purpose"])
                 for year, stamp in item["captures"].items():
@@ -182,10 +183,13 @@ def main():
                         finish_attempt(conn, attempt_id, outcome, f"snapshot_id={snapshot_id}", capture.archive_url)
                         print(f"{item['slug']} {year}: {outcome} #{snapshot_id} {capture.captured_at.isoformat()}", flush=True)
                     except Exception as exc:
+                        failures += 1
                         conn.rollback()
                         finish_attempt(conn, attempt_id, "failed", f"{type(exc).__name__}: {exc}"[:1000])
                         print(f"{item['slug']} {year}: failed: {exc}", file=sys.stderr, flush=True)
                     time.sleep(max(0, args.delay))
+            if failures:
+                raise SystemExit(f"{failures} capture(s) failed; retry ingestion after checking the errors above")
         elif args.command == "inspect":
             print(json.dumps(evidence(conn, args.company, cutoff(args.year)), indent=2))
         elif args.command == "export":

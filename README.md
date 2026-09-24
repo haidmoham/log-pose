@@ -4,17 +4,26 @@ Log Pose stores dated primary-source evidence about software companies. The curr
 
 This is an independent public experiment inspired by a conversation about investor research at Telescope Partners. It is not affiliated with Telescope and contains no internal Telescope material.
 
-The existing [public evidence preview](https://log-pose.shin86dev.chatgpt.site) may still show the earlier six-capture export. The larger local dashboard is a static, read-only export; the local read API and Postgres database are not hosted with it.
+The [public evidence preview](https://logpose.mhaider.dev/) currently serves the earlier six-capture export. The expanded dashboard is available in this repository as a static, read-only export backed by `web/dashboard.json`; it has not been published to that site. Neither static view hosts the local read API or Postgres database.
+
+## Local live preview
+
+Run `npm run dev` from the repository root, then open `http://127.0.0.1:8000/`. The command creates a Python virtual environment, starts a project-local PostgreSQL 18 database on port 55432 when Homebrew's `postgresql@18` is installed, applies the schema, fetches missing curated Wayback captures, and serves the browser UI and read API from one origin. Node/npm and Python 3.11+ are required. Network access to the Internet Archive is needed to load missing captures. The database files stay under ignored `data/postgres/`; later runs reuse stored captures.
+
+If Docker Compose is available instead, the same command starts the `db` service on port 5432. You can also set `DATABASE_URL` to an existing local Postgres database; in that case the command leaves database startup to you. The local UI (`web/live-index.html` and `web/live-app.js`) reads from Postgres through `/api/companies` and `/api/companies/{slug}?cutoff=...`. The standalone `web/index.html` and `web/app.js` use the saved `web/dashboard.json` export. Stop the preview with Ctrl-C. The project-local Postgres server remains running for quick restarts; stop it with `$(brew --prefix postgresql@18)/bin/pg_ctl -D data/postgres stop` if needed.
+
+The live preview reads `/api/overview`. Its counts are database inventory: companies, curated source URLs, stored captures, and cumulative failed ingestion attempts. Each year cell reports how many sources have an eligible stored capture at that cutoff and the latest actual capture date. A 2021 capture can still be the latest eligible record for 2024; the cell does not claim a new 2024 observation. Select a cell to open the source text and archive link. The URL keeps the company and year for reloads and sharing. Ingestion failures remain in `ingestion_attempts`; an archive outage does not hide already stored evidence. Run `npm run dev` again to retry missing curated captures.
 
 ## Run locally
 
-Requirements: Python 3.11+, Docker with Compose, and network access to the Internet Archive.
+The manual path below uses Docker Compose, Python 3.11+, and network access to the Internet Archive.
 
 ```bash
 docker compose up -d db
 python -m venv .venv
 . .venv/bin/activate
 pip install -e '.[test]'
+export PYTHONPATH="$PWD/src"
 export DATABASE_URL=postgresql://logpose:logpose@localhost:5432/logpose
 log-pose migrate
 log-pose ingest
@@ -30,7 +39,7 @@ PYTHONPATH=src .venv/bin/python scripts/build_dashboard.py
 python -m http.server 8080 --directory web
 ```
 
-Visit `http://localhost:8080`. The dashboard export reads the saved ingestion and SEC selection reports, checks their selected capture IDs against Postgres, and aggregates the stored Cboe files. It contains short page previews, reviewed source passages, selected SEC values, and market-wide annual summaries. Raw HTML, full extracted text, and original CSVs stay in Postgres. Rebuild the two reports first if the pilot database has changed.
+Visit `http://localhost:8080`. The dashboard export reads the saved ingestion and SEC selection reports, checks their selected capture IDs against Postgres, and aggregates the stored Cboe files. It contains short page previews, reviewed source passages, selected SEC values, market-wide annual summaries, and a **Universe build** view sourced from `docs/research/us-universe-dashboard.json`. That view shows the working U.S. boundary, pinned historical inventory checks, discovery routes, and the next review batch. Its inventory counts are product/project/member items, not verified company counts. The fuller method is in [the universe research note](docs/research/us-company-universe-plan.md). Raw HTML, full extracted text, and original CSVs stay in Postgres. Rebuild the two reports first if the pilot database has changed.
 
 Run focused checks with:
 

@@ -11,7 +11,9 @@ from psycopg.rows import dict_row
 
 from log_pose.core import Capture, sha256
 from log_pose.market import parse_cboe
-from log_pose.storage import ensure_source, evidence, migrate, store, store_market_file
+from log_pose.storage import (
+    ensure_source, evidence, list_companies, migrate, overview, store, store_market_file,
+)
 from test_market import HEADER, ROW
 
 
@@ -42,12 +44,17 @@ def db():
 
 def test_duplicate_capture_and_temporal_query(db):
     source = ensure_source(db, "example", "Example", "https://example.com/", "test")
+    assert list_companies(db) == [{"slug": "example", "name": "Example"}]
     before = datetime(2021, 12, 30, tzinfo=timezone.utc)
     after = datetime(2022, 1, 2, tzinfo=timezone.utc)
     first = Capture("https://example.com/", "https://web.archive.org/web/20211230000000id_/https://example.com/", before, b"<body>Old product</body>", "text/html", 200)
     second = Capture("https://example.com/", "https://web.archive.org/web/20220102000000id_/https://example.com/", after, b"<body>New product</body>", "text/html", 200)
     assert store(db, source, first)[0] == "stored"
     assert store(db, source, first)[0] == "duplicate"
+    changed_payload = Capture(first.original_url, first.archive_url, first.captured_at, b"<body>Changed archive bytes</body>", "text/html", 200)
+    with pytest.raises(ValueError, match="payload changed"):
+        store(db, source, changed_payload)
+    db.rollback()
     assert store(db, source, second)[0] == "stored"
     with db.cursor() as cur:
         cur.execute("SELECT count(*) FROM snapshots")
@@ -55,6 +62,10 @@ def test_duplicate_capture_and_temporal_query(db):
     result = evidence(db, "example", datetime(2021, 12, 31, 23, 59, 59, tzinfo=timezone.utc))
     assert result["sources"][0]["snapshot"]["captured_at"] == before.isoformat()
     assert evidence(db, "example", datetime(2021, 1, 1, tzinfo=timezone.utc))["sources"][0]["status"] == "missing"
+    inventory = overview(db)
+    assert inventory["totals"]["captures"] == 2
+    assert inventory["companies"][0]["coverage"]["2021"]["latest_capture_at"] == before.isoformat()
+    assert inventory["companies"][0]["coverage"]["2024"]["latest_capture_at"] == after.isoformat()
 
 
 def test_commoncrawl_identity_and_market_file_are_idempotent(db):

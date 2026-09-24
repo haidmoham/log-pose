@@ -455,7 +455,11 @@
 .treatment-night .view-heading h2,
 .treatment-night .detail-head h3,
 .treatment-night .market-panel h3,
-.treatment-night .market-source h3 {
+.treatment-night .market-source h3,
+.treatment-night .universe-scope h3,
+.treatment-night .universe-heading h3,
+.treatment-night .universe-next h3,
+.treatment-night .route-card h4 {
   font-family: Manrope, Arial, sans-serif;
   font-weight: 600;
   letter-spacing: -0.06em;
