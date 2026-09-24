@@ -93,3 +93,16 @@ def test_identity_review_covers_challenge_and_groups_weaviate_aliases():
     assert len(weaviate["candidate_ids"]) == 3
     assert all(review["provider_relation"] == "none" for review in reviews
                if review["provider_name"] is None)
+
+
+def test_provider_leads_keep_location_and_company_eligibility_separate():
+    export = json.loads(Path("web/discovery.json").read_text())
+    providers = export["provider_candidates"]
+    assert len(providers) == 15
+    assert sum(item["us_status"] == "dated_us_base" for item in providers) == 5
+    assert all(item["company_eligibility"] == "unreviewed" for item in providers)
+    weaviate = next(item for item in providers if item["name"] == "Weaviate")
+    assert len(weaviate["directory_candidate_ids"]) == 3
+    assert weaviate["us_status"] == "unreviewed"
+    gitlab = next(item for item in providers if item["name"] == "GitLab")
+    assert gitlab["us_status"] == "reviewed_unresolved"

@@ -105205,5 +105205,560 @@
       "review_note": "TensorFlow is an open-source community project; Google origin does not create a standalone TensorFlow company.",
       "id": "identity-review-20"
     }
+  ],
+  "provider_candidates": [
+    {
+      "id": "4cc2f0d8f9a3920b5ed4",
+      "name": "CloudBees",
+      "record_type": "reviewed_provider_lead",
+      "company_eligibility": "unreviewed",
+      "identity_review_ids": [
+        "identity-review-09"
+      ],
+      "directory_candidate_ids": [
+        "91153e94387ce0643779"
+      ],
+      "directory_item_names": [
+        "Jenkins"
+      ],
+      "candidate_tags": [
+        "developer_tools"
+      ],
+      "observed_inventory_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "sources": [
+        "cncf"
+      ],
+      "provider_relations": [
+        "commercial_distribution"
+      ],
+      "pilot_slug": null,
+      "us_evidence": [],
+      "us_status": "unreviewed"
+    },
+    {
+      "id": "2dc010636b9dce91b732",
+      "name": "Databricks",
+      "record_type": "reviewed_provider_lead",
+      "company_eligibility": "unreviewed",
+      "identity_review_ids": [
+        "identity-review-16"
+      ],
+      "directory_candidate_ids": [
+        "be9bfc3d0ccd4bf29f49"
+      ],
+      "directory_item_names": [
+        "Mlflow"
+      ],
+      "candidate_tags": [
+        "ai_automation"
+      ],
+      "observed_inventory_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "sources": [
+        "cncf",
+        "lfai"
+      ],
+      "provider_relations": [
+        "managed_service"
+      ],
+      "pilot_slug": null,
+      "us_evidence": [],
+      "us_status": "unreviewed"
+    },
+    {
+      "id": "4d8bd97f03109ac1ffd4",
+      "name": "Datadog",
+      "record_type": "reviewed_provider_lead",
+      "company_eligibility": "unreviewed",
+      "identity_review_ids": [
+        "identity-review-12"
+      ],
+      "directory_candidate_ids": [
+        "4d9ade2bfb2aa6cb4afb"
+      ],
+      "directory_item_names": [
+        "Datadog"
+      ],
+      "candidate_tags": [
+        "security_observability"
+      ],
+      "observed_inventory_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "sources": [
+        "cncf"
+      ],
+      "provider_relations": [
+        "company_offering"
+      ],
+      "pilot_slug": "datadog",
+      "us_evidence": [
+        {
+          "decision": "documented_us_base",
+          "source_year": 2024,
+          "location_kind": "headquarters",
+          "place": "New York, New York",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/1561550/000156155024000009/ddog-20231231.htm",
+          "source_note": "The 2023 Form 10-K lists New York principal executive offices and also identifies New York as the company's headquarters."
+        }
+      ],
+      "us_status": "dated_us_base"
+    },
+    {
+      "id": "986051385feae5b98508",
+      "name": "Elastic",
+      "record_type": "reviewed_provider_lead",
+      "company_eligibility": "unreviewed",
+      "identity_review_ids": [
+        "identity-review-13"
+      ],
+      "directory_candidate_ids": [
+        "0b53be52084e857862ac"
+      ],
+      "directory_item_names": [
+        "Elastic"
+      ],
+      "candidate_tags": [
+        "security_observability"
+      ],
+      "observed_inventory_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "sources": [
+        "cncf"
+      ],
+      "provider_relations": [
+        "company_offering"
+      ],
+      "pilot_slug": "elastic",
+      "us_evidence": [],
+      "us_status": "unreviewed"
+    },
+    {
+      "id": "9d96d9d5b1addd7e7e61",
+      "name": "GitLab",
+      "record_type": "reviewed_provider_lead",
+      "company_eligibility": "unreviewed",
+      "identity_review_ids": [
+        "identity-review-06"
+      ],
+      "directory_candidate_ids": [
+        "db7244f000eedc7a99c9"
+      ],
+      "directory_item_names": [
+        "GitLab"
+      ],
+      "candidate_tags": [
+        "developer_tools"
+      ],
+      "observed_inventory_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "sources": [
+        "cncf"
+      ],
+      "provider_relations": [
+        "company_offering"
+      ],
+      "pilot_slug": "gitlab",
+      "us_evidence": [
+        {
+          "decision": "unresolved",
+          "source_year": 2024,
+          "location_kind": "none_declared",
+          "place": null,
+          "source_url": "https://www.sec.gov/Archives/edgar/data/1653482/000162828024012963/gtlb-20240131.htm",
+          "source_note": "The FY2024 Form 10-K says GitLab is remote-only and has no headquarters. Delaware incorporation and a service-agent address do not establish a U.S. operating base."
+        }
+      ],
+      "us_status": "reviewed_unresolved"
+    },
+    {
+      "id": "fe64108583908cdaeacb",
+      "name": "HashiCorp",
+      "record_type": "reviewed_provider_lead",
+      "company_eligibility": "unreviewed",
+      "identity_review_ids": [
+        "identity-review-15"
+      ],
+      "directory_candidate_ids": [
+        "02155d1023964b6c5233"
+      ],
+      "directory_item_names": [
+        "Vault"
+      ],
+      "candidate_tags": [
+        "security_observability"
+      ],
+      "observed_inventory_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "sources": [
+        "cncf"
+      ],
+      "provider_relations": [
+        "product_line"
+      ],
+      "pilot_slug": null,
+      "us_evidence": [],
+      "us_status": "unreviewed"
+    },
+    {
+      "id": "6c1658ae2a0fc993d64f",
+      "name": "Iterative",
+      "record_type": "reviewed_provider_lead",
+      "company_eligibility": "unreviewed",
+      "identity_review_ids": [
+        "identity-review-05"
+      ],
+      "directory_candidate_ids": [
+        "be14615c5052b1c0025c"
+      ],
+      "directory_item_names": [
+        "DVC"
+      ],
+      "candidate_tags": [
+        "data_infrastructure"
+      ],
+      "observed_inventory_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "sources": [
+        "lfai"
+      ],
+      "provider_relations": [
+        "developer"
+      ],
+      "pilot_slug": null,
+      "us_evidence": [
+        {
+          "source_year": 2021,
+          "location_kind": "stated_base",
+          "place": "San Francisco, California",
+          "source_url": "https://www.globenewswire.com/news-release/2021/06/02/2240670/0/en/mlops-company-iterative-raises-20-million-series-a-funding-led-by-468-capital.html",
+          "source_note": "The company-issued release describes Iterative as based in San Francisco.",
+          "decision": "documented_us_base"
+        }
+      ],
+      "us_status": "dated_us_base"
+    },
+    {
+      "id": "031ac995a40ff061cf05",
+      "name": "LaunchDarkly",
+      "record_type": "reviewed_provider_lead",
+      "company_eligibility": "unreviewed",
+      "identity_review_ids": [
+        "identity-review-07"
+      ],
+      "directory_candidate_ids": [
+        "27253adefb85d9c48b54"
+      ],
+      "directory_item_names": [
+        "LaunchDarkly"
+      ],
+      "candidate_tags": [
+        "developer_tools"
+      ],
+      "observed_inventory_years": [
+        2023,
+        2024
+      ],
+      "sources": [
+        "cncf"
+      ],
+      "provider_relations": [
+        "company_offering"
+      ],
+      "pilot_slug": null,
+      "us_evidence": [
+        {
+          "source_year": 2021,
+          "location_kind": "office_hub",
+          "place": "Oakland, California; Atlanta, Georgia",
+          "source_url": "https://launchdarkly.com/blog/launchdarkly-2021-galaxy-conference-20-trillion-feature-flags-hiring/",
+          "source_note": "The company founder's 2021 post lists Oakland and Atlanta hiring hubs alongside a UK hub and remote roles.",
+          "decision": "documented_us_base"
+        }
+      ],
+      "us_status": "dated_us_base"
+    },
+    {
+      "id": "1cc9a79bdaf097930627",
+      "name": "MongoDB",
+      "record_type": "reviewed_provider_lead",
+      "company_eligibility": "unreviewed",
+      "identity_review_ids": [
+        "identity-review-01"
+      ],
+      "directory_candidate_ids": [
+        "83d31ee8e2872672fdfd"
+      ],
+      "directory_item_names": [
+        "MongoDB"
+      ],
+      "candidate_tags": [
+        "data_infrastructure"
+      ],
+      "observed_inventory_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "sources": [
+        "cncf"
+      ],
+      "provider_relations": [
+        "company_offering"
+      ],
+      "pilot_slug": "mongodb",
+      "us_evidence": [
+        {
+          "decision": "documented_us_base",
+          "source_year": 2024,
+          "location_kind": "principal_executive_office",
+          "place": "New York, New York",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/1441816/000144181624000049/mdb-20240131.htm",
+          "source_note": "The FY2024 Form 10-K lists New York principal executive offices and identifies Atlas and Enterprise Advanced as offerings."
+        }
+      ],
+      "us_status": "dated_us_base"
+    },
+    {
+      "id": "8dfe5e6cf73b1d6b761f",
+      "name": "Red Hat",
+      "record_type": "reviewed_provider_lead",
+      "company_eligibility": "unreviewed",
+      "identity_review_ids": [
+        "identity-review-08"
+      ],
+      "directory_candidate_ids": [
+        "517e2e92c81249d0c145"
+      ],
+      "directory_item_names": [
+        "3Scale"
+      ],
+      "candidate_tags": [
+        "developer_tools"
+      ],
+      "observed_inventory_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "sources": [
+        "cncf"
+      ],
+      "provider_relations": [
+        "product_line"
+      ],
+      "pilot_slug": null,
+      "us_evidence": [],
+      "us_status": "unreviewed"
+    },
+    {
+      "id": "de5a1adf4fedcce15339",
+      "name": "Snowflake",
+      "record_type": "reviewed_provider_lead",
+      "company_eligibility": "unreviewed",
+      "identity_review_ids": [
+        "identity-review-02"
+      ],
+      "directory_candidate_ids": [
+        "9129ab18dfd8c1058038"
+      ],
+      "directory_item_names": [
+        "Snowflake"
+      ],
+      "candidate_tags": [
+        "data_infrastructure"
+      ],
+      "observed_inventory_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "sources": [
+        "cncf"
+      ],
+      "provider_relations": [
+        "company_offering"
+      ],
+      "pilot_slug": "snowflake",
+      "us_evidence": [
+        {
+          "decision": "documented_us_base",
+          "source_year": 2024,
+          "location_kind": "principal_executive_office",
+          "place": "Bozeman, Montana",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/1640147/000164014724000101/snow-20240131.htm",
+          "source_note": "The FY2024 Form 10-K designates Bozeman as the principal executive office but says Snowflake has no corporate headquarters."
+        }
+      ],
+      "us_status": "dated_us_base"
+    },
+    {
+      "id": "8cb0f11dba8f82de5c2a",
+      "name": "Snyk",
+      "record_type": "reviewed_provider_lead",
+      "company_eligibility": "unreviewed",
+      "identity_review_ids": [
+        "identity-review-11"
+      ],
+      "directory_candidate_ids": [
+        "9467a8d3b100f62c7a3f"
+      ],
+      "directory_item_names": [
+        "Snyk"
+      ],
+      "candidate_tags": [
+        "security_observability"
+      ],
+      "observed_inventory_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "sources": [
+        "cncf"
+      ],
+      "provider_relations": [
+        "company_offering"
+      ],
+      "pilot_slug": "snyk",
+      "us_evidence": [],
+      "us_status": "unreviewed"
+    },
+    {
+      "id": "2b78da3dc866654e6ea7",
+      "name": "Spotify",
+      "record_type": "reviewed_provider_lead",
+      "company_eligibility": "unreviewed",
+      "identity_review_ids": [
+        "identity-review-10"
+      ],
+      "directory_candidate_ids": [
+        "fa7331f6567cee42cdeb"
+      ],
+      "directory_item_names": [
+        "Backstage"
+      ],
+      "candidate_tags": [
+        "developer_tools"
+      ],
+      "observed_inventory_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "sources": [
+        "cncf"
+      ],
+      "provider_relations": [
+        "commercial_distribution"
+      ],
+      "pilot_slug": null,
+      "us_evidence": [],
+      "us_status": "unreviewed"
+    },
+    {
+      "id": "ea3f2c381cdbe297bb40",
+      "name": "Weaviate",
+      "record_type": "reviewed_provider_lead",
+      "company_eligibility": "unreviewed",
+      "identity_review_ids": [
+        "identity-review-03"
+      ],
+      "directory_candidate_ids": [
+        "16e8a2a890c23ec885f3",
+        "4eb50b566f03ac391f7e",
+        "c85f062b9fa02f1d673c"
+      ],
+      "directory_item_names": [
+        "Weaviate"
+      ],
+      "candidate_tags": [
+        "ai_automation",
+        "data_infrastructure"
+      ],
+      "observed_inventory_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "sources": [
+        "cncf"
+      ],
+      "provider_relations": [
+        "company_offering"
+      ],
+      "pilot_slug": null,
+      "us_evidence": [],
+      "us_status": "unreviewed"
+    },
+    {
+      "id": "fbacf89ccaec88491774",
+      "name": "Zilliz",
+      "record_type": "reviewed_provider_lead",
+      "company_eligibility": "unreviewed",
+      "identity_review_ids": [
+        "identity-review-04"
+      ],
+      "directory_candidate_ids": [
+        "4f41f68387145a22bbe7"
+      ],
+      "directory_item_names": [
+        "Milvus"
+      ],
+      "candidate_tags": [
+        "ai_automation",
+        "data_infrastructure"
+      ],
+      "observed_inventory_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "sources": [
+        "cncf",
+        "lfai"
+      ],
+      "provider_relations": [
+        "developer"
+      ],
+      "pilot_slug": null,
+      "us_evidence": [],
+      "us_status": "unreviewed"
+    }
   ]
 }

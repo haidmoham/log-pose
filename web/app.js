@@ -2,7 +2,7 @@ const root = document.querySelector('#view');
 const tabs = [...document.querySelectorAll('[data-view]')];
 const state = { view: 'search', year: 2024, category: 'all', query: '', company: null, sort: 'growth',
   searchYear: 'all', searchSource: 'all', searchType: 'all', searchUs: 'all',
-  selectedCandidate: null, searchLimit: 30, compareSlugs: [] };
+  selectedCandidate: null, selectedProvider: null, searchLimit: 30, compareSlugs: [] };
 let data;
 let discovery;
 let occurrenceById;
@@ -110,7 +110,8 @@ function renderSearch() {
   source.addEventListener('change', () => { state.searchSource = source.value; updateSearchResults(); });
   const type = node('select');
   type.setAttribute('aria-label', 'Record type');
-  [['all', 'All record types'], ['lead', 'Directory leads'],
+  [['all', 'All record types'], ['provider', 'Reviewed provider leads'],
+    ['lead', 'Directory leads'],
     ['pilot', 'Selected pilot'], ['financing', 'Financing announcement'],
     ['financial', 'SEC facts available']]
     .forEach(([value, label]) => type.add(new Option(label, value)));
@@ -142,7 +143,7 @@ function candidateScore(candidate, query) {
   return candidate.observed_years.length;
 }
 
-function searchAggregation(hits, pilots) {
+function searchAggregation(hits, providers, pilots) {
   const panel = node('section', '', 'search-aggregation');
   panel.append(node('p', 'AGGREGATION / CURRENT RESULT SET', 'eyebrow'),
     node('h3', 'Where the matches appear'));
@@ -172,7 +173,20 @@ function searchAggregation(hits, pilots) {
     node('span', String(year)),
     node('strong', String(pilots.filter(hit => data.evidence.some(cell =>
       cell.slug === hit.company.slug && cell.year === year && cell.snapshot_id)).length)))));
-  counts.append(byCategory, byYear, byPilotCategory, byPilotYear);
+  const byProviderCategory = node('div');
+  byProviderCategory.append(node('h4', 'Reviewed provider tags'));
+  ['data_infrastructure', 'developer_tools', 'security_observability', 'ai_automation']
+    .forEach(tag => byProviderCategory.append(append(node('p', '', 'aggregate-row'),
+      node('span', categoryName(tag)),
+      node('strong', String(providers.filter(item => item.candidate_tags.includes(tag)).length)))));
+  const byProviderYear = node('div');
+  byProviderYear.append(node('h4', 'Provider inventory years'));
+  data.years.forEach(year => byProviderYear.append(append(node('p', '', 'aggregate-row'),
+    node('span', String(year)),
+    node('strong', String(providers.filter(item =>
+      item.observed_inventory_years.includes(year)).length)))));
+  counts.append(byCategory, byYear, byProviderCategory, byProviderYear,
+    byPilotCategory, byPilotYear);
   const reviewedProviders = new Set(hits.map(hit => hit.candidate.identity_review_id)
     .filter(id => id && identityReviewById.get(id)?.provider_name));
   const usProviderGroups = new Set(hits.filter(hit =>
@@ -181,6 +195,9 @@ function searchAggregation(hits, pilots) {
   panel.append(counts, node('p', hits.length + ' distinct directory candidate keys · '
     + reviewedProviders.size + ' reviewed provider relationships · '
     + usProviderGroups.size + ' with dated U.S. base evidence · '
+    + providers.length + ' reviewed provider leads in results ('
+    + providers.filter(item => providerLocationInSelectedYear(item)?.decision === 'documented_us_base').length
+    + ' with dated U.S. base evidence) · '
     + pilots.length + ' selected pilot companies · '
     + pilots.filter(hit => financingFor(hit.company.slug).length).length
     + ' with a financing announcement. Tags and years overlap; these are not market-size counts.', 'muted'));
@@ -214,6 +231,48 @@ function candidateLocationFor(candidate) {
   if (!evidence || (state.searchYear !== 'all'
     && evidence.source_year !== Number(state.searchYear))) return null;
   return { ...evidence, decision: 'documented_us_base' };
+}
+
+function providerLocationInSelectedYear(provider) {
+  return provider.us_evidence.find(item => state.searchYear === 'all'
+    || item.source_year === Number(state.searchYear));
+}
+
+function providerDetail(provider) {
+  const section = node('section', '', 'candidate-detail');
+  section.append(node('p', 'REVIEWED PROVIDER LEAD / COMPANY ELIGIBILITY UNREVIEWED', 'eyebrow'),
+    node('h3', provider.name),
+    node('p', provider.directory_item_names.join(' · ') + ' · '
+      + provider.provider_relations.map(item => item.replaceAll('_', ' ')).join(', '), 'muted'));
+  const location = providerLocationInSelectedYear(provider);
+  if (location) section.append(append(node('div', '', 'identity-review'),
+    node('p', 'U.S. LOCATION SOURCE / ' + location.source_year, 'eyebrow'),
+    node('p', location.source_note), link('Open location source ↗', location.source_url)));
+  else section.append(node('p', provider.us_status === 'reviewed_unresolved'
+    ? 'Location review is unresolved for this provider and selected year.'
+    : 'No reviewed U.S. base source for this provider and selected year.', 'caveat'));
+  provider.identity_review_ids.forEach(id => {
+    const review = identityReviewById.get(id);
+    section.append(append(node('div', '', 'identity-review'),
+      node('p', review.item_kind.replaceAll('_', ' ') + ' · '
+        + review.provider_relation.replaceAll('_', ' ') + ' · source ' + review.source_year, 'eyebrow'),
+      node('p', review.review_note), link('Open relationship source ↗', review.source_url)));
+  });
+  const list = node('div', '', 'occurrence-list');
+  provider.directory_candidate_ids.forEach(id => {
+    const candidate = discovery.candidates.find(item => item.id === id);
+    const first = occurrenceById.get(candidate.occurrence_ids[0]);
+    list.append(append(node('article', '', 'occurrence'),
+      node('p', candidate.name + ' · inventory years '
+        + candidate.observed_years.join(', '), 'eyebrow'),
+      node('p', candidate.homepage_url || candidate.repo_url || 'No listed URL.'),
+      link('Pinned source row ↗', first.source_url),
+      node('small', 'Row path ' + first.source_path.join('.') + ' · SHA-256 '
+        + first.artifact_sha256.slice(0, 12) + '…')));
+  });
+  section.append(node('h4', 'Linked directory keys'), list,
+    node('p', 'The provider relationship is reviewed, but the source inventories do not establish company eligibility or continuous U.S. status.', 'caveat'));
+  return section;
 }
 
 function matchingPilotEvidence(slug, terms) {
@@ -316,13 +375,21 @@ function updateSearchResults() {
   const target = document.querySelector('#search-results');
   target.replaceChildren();
   const terms = state.query.toLocaleLowerCase().trim().split(/\s+/).filter(Boolean);
-  const hits = ['pilot', 'financial', 'financing'].includes(state.searchType) ? []
+  const hits = ['provider', 'pilot', 'financial', 'financing'].includes(state.searchType) ? []
     : discovery.candidates.map(candidate => ({
       candidate,
       occurrences: matchingOccurrences(candidate, terms)
     })).filter(hit => hit.occurrences.length && (state.searchUs === 'all'
       || candidateLocationFor(hit.candidate)?.decision ===
         (state.searchUs === 'documented' ? 'documented_us_base' : 'unresolved')));
+  const providers = !['all', 'provider'].includes(state.searchType) ? []
+    : discovery.provider_candidates.filter(provider =>
+      (state.searchUs === 'all' || providerLocationInSelectedYear(provider)?.decision ===
+        (state.searchUs === 'documented' ? 'documented_us_base' : 'unresolved'))
+      && provider.directory_candidate_ids.some(id => {
+        const candidate = discovery.candidates.find(item => item.id === id);
+        return matchingOccurrences(candidate, terms).length > 0;
+      }));
   const pilots = data.companies.map(item => ({
     company: item,
     evidenceMatches: matchingPilotEvidence(item.slug, terms),
@@ -334,7 +401,7 @@ function updateSearchResults() {
       : data.evidence.some(cell => cell.slug === item.slug
         && cell.year === Number(state.searchYear) && cell.snapshot_id)))
     && state.searchSource === 'all'
-    && state.searchType !== 'lead'
+    && !['lead', 'provider'].includes(state.searchType)
     && (state.searchUs === 'all'
       || (state.searchUs === 'documented' && locationReviewInSelectedYear(item.slug)?.decision === 'documented_us_base')
       || (state.searchUs === 'unresolved' && locationReviewInSelectedYear(item.slug)?.decision === 'unresolved'))
@@ -348,19 +415,45 @@ function updateSearchResults() {
     || left.candidate.name.localeCompare(right.candidate.name));
   target.append(append(node('div', '', 'search-summary'),
     metric(String(hits.length), 'Directory leads', 'Product or project keys; U.S. evidence varies'),
+    metric(String(providers.length), 'Provider leads', 'Reviewed relationships; eligibility open'),
     metric(String(pilots.length), 'Pilot companies', 'Selected and separately sourced'),
     metric(String(pilots.filter(hit => hit.company.cik).length), 'With SEC facts', 'Reported fundamentals; no price series'),
     metric(String(pilots.filter(hit => financingFor(hit.company.slug).length).length),
       'With financing news', 'Company announcements; selected events only'),
     metric(String(pilots.filter(hit => locationReviewInSelectedYear(hit.company.slug)?.decision === 'documented_us_base').length),
       'With U.S. base evidence', 'Source year matches selected year')));
-  target.append(searchAggregation(hits, pilots));
+  target.append(searchAggregation(hits, providers, pilots));
   const comparison = comparisonPanel(pilots);
   if (comparison) target.append(comparison);
   const resultList = node('div', '', 'search-result-list');
+  providers.forEach(provider => {
+    const button = node('button', state.selectedProvider === provider.id
+      ? 'Hide reviewed evidence' : 'Inspect reviewed evidence →', 'text-button');
+    button.type = 'button';
+    button.addEventListener('click', () => {
+      state.selectedProvider = state.selectedProvider === provider.id ? null : provider.id;
+      updateSearchResults();
+      document.querySelector('#provider-' + provider.id)?.scrollIntoView({ block: 'nearest' });
+    });
+    const location = providerLocationInSelectedYear(provider);
+    const card = append(node('article', '', 'search-result'),
+      node('p', 'REVIEWED PROVIDER LEAD · '
+        + provider.observed_inventory_years.join(', '), 'eyebrow'),
+      node('h3', provider.name),
+      node('p', provider.directory_item_names.join(' · '), 'muted'),
+      node('p', provider.provider_relations.map(item => item.replaceAll('_', ' ')).join(' · '), 'search-tags'),
+      node('p', location?.decision === 'documented_us_base'
+        ? 'U.S. ' + location.location_kind.replaceAll('_', ' ') + ' · '
+          + location.place + ' · source ' + location.source_year
+        : location ? 'U.S. location review unresolved · source ' + location.source_year
+          : 'U.S. location unreviewed', 'search-tags'), button);
+    card.id = 'provider-' + provider.id;
+    resultList.append(card);
+    if (state.selectedProvider === provider.id) resultList.append(providerDetail(provider));
+  });
   pilots.forEach(({ company: item, evidenceMatches }) => {
     const announcements = financingFor(item.slug);
-    const locationReview = locationReviewFor(item.slug);
+    const locationReview = locationReviewInSelectedYear(item.slug);
     const button = node('button', 'Open dated company evidence →', 'text-button');
     button.type = 'button';
     button.addEventListener('click', () => {
@@ -459,7 +552,7 @@ function updateSearchResults() {
     more.addEventListener('click', () => { state.searchLimit += 30; updateSearchResults(); });
     target.append(more);
   }
-  if (!hits.length && !pilots.length) target.append(node('p', 'No records match these filters.', 'muted'));
+  if (!hits.length && !providers.length && !pilots.length) target.append(node('p', 'No records match these filters.', 'muted'));
 }
 
 function formatNumber(value, places = 1) {

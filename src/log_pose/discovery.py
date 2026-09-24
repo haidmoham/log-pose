@@ -332,6 +332,78 @@ def attach_identity_reviews(index: dict, reviews: list[dict], cohort: list[dict]
     return len(seen)
 
 
+def build_provider_candidates(index: dict, location_reviews: list[dict]) -> list[dict]:
+    """Group reviewed provider relationships into a U.S.-screening queue.
+
+    A dated U.S. base observation is kept separate from company eligibility.
+    Nonexclusive distributions remain leads, not ownership findings.
+    """
+    candidates_by_id = {item["id"]: item for item in index["candidates"]}
+    locations_by_slug = {item["slug"]: item for item in location_reviews}
+    grouped: dict[str, dict] = {}
+    for review in index["identity_reviews"]:
+        provider = review["provider_name"]
+        if provider is None:
+            continue
+        normalized_name = re.sub(r"\s+", " ", provider.casefold()).strip()
+        group = grouped.get(normalized_name)
+        if group is None:
+            group = {
+                "id": hashlib.sha256(normalized_name.encode()).hexdigest()[:20],
+                "name": provider,
+                "record_type": "reviewed_provider_lead",
+                "company_eligibility": "unreviewed",
+                "identity_review_ids": [],
+                "directory_candidate_ids": [],
+                "directory_item_names": [],
+                "candidate_tags": [],
+                "observed_inventory_years": [],
+                "sources": [],
+                "provider_relations": [],
+                "pilot_slug": None,
+                "us_evidence": [],
+            }
+            grouped[normalized_name] = group
+        group["identity_review_ids"].append(review["id"])
+        if review["provider_relation"] not in group["provider_relations"]:
+            group["provider_relations"].append(review["provider_relation"])
+        if review["pilot_slug"]:
+            group["pilot_slug"] = review["pilot_slug"]
+            location = locations_by_slug.get(review["pilot_slug"])
+            if location:
+                group["us_evidence"].append({
+                    "decision": location["decision"],
+                    "source_year": location["source_year"],
+                    "location_kind": location["location_kind"],
+                    "place": location["place"],
+                    "source_url": location["source_url"],
+                    "source_note": location["source_note"],
+                })
+        elif review.get("us_evidence"):
+            group["us_evidence"].append({
+                **review["us_evidence"], "decision": "documented_us_base"
+            })
+        for candidate_id in review["candidate_ids"]:
+            candidate = candidates_by_id[candidate_id]
+            group["directory_candidate_ids"].append(candidate_id)
+            for field, values in (
+                    ("directory_item_names", [candidate["name"]]),
+                    ("candidate_tags", candidate["candidate_tags"]),
+                    ("observed_inventory_years", candidate["observed_years"]),
+                    ("sources", candidate["sources"])):
+                for value in values:
+                    if value not in group[field]:
+                        group[field].append(value)
+    for group in grouped.values():
+        for field in ("candidate_tags", "observed_inventory_years", "sources"):
+            group[field].sort()
+        group["us_status"] = ("dated_us_base" if any(item["decision"] == "documented_us_base"
+                             for item in group["us_evidence"])
+                             else "reviewed_unresolved" if group["us_evidence"]
+                             else "unreviewed")
+    return sorted(grouped.values(), key=lambda item: item["name"].casefold())
+
+
 def build_index(cache_dir: Path, *, offline: bool = False) -> dict:
     for source, pin in PINS.items():
         if set(pin["commits"]) != set(STUDY_YEARS):
