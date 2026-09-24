@@ -1,6 +1,6 @@
 # Log Pose
 
-Log Pose stores dated primary-source evidence about software companies. The current pilot follows 20 selected companies across 2021–2024, with SEC facts for ten public companies and market-wide Cboe activity. It does not infer markets, customers, or winners. A page is an observation, not a classification.
+Log Pose stores dated primary-source evidence about software companies. The current pilot follows 20 selected companies across 2021–2024, with SEC facts for ten public companies and market-wide Cboe activity. A small, separately reviewed topology layer records scoped relationship claims and an explicit shared-exposure hypothesis. A page is an observation, not a classification; the topology does not infer market share, shared customers, or winners.
 
 This is an independent public experiment inspired by a conversation about investor research at Telescope Partners. It is not affiliated with Telescope and contains no internal Telescope material.
 
@@ -11,6 +11,29 @@ The [public dashboard](https://logpose.mhaider.dev/) is a static, read-only expo
 Run `npm run dashboard`, then open `http://127.0.0.1:8080/`. This serves the saved dashboard and discovery exports without starting Postgres or changing evidence. Run `npm run test:dashboard` for the pure calculation, missing-data, chart-scale, URL-state, and export-contract checks. Overview, compare, and explore state is encoded in the URL for reloads and browser navigation.
 
 The dashboard and local live inventory have separate browser entrypoints and styles. The [architecture and extension map](docs/architecture.md) documents their modules plus the database view grains, timestamps, provenance, and safe extension seams.
+
+## Market topology research
+
+The topology tab and company detail show reviewed claims as a local map and source inspector. The first reviewed seed covers Datadog naming Elastic as a scoped competitor; dbt Labs and Snowflake announcing a partnership and Snowflake's participation in dbt Labs' financing; and an untested Datadog–Snowflake shared business-driver hypothesis. These are distinct claims, even when one source supports more than one. Their source summaries, attribution, evidence locations, dates, interpretations, and remaining unknowns stay visible. A missing link means this slice has not recorded a supported claim. The map's placement, line style, and claim basis are not relationship strength, probability, or measured performance correlation.
+
+The [topology ontology](docs/topology-ontology.md) gives each predicate a precise reading and describes source, event, reporting, validity, and review time. The [source and review method](docs/research/topology-method.md) separates the reviewed seed from a broader U.S. software research queue. The queue nominates product/project pairs from pinned inventory overlap; it does not establish company identity, U.S. eligibility, or a relationship. Reviewed claims require retained source artifacts and a dated review. Raw HTML remains outside the static `web/` export.
+
+To reproduce the bounded review queue from the pinned discovery export and check the saved source artifacts:
+
+```bash
+PYTHONPATH=src .venv/bin/python scripts/build_topology_review_queue.py
+.venv/bin/python scripts/capture_topology_sources.py
+```
+
+With a disposable or intended local Postgres database selected through `DATABASE_URL`, apply migrations and import the reviewed seed before rebuilding `web/dashboard.json`:
+
+```bash
+log-pose migrate
+PYTHONPATH=src .venv/bin/python scripts/import_topology_seed.py
+PYTHONPATH=src .venv/bin/python scripts/build_dashboard.py
+```
+
+The import verifies source hashes and appends review decisions; it does not fetch missing artifacts. The capture command reports failures rather than converting a URL or directory overlap into a claim.
 
 ## Local live preview
 

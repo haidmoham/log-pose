@@ -1,15 +1,66 @@
 """Export the verified pilot into a small, read-only dashboard dataset."""
 
 import argparse
+import hashlib
 import json
 import re
 from datetime import date, timezone
 from pathlib import Path
 
 from log_pose.storage import connect
+from log_pose.topology import validate_topology
+from log_pose.topology_store import reviewed_claims
 
 
 YEARS = (2021, 2022, 2023, 2024)
+
+
+def verify_topology_store(topology, connection):
+    """The public seed must match accepted, retained database assertions."""
+    accepted = {row["id"]: row for row in reviewed_claims(connection, limit=500)}
+    basis_by_status = {
+        "documented": "source_statement",
+        "reviewed_inference": "reviewed_inference",
+        "hypothesis": "hypothesis",
+    }
+    for claim in topology["claims"]:
+        primary = claim["sources"][0]
+        url_hash = hashlib.sha256(primary["source_url"].encode()).hexdigest()[:12]
+        candidate_id = f"seed-claim:{claim['id']}:{url_hash}"
+        stored = accepted.get(candidate_id)
+        if stored is None:
+            raise ValueError(f"topology claim lacks an accepted database review: {claim['id']}")
+        expected = {
+            "subject_entity_id": claim["subject_slug"],
+            "object_entity_id": claim["object_slug"],
+            "predicate": claim["predicate"],
+            "direction": claim["direction"],
+            "scope": claim["scope"],
+            "interpretation": claim["interpretation"],
+            "alternative_or_unknown": claim["alternative_or_unknown"],
+            "temporal_form": claim["temporal_form"],
+            "temporal_basis": claim["temporal_basis"],
+            "proposed_basis": basis_by_status[claim["claim_status"]],
+            "source_url": primary["source_url"],
+            "raw_sha256": primary["artifact_sha256"],
+            "evidence_locator": primary["evidence_locator"],
+            "evidence_text": primary["evidence_text"],
+            "exact_quote": primary.get("evidence_quote"),
+        }
+        for field, value in expected.items():
+            if stored[field] != value:
+                raise ValueError(f"topology claim differs from reviewed store: {claim['id']}.{field}")
+        extra_sources = {item["source_url"]: item
+                         for item in stored["additional_evidence"] if item["role"] == "support"}
+        if set(extra_sources) != {item["source_url"] for item in claim["sources"][1:]}:
+            raise ValueError(f"topology claim has different supporting sources: {claim['id']}")
+        for source in claim["sources"][1:]:
+            stored_source = extra_sources[source["source_url"]]
+            if (stored_source["raw_sha256"] != source["artifact_sha256"]
+                    or stored_source["locator"] != source["evidence_locator"]
+                    or stored_source["summary"] != source["evidence_text"]
+                    or stored_source["exact_quote"] != source.get("evidence_quote")):
+                raise ValueError(f"topology supporting evidence differs from store: {claim['id']}")
 
 
 def reviewed_quotes(audit_text):
@@ -64,13 +115,16 @@ def validate_location_reviews(reviews, cohort):
         raise ValueError(f"expected three location reviews per category: {category_counts}")
 
 
-def build(cohort, ingestion, financials, announcements, location_reviews, audit_text, connection):
+def build(cohort, ingestion, financials, announcements, location_reviews, market_topology,
+          audit_text, connection):
     if len(cohort) != 20 or ingestion["planned_company_year_cells"] != 80:
         raise ValueError("dashboard expects the reviewed 20-company, 80-cell pilot")
     if financials["policy_version"] != "sec-annual-earliest-filed-v1":
         raise ValueError("SEC selection policy changed; review the dashboard first")
     validate_announcements(announcements, cohort)
     validate_location_reviews(location_reviews, cohort)
+    validate_topology(market_topology, cohort)
+    verify_topology_store(market_topology, connection)
 
     cells = ingestion["cells"]
     selected_ids = [cell["snapshot_id"] for cell in cells if cell["snapshot_id"]]
@@ -180,6 +234,7 @@ def build(cohort, ingestion, financials, announcements, location_reviews, audit_
         "reviewed_quotes": quotes,
         "financing_announcements": announcements,
         "us_location_reviews": location_reviews,
+        "market_topology": market_topology,
         "financials": {
             "as_of": financials["as_of"],
             "policy_version": financials["policy_version"],
@@ -199,6 +254,7 @@ def main():
     parser.add_argument("--financials", type=Path, default=Path("docs/research/sec-analysis-build.json"))
     parser.add_argument("--announcements", type=Path, default=Path("docs/research/financing-announcements.json"))
     parser.add_argument("--location-reviews", type=Path, default=Path("docs/research/us-location-reviews.json"))
+    parser.add_argument("--topology", type=Path, default=Path("docs/research/market-topology.json"))
     parser.add_argument("--audit", type=Path, default=Path("docs/research/evidence-audit.md"))
     parser.add_argument("--output", type=Path, default=Path("web/dashboard.json"))
     args = parser.parse_args()
@@ -209,6 +265,7 @@ def main():
             json.loads(args.financials.read_text()),
             json.loads(args.announcements.read_text()),
             json.loads(args.location_reviews.read_text()),
+            json.loads(args.topology.read_text()),
             args.audit.read_text(),
             connection,
         )

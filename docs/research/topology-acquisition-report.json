@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0",
+  "manifest_count": 3,
+  "planned_count": 3,
+  "captured_or_verified_count": 1,
+  "failed_count": 2,
+  "refresh_mode": true,
+  "results": [
+    {
+      "id": "dbt-series-d-2022",
+      "outcome": "verified_existing",
+      "source_url": "https://www.getdbt.com/blog/dbt-labs-raises-222m-in-series-d-funding-at-4-2b-valuation-led-by-altimeter-with-participation-from-databricks-and-snowflake",
+      "final_url": "https://www.getdbt.com/blog/dbt-labs-raises-222m-in-series-d-funding-at-4-2b-valuation-led-by-altimeter-with-participation-from-databricks-and-snowflake",
+      "http_status": 200,
+      "retrieved_at": "2026-09-24T18:12:38.591592+00:00",
+      "verified_at": "2026-09-24T18:12:38.884191+00:00",
+      "artifact_path": "docs/research/source-artifacts/topology/dbt-series-d-2022.html",
+      "bytes": 826819,
+      "sha256": "64694c906f3c8be8b3fd90d88725fe3598a896533adf3123a24dc684610ffece",
+      "expected_sha256": "64694c906f3c8be8b3fd90d88725fe3598a896533adf3123a24dc684610ffece"
+    }
+  ],
+  "failures": [
+    {
+      "id": "datadog-2024-10k",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1561550/000156155025000025/ddog-20241231.htm",
+      "outcome": "failed",
+      "retrieved_at": "2026-09-24T18:12:35.176506+00:00",
+      "error": "capture failed for datadog-2024-10k: HTTP Error 403: Forbidden"
+    },
+    {
+      "id": "snowflake-fy2024-10k",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1640147/000164014724000101/snow-20240131.htm",
+      "outcome": "failed",
+      "retrieved_at": "2026-09-24T18:12:38.583135+00:00",
+      "error": "capture failed for snowflake-fy2024-10k: HTTP Error 403: Forbidden"
+    }
+  ]
+}

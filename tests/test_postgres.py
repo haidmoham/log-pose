@@ -27,6 +27,10 @@ def db():
     with psycopg.connect(url, row_factory=dict_row) as conn:
         migrate(conn)
         with conn.cursor() as cur:
+            cur.execute("""TRUNCATE topology_graph_builds, topology_reviews,
+                topology_candidate_evidence, topology_candidates,
+                topology_acquisition_jobs, topology_eligibility_reviews,
+                topology_entity_aliases, topology_entities, topology_sources CASCADE""")
             cur.execute("DELETE FROM sec_financial_facts")
             cur.execute("DELETE FROM sec_companyfacts")
             cur.execute("DELETE FROM sec_artifacts")
@@ -153,7 +157,7 @@ def test_migration_preserves_existing_wayback_snapshot():
                 assert cur.fetchone() == {"provider": "wayback", "provider_record_id": archive,
                                           "raw_sha256": sha256(raw)}
                 cur.execute("SELECT count(*) AS count FROM schema_migrations")
-                assert cur.fetchone()["count"] == 7
+                assert cur.fetchone()["count"] == 11
                 cur.execute("SELECT count(*) AS count FROM warehouse.page_observations")
                 assert cur.fetchone()["count"] == 1
     finally:
