@@ -1,7 +1,8 @@
 const root = document.querySelector('#view');
 const tabs = [...document.querySelectorAll('[data-view]')];
 const state = { view: 'search', year: 2024, category: 'all', query: '', company: null, sort: 'growth',
-  searchYear: 'all', searchSource: 'all', searchType: 'all', selectedCandidate: null, searchLimit: 30 };
+  searchYear: 'all', searchSource: 'all', searchType: 'all', searchUs: 'all',
+  selectedCandidate: null, searchLimit: 30 };
 let data;
 let discovery;
 let occurrenceById;
@@ -90,9 +91,9 @@ function renderSearch() {
   category.value = state.category;
   category.addEventListener('change', () => { state.category = category.value; updateSearchResults(); });
   const year = node('select');
-  year.setAttribute('aria-label', 'Observed year');
+  year.setAttribute('aria-label', 'Record year');
   year.add(new Option('All years', 'all'));
-  data.years.forEach(value => year.add(new Option('Observed ' + value, String(value))));
+  data.years.forEach(value => year.add(new Option('Record year ' + value, String(value))));
   year.value = state.searchYear;
   year.addEventListener('change', () => { state.searchYear = year.value; updateSearchResults(); });
   const source = node('select');
@@ -109,7 +110,14 @@ function renderSearch() {
     .forEach(([value, label]) => type.add(new Option(label, value)));
   type.value = state.searchType;
   type.addEventListener('change', () => { state.searchType = type.value; updateSearchResults(); });
-  filters.append(category, year, source, type);
+  const location = node('select');
+  location.setAttribute('aria-label', 'U.S. location evidence');
+  [['all', 'Any U.S. evidence'], ['documented', 'U.S. base documented'],
+    ['unresolved', 'Location review unresolved']]
+    .forEach(([value, label]) => location.add(new Option(label, value)));
+  location.value = state.searchUs;
+  location.addEventListener('change', () => { state.searchUs = location.value; updateSearchResults(); });
+  filters.append(category, year, source, type, location);
   root.append(controls, filters);
 
   const results = node('div');
@@ -134,28 +142,58 @@ function searchAggregation(hits, pilots) {
     node('h3', 'Where the matches appear'));
   const counts = node('div', '', 'search-aggregate-grid');
   const byCategory = node('div');
-  byCategory.append(node('h4', 'Candidate tags'));
+  byCategory.append(node('h4', 'Directory candidate tags'));
   ['data_infrastructure', 'developer_tools', 'security_observability', 'ai_automation']
     .forEach(tag => byCategory.append(append(node('p', '', 'aggregate-row'),
       node('span', categoryName(tag)),
       node('strong', String(hits.filter(hit => hit.occurrences.some(item =>
         item.candidate_tags.includes(tag))).length)))));
   const byYear = node('div');
-  byYear.append(node('h4', 'Observed in inventory'));
+  byYear.append(node('h4', 'Directory inventory years'));
   data.years.forEach(year => byYear.append(append(node('p', '', 'aggregate-row'),
     node('span', String(year)),
     node('strong', String(hits.filter(hit => hit.occurrences.some(item =>
       item.year === year)).length)))));
-  counts.append(byCategory, byYear);
+  const byPilotCategory = node('div');
+  byPilotCategory.append(node('h4', 'Pilot company categories'));
+  ['data_infrastructure', 'developer_tools', 'security_observability', 'ai_automation']
+    .forEach(tag => byPilotCategory.append(append(node('p', '', 'aggregate-row'),
+      node('span', categoryName(tag)),
+      node('strong', String(pilots.filter(hit => hit.company.category === tag).length)))));
+  const byPilotYear = node('div');
+  byPilotYear.append(node('h4', 'Pilot archived-page years'));
+  data.years.forEach(year => byPilotYear.append(append(node('p', '', 'aggregate-row'),
+    node('span', String(year)),
+    node('strong', String(pilots.filter(hit => data.evidence.some(cell =>
+      cell.slug === hit.company.slug && cell.year === year && cell.snapshot_id)).length)))));
+  counts.append(byCategory, byYear, byPilotCategory, byPilotYear);
   panel.append(counts, node('p', hits.length + ' distinct directory candidate keys · '
     + pilots.length + ' selected pilot companies · '
-    + pilots.filter(item => financingFor(item.slug).length).length
+    + pilots.filter(hit => financingFor(hit.company.slug).length).length
     + ' with a financing announcement. Tags and years overlap; these are not market-size counts.', 'muted'));
   return panel;
 }
 
 function financingFor(slug) {
   return data.financing_announcements.filter(event => event.slug === slug);
+}
+
+function locationReviewFor(slug) {
+  return data.us_location_reviews.find(review => review.slug === slug);
+}
+
+function matchingPilotEvidence(slug, terms) {
+  return data.evidence.filter(cell => cell.slug === slug && cell.snapshot_id
+    && (state.searchYear === 'all' || cell.year === Number(state.searchYear))
+    && terms.every(term => (cell.excerpt || '').toLocaleLowerCase().includes(term)));
+}
+
+function matchingFinancing(slug, terms) {
+  return financingFor(slug).filter(event =>
+    (state.searchYear === 'all' || Number(event.announced_on.slice(0, 4)) === Number(state.searchYear))
+    && terms.every(term => [event.round, event.announced_on, String(event.amount_usd),
+      money(event.amount_usd), event.valuation_usd ? money(event.valuation_usd) : '']
+      .join(' ').toLocaleLowerCase().includes(term)));
 }
 
 function candidateDetail(candidate) {
@@ -182,12 +220,16 @@ function updateSearchResults() {
   const target = document.querySelector('#search-results');
   target.replaceChildren();
   const terms = state.query.toLocaleLowerCase().trim().split(/\s+/).filter(Boolean);
-  const hits = ['pilot', 'financial', 'financing'].includes(state.searchType) ? []
+  const hits = state.searchUs !== 'all' || ['pilot', 'financial', 'financing'].includes(state.searchType) ? []
     : discovery.candidates.map(candidate => ({
       candidate,
       occurrences: matchingOccurrences(candidate, terms)
     })).filter(hit => hit.occurrences.length);
-  const pilots = data.companies.filter(item =>
+  const pilots = data.companies.map(item => ({
+    company: item,
+    evidenceMatches: matchingPilotEvidence(item.slug, terms),
+    financingMatches: matchingFinancing(item.slug, terms)
+  })).filter(({ company: item, evidenceMatches, financingMatches }) =>
     (state.category === 'all' || item.category === state.category)
     && (state.searchYear === 'all' || (state.searchType === 'financing'
       ? financingFor(item.slug).some(event => Number(event.announced_on.slice(0, 4)) === Number(state.searchYear))
@@ -195,23 +237,30 @@ function updateSearchResults() {
         && cell.year === Number(state.searchYear) && cell.snapshot_id)))
     && state.searchSource === 'all'
     && state.searchType !== 'lead'
+    && (state.searchUs === 'all'
+      || (state.searchUs === 'documented' && locationReviewFor(item.slug)?.decision === 'documented_us_base')
+      || (state.searchUs === 'unresolved' && locationReviewFor(item.slug)?.decision === 'unresolved'))
     && (state.searchType !== 'financial' || item.cik)
-    && (state.searchType !== 'financing' || financingFor(item.slug).length)
-    && [item.name, item.purpose, item.url].join(' ').toLocaleLowerCase()
-      .includes(state.query.toLocaleLowerCase().trim()));
+    && (state.searchType !== 'financing' || financingMatches.length)
+    && (terms.every(term => [item.name, item.purpose, item.url].join(' ')
+      .toLocaleLowerCase().includes(term)) || evidenceMatches.length > 0
+      || financingMatches.length > 0));
   hits.sort((left, right) => candidateScore(right.candidate, state.query)
     - candidateScore(left.candidate, state.query)
     || left.candidate.name.localeCompare(right.candidate.name));
   target.append(append(node('div', '', 'search-summary'),
     metric(String(hits.length), 'Directory leads', 'Product or project keys; U.S. status unreviewed'),
     metric(String(pilots.length), 'Pilot companies', 'Selected and separately sourced'),
-    metric(String(pilots.filter(item => item.cik).length), 'With SEC facts', 'Reported fundamentals; no price series'),
-    metric(String(pilots.filter(item => financingFor(item.slug).length).length),
-      'With financing news', 'Company announcements; selected events only')));
+    metric(String(pilots.filter(hit => hit.company.cik).length), 'With SEC facts', 'Reported fundamentals; no price series'),
+    metric(String(pilots.filter(hit => financingFor(hit.company.slug).length).length),
+      'With financing news', 'Company announcements; selected events only'),
+    metric(String(pilots.filter(hit => locationReviewFor(hit.company.slug)?.decision === 'documented_us_base').length),
+      'With U.S. base evidence', 'Dated headquarters or principal office')));
   target.append(searchAggregation(hits, pilots));
   const resultList = node('div', '', 'search-result-list');
-  pilots.forEach(item => {
+  pilots.forEach(({ company: item, evidenceMatches }) => {
     const announcements = financingFor(item.slug);
+    const locationReview = locationReviewFor(item.slug);
     const button = node('button', 'Open dated company evidence →', 'text-button');
     button.type = 'button';
     button.addEventListener('click', () => {
@@ -220,13 +269,24 @@ function updateSearchResults() {
       render();
       document.querySelector('#company-detail')?.scrollIntoView({ block: 'start' });
     });
-    resultList.append(append(node('article', '', 'search-result'),
+    const card = append(node('article', '', 'search-result'),
       node('p', 'SELECTED PILOT COMPANY' + (item.cik ? ' · SEC FACTS' : '')
         + (announcements.length ? ' · FINANCING NEWS' : ''), 'eyebrow'),
       node('h3', item.name), node('p', item.purpose || '', 'muted'),
       ...(announcements.length ? [node('p', announcements.map(event =>
         event.announced_on + ' · ' + event.round + ' · ' + money(event.amount_usd)).join(' / '), 'search-tags')] : []),
-      button));
+      button);
+    if (locationReview) card.append(node('p', locationReview.decision === 'documented_us_base'
+      ? 'U.S. ' + locationReview.location_kind.replaceAll('_', ' ') + ' · ' + locationReview.place
+      : 'location review unresolved · no headquarters declared', 'search-tags'));
+    if (terms.length && evidenceMatches.length) {
+      const match = evidenceMatches[0];
+      card.append(node('p', 'Archived page · ' + match.year + ' · captured '
+        + match.captured_at.slice(0, 10), 'caption'),
+      node('p', match.excerpt.slice(0, 240) + (match.excerpt.length > 240 ? '…' : ''), 'muted'),
+      link('Open archived page ↗', match.archive_url));
+    }
+    resultList.append(card);
   });
   hits.slice(0, state.searchLimit).forEach(hit => {
     const item = hit.candidate;
@@ -340,6 +400,12 @@ function companyDetail(slug) {
   section.append(append(node('div', '', 'detail-head'),
     append(node('div'), node('p', 'COMPANY RECORD / 2021–2024', 'eyebrow'), node('h3', company.name)),
     close));
+  const locationReview = locationReviewFor(slug);
+  if (locationReview) section.append(append(node('div', '', 'location-review'),
+    node('p', 'U.S. LOCATION REVIEW / ' + locationReview.source_year, 'eyebrow'),
+    node('p', locationReview.source_note, 'muted'),
+    link('Open location source ↗', locationReview.source_url),
+    node('p', 'A dated office or headquarters statement does not establish status in every study year.', 'caveat')));
   const grid = node('div', '', 'year-grid');
   for (const year of data.years) {
     const item = evidence(slug, year);

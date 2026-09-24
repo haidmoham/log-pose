@@ -1,0 +1,74 @@
+[
+  {
+    "slug": "confluent", "source_year": 2024, "location_kind": "principal_executive_office",
+    "decision": "documented_us_base", "place": "Mountain View, California",
+    "source_note": "The 2023 Form 10-K lists a Mountain View principal executive office and describes Confluent Cloud and Platform.",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1699838/000095017024018036/cflt-20231231.htm"
+  },
+  {
+    "slug": "snowflake", "source_year": 2024, "location_kind": "principal_executive_office",
+    "decision": "documented_us_base", "place": "Bozeman, Montana",
+    "source_note": "The FY2024 Form 10-K designates Bozeman as the principal executive office but says Snowflake has no corporate headquarters.",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1640147/000164014724000101/snow-20240131.htm"
+  },
+  {
+    "slug": "mongodb", "source_year": 2024, "location_kind": "principal_executive_office",
+    "decision": "documented_us_base", "place": "New York, New York",
+    "source_note": "The FY2024 Form 10-K lists New York principal executive offices and identifies Atlas and Enterprise Advanced as offerings.",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1441816/000144181624000049/mdb-20240131.htm"
+  },
+  {
+    "slug": "atlassian", "source_year": 2024, "location_kind": "principal_executive_office",
+    "decision": "documented_us_base", "place": "San Francisco, California",
+    "source_note": "The FY2024 Form 10-K lists San Francisco principal executive offices and separately discusses a planned Sydney global headquarters. The Delaware parent succeeded the prior English and Welsh entity in 2022.",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1650372/000165037224000036/team-20240630.htm"
+  },
+  {
+    "slug": "postman", "source_year": 2021, "location_kind": "headquarters",
+    "decision": "documented_us_base", "place": "San Francisco, California",
+    "source_note": "The company-issued 2021 Series D release calls Postman San Francisco headquartered and describes its API platform. Historical legal suffix remains unreviewed.",
+    "source_url": "https://www.businesswire.com/news/home/20210818005151/en/Postman-Closes-225-Million-Series-D-Round-at-a-5.6-Billion-Valuation-to-Power-the-API-First-World"
+  },
+  {
+    "slug": "gitlab", "source_year": 2024, "location_kind": "none_declared",
+    "decision": "unresolved", "place": null,
+    "source_note": "The FY2024 Form 10-K says GitLab is remote-only and has no headquarters. Delaware incorporation and a service-agent address do not establish a U.S. operating base.",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1653482/000162828024012963/gtlb-20240131.htm"
+  },
+  {
+    "slug": "datadog", "source_year": 2024, "location_kind": "headquarters",
+    "decision": "documented_us_base", "place": "New York, New York",
+    "source_note": "The 2023 Form 10-K lists New York principal executive offices and also identifies New York as the company's headquarters.",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1561550/000156155024000009/ddog-20231231.htm"
+  },
+  {
+    "slug": "crowdstrike", "source_year": 2024, "location_kind": "principal_executive_office",
+    "decision": "documented_us_base", "place": "Austin, Texas",
+    "source_note": "The FY2024 Form 10-K lists Austin principal executive offices and describes the Falcon platform.",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1535527/000153552724000007/crwd-20240131.htm"
+  },
+  {
+    "slug": "vanta", "source_year": 2021, "location_kind": "headquarters",
+    "decision": "documented_us_base", "place": "San Francisco, California",
+    "source_note": "The company Series A announcement calls Vanta San Francisco headquartered and describes security monitoring and compliance automation. Historical legal suffix remains unreviewed.",
+    "source_url": "https://www.vanta.com/resources/vanta-announces-series-a"
+  },
+  {
+    "slug": "uipath", "source_year": 2024, "location_kind": "headquarters",
+    "decision": "documented_us_base", "place": "New York, New York",
+    "source_note": "The FY2024 Form 10-K lists New York principal executive offices and labels its New York office the global headquarters. The original business began in Bucharest.",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1734722/000173472224000011/path-20240131.htm"
+  },
+  {
+    "slug": "palantir", "source_year": 2024, "location_kind": "headquarters",
+    "decision": "documented_us_base", "place": "Denver, Colorado",
+    "source_note": "The 2023 Form 10-K lists Denver principal executive offices and a Denver corporate headquarters; it describes Gotham, Foundry, Apollo and AIP.",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1321655/000132165524000022/pltr-20231231.htm"
+  },
+  {
+    "slug": "datarobot", "source_year": 2022, "location_kind": "headquarters",
+    "decision": "documented_us_base", "place": "Boston, Massachusetts",
+    "source_note": "ITOCHU's 2022 partnership announcement identifies DataRobot, Inc. as Boston headquartered and describes its machine learning platform.",
+    "source_url": "https://www.itochu.co.jp/en/news/press/2022/220810.html"
+  }
+]

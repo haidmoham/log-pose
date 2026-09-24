@@ -42,12 +42,35 @@ def validate_announcements(announcements, cohort):
             raise ValueError(f"financing announcement has an invalid amount: {key}")
 
 
-def build(cohort, ingestion, financials, announcements, audit_text, connection):
+def validate_location_reviews(reviews, cohort):
+    categories = {company["slug"]: company["category"] for company in cohort}
+    if len(reviews) != 12 or len({item["slug"] for item in reviews}) != 12:
+        raise ValueError("expected 12 distinct reviewed pilot companies")
+    category_counts = {category: 0 for category in set(categories.values())}
+    for item in reviews:
+        slug = item["slug"]
+        if slug not in categories:
+            raise ValueError(f"location review has unknown pilot slug: {slug}")
+        category_counts[categories[slug]] += 1
+        if item["source_year"] not in YEARS or not item["source_url"].startswith("https://"):
+            raise ValueError(f"location review lacks a dated first-party source: {slug}")
+        if item["decision"] not in {"documented_us_base", "unresolved"}:
+            raise ValueError(f"invalid location decision: {slug}")
+        if item["location_kind"] not in {"headquarters", "principal_executive_office", "none_declared"}:
+            raise ValueError(f"invalid location kind: {slug}")
+        if (item["decision"] == "documented_us_base") != (item["location_kind"] != "none_declared"):
+            raise ValueError(f"location decision and source fact disagree: {slug}")
+    if set(category_counts.values()) != {3}:
+        raise ValueError(f"expected three location reviews per category: {category_counts}")
+
+
+def build(cohort, ingestion, financials, announcements, location_reviews, audit_text, connection):
     if len(cohort) != 20 or ingestion["planned_company_year_cells"] != 80:
         raise ValueError("dashboard expects the reviewed 20-company, 80-cell pilot")
     if financials["policy_version"] != "sec-annual-earliest-filed-v1":
         raise ValueError("SEC selection policy changed; review the dashboard first")
     validate_announcements(announcements, cohort)
+    validate_location_reviews(location_reviews, cohort)
 
     cells = ingestion["cells"]
     selected_ids = [cell["snapshot_id"] for cell in cells if cell["snapshot_id"]]
@@ -157,6 +180,7 @@ def build(cohort, ingestion, financials, announcements, audit_text, connection):
         "evidence": evidence,
         "reviewed_quotes": quotes,
         "financing_announcements": announcements,
+        "us_location_reviews": location_reviews,
         "financials": {
             "as_of": financials["as_of"],
             "policy_version": financials["policy_version"],
@@ -175,6 +199,7 @@ def main():
     parser.add_argument("--ingestion", type=Path, default=Path("docs/research/ingestion-report.json"))
     parser.add_argument("--financials", type=Path, default=Path("docs/research/sec-analysis-build.json"))
     parser.add_argument("--announcements", type=Path, default=Path("docs/research/financing-announcements.json"))
+    parser.add_argument("--location-reviews", type=Path, default=Path("docs/research/us-location-reviews.json"))
     parser.add_argument("--audit", type=Path, default=Path("docs/research/evidence-audit.md"))
     parser.add_argument("--output", type=Path, default=Path("web/dashboard.json"))
     args = parser.parse_args()
@@ -184,6 +209,7 @@ def main():
             json.loads(args.ingestion.read_text()),
             json.loads(args.financials.read_text()),
             json.loads(args.announcements.read_text()),
+            json.loads(args.location_reviews.read_text()),
             args.audit.read_text(),
             connection,
         )
@@ -192,6 +218,7 @@ def main():
     print(f"exported {len(payload['evidence'])} evidence cells, "
           f"{len(payload['financials']['cells'])} financial cells, "
           f"{len(payload['financing_announcements'])} financing announcements, "
+          f"{len(payload['us_location_reviews'])} U.S. location reviews, "
           f"{len(payload['market'])} market years to {args.output}")
 
 

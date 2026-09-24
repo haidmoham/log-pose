@@ -29,7 +29,7 @@ I fetched and parsed the original `landscape.yml` from the last identified commi
 | CNCF | [2021-12-24](https://github.com/cncf/landscape/blob/f3ff2dc3fd73c9239eb454e189934fb150afb383/landscape.yml) | [2024-12-31](https://github.com/cncf/landscape/blob/e4f13c918275affaefb3dbe1a21a4a8e38ee3842/landscape.yml) | 1,841 / 2,361 |
 | LF AI & Data | [2021-12-18](https://github.com/lfai/lfai-landscape/blob/b7bad8d8d544f2a7dca4c933ac76652e0ae5cee0/landscape.yml) | [2024-12-19](https://github.com/lfai/lfai-landscape/blob/9999a5ca4ddae6d202e83606ed6f84b368bc0099/landscape.yml) | 396 / 484 |
 
-For example, the 2021 CNCF file contains MongoDB, Snowflake, GitLab, Datadog, Elastic, and Snyk product entries with homepage URLs. It also contains member and project entries, which demonstrates why row counts cannot become company counts. The 2022 and 2023 year-end files and all candidate-level U.S. checks remain to be fetched.
+For example, the 2021 CNCF file contains MongoDB, Snowflake, GitLab, Datadog, Elastic, and Snyk product entries with homepage URLs. It also contains member and project entries, which demonstrates why row counts cannot become company counts. The 2022 and 2023 files have since been pinned and imported into the [discovery pull](discovery-pull.md). Candidate-level U.S. checks remain open.
 
 ## Next bounded run
 
