@@ -200,6 +200,18 @@ def test_reviewed_seed_import_preserves_source_passages_and_is_idempotent(db, mo
     assert all(count == 0 for count in import_seed(
         topology, manifest, cohort, repository_root=root,
         reviewer="test source review").values())
+    claims = reviewed_claims(db)
+    assert len(claims) == 4
+    assert all(claim["exact_quote"] for claim in claims)
+    hypothesis = next(claim for claim in claims
+                      if claim["predicate"] == "shared_exposure_hypothesis")
+    assert len(hypothesis["additional_evidence"]) == 1
+    assert hypothesis["additional_evidence"][0]["exact_quote"]
+    verify_topology_store(topology, db)
+    changed = json.loads(json.dumps(topology))
+    changed["claims"][0]["interpretation"] = "A changed interpretation"
+    with pytest.raises(ValueError, match="differs from reviewed store"):
+        verify_topology_store(changed, db)
 
 
 def test_discovery_extension_import_is_immutable_and_idempotent(db):
@@ -219,10 +231,12 @@ def test_discovery_extension_import_is_immutable_and_idempotent(db):
         "inventory_rows_created": 0,
     }
     with db.cursor() as cursor:
-        cursor.execute("""SELECT study_year,coverage_status,count(*) AS inventory_rows,
+        cursor.execute("""SELECT artifact.study_year,artifact.coverage_status,
+                count(*) AS inventory_rows,
                 count(*) FILTER (WHERE record_type='product_or_project_candidate') AS mapped_rows
-            FROM discovery_artifacts JOIN discovery_inventory_rows USING (raw_sha256)
-            GROUP BY study_year,coverage_status ORDER BY study_year""")
+            FROM discovery_artifacts AS artifact JOIN discovery_inventory_rows AS inventory
+              ON inventory.artifact_sha256=artifact.raw_sha256
+            GROUP BY artifact.study_year,artifact.coverage_status ORDER BY artifact.study_year""")
         rows = cursor.fetchall()
     assert rows == [
         {"study_year": 2020, "coverage_status": "dated_inventory_snapshot", "inventory_rows": 1881, "mapped_rows": 598},
@@ -233,15 +247,3 @@ def test_discovery_extension_import_is_immutable_and_idempotent(db):
         {"study_year": 2025, "coverage_status": "dated_inventory_snapshot", "inventory_rows": 2884, "mapped_rows": 1053},
         {"study_year": 2026, "coverage_status": "partial_year_snapshot", "inventory_rows": 2900, "mapped_rows": 1013},
     ]
-    claims = reviewed_claims(db)
-    assert len(claims) == 4
-    assert all(claim["exact_quote"] for claim in claims)
-    hypothesis = next(claim for claim in claims
-                      if claim["predicate"] == "shared_exposure_hypothesis")
-    assert len(hypothesis["additional_evidence"]) == 1
-    assert hypothesis["additional_evidence"][0]["exact_quote"]
-    verify_topology_store(topology, db)
-    changed = json.loads(json.dumps(topology))
-    changed["claims"][0]["interpretation"] = "A changed interpretation"
-    with pytest.raises(ValueError, match="differs from reviewed store"):
-        verify_topology_store(changed, db)
