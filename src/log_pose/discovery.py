@@ -17,6 +17,8 @@ from urllib.parse import urlsplit, urlunsplit
 import yaml
 
 
+STUDY_YEARS = (2021, 2022, 2023, 2024)
+
 PINS = {
     "cncf": {
         "repository": "cncf/landscape",
@@ -278,7 +280,62 @@ def link_pilot_candidates(candidates: list[dict], cohort: list[dict]) -> int:
     return matches
 
 
+def attach_identity_reviews(index: dict, reviews: list[dict], cohort: list[dict]) -> int:
+    """Attach manually reviewed provider relationships without merging raw rows.
+
+    A provider link is a research lead, not a U.S. eligibility or ownership
+    finding. Multiple candidate keys can share one reviewed identity.
+    """
+    candidates = {candidate["id"]: candidate for candidate in index["candidates"]}
+    pilot_slugs = {company["slug"] for company in cohort}
+    if len(reviews) != 20:
+        raise ValueError("expected the fixed 20-record identity challenge")
+    seen = set()
+    for number, review in enumerate(reviews, start=1):
+        ids = review["candidate_ids"]
+        if not ids or len(set(ids)) != len(ids):
+            raise ValueError(f"invalid candidate IDs in identity review {number}")
+        for candidate_id in ids:
+            if candidate_id not in candidates or candidate_id in seen:
+                raise ValueError(f"unknown or duplicate reviewed candidate {candidate_id}")
+            seen.add(candidate_id)
+        if review["item_kind"] not in {"company_brand", "product", "project"}:
+            raise ValueError(f"invalid item kind in identity review {number}")
+        if review["provider_relation"] not in {
+                "company_offering", "developer", "product_line",
+                "commercial_distribution", "managed_service", "none"}:
+            raise ValueError(f"invalid provider relation in identity review {number}")
+        if (review["provider_relation"] == "none") != (review["provider_name"] is None):
+            raise ValueError(f"provider name and relation disagree in identity review {number}")
+        if review["pilot_slug"] is not None:
+            if review["pilot_slug"] not in pilot_slugs:
+                raise ValueError(f"unknown pilot company in identity review {number}")
+            if any(candidates[candidate_id].get("pilot_match", {}).get("slug") != review["pilot_slug"]
+                   for candidate_id in ids):
+                raise ValueError(f"pilot link lacks exact source navigation match in review {number}")
+        if review["source_year"] not in STUDY_YEARS or not review["source_url"].startswith("https://"):
+            raise ValueError(f"identity review lacks dated source {number}")
+        if not review["review_note"].strip():
+            raise ValueError(f"identity review lacks reasoning {number}")
+        us_evidence = review.get("us_evidence")
+        if us_evidence:
+            if (us_evidence["source_year"] not in STUDY_YEARS
+                    or us_evidence["location_kind"] not in {"headquarters", "stated_base", "office_hub"}
+                    or not us_evidence["place"].strip()
+                    or not us_evidence["source_url"].startswith("https://")
+                    or not us_evidence["source_note"].strip()):
+                raise ValueError(f"invalid U.S. evidence in identity review {number}")
+        review["id"] = f"identity-review-{number:02d}"
+        for candidate_id in ids:
+            candidates[candidate_id]["identity_review_id"] = review["id"]
+    index["identity_reviews"] = reviews
+    return len(seen)
+
+
 def build_index(cache_dir: Path, *, offline: bool = False) -> dict:
+    for source, pin in PINS.items():
+        if set(pin["commits"]) != set(STUDY_YEARS):
+            raise ValueError(f"{source} is missing a study year")
     artifacts = []
     observations = []
     for source in PINS:
@@ -291,8 +348,7 @@ def build_index(cache_dir: Path, *, offline: bool = False) -> dict:
             observations.extend(source_observations)
     return {
         "mapping_version": "landscape-category-candidates-v1",
-        "retrieved_at": datetime.now(timezone.utc).isoformat(),
-        "scope_note": "Dated product/project leads. Company identity, U.S. location, and eligibility are unreviewed.",
+        "scope_note": "Dated product/project leads with a separate, partial manual identity review. U.S. eligibility is not inferred from inventory rows.",
         "artifacts": artifacts,
         "occurrences": observations,
         "candidates": build_candidates(observations),

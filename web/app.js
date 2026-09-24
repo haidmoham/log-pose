@@ -6,6 +6,7 @@ const state = { view: 'search', year: 2024, category: 'all', query: '', company:
 let data;
 let discovery;
 let occurrenceById;
+let identityReviewById;
 
 function node(tag, text = '', className = '') {
   const item = document.createElement(tag);
@@ -59,11 +60,16 @@ function occurrenceText(occurrence) {
 }
 
 function matchingOccurrences(candidate, terms) {
+  const review = identityReviewFor(candidate);
+  const reviewText = review && (state.searchYear === 'all'
+    || review.source_year === Number(state.searchYear))
+    ? [review.provider_name, review.review_note, review.provider_relation].join(' ').toLocaleLowerCase()
+    : '';
   return candidate.occurrence_ids.map(id => occurrenceById.get(id)).filter(item =>
     (state.category === 'all' || item.candidate_tags.includes(state.category))
     && (state.searchYear === 'all' || item.year === Number(state.searchYear))
     && (state.searchSource === 'all' || item.source === state.searchSource)
-    && terms.every(term => occurrenceText(item).includes(term)));
+    && terms.every(term => occurrenceText(item).includes(term) || reviewText.includes(term)));
 }
 
 function renderSearch() {
@@ -167,7 +173,14 @@ function searchAggregation(hits, pilots) {
     node('strong', String(pilots.filter(hit => data.evidence.some(cell =>
       cell.slug === hit.company.slug && cell.year === year && cell.snapshot_id)).length)))));
   counts.append(byCategory, byYear, byPilotCategory, byPilotYear);
+  const reviewedProviders = new Set(hits.map(hit => hit.candidate.identity_review_id)
+    .filter(id => id && identityReviewById.get(id)?.provider_name));
+  const usProviderGroups = new Set(hits.filter(hit =>
+    candidateLocationFor(hit.candidate)?.decision === 'documented_us_base')
+    .map(hit => hit.candidate.identity_review_id));
   panel.append(counts, node('p', hits.length + ' distinct directory candidate keys · '
+    + reviewedProviders.size + ' reviewed provider relationships · '
+    + usProviderGroups.size + ' with dated U.S. base evidence · '
     + pilots.length + ' selected pilot companies · '
     + pilots.filter(hit => financingFor(hit.company.slug).length).length
     + ' with a financing announcement. Tags and years overlap; these are not market-size counts.', 'muted'));
@@ -180,6 +193,27 @@ function financingFor(slug) {
 
 function locationReviewFor(slug) {
   return data.us_location_reviews.find(review => review.slug === slug);
+}
+
+function locationReviewInSelectedYear(slug) {
+  const review = locationReviewFor(slug);
+  return review && (state.searchYear === 'all' || review.source_year === Number(state.searchYear))
+    ? review : null;
+}
+
+function identityReviewFor(candidate) {
+  return candidate.identity_review_id
+    ? identityReviewById.get(candidate.identity_review_id) : null;
+}
+
+function candidateLocationFor(candidate) {
+  const review = identityReviewFor(candidate);
+  if (!review) return null;
+  if (review.pilot_slug) return locationReviewInSelectedYear(review.pilot_slug);
+  const evidence = review.us_evidence;
+  if (!evidence || (state.searchYear !== 'all'
+    && evidence.source_year !== Number(state.searchYear))) return null;
+  return { ...evidence, decision: 'documented_us_base' };
 }
 
 function matchingPilotEvidence(slug, terms) {
@@ -205,7 +239,7 @@ function comparisonPanel(pilots) {
     node('h3', 'Review evidence side by side'));
   const year = state.searchYear === 'all' ? 2024 : Number(state.searchYear);
   const rows = selected.map(company => {
-    const location = locationReviewFor(company.slug);
+    const location = locationReviewInSelectedYear(company.slug);
     const event = financingFor(company.slug)
       .filter(item => state.searchYear === 'all'
         || Number(item.announced_on.slice(0, 4)) === year).at(-1);
@@ -214,7 +248,8 @@ function comparisonPanel(pilots) {
     if (location) locationCell.append(node('span', location.decision === 'documented_us_base'
       ? location.location_kind.replaceAll('_', ' ') + ' · ' + location.place
       : 'reviewed; unresolved'), link(' source ↗', location.source_url));
-    else locationCell.textContent = 'unreviewed';
+    else locationCell.textContent = state.searchYear !== 'all' && locationReviewFor(company.slug)
+      ? 'no location review dated ' + year : 'unreviewed';
     const fundingCell = node('td');
     if (event) fundingCell.append(node('span', event.announced_on + ' · ' + event.round
       + ' · ' + money(event.amount_usd)), link(' source ↗', event.source_url));
@@ -231,10 +266,38 @@ function comparisonPanel(pilots) {
 
 function candidateDetail(candidate) {
   const section = node('section', '', 'candidate-detail');
-  section.append(node('p', 'DIRECTORY LEAD / IDENTITY AND U.S. LOCATION UNREVIEWED', 'eyebrow'),
+  const review = identityReviewFor(candidate);
+  section.append(node('p', review ? 'DIRECTORY LEAD / MANUAL IDENTITY REVIEW' :
+    'DIRECTORY LEAD / IDENTITY AND U.S. LOCATION UNREVIEWED', 'eyebrow'),
     node('h3', candidate.name),
     node('p', candidate.description || 'The source inventory provides no description.', 'muted'));
   if (candidate.homepage_url) section.append(link('Source-listed website ↗', candidate.homepage_url));
+  if (review) {
+    const identity = node('div', '', 'identity-review');
+    identity.append(node('p', review.item_kind.replaceAll('_', ' ') + ' · '
+      + (review.provider_name ? review.provider_relation.replaceAll('_', ' ') + ': '
+        + review.provider_name : 'no single provider established'), 'eyebrow'),
+    node('p', review.review_note),
+    link('Open identity source ↗', review.source_url),
+    node('p', 'Reviewed source year ' + review.source_year + ' · '
+      + review.candidate_ids.length + ' linked directory keys', 'caption'));
+    if (review.candidate_ids.length > 1) {
+      const aliases = node('ul', '', 'identity-aliases');
+      review.candidate_ids.forEach(id => {
+        const linked = discovery.candidates.find(item => item.id === id);
+        aliases.append(append(node('li'), node('span', linked.observed_years.join(', ') + ' · '),
+          link(linked.homepage_url || linked.repo_url || linked.name,
+            linked.homepage_url || linked.repo_url)));
+      });
+      identity.append(aliases);
+    }
+    section.append(identity);
+    const location = candidateLocationFor(candidate);
+    if (location) section.append(append(node('div', '', 'identity-review'),
+      node('p', 'U.S. LOCATION SOURCE / ' + location.source_year, 'eyebrow'),
+      node('p', location.source_note),
+      link('Open location source ↗', location.source_url)));
+  }
   const observations = candidate.occurrence_ids.map(id => occurrenceById.get(id));
   section.append(node('h4', 'Dated source occurrences'));
   const list = node('div', '', 'occurrence-list');
@@ -245,7 +308,7 @@ function candidateDetail(candidate) {
     link('Pinned inventory ↗', item.source_url),
     node('small', 'Row path ' + item.source_path.join('.') + ' · SHA-256 '
       + item.artifact_sha256.slice(0, 12) + '…'))));
-  section.append(list, node('p', 'Inventory presence is a dated directory observation. It does not verify the vendor, U.S. location, product launch date, financing, or traction.', 'caveat'));
+  section.append(list, node('p', 'Inventory presence is a dated directory observation. A reviewed provider relationship does not establish exclusive ownership, U.S. location, financing, or traction.', 'caveat'));
   return section;
 }
 
@@ -253,11 +316,13 @@ function updateSearchResults() {
   const target = document.querySelector('#search-results');
   target.replaceChildren();
   const terms = state.query.toLocaleLowerCase().trim().split(/\s+/).filter(Boolean);
-  const hits = state.searchUs !== 'all' || ['pilot', 'financial', 'financing'].includes(state.searchType) ? []
+  const hits = ['pilot', 'financial', 'financing'].includes(state.searchType) ? []
     : discovery.candidates.map(candidate => ({
       candidate,
       occurrences: matchingOccurrences(candidate, terms)
-    })).filter(hit => hit.occurrences.length);
+    })).filter(hit => hit.occurrences.length && (state.searchUs === 'all'
+      || candidateLocationFor(hit.candidate)?.decision ===
+        (state.searchUs === 'documented' ? 'documented_us_base' : 'unresolved')));
   const pilots = data.companies.map(item => ({
     company: item,
     evidenceMatches: matchingPilotEvidence(item.slug, terms),
@@ -271,8 +336,8 @@ function updateSearchResults() {
     && state.searchSource === 'all'
     && state.searchType !== 'lead'
     && (state.searchUs === 'all'
-      || (state.searchUs === 'documented' && locationReviewFor(item.slug)?.decision === 'documented_us_base')
-      || (state.searchUs === 'unresolved' && locationReviewFor(item.slug)?.decision === 'unresolved'))
+      || (state.searchUs === 'documented' && locationReviewInSelectedYear(item.slug)?.decision === 'documented_us_base')
+      || (state.searchUs === 'unresolved' && locationReviewInSelectedYear(item.slug)?.decision === 'unresolved'))
     && (state.searchType !== 'financial' || item.cik)
     && (state.searchType !== 'financing' || financingMatches.length)
     && (terms.every(term => [item.name, item.purpose, item.url].join(' ')
@@ -282,13 +347,13 @@ function updateSearchResults() {
     - candidateScore(left.candidate, state.query)
     || left.candidate.name.localeCompare(right.candidate.name));
   target.append(append(node('div', '', 'search-summary'),
-    metric(String(hits.length), 'Directory leads', 'Product or project keys; U.S. status unreviewed'),
+    metric(String(hits.length), 'Directory leads', 'Product or project keys; U.S. evidence varies'),
     metric(String(pilots.length), 'Pilot companies', 'Selected and separately sourced'),
     metric(String(pilots.filter(hit => hit.company.cik).length), 'With SEC facts', 'Reported fundamentals; no price series'),
     metric(String(pilots.filter(hit => financingFor(hit.company.slug).length).length),
       'With financing news', 'Company announcements; selected events only'),
-    metric(String(pilots.filter(hit => locationReviewFor(hit.company.slug)?.decision === 'documented_us_base').length),
-      'With U.S. base evidence', 'Dated headquarters or principal office')));
+    metric(String(pilots.filter(hit => locationReviewInSelectedYear(hit.company.slug)?.decision === 'documented_us_base').length),
+      'With U.S. base evidence', 'Source year matches selected year')));
   target.append(searchAggregation(hits, pilots));
   const comparison = comparisonPanel(pilots);
   if (comparison) target.append(comparison);
@@ -325,8 +390,10 @@ function updateSearchResults() {
     });
     card.append(compare);
     if (locationReview) card.append(node('p', locationReview.decision === 'documented_us_base'
-      ? 'U.S. ' + locationReview.location_kind.replaceAll('_', ' ') + ' · ' + locationReview.place
-      : 'location review unresolved · no headquarters declared', 'search-tags'));
+      ? 'U.S. ' + locationReview.location_kind.replaceAll('_', ' ') + ' · '
+        + locationReview.place + ' · source ' + locationReview.source_year
+      : 'location review unresolved · source ' + locationReview.source_year
+        + ' · no headquarters declared', 'search-tags'));
     if (terms.length && evidenceMatches.length) {
       const match = evidenceMatches[0];
       card.append(node('p', 'Archived page · ' + match.year + ' · captured '
@@ -338,6 +405,7 @@ function updateSearchResults() {
   });
   hits.slice(0, state.searchLimit).forEach(hit => {
     const item = hit.candidate;
+    const review = identityReviewFor(item);
     const matchingDescription = hit.occurrences.find(occurrence => occurrence.description)?.description
       || hit.occurrences.map(occurrence => occurrence.source_category + ' / '
         + occurrence.source_subcategory).join(' · ');
@@ -357,6 +425,15 @@ function updateSearchResults() {
       node('h3', item.name),
       node('p', matchingDescription, 'muted'),
       node('p', matchedTags.map(categoryName).join(' · '), 'search-tags'), button);
+    if (review) card.append(node('p', review.provider_name
+      ? 'reviewed ' + review.item_kind.replaceAll('_', ' ') + ' · '
+        + review.provider_relation.replaceAll('_', ' ') + ': ' + review.provider_name
+      : 'reviewed project · no single company established', 'search-tags'));
+    const leadLocation = candidateLocationFor(item);
+    if (leadLocation) card.append(node('p', leadLocation.decision === 'documented_us_base'
+      ? 'U.S. ' + leadLocation.location_kind.replaceAll('_', ' ') + ' · '
+        + leadLocation.place + ' · source ' + leadLocation.source_year
+      : 'location review unresolved · source ' + leadLocation.source_year, 'search-tags'));
     if (item.pilot_match) {
       const evidenceButton = node('button', 'Open pilot company evidence →', 'text-button');
       evidenceButton.type = 'button';
@@ -366,7 +443,9 @@ function updateSearchResults() {
         render();
         document.querySelector('#company-detail')?.scrollIntoView({ block: 'start' });
       });
-      card.append(node('p', 'Possible link: exact name and listed homepage. Legal identity unreviewed.', 'caption'),
+      card.append(node('p', review?.pilot_slug === item.pilot_match.slug
+        ? 'reviewed provider link to pilot; location evidence is separate.'
+        : 'possible link: exact name and listed homepage. Legal identity unreviewed.', 'caption'),
         evidenceButton);
     }
     card.id = 'candidate-' + item.id;
@@ -741,6 +820,7 @@ Promise.all(['./dashboard.json', './discovery.json'].map(url =>
     data = pilot;
     discovery = pulled;
     occurrenceById = new Map(pulled.occurrences.map(item => [item.id, item]));
+    identityReviewById = new Map(pulled.identity_reviews.map(item => [item.id, item]));
     render();
   })
   .catch(error => { root.replaceChildren(node('p', 'Source export unavailable: ' + error.message, 'error')); });

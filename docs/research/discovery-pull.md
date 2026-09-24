@@ -2,6 +2,8 @@
 
 Checked 2026-09-24. `scripts/build_discovery_index.py` pulled eight pinned `landscape.yml` files from [CNCF](https://github.com/cncf/landscape) and [LF AI & Data](https://github.com/lfai/lfai-landscape). It maps exact source category paths to the four Log Pose *candidate tags*, preserves each raw file's SHA-256 and row path, and exports `web/discovery.json`. Cached originals are under ignored `data/discovery/`; `--offline` rebuilds from the reviewed bytes. The script rejects bytes that differ from the recorded hashes.
 
+These are separately maintained inventories, but both sit in the Linux Foundation ecosystem. Their overlap is not independent sampling evidence and cannot estimate market coverage. The export has no retrieval timestamp, so the same pinned bytes and review file produce identical JSON bytes on an offline rebuild.
+
 | Source | 2021 items / mapped | 2022 | 2023 | 2024 |
 | --- | ---: | ---: | ---: | ---: |
 | CNCF | 1,841 / 441 | 2,148 / 526 | 2,302 / 606 | 2,361 / 729 |
@@ -9,32 +11,34 @@ Checked 2026-09-24. `scripts/build_discovery_index.py` pulled eight pinned `land
 
 The pull contains **3,432 mapped source occurrences** and **1,111 distinct candidate keys** after grouping exact normalized name and full homepage/repository URL. These are products or projects, not verified companies. A changed URL can split one product, and the same homepage can host several products. Only seven exact name-and-homepage matches to the separate 20-company pilot are exposed as *possible navigation links*. No historical ownership or U.S. location is inferred from those links. Category counts overlap; four year-end inventory versions miss entries added and removed between cutoffs.
 
-The 20-row fixed challenge set in `scripts/audit_discovery.py` was checked against the original pinned YAML files. **20/20 matched** name, description, homepage, category path, row position, and artifact hash. The table records a manual identity-risk read of those same rows. It is not an eligibility or accuracy estimate.
+The 20-row fixed challenge set in `scripts/audit_discovery.py` was checked against the original pinned YAML files. **20/20 matched** name, description, homepage, category path, row position, and artifact hash. The table records the initial identity risk read. The separate `challenge-identity-reviews.json` now records a dated first-party relationship review for each row. Neither check is a market-wide eligibility or accuracy estimate.
 
-| Candidate | Mapped tag | Identity risk visible at this stage |
+| Candidate | Mapped tag | Identity review observation |
 | --- | --- | --- |
 | MongoDB | Data infrastructure | Company-like name and site; U.S. history still needs dated evidence. |
 | Snowflake | Data infrastructure | Company-like name and site; U.S. history still needs dated evidence. |
-| Weaviate | Data infrastructure / AI | Several source URLs split one apparent product; resolve aliases before counting. |
-| Milvus | Data infrastructure / AI | Project-to-commercial-vendor relationship needs review. |
-| DVC | Data infrastructure | Tool-to-commercial-vendor relationship needs review. |
-| GitLab | Developer tools | Company-like name and site; period-specific location remains unreviewed. |
-| LaunchDarkly | Developer tools | Company-like name and site; present in 2023–2024 inventory versions only. |
-| 3Scale | Developer tools | Product-to-company relationship needs review. |
-| Jenkins | Developer tools | Community project should not become a company automatically. |
-| Backstage | Developer tools | Open-source project should not become a company automatically. |
+| Weaviate | Data infrastructure / AI | Three directory keys share a reviewed 2023 rename and site migration. U.S. location remains unreviewed. |
+| Milvus | Data infrastructure / AI | Project release links Zilliz as developer; ownership and U.S. location remain separate. |
+| DVC | Data infrastructure | Iterative identifies DVC as its project; company eligibility remains separate. |
+| GitLab | Developer tools | Provider link reviewed; U.S. base decision unresolved because the company declares no headquarters. |
+| LaunchDarkly | Developer tools | Provider link reviewed; present in 2023–2024 inventories only. |
+| 3Scale | Developer tools | Product link reviewed to Red Hat; no separate 3Scale company inferred. |
+| Jenkins | Developer tools | Community project with a CloudBees distribution; no exclusive owner inferred. |
+| Backstage | Developer tools | Community project with Spotify paid plugins; project stays separate. |
 | Snyk | Security / observability | Company-like name and site; period-specific location remains unreviewed. |
 | Datadog | Security / observability | Company-like name and site; source category changes from Monitoring to Observability. |
 | Elastic | Security / observability | Company-like name and site; source category changes from Logging to Observability. |
-| OpenTelemetry | Security / observability | Community project should not become a company automatically. |
-| Vault | Security / observability | Product-to-company relationship needs review. |
-| Mlflow | AI / automation | Source spells the name `Mlflow`; project/vendor relationship needs review. |
-| Kubeflow | AI / automation | Community project should not become a company automatically. |
-| AutoGen | AI / automation | Project/vendor relationship needs review; first mapped in the 2023 file. |
-| Acumos | AI / automation | Project/vendor relationship needs review. |
-| TensorFlow | AI / automation | Framework should not become a company automatically. |
+| OpenTelemetry | Security / observability | CNCF project with no single provider inferred from its row. |
+| Vault | Security / observability | Product link reviewed to HashiCorp; licensing changed in 2023. |
+| Mlflow | AI / automation | Source spells the name `Mlflow`; Databricks managed service is distinct from the project. |
+| Kubeflow | AI / automation | Community project with multiple distributions; no single provider inferred. |
+| AutoGen | AI / automation | Research framework; no independent company or paid offering inferred. |
+| Acumos | AI / automation | Foundation project; sponsors are not counted as its company. |
+| TensorFlow | AI / automation | Community framework; Google origin is not a separate TensorFlow company. |
 
-The search interface uses the original occurrence's text and tags for year/source filters. This avoids matching a 2021 record with a description first present in 2024. It also searches short dated excerpts from the separately sourced pilot pages and links matching archived pages. Aggregation counts distinct directory candidate keys and selected pilot companies separately, with their tags/categories and source years labeled by unit. Years and tags overlap. The resulting counts are not a company census or market-size estimate.
+The identity review links **22 raw candidate keys to 20 review decisions**. Fifteen decisions name a provider relationship, including product lines and nonexclusive commercial distributions; five retain a project with no single provider. The [Weaviate company newsletter](https://newsletter.weaviate.io/p/jan-2023-new-year-changes) supports grouping its three source keys at the reviewed identity layer after the SeMI Technologies rename. Original source rows and raw candidate keys remain intact. A provider relationship never by itself proves legal ownership, a distinct company, U.S. location, or eligibility. Six reviews link to the selected company pilot; three of those have documented U.S. bases, one is unresolved, and two lack a location review. Two additional provider leads have dated U.S. operating-base evidence: [Iterative describes itself as based in San Francisco in 2021](https://www.globenewswire.com/news-release/2021/06/02/2240670/0/en/mlops-company-iterative-raises-20-million-series-a-funding-led-by-468-capital.html), and [LaunchDarkly lists Oakland and Atlanta hubs in 2021](https://launchdarkly.com/blog/launchdarkly-2021-galaxy-conference-20-trillion-feature-flags-hiring/). Hubs are not relabeled as headquarters. A location observation supports only its source year.
+
+The search interface uses the original occurrence's text and tags for year/source filters. It can also match a reviewed provider or alias, but only in the review source year when a year filter is active. This avoids matching a 2021 row with an identity claim first sourced in 2024. It also searches short dated excerpts from the separately sourced pilot pages and links matching archived pages. Aggregation counts distinct directory candidate keys, reviewed provider groups, and selected pilot companies separately, with source years labeled by unit. Years and tags overlap. The resulting counts are not a company census or market-size estimate.
 
 ## Financing announcements in the pilot
 

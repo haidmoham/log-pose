@@ -1,6 +1,11 @@
+import json
+from pathlib import Path
+
 import yaml
 
-from log_pose.discovery import build_candidates, candidate_tags, link_pilot_candidates, parse_occurrences
+from log_pose.discovery import (EXPECTED_SHA256, PINS, STUDY_YEARS, build_candidates,
+                                candidate_tags, link_pilot_candidates, parse_occurrences)
+from scripts.audit_discovery import CHALLENGE
 
 
 def artifact(year):
@@ -67,3 +72,24 @@ def test_pilot_navigation_match_requires_name_and_homepage():
     assert link_pilot_candidates(candidates, cohort) == 1
     assert candidates[0]["pilot_match"]["slug"] == "example"
     assert "pilot_match" not in candidates[1]
+
+
+def test_committed_export_covers_every_pinned_source_year():
+    export = json.loads(Path("web/discovery.json").read_text())
+    actual = {(item["source"], item["year"]): item for item in export["artifacts"]}
+    expected = {(source, year) for source in PINS for year in STUDY_YEARS}
+    assert set(actual) == expected
+    assert all(actual[key]["raw_sha256"] == EXPECTED_SHA256[key] for key in expected)
+
+
+def test_identity_review_covers_challenge_and_groups_weaviate_aliases():
+    export = json.loads(Path("web/discovery.json").read_text())
+    reviews = export["identity_reviews"]
+    reviewed_ids = {candidate_id for review in reviews for candidate_id in review["candidate_ids"]}
+    assert len(reviews) == 20
+    assert set(CHALLENGE) <= reviewed_ids
+    assert len(reviewed_ids) == 22
+    weaviate = next(review for review in reviews if review["provider_name"] == "Weaviate")
+    assert len(weaviate["candidate_ids"]) == 3
+    assert all(review["provider_relation"] == "none" for review in reviews
+               if review["provider_name"] is None)

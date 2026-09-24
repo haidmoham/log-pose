@@ -1,7 +1,6 @@
 {
   "mapping_version": "landscape-category-candidates-v1",
-  "retrieved_at": "2026-09-24T15:09:17.952233+00:00",
-  "scope_note": "Dated product/project leads. Company identity, U.S. location, and eligibility are unreviewed.",
+  "scope_note": "Dated product/project leads with a separate, partial manual identity review. U.S. eligibility is not inferred from inventory rows.",
   "artifacts": [
     {
       "source": "cncf",
@@ -72338,7 +72337,8 @@
       ],
       "record_type": "product_or_project_candidate",
       "us_status": "unreviewed",
-      "company_status": "unreviewed"
+      "company_status": "unreviewed",
+      "identity_review_id": "identity-review-08"
     },
     {
       "id": "f0215b6d4efef0ead446",
@@ -72400,7 +72400,8 @@
       ],
       "record_type": "product_or_project_candidate",
       "us_status": "unreviewed",
-      "company_status": "unreviewed"
+      "company_status": "unreviewed",
+      "identity_review_id": "identity-review-19"
     },
     {
       "id": "acf298932f88e0e0a599",
@@ -75258,7 +75259,8 @@
       ],
       "record_type": "product_or_project_candidate",
       "us_status": "unreviewed",
-      "company_status": "unreviewed"
+      "company_status": "unreviewed",
+      "identity_review_id": "identity-review-18"
     },
     {
       "id": "ed1920f48ffaa6a2c837",
@@ -75654,7 +75656,8 @@
       ],
       "record_type": "product_or_project_candidate",
       "us_status": "unreviewed",
-      "company_status": "unreviewed"
+      "company_status": "unreviewed",
+      "identity_review_id": "identity-review-10"
     },
     {
       "id": "d8b1b42c7219e1341a5b",
@@ -79317,7 +79320,8 @@
         "slug": "datadog",
         "basis": "exact_name_and_homepage_v1",
         "status": "navigation_match_unreviewed"
-      }
+      },
+      "identity_review_id": "identity-review-12"
     },
     {
       "id": "4c8233b1fb531a7ca9fd",
@@ -81063,7 +81067,8 @@
       ],
       "record_type": "product_or_project_candidate",
       "us_status": "unreviewed",
-      "company_status": "unreviewed"
+      "company_status": "unreviewed",
+      "identity_review_id": "identity-review-05"
     },
     {
       "id": "876f323d3dc857100967",
@@ -81413,7 +81418,8 @@
         "slug": "elastic",
         "basis": "exact_name_and_homepage_v1",
         "status": "navigation_match_unreviewed"
-      }
+      },
+      "identity_review_id": "identity-review-13"
     },
     {
       "id": "495cfaeca0e80bcff8d6",
@@ -83145,7 +83151,8 @@
         "slug": "gitlab",
         "basis": "exact_name_and_homepage_v1",
         "status": "navigation_match_unreviewed"
-      }
+      },
+      "identity_review_id": "identity-review-06"
     },
     {
       "id": "5eb8bb671fb586028ac4",
@@ -85921,7 +85928,8 @@
       ],
       "record_type": "product_or_project_candidate",
       "us_status": "unreviewed",
-      "company_status": "unreviewed"
+      "company_status": "unreviewed",
+      "identity_review_id": "identity-review-09"
     },
     {
       "id": "f81d045752fae3d3c940",
@@ -87434,7 +87442,8 @@
       ],
       "record_type": "product_or_project_candidate",
       "us_status": "unreviewed",
-      "company_status": "unreviewed"
+      "company_status": "unreviewed",
+      "identity_review_id": "identity-review-17"
     },
     {
       "id": "8574db0f6b93404ca9a0",
@@ -88343,7 +88352,8 @@
       ],
       "record_type": "product_or_project_candidate",
       "us_status": "unreviewed",
-      "company_status": "unreviewed"
+      "company_status": "unreviewed",
+      "identity_review_id": "identity-review-07"
     },
     {
       "id": "765be3078832f211e037",
@@ -89805,7 +89815,8 @@
       ],
       "record_type": "product_or_project_candidate",
       "us_status": "unreviewed",
-      "company_status": "unreviewed"
+      "company_status": "unreviewed",
+      "identity_review_id": "identity-review-04"
     },
     {
       "id": "5b5d640783db23422c09",
@@ -90044,7 +90055,8 @@
       ],
       "record_type": "product_or_project_candidate",
       "us_status": "unreviewed",
-      "company_status": "unreviewed"
+      "company_status": "unreviewed",
+      "identity_review_id": "identity-review-16"
     },
     {
       "id": "752ae5f3231651c1284e",
@@ -90455,7 +90467,8 @@
         "slug": "mongodb",
         "basis": "exact_name_and_homepage_v1",
         "status": "navigation_match_unreviewed"
-      }
+      },
+      "identity_review_id": "identity-review-01"
     },
     {
       "id": "29085b3d5049742abd4e",
@@ -93335,7 +93348,8 @@
       ],
       "record_type": "product_or_project_candidate",
       "us_status": "unreviewed",
-      "company_status": "unreviewed"
+      "company_status": "unreviewed",
+      "identity_review_id": "identity-review-14"
     },
     {
       "id": "c20958fae904691baf6f",
@@ -98987,7 +99001,8 @@
         "slug": "snowflake",
         "basis": "exact_name_and_homepage_v1",
         "status": "navigation_match_unreviewed"
-      }
+      },
+      "identity_review_id": "identity-review-02"
     },
     {
       "id": "9467a8d3b100f62c7a3f",
@@ -99023,7 +99038,8 @@
         "slug": "snyk",
         "basis": "exact_name_and_homepage_v1",
         "status": "navigation_match_unreviewed"
-      }
+      },
+      "identity_review_id": "identity-review-11"
     },
     {
       "id": "3e80dc3f35434ee4e34d",
@@ -101005,7 +101021,8 @@
       ],
       "record_type": "product_or_project_candidate",
       "us_status": "unreviewed",
-      "company_status": "unreviewed"
+      "company_status": "unreviewed",
+      "identity_review_id": "identity-review-20"
     },
     {
       "id": "9658d7020fb7935a37f3",
@@ -103056,7 +103073,8 @@
       ],
       "record_type": "product_or_project_candidate",
       "us_status": "unreviewed",
-      "company_status": "unreviewed"
+      "company_status": "unreviewed",
+      "identity_review_id": "identity-review-15"
     },
     {
       "id": "da4aa085e94457c9bcbe",
@@ -103971,7 +103989,8 @@
       ],
       "record_type": "product_or_project_candidate",
       "us_status": "unreviewed",
-      "company_status": "unreviewed"
+      "company_status": "unreviewed",
+      "identity_review_id": "identity-review-03"
     },
     {
       "id": "4eb50b566f03ac391f7e",
@@ -103996,7 +104015,8 @@
       ],
       "record_type": "product_or_project_candidate",
       "us_status": "unreviewed",
-      "company_status": "unreviewed"
+      "company_status": "unreviewed",
+      "identity_review_id": "identity-review-03"
     },
     {
       "id": "c85f062b9fa02f1d673c",
@@ -104025,7 +104045,8 @@
       ],
       "record_type": "product_or_project_candidate",
       "us_status": "unreviewed",
-      "company_status": "unreviewed"
+      "company_status": "unreviewed",
+      "identity_review_id": "identity-review-03"
     },
     {
       "id": "c2fafa92af89018bc950",
@@ -104905,6 +104926,284 @@
       "record_type": "product_or_project_candidate",
       "us_status": "unreviewed",
       "company_status": "unreviewed"
+    }
+  ],
+  "identity_reviews": [
+    {
+      "candidate_ids": [
+        "83d31ee8e2872672fdfd"
+      ],
+      "item_kind": "company_brand",
+      "provider_name": "MongoDB",
+      "provider_relation": "company_offering",
+      "pilot_slug": "mongodb",
+      "source_year": 2024,
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1441816/000144181624000049/mdb-20240131.htm",
+      "review_note": "The filing identifies MongoDB Atlas and Enterprise Advanced as company offerings.",
+      "id": "identity-review-01"
+    },
+    {
+      "candidate_ids": [
+        "9129ab18dfd8c1058038"
+      ],
+      "item_kind": "company_brand",
+      "provider_name": "Snowflake",
+      "provider_relation": "company_offering",
+      "pilot_slug": "snowflake",
+      "source_year": 2024,
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1640147/000164014724000101/snow-20240131.htm",
+      "review_note": "The filing describes Snowflake's data platform as a company service.",
+      "id": "identity-review-02"
+    },
+    {
+      "candidate_ids": [
+        "16e8a2a890c23ec885f3",
+        "4eb50b566f03ac391f7e",
+        "c85f062b9fa02f1d673c"
+      ],
+      "item_kind": "project",
+      "provider_name": "Weaviate",
+      "provider_relation": "company_offering",
+      "pilot_slug": null,
+      "source_year": 2023,
+      "source_url": "https://newsletter.weaviate.io/p/jan-2023-new-year-changes",
+      "review_note": "The company announced its rename from SeMI Technologies to Weaviate and migrated its site and documentation. These three directory keys are aliases, not three companies.",
+      "id": "identity-review-03"
+    },
+    {
+      "candidate_ids": [
+        "4f41f68387145a22bbe7"
+      ],
+      "item_kind": "project",
+      "provider_name": "Zilliz",
+      "provider_relation": "developer",
+      "pilot_slug": null,
+      "source_year": 2021,
+      "source_url": "https://milvus.io/blog/2021-04-29-Whats-Inside-Milvus-1.0.md",
+      "review_note": "Milvus is an open-source database; its project release identifies Zilliz as the company behind the release. Exclusive ownership is not inferred.",
+      "id": "identity-review-04"
+    },
+    {
+      "candidate_ids": [
+        "be14615c5052b1c0025c"
+      ],
+      "item_kind": "project",
+      "provider_name": "Iterative",
+      "provider_relation": "developer",
+      "pilot_slug": null,
+      "source_year": 2021,
+      "source_url": "https://www.globenewswire.com/news-release/2021/06/02/2240670/0/en/mlops-company-iterative-raises-20-million-series-a-funding-led-by-468-capital.html",
+      "review_note": "Iterative's announcement names DVC and CML as its open-source projects and DVC Studio as a commercial product.",
+      "us_evidence": {
+        "source_year": 2021,
+        "location_kind": "stated_base",
+        "place": "San Francisco, California",
+        "source_url": "https://www.globenewswire.com/news-release/2021/06/02/2240670/0/en/mlops-company-iterative-raises-20-million-series-a-funding-led-by-468-capital.html",
+        "source_note": "The company-issued release describes Iterative as based in San Francisco."
+      },
+      "id": "identity-review-05"
+    },
+    {
+      "candidate_ids": [
+        "db7244f000eedc7a99c9"
+      ],
+      "item_kind": "company_brand",
+      "provider_name": "GitLab",
+      "provider_relation": "company_offering",
+      "pilot_slug": "gitlab",
+      "source_year": 2024,
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1653482/000162828024012963/gtlb-20240131.htm",
+      "review_note": "The filing describes the GitLab DevSecOps platform; its geography review remains unresolved because it has no headquarters.",
+      "id": "identity-review-06"
+    },
+    {
+      "candidate_ids": [
+        "27253adefb85d9c48b54"
+      ],
+      "item_kind": "company_brand",
+      "provider_name": "LaunchDarkly",
+      "provider_relation": "company_offering",
+      "pilot_slug": null,
+      "source_year": 2023,
+      "source_url": "https://launchdarkly.com/blog/launchdarkly-fedramp-authorized/",
+      "review_note": "The company describes LaunchDarkly Federal as its feature-management platform. The separate 2021 source documents U.S. operating hubs, not a unique headquarters.",
+      "us_evidence": {
+        "source_year": 2021,
+        "location_kind": "office_hub",
+        "place": "Oakland, California; Atlanta, Georgia",
+        "source_url": "https://launchdarkly.com/blog/launchdarkly-2021-galaxy-conference-20-trillion-feature-flags-hiring/",
+        "source_note": "The company founder's 2021 post lists Oakland and Atlanta hiring hubs alongside a UK hub and remote roles."
+      },
+      "id": "identity-review-07"
+    },
+    {
+      "candidate_ids": [
+        "517e2e92c81249d0c145"
+      ],
+      "item_kind": "product",
+      "provider_name": "Red Hat",
+      "provider_relation": "product_line",
+      "pilot_slug": null,
+      "source_year": 2022,
+      "source_url": "https://developers.redhat.com/articles/2022/05/05/build-customized-developer-portal-manage-apis",
+      "review_note": "The source names Red Hat 3scale API Management. The landscape product is not a separate independent company.",
+      "id": "identity-review-08"
+    },
+    {
+      "candidate_ids": [
+        "91153e94387ce0643779"
+      ],
+      "item_kind": "project",
+      "provider_name": "CloudBees",
+      "provider_relation": "commercial_distribution",
+      "pilot_slug": null,
+      "source_year": 2024,
+      "source_url": "https://www.cloudbees.com/newsroom/cloudbees-wins-computing-2024-excellence-in-devops-awards",
+      "review_note": "CloudBees CI is based on Jenkins. This is one commercial distribution, not ownership of the community project.",
+      "id": "identity-review-09"
+    },
+    {
+      "candidate_ids": [
+        "fa7331f6567cee42cdeb"
+      ],
+      "item_kind": "project",
+      "provider_name": "Spotify",
+      "provider_relation": "commercial_distribution",
+      "pilot_slug": null,
+      "source_year": 2022,
+      "source_url": "https://engineering.atspotify.com/2022/12/shipping-spotifys-culture-5-plugins-and-4-principles-for-supercharging-developer-experience-at-scale",
+      "review_note": "Spotify describes paid plugins separately from the Backstage project donated to CNCF.",
+      "id": "identity-review-10"
+    },
+    {
+      "candidate_ids": [
+        "9467a8d3b100f62c7a3f"
+      ],
+      "item_kind": "company_brand",
+      "provider_name": "Snyk",
+      "provider_relation": "company_offering",
+      "pilot_slug": "snyk",
+      "source_year": 2022,
+      "source_url": "https://snyk.io/news/snyk-closes-196-5-million-series-g-funding-at-7-4-billion-valuation/",
+      "review_note": "The company announcement describes Snyk's developer security platform; U.S. location is not reviewed in this challenge.",
+      "id": "identity-review-11"
+    },
+    {
+      "candidate_ids": [
+        "4d9ade2bfb2aa6cb4afb"
+      ],
+      "item_kind": "company_brand",
+      "provider_name": "Datadog",
+      "provider_relation": "company_offering",
+      "pilot_slug": "datadog",
+      "source_year": 2024,
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1561550/000156155024000009/ddog-20231231.htm",
+      "review_note": "The filing describes Datadog's observability and security SaaS offerings.",
+      "id": "identity-review-12"
+    },
+    {
+      "candidate_ids": [
+        "0b53be52084e857862ac"
+      ],
+      "item_kind": "company_brand",
+      "provider_name": "Elastic",
+      "provider_relation": "company_offering",
+      "pilot_slug": "elastic",
+      "source_year": 2024,
+      "source_url": "https://ir.elastic.co/files/doc_financials/2024/q4/9949f03b-09fb-4941-b105-62a304dc1411.pdf",
+      "review_note": "Elastic's FY2024 annual report identifies the reporting company and its search and observability offerings. U.S. location is not reviewed here.",
+      "id": "identity-review-13"
+    },
+    {
+      "candidate_ids": [
+        "ee90402c929c690e796a"
+      ],
+      "item_kind": "project",
+      "provider_name": null,
+      "provider_relation": "none",
+      "pilot_slug": null,
+      "source_year": 2021,
+      "source_url": "https://www.cncf.io/blog/2021/08/26/opentelemetry-becomes-a-cncf-incubating-project/",
+      "review_note": "OpenTelemetry is a CNCF project with many contributors; the directory row does not identify one commercial provider.",
+      "id": "identity-review-14"
+    },
+    {
+      "candidate_ids": [
+        "02155d1023964b6c5233"
+      ],
+      "item_kind": "product",
+      "provider_name": "HashiCorp",
+      "provider_relation": "product_line",
+      "pilot_slug": null,
+      "source_year": 2023,
+      "source_url": "https://www.globenewswire.com/news-release/2023/08/10/2723189/0/en/HashiCorp-adopts-the-Business-Source-License-for-future-releases-of-its-products.html",
+      "review_note": "HashiCorp lists Vault among its products. The 2023 license change prevents treating all period releases as open source.",
+      "id": "identity-review-15"
+    },
+    {
+      "candidate_ids": [
+        "be9bfc3d0ccd4bf29f49"
+      ],
+      "item_kind": "project",
+      "provider_name": "Databricks",
+      "provider_relation": "managed_service",
+      "pilot_slug": null,
+      "source_year": 2021,
+      "source_url": "https://community.databricks.com/t5/machine-learning/how-does-databricks-managed-mlflow-compare-with-open-source-oss/td-p/24711",
+      "review_note": "A Databricks employee distinguishes managed MLflow from the open-source MLflow project; exclusive ownership is not inferred.",
+      "id": "identity-review-16"
+    },
+    {
+      "candidate_ids": [
+        "e21278dece72ba13a566"
+      ],
+      "item_kind": "project",
+      "provider_name": null,
+      "provider_relation": "none",
+      "pilot_slug": null,
+      "source_year": 2023,
+      "source_url": "https://www.cncf.io/blog/2023/07/25/kubeflow-brings-mlops-to-the-cncf-incubator/",
+      "review_note": "Kubeflow is a community project with multiple commercial distributions; one provider cannot be inferred from this row.",
+      "id": "identity-review-17"
+    },
+    {
+      "candidate_ids": [
+        "c2e4e8c5478f43051892"
+      ],
+      "item_kind": "project",
+      "provider_name": null,
+      "provider_relation": "none",
+      "pilot_slug": null,
+      "source_year": 2023,
+      "source_url": "https://www.microsoft.com/en-us/research/blog/autogen-enabling-next-generation-large-language-model-applications/",
+      "review_note": "Microsoft Research describes an open-source framework; this row does not identify an independent AutoGen company or paid offering.",
+      "id": "identity-review-18"
+    },
+    {
+      "candidate_ids": [
+        "69c4a0268194c280db13"
+      ],
+      "item_kind": "project",
+      "provider_name": null,
+      "provider_relation": "none",
+      "pilot_slug": null,
+      "source_year": 2021,
+      "source_url": "https://lfaidata.foundation/blog/2021/08/05/acumos-elpis-release-now-available/",
+      "review_note": "Acumos is an LF AI & Data foundation project; sponsors do not become a unique company from this row.",
+      "id": "identity-review-19"
+    },
+    {
+      "candidate_ids": [
+        "f39bffc38db8af5f0c39"
+      ],
+      "item_kind": "project",
+      "provider_name": null,
+      "provider_relation": "none",
+      "pilot_slug": null,
+      "source_year": 2021,
+      "source_url": "https://blog.tensorflow.org/2021/10/ML-community-day.html",
+      "review_note": "TensorFlow is an open-source community project; Google origin does not create a standalone TensorFlow company.",
+      "id": "identity-review-20"
     }
   ]
 }
