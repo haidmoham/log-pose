@@ -26,11 +26,15 @@ def reviewed_quotes(audit_text):
     return quotes
 
 
-def build(cohort, ingestion, financials, audit_text, connection):
+def build(cohort, ingestion, financials, audit_text, universe, connection):
     if len(cohort) != 20 or ingestion["planned_company_year_cells"] != 80:
         raise ValueError("dashboard expects the reviewed 20-company, 80-cell pilot")
     if financials["policy_version"] != "sec-annual-earliest-filed-v1":
         raise ValueError("SEC selection policy changed; review the dashboard first")
+    if universe["verified_universe_count"] is not None:
+        raise ValueError("a verified universe count needs a reviewed candidate build")
+    if {count["year"] for source in universe["manifest_checks"] for count in source["counts"]} != {2021, 2024}:
+        raise ValueError("the universe view expects the reviewed 2021 and 2024 manifest checks")
 
     cells = ingestion["cells"]
     selected_ids = [cell["snapshot_id"] for cell in cells if cell["snapshot_id"]]
@@ -148,6 +152,7 @@ def build(cohort, ingestion, financials, audit_text, connection):
             "cells": sec_cells,
         },
         "market": market,
+        "universe": universe,
     }
 
 
@@ -157,6 +162,7 @@ def main():
     parser.add_argument("--ingestion", type=Path, default=Path("docs/research/ingestion-report.json"))
     parser.add_argument("--financials", type=Path, default=Path("docs/research/sec-analysis-build.json"))
     parser.add_argument("--audit", type=Path, default=Path("docs/research/evidence-audit.md"))
+    parser.add_argument("--universe", type=Path, default=Path("docs/research/us-universe-dashboard.json"))
     parser.add_argument("--output", type=Path, default=Path("web/dashboard.json"))
     args = parser.parse_args()
     with connect() as connection:
@@ -165,6 +171,7 @@ def main():
             json.loads(args.ingestion.read_text()),
             json.loads(args.financials.read_text()),
             args.audit.read_text(),
+            json.loads(args.universe.read_text()),
             connection,
         )
     args.output.parent.mkdir(parents=True, exist_ok=True)

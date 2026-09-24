@@ -343,6 +343,66 @@ function renderReadiness() {
   root.append(table(['Research question', 'Available now', 'Needed next'],
     entries.map(values => append(node('tr'), ...values.map(value => node('td', value))))));
   root.append(node('p', 'This pilot supports sourced case studies and exploratory public-company trends. It cannot establish market share, investment performance, customer traction, or valuation.', 'caveat'));
+  const universeButton = node('button', 'See the universe build →', 'text-button');
+  universeButton.type = 'button';
+  universeButton.addEventListener('click', () => {
+    state.view = 'universe';
+    render();
+    root.scrollIntoView({ block: 'start' });
+  });
+  root.append(universeButton);
+}
+
+function renderUniverse() {
+  const universe = data.universe;
+  root.append(title('05 / COMPANY DISCOVERY', 'Building the company universe',
+    'The 20 selected companies test retrieval. This research defines a wider U.S. company frame before any market-wide count.'));
+
+  const scope = append(node('section', '', 'universe-scope'),
+    node('p', 'WORKING BOUNDARY / CHECKED ' + universe.checked_at, 'eyebrow'),
+    node('h3', universe.scope),
+    node('p', universe.membership_rule));
+  const categories = append(node('div', '', 'universe-categories'),
+    ...universe.categories.map(category => node('span', category)));
+  scope.append(categories);
+  root.append(scope);
+
+  root.append(append(node('div', '', 'metric-row'),
+    metric(String(data.companies.length), 'Pilot companies', 'Selected for retrieval tests'),
+    metric('Not counted', 'Verified U.S. universe', 'Eligibility review has not started'),
+    metric('2 of 4', 'Years with inventory checks', '2021 and 2024 only')));
+
+  root.append(append(node('div', '', 'universe-heading'),
+    node('h3', 'Historical inventory checks'),
+    node('p', 'Parsed items include products, projects, and member entries. They are not unique companies or verified U.S. firms.', 'muted')));
+  const manifestRows = universe.manifest_checks.map(source => {
+    const counts = source.counts.map(count => append(node('td'),
+      link(count.items.toLocaleString() + ' items ↗', count.url)));
+    return append(node('tr'), node('td', source.name), ...counts,
+      node('td', source.description));
+  });
+  root.append(table(['Inventory', '2021 pinned file', '2024 pinned file', 'Contents'], manifestRows));
+
+  root.append(append(node('div', '', 'universe-heading'),
+    node('h3', 'Discovery routes'),
+    node('p', 'Each route yields candidates. Dated first-party records establish product fit, location, and ownership.', 'muted')));
+  const routes = node('div', '', 'route-grid');
+  universe.discovery_routes.forEach(source => {
+    routes.append(append(node('article', '', 'route-card'),
+      node('p', source.status, 'eyebrow'),
+      append(node('h4'), link(source.name + ' ↗', source.url)),
+      node('p', source.role),
+      node('p', source.limit, 'route-limit')));
+  });
+  root.append(routes);
+
+  const next = append(node('section', '', 'universe-next'),
+    node('p', 'NEXT BOUNDED RUN', 'eyebrow'),
+    node('h3', 'From candidates to company-years'));
+  const steps = node('ol');
+  universe.next_batch.forEach(step => steps.append(node('li', step)));
+  next.append(steps);
+  root.append(next, node('p', 'The source union can become a documented high-recall frame. No listed source proves a complete census, so coverage and unresolved cases must stay visible.', 'caveat'));
 }
 
 function render() {
@@ -354,7 +414,8 @@ function render() {
   if (state.view === 'companies') renderCompanies();
   else if (state.view === 'fundamentals') renderFundamentals();
   else if (state.view === 'market') renderMarket();
-  else renderReadiness();
+  else if (state.view === 'readiness') renderReadiness();
+  else renderUniverse();
 }
 
 tabs.forEach(button => button.addEventListener('click', () => {

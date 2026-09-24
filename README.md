@@ -30,7 +30,7 @@ PYTHONPATH=src .venv/bin/python scripts/build_dashboard.py
 python -m http.server 8080 --directory web
 ```
 
-Visit `http://localhost:8080`. The dashboard export reads the saved ingestion and SEC selection reports, checks their selected capture IDs against Postgres, and aggregates the stored Cboe files. It contains short page previews, reviewed source passages, selected SEC values, and market-wide annual summaries. Raw HTML, full extracted text, and original CSVs stay in Postgres. Rebuild the two reports first if the pilot database has changed.
+Visit `http://localhost:8080`. The dashboard export reads the saved ingestion and SEC selection reports, checks their selected capture IDs against Postgres, and aggregates the stored Cboe files. It contains short page previews, reviewed source passages, selected SEC values, market-wide annual summaries, and a **Universe build** view sourced from `docs/research/us-universe-dashboard.json`. That view shows the working U.S. boundary, pinned historical inventory checks, discovery routes, and the next review batch. Its inventory counts are product/project/member items, not verified company counts. The fuller method is in [the universe research note](docs/research/us-company-universe-plan.md). Raw HTML, full extracted text, and original CSVs stay in Postgres. Rebuild the two reports first if the pilot database has changed.
 
 Run focused checks with:
 
