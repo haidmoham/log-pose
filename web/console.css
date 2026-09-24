@@ -566,6 +566,21 @@ footer { display: flex; justify-content: space-between; gap: 20px; padding: 18px
 .overview-inventory-entry strong { color: var(--ink); font: 650 17px/1.2 var(--heading); }
 .overview-inventory-entry .muted { flex: 1 1 300px; margin: 0; font-size: 11px; }
 .overview-inventory-entry .text-button { flex: 0 0 auto; }
+.full-inventory { margin: 0 0 16px; border: 1px solid var(--rule); background: var(--surface); }
+.full-inventory summary { padding: 12px 16px; color: var(--yellow); cursor: pointer; font: 650 12px/1.3 var(--heading); }
+.full-inventory-body { padding: 4px 16px 16px; border-top: 1px solid var(--rule); }
+.full-inventory-body h3 { margin: 5px 0 7px; font: 650 20px/1.1 var(--heading); }
+.full-inventory-body > .muted { margin: 0 0 12px; font-size: 11px; }
+.full-inventory-controls { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+.full-inventory-controls select, .full-inventory-controls input { min-height: 38px; border: 1px solid var(--rule-strong); padding: 7px 10px; color: var(--ink); background: var(--surface-cool); font-size: 11px; }
+.full-inventory-controls select { flex: 1 1 160px; }
+.full-inventory-controls input { flex: 3 1 240px; }
+.full-inventory-results { display: grid; gap: 5px; }
+.full-inventory-row { padding: 11px 13px; border: 1px solid var(--rule); background: var(--surface-cool); }
+.full-inventory-row h4 { margin: 5px 0; font: 650 14px/1.2 var(--heading); }
+.full-inventory-row .muted { margin: 0 0 7px; font-size: 11px; }
+.full-inventory-links { display: flex; flex-wrap: wrap; gap: 8px 15px; margin-bottom: 7px; font: 10px/1.3 var(--mono); }
+.full-inventory-row small { color: var(--muted); font: 9px/1.4 var(--mono); overflow-wrap: anywhere; }
 .topology-graph-frame { max-width: 100%; overflow-x: auto; scrollbar-color: var(--rule-strong) transparent; }
 .topology-graph { display: block; width: 100%; min-width: 650px; height: auto; aspect-ratio: 10 / 7; background-image: radial-gradient(circle, rgb(235 206 236 / 15%) .7px, transparent .8px); background-size: 23px 23px; }
 .topology-edge { fill: none; stroke-width: 2.2; vector-effect: non-scaling-stroke; pointer-events: none; opacity: .78; }

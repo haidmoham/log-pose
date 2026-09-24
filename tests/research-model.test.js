@@ -157,3 +157,18 @@ test('3d graph positions and projection remain deterministic across claim order'
   assert.notEqual(front.x, turned.x);
   assert.ok(Number.isFinite(front.depth));
 });
+
+test('inventory partition validation binds every row to the pinned artifact', () => {
+  const artifact = { source: 'cncf', year: 2026, raw_sha256: 'source-hash', raw_item_count: 1 };
+  const row = { id: 'row-1', source: 'cncf', year: 2026,
+    artifact_sha256: 'source-hash', source_path: [0, 0, 0],
+    mapping_status: 'unmapped_category' };
+  assert.equal(model.validateInventoryPartition(artifact,
+    { source: 'cncf', year: 2026, raw_sha256: 'source-hash', rows: [row] }), true);
+  assert.throws(() => model.validateInventoryPartition(artifact,
+    { source: 'cncf', year: 2026, raw_sha256: 'source-hash', rows: [row, row] }),
+  /partition does not match/);
+  assert.throws(() => model.validateInventoryPartition(artifact,
+    { source: 'cncf', year: 2026, raw_sha256: 'source-hash',
+      rows: [{ ...row, artifact_sha256: 'different' }] }), /invalid or duplicate/);
+});

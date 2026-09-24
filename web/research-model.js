@@ -147,6 +147,25 @@
     return true;
   }
 
+  function validateInventoryPartition(artifact, partition) {
+    if (partition?.source !== artifact.source || partition.year !== artifact.year
+        || partition.raw_sha256 !== artifact.raw_sha256 || !Array.isArray(partition.rows)
+        || partition.rows.length !== artifact.raw_item_count) {
+      throw new Error('partition does not match its pinned source');
+    }
+    const ids = new Set();
+    for (const row of partition.rows) {
+      if (!row.id || ids.has(row.id) || row.artifact_sha256 !== artifact.raw_sha256
+          || row.source !== artifact.source || row.year !== artifact.year
+          || !Array.isArray(row.source_path)
+          || !['mapped_category', 'unmapped_category'].includes(row.mapping_status)) {
+        throw new Error('partition has an invalid or duplicate source row');
+      }
+      ids.add(row.id);
+    }
+    return true;
+  }
+
   function finiteNumber(value) {
     if (value === null || value === undefined || typeof value === 'boolean'
         || (typeof value === 'string' && value.trim() === '')) return null;
@@ -309,7 +328,8 @@
     projectTopologyPoint,
     topologyGraphSlice,
     topologyPairGroups,
-    validateTopology
+    validateTopology,
+    validateInventoryPartition
   };
 
   if (typeof module !== 'undefined' && module.exports) module.exports = model;

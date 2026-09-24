@@ -39,6 +39,105 @@
       return panel;
     }
 
+    function fullInventoryBrowser() {
+      const panel = node('details', '', 'full-inventory');
+      panel.append(node('summary', 'browse every source row, including untagged rows'));
+      const body = node('div', '', 'full-inventory-body');
+      body.append(node('p', 'RAW DIRECTORY ROWS', 'eyebrow'),
+        node('h3', 'inspect a pinned inventory'),
+        node('p', 'Choose one source revision. These product and project listings are leads; untagged rows have no category mapping.', 'muted'));
+      const controls = node('div', '', 'full-inventory-controls');
+      const source = node('select');
+      source.setAttribute('aria-label', 'Pinned source and year');
+      const artifacts = discovery.artifacts.slice().sort((left, right) =>
+        right.year - left.year || left.source.localeCompare(right.source));
+      artifacts.forEach((artifact, index) => source.add(new Option(
+        `${artifact.source.toUpperCase()} · ${artifact.year}${artifact.coverage_status === 'partial_year_snapshot' ? ' / partial' : ''}`,
+        String(index))));
+      const query = node('input');
+      query.type = 'search';
+      query.placeholder = 'Search this source snapshot';
+      query.setAttribute('aria-label', 'Search all rows in selected source snapshot');
+      const status = node('p', '', 'muted');
+      status.setAttribute('role', 'status');
+      const results = node('div', '', 'full-inventory-results');
+      let loaded = null;
+      let limit = 40;
+      let request = 0;
+
+      function showRows() {
+        if (!loaded) return;
+        const words = query.value.toLocaleLowerCase().trim().split(/\s+/).filter(Boolean);
+        const matches = loaded.rows.filter(row => words.every(word =>
+          [row.name, row.description, row.source_category, row.source_subcategory,
+            row.homepage_url, row.repo_url].join(' ').toLocaleLowerCase().includes(word)));
+        status.textContent = `${matches.length.toLocaleString()} matching rows / ${loaded.rows.length.toLocaleString()} in this pinned source`;
+        results.replaceChildren();
+        for (const row of matches.slice(0, limit)) {
+          const card = node('article', '', 'full-inventory-row');
+          card.append(node('p', `${row.source_category} / ${row.source_subcategory} · `
+            + (row.mapping_status === 'mapped_category' ? 'tagged lead' : 'untagged row'), 'eyebrow'),
+          node('h4', row.name), node('p', row.description || 'No source description.', 'muted'));
+          const links = node('div', '', 'full-inventory-links');
+          links.append(link('Pinned source ↗', row.source_url));
+          if (row.homepage_url) links.append(link('Listed website ↗', row.homepage_url));
+          if (row.repo_url) links.append(link('Listed repository ↗', row.repo_url));
+          card.append(links, node('small', `Source path ${row.source_path.join('.')} · artifact SHA-256 ${row.artifact_sha256.slice(0, 12)}…`));
+          results.append(card);
+        }
+        if (matches.length > limit) {
+          const more = node('button', `show ${Math.min(40, matches.length - limit)} more rows`,
+            'quiet-button');
+          more.type = 'button';
+          more.addEventListener('click', () => { limit += 40; showRows(); });
+          results.append(more);
+        }
+      }
+
+      function loadRows() {
+        const artifact = artifacts[Number(source.value)];
+        if (!artifact) return;
+        const currentRequest = ++request;
+        loaded = null;
+        limit = 40;
+        results.replaceChildren();
+        status.textContent = `Loading ${artifact.source.toUpperCase()} ${artifact.year}…`;
+        const expectedPath = `web/discovery-inventory/${artifact.source}-${artifact.year}.json`;
+        if (artifact.inventory_export_path && artifact.inventory_export_path !== expectedPath) {
+          status.textContent = 'Source partition path does not match its metadata.';
+          return;
+        }
+        const path = `./discovery-inventory/${artifact.source}-${artifact.year}.json`;
+        fetch(path).then(response => {
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          return response.json();
+        }).then(partition => {
+          if (currentRequest !== request) return;
+          model.validateInventoryPartition(artifact, partition);
+          loaded = partition;
+          showRows();
+        }).catch(error => {
+          if (currentRequest !== request) return;
+          status.textContent = `Could not load this source: ${error.message}`;
+          const retry = node('button', 'retry source', 'quiet-button');
+          retry.type = 'button';
+          retry.addEventListener('click', loadRows);
+          results.replaceChildren(retry);
+        });
+      }
+
+      source.addEventListener('change', loadRows);
+      query.addEventListener('input', () => { limit = 40; showRows(); });
+      panel.addEventListener('toggle', () => {
+        if (panel.open && !loaded) loadRows();
+      });
+      controls.append(source, query);
+      body.append(controls, status, results,
+        node('p', 'One row records an item at a pinned source path. Listing does not verify a company, current operating status, U.S. location, or any relationship.', 'caveat'));
+      panel.append(body);
+      return panel;
+    }
+
     function occurrenceText(occurrence) {
       return [occurrence.name, occurrence.description, occurrence.homepage_url, occurrence.repo_url,
         occurrence.source_category, occurrence.source_subcategory,
@@ -62,7 +161,7 @@
     function renderSearch() {
       root.append(title('03 / EXPLORE', 'explore evidence',
         'filter dated inventory leads. open source records or selected company history.'),
-      inventoryCoverage());
+      inventoryCoverage(), fullInventoryBrowser());
 
       const controls = node('div', '', 'search-controls');
       const query = node('input');
