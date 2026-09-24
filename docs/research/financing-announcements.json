@@ -1,0 +1,42 @@
+[
+  {
+    "slug": "datarobot",
+    "announced_on": "2021-07-27",
+    "round": "Series G",
+    "amount_usd": 300000000,
+    "valuation_usd": 6300000000,
+    "valuation_basis": "post-money",
+    "source_url": "https://www.datarobot.com/newsroom/press/datarobot-unveils-major-milestones-including-300m-series-g-funding-investment/",
+    "source_type": "company announcement"
+  },
+  {
+    "slug": "dbt-labs",
+    "announced_on": "2022-02-24",
+    "round": "Series D",
+    "amount_usd": 222000000,
+    "valuation_usd": 4200000000,
+    "valuation_basis": "company-reported valuation; basis unspecified",
+    "source_url": "https://www.getdbt.com/blog/dbt-labs-raises-222m-in-series-d-funding-at-4-2b-valuation-led-by-altimeter-with-participation-from-databricks-and-snowflake",
+    "source_type": "company announcement"
+  },
+  {
+    "slug": "linear",
+    "announced_on": "2023-09-14",
+    "round": "Series B",
+    "amount_usd": 35000000,
+    "valuation_usd": null,
+    "valuation_basis": null,
+    "source_url": "https://linear.app/now/series-b",
+    "source_type": "company announcement"
+  },
+  {
+    "slug": "vanta",
+    "announced_on": "2024-07-24",
+    "round": "Series C",
+    "amount_usd": 150000000,
+    "valuation_usd": 2450000000,
+    "valuation_basis": "company-reported valuation; basis unspecified",
+    "source_url": "https://www.vanta.com/resources/vanta-announces-series-c",
+    "source_type": "company announcement"
+  }
+]

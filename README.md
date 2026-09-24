@@ -27,10 +27,13 @@ The read endpoint is `GET http://127.0.0.1:8000/api/companies/weights-and-biases
 ```bash
 export DATABASE_URL=postgresql://127.0.0.1:55434/logpose_pilot
 PYTHONPATH=src .venv/bin/python scripts/build_dashboard.py
+PYTHONPATH=src .venv/bin/python scripts/build_discovery_index.py
 python -m http.server 8080 --directory web
 ```
 
-Visit `http://localhost:8080`. The dashboard export reads the saved ingestion and SEC selection reports, checks their selected capture IDs against Postgres, and aggregates the stored Cboe files. It contains short page previews, reviewed source passages, selected SEC values, market-wide annual summaries, and a **Universe build** view sourced from `docs/research/us-universe-dashboard.json`. That view shows the working U.S. boundary, pinned historical inventory checks, discovery routes, and the next review batch. Its inventory counts are product/project/member items, not verified company counts. The fuller method is in [the universe research note](docs/research/us-company-universe-plan.md). Raw HTML, full extracted text, and original CSVs stay in Postgres. Rebuild the two reports first if the pilot database has changed.
+Visit `http://localhost:8080`. Search loads `web/discovery.json`, a reproducible pull from eight pinned CNCF and LF AI & Data historical inventories across 2021–2024. It searches product/project leads, shows each source occurrence, and aggregates the current result set by candidate tag and observed year. These records are **not** verified companies or a U.S. market census. The separate 20-company pilot provides dated pages, SEC facts for ten public registrants, and four selected first-party financing announcements. Announcement amounts and valuations are company claims, not a complete financing history. The pilot export reads the saved ingestion and SEC selection reports, checks their selected capture IDs against Postgres, and aggregates stored Cboe files. Raw HTML, full extracted text, original CSVs, and cached landscape YAML stay outside the static export. Rebuild the two pilot reports first if that database has changed. The [universe research note](docs/research/us-company-universe-plan.md) explains the eligibility and identity work still needed.
+
+`scripts/build_discovery_index.py` caches raw pinned YAML under ignored `data/discovery/`. Run it again with `--offline` to reproduce the export from those exact local bytes. Each exported occurrence retains its original category path, row position, pinned Git URL, and artifact SHA-256. The category mapping in `src/log_pose/discovery.py` nominates leads for review; it does not infer a vendor, U.S. location, launch date, financing, or traction.
 
 Run focused checks with:
 

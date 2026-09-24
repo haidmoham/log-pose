@@ -1,7 +1,10 @@
 const root = document.querySelector('#view');
 const tabs = [...document.querySelectorAll('[data-view]')];
-const state = { view: 'companies', year: 2024, category: 'all', query: '', company: null, sort: 'growth' };
+const state = { view: 'search', year: 2024, category: 'all', query: '', company: null, sort: 'growth',
+  searchYear: 'all', searchSource: 'all', searchType: 'all', selectedCandidate: null, searchLimit: 30 };
 let data;
+let discovery;
+let occurrenceById;
 
 function node(tag, text = '', className = '') {
   const item = document.createElement(tag);
@@ -16,6 +19,11 @@ function append(parent, ...items) {
 }
 
 function link(label, url) {
+  try {
+    if (!['http:', 'https:'].includes(new URL(url).protocol)) return node('span', label);
+  } catch {
+    return node('span', label);
+  }
   const item = node('a', label);
   item.href = url;
   item.target = '_blank';
@@ -40,6 +48,231 @@ function categoryName(value) {
     developer_tools: 'Developer tools',
     security_observability: 'Security / observability'
   }[value] || value;
+}
+
+function occurrenceText(occurrence) {
+  return [occurrence.name, occurrence.description, occurrence.homepage_url, occurrence.repo_url,
+    occurrence.source_category, occurrence.source_subcategory,
+    ...occurrence.candidate_tags.map(categoryName)]
+    .join(' ').toLocaleLowerCase();
+}
+
+function matchingOccurrences(candidate, terms) {
+  return candidate.occurrence_ids.map(id => occurrenceById.get(id)).filter(item =>
+    (state.category === 'all' || item.candidate_tags.includes(state.category))
+    && (state.searchYear === 'all' || item.year === Number(state.searchYear))
+    && (state.searchSource === 'all' || item.source === state.searchSource)
+    && terms.every(term => occurrenceText(item).includes(term)));
+}
+
+function renderSearch() {
+  root.append(title('01 / SOURCE RECORDS', 'Search the software landscape',
+    'Find dated product and project leads. Open their original inventory rows; use the reviewed pilot for company pages and SEC facts.'));
+
+  const controls = node('div', '', 'search-controls');
+  const query = node('input');
+  query.type = 'search';
+  query.placeholder = 'Try vector database, observability, API gateway…';
+  query.setAttribute('aria-label', 'Search source records');
+  query.value = state.query;
+  query.addEventListener('input', () => {
+    state.query = query.value;
+    state.searchLimit = 30;
+    updateSearchResults();
+  });
+  controls.append(query);
+  const filters = node('div', '', 'search-filters');
+  const category = node('select');
+  category.setAttribute('aria-label', 'Candidate category');
+  category.add(new Option('All categories', 'all'));
+  ['data_infrastructure', 'developer_tools', 'security_observability', 'ai_automation']
+    .forEach(value => category.add(new Option(categoryName(value), value)));
+  category.value = state.category;
+  category.addEventListener('change', () => { state.category = category.value; updateSearchResults(); });
+  const year = node('select');
+  year.setAttribute('aria-label', 'Observed year');
+  year.add(new Option('All years', 'all'));
+  data.years.forEach(value => year.add(new Option('Observed ' + value, String(value))));
+  year.value = state.searchYear;
+  year.addEventListener('change', () => { state.searchYear = year.value; updateSearchResults(); });
+  const source = node('select');
+  source.setAttribute('aria-label', 'Discovery source');
+  [['all', 'All sources'], ['cncf', 'CNCF landscape'], ['lfai', 'LF AI & Data']]
+    .forEach(([value, label]) => source.add(new Option(label, value)));
+  source.value = state.searchSource;
+  source.addEventListener('change', () => { state.searchSource = source.value; updateSearchResults(); });
+  const type = node('select');
+  type.setAttribute('aria-label', 'Record type');
+  [['all', 'All record types'], ['lead', 'Directory leads'],
+    ['pilot', 'Selected pilot'], ['financing', 'Financing announcement'],
+    ['financial', 'SEC facts available']]
+    .forEach(([value, label]) => type.add(new Option(label, value)));
+  type.value = state.searchType;
+  type.addEventListener('change', () => { state.searchType = type.value; updateSearchResults(); });
+  filters.append(category, year, source, type);
+  root.append(controls, filters);
+
+  const results = node('div');
+  results.id = 'search-results';
+  root.append(results);
+  updateSearchResults();
+}
+
+function candidateScore(candidate, query) {
+  if (!query) return candidate.observed_years.length;
+  const name = candidate.name.toLocaleLowerCase();
+  const phrase = query.toLocaleLowerCase().trim();
+  if (name === phrase) return 1000;
+  if (name.startsWith(phrase)) return 500;
+  if (name.includes(phrase)) return 200;
+  return candidate.observed_years.length;
+}
+
+function searchAggregation(hits, pilots) {
+  const panel = node('section', '', 'search-aggregation');
+  panel.append(node('p', 'AGGREGATION / CURRENT RESULT SET', 'eyebrow'),
+    node('h3', 'Where the matches appear'));
+  const counts = node('div', '', 'search-aggregate-grid');
+  const byCategory = node('div');
+  byCategory.append(node('h4', 'Candidate tags'));
+  ['data_infrastructure', 'developer_tools', 'security_observability', 'ai_automation']
+    .forEach(tag => byCategory.append(append(node('p', '', 'aggregate-row'),
+      node('span', categoryName(tag)),
+      node('strong', String(hits.filter(hit => hit.occurrences.some(item =>
+        item.candidate_tags.includes(tag))).length)))));
+  const byYear = node('div');
+  byYear.append(node('h4', 'Observed in inventory'));
+  data.years.forEach(year => byYear.append(append(node('p', '', 'aggregate-row'),
+    node('span', String(year)),
+    node('strong', String(hits.filter(hit => hit.occurrences.some(item =>
+      item.year === year)).length)))));
+  counts.append(byCategory, byYear);
+  panel.append(counts, node('p', hits.length + ' distinct directory candidate keys · '
+    + pilots.length + ' selected pilot companies · '
+    + pilots.filter(item => financingFor(item.slug).length).length
+    + ' with a financing announcement. Tags and years overlap; these are not market-size counts.', 'muted'));
+  return panel;
+}
+
+function financingFor(slug) {
+  return data.financing_announcements.filter(event => event.slug === slug);
+}
+
+function candidateDetail(candidate) {
+  const section = node('section', '', 'candidate-detail');
+  section.append(node('p', 'DIRECTORY LEAD / IDENTITY AND U.S. LOCATION UNREVIEWED', 'eyebrow'),
+    node('h3', candidate.name),
+    node('p', candidate.description || 'The source inventory provides no description.', 'muted'));
+  if (candidate.homepage_url) section.append(link('Source-listed website ↗', candidate.homepage_url));
+  const observations = candidate.occurrence_ids.map(id => occurrenceById.get(id));
+  section.append(node('h4', 'Dated source occurrences'));
+  const list = node('div', '', 'occurrence-list');
+  observations.forEach(item => list.append(append(node('article', '', 'occurrence'),
+    node('p', item.source.toUpperCase() + ' · ' + item.year + ' · '
+      + item.source_category + ' / ' + item.source_subcategory, 'eyebrow'),
+    node('p', item.description || 'No source description.'),
+    link('Pinned inventory ↗', item.source_url),
+    node('small', 'Row path ' + item.source_path.join('.') + ' · SHA-256 '
+      + item.artifact_sha256.slice(0, 12) + '…'))));
+  section.append(list, node('p', 'Inventory presence is a dated directory observation. It does not verify the vendor, U.S. location, product launch date, financing, or traction.', 'caveat'));
+  return section;
+}
+
+function updateSearchResults() {
+  const target = document.querySelector('#search-results');
+  target.replaceChildren();
+  const terms = state.query.toLocaleLowerCase().trim().split(/\s+/).filter(Boolean);
+  const hits = ['pilot', 'financial', 'financing'].includes(state.searchType) ? []
+    : discovery.candidates.map(candidate => ({
+      candidate,
+      occurrences: matchingOccurrences(candidate, terms)
+    })).filter(hit => hit.occurrences.length);
+  const pilots = data.companies.filter(item =>
+    (state.category === 'all' || item.category === state.category)
+    && (state.searchYear === 'all' || (state.searchType === 'financing'
+      ? financingFor(item.slug).some(event => Number(event.announced_on.slice(0, 4)) === Number(state.searchYear))
+      : data.evidence.some(cell => cell.slug === item.slug
+        && cell.year === Number(state.searchYear) && cell.snapshot_id)))
+    && state.searchSource === 'all'
+    && state.searchType !== 'lead'
+    && (state.searchType !== 'financial' || item.cik)
+    && (state.searchType !== 'financing' || financingFor(item.slug).length)
+    && [item.name, item.purpose, item.url].join(' ').toLocaleLowerCase()
+      .includes(state.query.toLocaleLowerCase().trim()));
+  hits.sort((left, right) => candidateScore(right.candidate, state.query)
+    - candidateScore(left.candidate, state.query)
+    || left.candidate.name.localeCompare(right.candidate.name));
+  target.append(append(node('div', '', 'search-summary'),
+    metric(String(hits.length), 'Directory leads', 'Product or project keys; U.S. status unreviewed'),
+    metric(String(pilots.length), 'Pilot companies', 'Selected and separately sourced'),
+    metric(String(pilots.filter(item => item.cik).length), 'With SEC facts', 'Reported fundamentals; no price series'),
+    metric(String(pilots.filter(item => financingFor(item.slug).length).length),
+      'With financing news', 'Company announcements; selected events only')));
+  target.append(searchAggregation(hits, pilots));
+  const resultList = node('div', '', 'search-result-list');
+  pilots.forEach(item => {
+    const announcements = financingFor(item.slug);
+    const button = node('button', 'Open dated company evidence →', 'text-button');
+    button.type = 'button';
+    button.addEventListener('click', () => {
+      state.view = 'companies';
+      state.company = item.slug;
+      render();
+      document.querySelector('#company-detail')?.scrollIntoView({ block: 'start' });
+    });
+    resultList.append(append(node('article', '', 'search-result'),
+      node('p', 'SELECTED PILOT COMPANY' + (item.cik ? ' · SEC FACTS' : '')
+        + (announcements.length ? ' · FINANCING NEWS' : ''), 'eyebrow'),
+      node('h3', item.name), node('p', item.purpose || '', 'muted'),
+      ...(announcements.length ? [node('p', announcements.map(event =>
+        event.announced_on + ' · ' + event.round + ' · ' + money(event.amount_usd)).join(' / '), 'search-tags')] : []),
+      button));
+  });
+  hits.slice(0, state.searchLimit).forEach(hit => {
+    const item = hit.candidate;
+    const matchingDescription = hit.occurrences.find(occurrence => occurrence.description)?.description
+      || hit.occurrences.map(occurrence => occurrence.source_category + ' / '
+        + occurrence.source_subcategory).join(' · ');
+    const matchedYears = [...new Set(hit.occurrences.map(occurrence => occurrence.year))].sort();
+    const matchedSources = [...new Set(hit.occurrences.map(occurrence => occurrence.source))].sort();
+    const matchedTags = [...new Set(hit.occurrences.flatMap(occurrence => occurrence.candidate_tags))];
+    const button = node('button', state.selectedCandidate === item.id ? 'Hide source records' : 'Inspect source records →', 'text-button');
+    button.type = 'button';
+    button.addEventListener('click', () => {
+      state.selectedCandidate = state.selectedCandidate === item.id ? null : item.id;
+      updateSearchResults();
+      document.querySelector('#candidate-' + item.id)?.scrollIntoView({ block: 'nearest' });
+    });
+    const card = append(node('article', '', 'search-result'),
+      node('p', 'DIRECTORY LEAD · ' + matchedYears.join(', ') + ' · '
+        + matchedSources.join(' + ').toUpperCase(), 'eyebrow'),
+      node('h3', item.name),
+      node('p', matchingDescription, 'muted'),
+      node('p', matchedTags.map(categoryName).join(' · '), 'search-tags'), button);
+    if (item.pilot_match) {
+      const evidenceButton = node('button', 'Open pilot company evidence →', 'text-button');
+      evidenceButton.type = 'button';
+      evidenceButton.addEventListener('click', () => {
+        state.view = 'companies';
+        state.company = item.pilot_match.slug;
+        render();
+        document.querySelector('#company-detail')?.scrollIntoView({ block: 'start' });
+      });
+      card.append(node('p', 'Possible link: exact name and listed homepage. Legal identity unreviewed.', 'caption'),
+        evidenceButton);
+    }
+    card.id = 'candidate-' + item.id;
+    resultList.append(card);
+    if (state.selectedCandidate === item.id) resultList.append(candidateDetail(item));
+  });
+  target.append(resultList);
+  if (hits.length > state.searchLimit) {
+    const more = node('button', 'Show 30 more leads', 'quiet-button');
+    more.type = 'button';
+    more.addEventListener('click', () => { state.searchLimit += 30; updateSearchResults(); });
+    target.append(more);
+  }
+  if (!hits.length && !pilots.length) target.append(node('p', 'No records match these filters.', 'muted'));
 }
 
 function formatNumber(value, places = 1) {
@@ -144,12 +377,25 @@ function companyDetail(slug) {
     grid.append(card);
   }
   section.append(grid, node('p', 'A company page records what its publisher said at capture time. It does not verify adoption, customer outcomes, or when a feature first appeared.', 'caveat'));
+  const announcements = financingFor(slug);
+  if (announcements.length) {
+    const funding = node('section', '', 'funding-events');
+    funding.append(node('h4', 'Financing announcements'));
+    announcements.forEach(event => funding.append(append(node('article', '', 'funding-event'),
+      node('p', event.announced_on + ' · ' + event.round, 'eyebrow'),
+      node('p', money(event.amount_usd) + ' announced'
+        + (event.valuation_usd ? ' · ' + money(event.valuation_usd) + ' valuation' : ''), 'year-finance'),
+      ...(event.valuation_basis ? [node('p', event.valuation_basis, 'caption')] : []),
+      link('Company announcement ↗', event.source_url))));
+    funding.append(node('p', 'Selected company statements. Amounts and valuations are claims in the linked announcements; this is not a complete financing history.', 'caveat'));
+    section.append(funding);
+  }
   return section;
 }
 
 function renderCompanies() {
   const good = data.evidence.filter(item => item.status === 'retrieved').length;
-  root.append(title('01 / COMPANY LENS', 'Companies in the study',
+  root.append(title('02 / COMPANY LENS', 'Companies in the study',
     'Scan evidence availability, then open a company to inspect dated pages and reported facts.'),
     append(node('div', '', 'metric-row'),
       metric(String(data.companies.length), 'Selected companies', 'Fixed, purposive cohort'),
@@ -263,7 +509,7 @@ function renderFundamentals() {
     .forEach(([value, label]) => sort.add(new Option('Sort: ' + label, value)));
   sort.value = state.sort;
   sort.addEventListener('change', () => { state.sort = sort.value; render(); });
-  root.append(title('02 / REPORTED RESULTS', 'Public fundamentals',
+  root.append(title('03 / REPORTED RESULTS', 'Public fundamentals',
     'Compare reported revenue and net income across the public subset. Open a company for its four selected periods and filing trail.'),
     append(node('div', '', 'section-controls'), yearControl(), sort,
       node('p', 'USD · Filings through ' + data.financials.as_of + ' · 10 public companies', 'muted')));
@@ -299,7 +545,7 @@ function renderFundamentals() {
 }
 
 function renderMarket() {
-  root.append(title('03 / EXTERNAL CONTEXT', 'U.S. equity activity',
+  root.append(title('04 / EXTERNAL CONTEXT', 'U.S. equity activity',
     'Cboe market-wide daily data, averaged within each year. This series spans all U.S. equities, not only software companies.'));
   const panels = node('div', '', 'market-panels');
   const measures = [
@@ -327,7 +573,7 @@ function renderMarket() {
 }
 
 function renderReadiness() {
-  root.append(title('04 / RESEARCH BOUNDARY', 'What can we answer?',
+  root.append(title('05 / RESEARCH BOUNDARY', 'What can we answer?',
     'The next data pull should follow a question that the current pilot cannot answer.'));
   root.append(append(node('div', '', 'readiness-grid'),
     metric('72 / 80', 'Extractable page cells', 'Eight yield short visible text'),
@@ -343,66 +589,14 @@ function renderReadiness() {
   root.append(table(['Research question', 'Available now', 'Needed next'],
     entries.map(values => append(node('tr'), ...values.map(value => node('td', value))))));
   root.append(node('p', 'This pilot supports sourced case studies and exploratory public-company trends. It cannot establish market share, investment performance, customer traction, or valuation.', 'caveat'));
-  const universeButton = node('button', 'See the universe build →', 'text-button');
-  universeButton.type = 'button';
-  universeButton.addEventListener('click', () => {
-    state.view = 'universe';
+  const searchButton = node('button', 'Search source records →', 'text-button');
+  searchButton.type = 'button';
+  searchButton.addEventListener('click', () => {
+    state.view = 'search';
     render();
     root.scrollIntoView({ block: 'start' });
   });
-  root.append(universeButton);
-}
-
-function renderUniverse() {
-  const universe = data.universe;
-  root.append(title('05 / COMPANY DISCOVERY', 'Building the company universe',
-    'The 20 selected companies test retrieval. This research defines a wider U.S. company frame before any market-wide count.'));
-
-  const scope = append(node('section', '', 'universe-scope'),
-    node('p', 'WORKING BOUNDARY / CHECKED ' + universe.checked_at, 'eyebrow'),
-    node('h3', universe.scope),
-    node('p', universe.membership_rule));
-  const categories = append(node('div', '', 'universe-categories'),
-    ...universe.categories.map(category => node('span', category)));
-  scope.append(categories);
-  root.append(scope);
-
-  root.append(append(node('div', '', 'metric-row'),
-    metric(String(data.companies.length), 'Pilot companies', 'Selected for retrieval tests'),
-    metric('Not counted', 'Verified U.S. universe', 'Eligibility review has not started'),
-    metric('2 of 4', 'Years with inventory checks', '2021 and 2024 only')));
-
-  root.append(append(node('div', '', 'universe-heading'),
-    node('h3', 'Historical inventory checks'),
-    node('p', 'Parsed items include products, projects, and member entries. They are not unique companies or verified U.S. firms.', 'muted')));
-  const manifestRows = universe.manifest_checks.map(source => {
-    const counts = source.counts.map(count => append(node('td'),
-      link(count.items.toLocaleString() + ' items ↗', count.url)));
-    return append(node('tr'), node('td', source.name), ...counts,
-      node('td', source.description));
-  });
-  root.append(table(['Inventory', '2021 pinned file', '2024 pinned file', 'Contents'], manifestRows));
-
-  root.append(append(node('div', '', 'universe-heading'),
-    node('h3', 'Discovery routes'),
-    node('p', 'Each route yields candidates. Dated first-party records establish product fit, location, and ownership.', 'muted')));
-  const routes = node('div', '', 'route-grid');
-  universe.discovery_routes.forEach(source => {
-    routes.append(append(node('article', '', 'route-card'),
-      node('p', source.status, 'eyebrow'),
-      append(node('h4'), link(source.name + ' ↗', source.url)),
-      node('p', source.role),
-      node('p', source.limit, 'route-limit')));
-  });
-  root.append(routes);
-
-  const next = append(node('section', '', 'universe-next'),
-    node('p', 'NEXT BOUNDED RUN', 'eyebrow'),
-    node('h3', 'From candidates to company-years'));
-  const steps = node('ol');
-  universe.next_batch.forEach(step => steps.append(node('li', step)));
-  next.append(steps);
-  root.append(next, node('p', 'The source union can become a documented high-recall frame. No listed source proves a complete census, so coverage and unresolved cases must stay visible.', 'caveat'));
+  root.append(searchButton);
 }
 
 function render() {
@@ -411,11 +605,11 @@ function render() {
     else button.removeAttribute('aria-current');
   });
   root.replaceChildren();
-  if (state.view === 'companies') renderCompanies();
+  if (state.view === 'search') renderSearch();
+  else if (state.view === 'companies') renderCompanies();
   else if (state.view === 'fundamentals') renderFundamentals();
   else if (state.view === 'market') renderMarket();
-  else if (state.view === 'readiness') renderReadiness();
-  else renderUniverse();
+  else renderReadiness();
 }
 
 tabs.forEach(button => button.addEventListener('click', () => {
@@ -424,7 +618,15 @@ tabs.forEach(button => button.addEventListener('click', () => {
   render();
 }));
 
-fetch('./dashboard.json')
-  .then(response => { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); })
-  .then(payload => { data = payload; render(); })
-  .catch(error => { root.replaceChildren(node('p', 'Pilot export unavailable: ' + error.message, 'error')); });
+Promise.all(['./dashboard.json', './discovery.json'].map(url =>
+  fetch(url).then(response => {
+    if (!response.ok) throw new Error(url + ' HTTP ' + response.status);
+    return response.json();
+  })))
+  .then(([pilot, pulled]) => {
+    data = pilot;
+    discovery = pulled;
+    occurrenceById = new Map(pulled.occurrences.map(item => [item.id, item]));
+    render();
+  })
+  .catch(error => { root.replaceChildren(node('p', 'Source export unavailable: ' + error.message, 'error')); });

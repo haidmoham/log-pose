@@ -10,121 +10,161 @@
       "slug": "confluent",
       "name": "Confluent",
       "category": "data_infrastructure",
-      "cik": "0001699838"
+      "cik": "0001699838",
+      "url": "https://www.confluent.io/",
+      "purpose": "Company homepage candidate; data streaming platform."
     },
     {
       "slug": "snowflake",
       "name": "Snowflake",
       "category": "data_infrastructure",
-      "cik": "0001640147"
+      "cik": "0001640147",
+      "url": "https://www.snowflake.com/",
+      "purpose": "Company homepage candidate; cloud data platform."
     },
     {
       "slug": "mongodb",
       "name": "MongoDB",
       "category": "data_infrastructure",
-      "cik": "0001441816"
+      "cik": "0001441816",
+      "url": "https://www.mongodb.com/",
+      "purpose": "Company homepage candidate; database and developer data platform."
     },
     {
       "slug": "clickhouse",
       "name": "ClickHouse",
       "category": "data_infrastructure",
-      "cik": null
+      "cik": null,
+      "url": "https://clickhouse.com/",
+      "purpose": "Company homepage candidate; open-source analytical database and cloud service."
     },
     {
       "slug": "dbt-labs",
       "name": "dbt Labs",
       "category": "data_infrastructure",
-      "cik": null
+      "cik": null,
+      "url": "https://www.getdbt.com/",
+      "purpose": "Company homepage candidate; analytics engineering and data transformation software."
     },
     {
       "slug": "gitlab",
       "name": "GitLab",
       "category": "developer_tools",
-      "cik": "0001653482"
+      "cik": "0001653482",
+      "url": "https://about.gitlab.com/",
+      "purpose": "Company homepage candidate; software development and DevSecOps platform."
     },
     {
       "slug": "atlassian",
       "name": "Atlassian",
       "category": "developer_tools",
-      "cik": "0001650372"
+      "cik": "0001650372",
+      "url": "https://www.atlassian.com/",
+      "purpose": "Company homepage candidate; collaboration and software development tools."
     },
     {
       "slug": "linear",
       "name": "Linear",
       "category": "developer_tools",
-      "cik": null
+      "cik": null,
+      "url": "https://linear.app/",
+      "purpose": "Company homepage candidate; issue tracking and product development software."
     },
     {
       "slug": "postman",
       "name": "Postman",
       "category": "developer_tools",
-      "cik": null
+      "cik": null,
+      "url": "https://www.postman.com/",
+      "purpose": "Company homepage candidate; API development platform."
     },
     {
       "slug": "invision",
       "name": "InVision",
       "category": "developer_tools",
-      "cik": null
+      "cik": null,
+      "url": "https://www.invisionapp.com/",
+      "purpose": "Historical homepage candidate; design collaboration and prototyping service, retained as a discontinued-product case."
     },
     {
       "slug": "datadog",
       "name": "Datadog",
       "category": "security_observability",
-      "cik": "0001561550"
+      "cik": "0001561550",
+      "url": "https://www.datadoghq.com/",
+      "purpose": "Company homepage candidate; cloud monitoring and observability software."
     },
     {
       "slug": "crowdstrike",
       "name": "CrowdStrike",
       "category": "security_observability",
-      "cik": "0001535527"
+      "cik": "0001535527",
+      "url": "https://www.crowdstrike.com/",
+      "purpose": "Company homepage candidate; cybersecurity software and services."
     },
     {
       "slug": "elastic",
       "name": "Elastic",
       "category": "security_observability",
-      "cik": "0001707753"
+      "cik": "0001707753",
+      "url": "https://www.elastic.co/",
+      "purpose": "Company homepage candidate; search, observability, and security software."
     },
     {
       "slug": "snyk",
       "name": "Snyk",
       "category": "security_observability",
-      "cik": null
+      "cik": null,
+      "url": "https://snyk.io/",
+      "purpose": "Company homepage candidate; developer security software."
     },
     {
       "slug": "vanta",
       "name": "Vanta",
       "category": "security_observability",
-      "cik": null
+      "cik": null,
+      "url": "https://www.vanta.com/",
+      "purpose": "Company homepage candidate; security and compliance automation software."
     },
     {
       "slug": "uipath",
       "name": "UiPath",
       "category": "ai_automation",
-      "cik": "0001734722"
+      "cik": "0001734722",
+      "url": "https://www.uipath.com/",
+      "purpose": "Company homepage candidate; robotic process and business automation software."
     },
     {
       "slug": "palantir",
       "name": "Palantir",
       "category": "ai_automation",
-      "cik": "0001321655"
+      "cik": "0001321655",
+      "url": "https://www.palantir.com/",
+      "purpose": "Company homepage candidate; data operations and AI software platform."
     },
     {
       "slug": "weights-and-biases",
       "name": "Weights & Biases",
       "category": "ai_automation",
-      "cik": null
+      "cik": null,
+      "url": "https://wandb.ai/site",
+      "purpose": "Historical homepage candidate; AI developer platform for model training, evaluation, and monitoring."
     },
     {
       "slug": "replit",
       "name": "Replit",
       "category": "ai_automation",
-      "cik": null
+      "cik": null,
+      "url": "https://replit.com/",
+      "purpose": "Company homepage candidate; cloud software development platform with AI-assisted creation."
     },
     {
       "slug": "datarobot",
       "name": "DataRobot",
       "category": "ai_automation",
-      "cik": null
+      "cik": null,
+      "url": "https://www.datarobot.com/",
+      "purpose": "Company homepage candidate; enterprise AI and machine learning software."
     }
   ],
   "evidence": [
@@ -1565,6 +1605,48 @@
     {
       "snapshot_id": 84,
       "quote": "Stop attacks across endpoint, identity, and cloud."
+    }
+  ],
+  "financing_announcements": [
+    {
+      "slug": "datarobot",
+      "announced_on": "2021-07-27",
+      "round": "Series G",
+      "amount_usd": 300000000,
+      "valuation_usd": 6300000000,
+      "valuation_basis": "post-money",
+      "source_url": "https://www.datarobot.com/newsroom/press/datarobot-unveils-major-milestones-including-300m-series-g-funding-investment/",
+      "source_type": "company announcement"
+    },
+    {
+      "slug": "dbt-labs",
+      "announced_on": "2022-02-24",
+      "round": "Series D",
+      "amount_usd": 222000000,
+      "valuation_usd": 4200000000,
+      "valuation_basis": "company-reported valuation; basis unspecified",
+      "source_url": "https://www.getdbt.com/blog/dbt-labs-raises-222m-in-series-d-funding-at-4-2b-valuation-led-by-altimeter-with-participation-from-databricks-and-snowflake",
+      "source_type": "company announcement"
+    },
+    {
+      "slug": "linear",
+      "announced_on": "2023-09-14",
+      "round": "Series B",
+      "amount_usd": 35000000,
+      "valuation_usd": null,
+      "valuation_basis": null,
+      "source_url": "https://linear.app/now/series-b",
+      "source_type": "company announcement"
+    },
+    {
+      "slug": "vanta",
+      "announced_on": "2024-07-24",
+      "round": "Series C",
+      "amount_usd": 150000000,
+      "valuation_usd": 2450000000,
+      "valuation_basis": "company-reported valuation; basis unspecified",
+      "source_url": "https://www.vanta.com/resources/vanta-announces-series-c",
+      "source_type": "company announcement"
     }
   ],
   "financials": {
@@ -3785,94 +3867,5 @@
       "raw_sha256": "da755580ecf801b6fe89854c58ead811e320f542e5b0c1dc03513c48487b0537",
       "retrieved_at": "2026-09-23T12:08:22.752204-04:00"
     }
-  ],
-  "universe": {
-    "checked_at": "2026-09-24",
-    "scope": "U.S. companies that offered an eligible software product at any point during 2021\u20132024",
-    "categories": [
-      "Data infrastructure",
-      "Developer tools",
-      "Security and observability",
-      "AI and automation"
-    ],
-    "membership_rule": "Count company-years after dated product, U.S. location, and historical ownership checks. Include firms later acquired, renamed, or closed.",
-    "verified_universe_count": null,
-    "manifest_checks": [
-      {
-        "name": "CNCF landscape",
-        "description": "Cloud-native products, projects, and member entries",
-        "counts": [
-          {
-            "year": 2021,
-            "items": 1841,
-            "url": "https://github.com/cncf/landscape/blob/f3ff2dc3fd73c9239eb454e189934fb150afb383/landscape.yml"
-          },
-          {
-            "year": 2024,
-            "items": 2361,
-            "url": "https://github.com/cncf/landscape/blob/e4f13c918275affaefb3dbe1a21a4a8e38ee3842/landscape.yml"
-          }
-        ]
-      },
-      {
-        "name": "LF AI & Data landscape",
-        "description": "AI and data products, projects, and member entries",
-        "counts": [
-          {
-            "year": 2021,
-            "items": 396,
-            "url": "https://github.com/lfai/lfai-landscape/blob/b7bad8d8d544f2a7dca4c933ac76652e0ae5cee0/landscape.yml"
-          },
-          {
-            "year": 2024,
-            "items": 484,
-            "url": "https://github.com/lfai/lfai-landscape/blob/9999a5ca4ddae6d202e83606ed6f84b368bc0099/landscape.yml"
-          }
-        ]
-      }
-    ],
-    "discovery_routes": [
-      {
-        "name": "Historical landscapes",
-        "role": "Find dated product and project candidates, domains, and repositories.",
-        "limit": "Project and member entries need company, U.S., and product checks. 2022\u20132023 files remain to be parsed.",
-        "status": "Two years parsed",
-        "url": "https://github.com/cncf/landscape"
-      },
-      {
-        "name": "SEC filing indexes",
-        "role": "Find in-period reporting companies and their original filings by CIK and filing date.",
-        "limit": "Filing status does not establish product fit; private companies are mostly absent.",
-        "status": "Source reviewed",
-        "url": "https://www.sec.gov/search-filings/edgar-search-assistance/accessing-edgar-data"
-      },
-      {
-        "name": "SEC Form D",
-        "role": "Find private issuer candidates in quarterly 2021\u20132024 offering notices.",
-        "limit": "Not a company or venture-round census. Amendments need deduplication.",
-        "status": "Source reviewed",
-        "url": "https://www.sec.gov/data-research/sec-markets-data/form-d-data-sets"
-      },
-      {
-        "name": "YC and dated announcements",
-        "role": "Find additional private candidates and historical company events.",
-        "limit": "Accelerator and publicity selection bias; present-day descriptions are not past evidence.",
-        "status": "Source reviewed",
-        "url": "https://www.ycombinator.com/companies"
-      },
-      {
-        "name": "Web archives",
-        "role": "Check historical product claims, domain aliases, and company activity.",
-        "limit": "A missing capture does not show that a company or product was absent.",
-        "status": "Pilot operational",
-        "url": "https://commoncrawl.org/columnar-index"
-      }
-    ],
-    "next_batch": [
-      "Freeze product, location, and historical ownership rules.",
-      "Build a source-tagged union, including firms that disappeared before 2024.",
-      "Review 50\u2013100 candidates across the four categories and record exclusions.",
-      "Measure unique eligible additions, identity ambiguity, and dated evidence by company-year."
-    ]
-  }
+  ]
 }
