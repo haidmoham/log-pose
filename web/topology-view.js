@@ -3,7 +3,7 @@
 
   const PREDICATE_LABELS = {
     possible_substitute_for: 'possible substitute',
-    named_competitor_of: 'named competitor',
+    named_competitor_of: 'named as a competitor',
     integrates_with: 'integrates with',
     announced_partnership_with: 'announced partnership',
     invested_in: 'invested in',
@@ -11,13 +11,14 @@
   };
   const CATEGORY_LABELS = {
     competition: 'Competition',
-    collaboration: 'Collaboration',
-    performance_exposure: 'Performance exposure'
+    collaboration: 'Integration and partnership',
+    investment: 'Investment',
+    performance_exposure: 'Shared business drivers'
   };
   const STATUS_LABELS = {
-    documented: 'Documented',
-    reviewed_inference: 'Reviewed inference',
-    hypothesis: 'Hypothesis'
+    documented: 'Source-stated',
+    reviewed_inference: 'Reviewer inference',
+    hypothesis: 'Untested hypothesis'
   };
 
   function create({ root, state, data, model, commitState }) {
@@ -37,10 +38,20 @@
       return companies.get(slug)?.name || slug;
     }
 
+    function isReviewedIdentity(status) {
+      return status === 'reviewed_pilot_company' || status === 'reviewed_company';
+    }
+
     function claimLabel(claim) {
       const subject = companyName(claim.subject_slug);
       const object = companyName(claim.object_slug);
       const predicate = PREDICATE_LABELS[claim.predicate] || claim.predicate.replaceAll('_', ' ');
+      if (claim.predicate === 'named_competitor_of') {
+        return `${subject} named ${object} as a competitor`;
+      }
+      if (claim.predicate === 'shared_exposure_hypothesis') {
+        return `${subject} and ${object} may share a business driver`;
+      }
       if (claim.direction === 'object_to_subject') return `${object} ${predicate} ${subject}`;
       return `${subject} ${predicate} ${object}`;
     }
@@ -63,7 +74,8 @@
       sourceYear.id = 'topology-source-year';
       const category = makeSelect('Filter relationship category',
         [['all', 'All relationship types'], ['competition', 'Competition'],
-          ['collaboration', 'Collaboration'], ['performance_exposure', 'Performance exposure']],
+          ['collaboration', 'Integration and partnership'], ['investment', 'Investment'],
+          ['performance_exposure', 'Shared business drivers']],
         state.topologyCategory, value => commitState({ topologyCategory: value },
           { focus: '#topology-category' }));
       category.id = 'topology-category';
@@ -76,7 +88,7 @@
       const company = makeSelect('Focus a mapped company',
         [['all', 'All mapped companies'], ...mappedSlugs.map(slug =>
           [slug, `${companyName(slug)}${companies.get(slug)?.identity_status
-            && companies.get(slug).identity_status !== 'reviewed_pilot_company' ? ' · identity lead' : ''}`])],
+            && !isReviewedIdentity(companies.get(slug).identity_status) ? ' · identity lead' : ''}`])],
         state.company || 'all', value => commitState({ company: value === 'all' ? null : value,
           selectedClaim: null }, { focus: '#topology-company' }));
       company.id = 'topology-company';
@@ -159,7 +171,7 @@
         label.textContent = companyName(slug);
         const descriptor = companies.get(slug)?.identity_status;
         const tooltip = svgNode('title');
-        tooltip.textContent = companyName(slug) + (descriptor && descriptor !== 'reviewed_pilot_company'
+        tooltip.textContent = companyName(slug) + (descriptor && !isReviewedIdentity(descriptor)
           ? ` · ${descriptor.replaceAll('_', ' ')}` : '');
         group.append(tooltip, hit, circle, label);
         group.addEventListener('click', () => commitState({ company: slug, selectedClaim: null },
@@ -195,7 +207,7 @@
       panel.append(node('p', `${CATEGORY_LABELS[category]} / ${STATUS_LABELS[claim.claim_status]}`, 'eyebrow'),
         node('h3', claimLabel(claim)), node('p', claim.interpretation, 'topology-interpretation'),
         append(node('div', '', 'topology-fact'), node('strong', 'Scope'), node('span', claim.scope)),
-        append(node('div', '', 'topology-fact'), node('strong', 'Alternative or unknown'),
+        append(node('div', '', 'topology-fact'), node('strong', 'What remains unknown'),
           node('span', claim.alternative_or_unknown)));
       const sourceList = node('div', '', 'topology-source-list');
       claim.sources.forEach(source => {
@@ -203,7 +215,8 @@
         sourceCard.append(node('p', `${source.publisher} · published ${source.source_date}`
           + (source.event_date ? ` · event ${source.event_date}` : '')
           + (source.period_end ? ` · reporting period ended ${source.period_end}` : ''), 'eyebrow'),
-        node('blockquote', source.evidence_text),
+        node('p', 'Evidence summary', 'topology-evidence-label'),
+        node('p', source.evidence_text, 'topology-evidence-summary'),
         append(node('div', '', 'topology-source-foot'),
           node('span', source.source_type.replaceAll('_', ' ')),
           link('Open source ↗', source.source_url)));
@@ -231,7 +244,7 @@
         panel.append(node('p', 'FOCUSED COMPANY', 'eyebrow'), node('h3', companyName(state.company)),
           node('p', `${companyClaims.length} mapped claims under the current filters. Select a relationship to inspect its source.`, 'muted'));
         const identityStatus = companies.get(state.company)?.identity_status;
-        if (identityStatus && identityStatus !== 'reviewed_pilot_company') panel.append(node('p',
+        if (identityStatus && !isReviewedIdentity(identityStatus)) panel.append(node('p',
           `Identity status: ${identityStatus.replaceAll('_', ' ')}. Treat this node as a lead until its company relationship is reviewed.`, 'caveat'));
         if (!companyClaims.length) panel.append(node('p',
           'No mapped claim matches these filters. This does not mean the company has no relationships.', 'empty-state'));
@@ -338,7 +351,7 @@
           section.append(append(node('article', '', 'topology-company-claim'),
             node('strong', claimLabel(claim)),
             node('p', `${STATUS_LABELS[claim.claim_status]} · published ${source.source_date} · ${source.publisher}`),
-            node('blockquote', source.evidence_text),
+            node('p', source.evidence_text, 'topology-evidence-summary'),
             link('Open source ↗', source.source_url)));
         });
       } else section.append(node('p', 'No relationship claim is recorded for this company in the bounded review.', 'muted'));

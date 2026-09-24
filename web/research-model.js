@@ -14,8 +14,12 @@
     if (predicate === 'possible_substitute_for' || predicate === 'named_competitor_of') {
       return 'competition';
     }
+    if (predicate === 'integrates_with' || predicate === 'announced_partnership_with') {
+      return 'collaboration';
+    }
+    if (predicate === 'invested_in') return 'investment';
     if (predicate === 'shared_exposure_hypothesis') return 'performance_exposure';
-    return 'collaboration';
+    return 'unknown';
   }
 
   function claimSourceDate(claim) {

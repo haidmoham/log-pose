@@ -118,6 +118,13 @@ test('source-year filter uses publication date and preserves mixed claims on one
   assert.deepEqual(model.topologyPairGroups(claims)[0].claims.map(item => item.id), ['a', 'b']);
 });
 
+test('investment and shared drivers remain distinct from collaboration', () => {
+  assert.equal(model.topologyCategory('invested_in'), 'investment');
+  assert.equal(model.topologyCategory('integrates_with'), 'collaboration');
+  assert.equal(model.topologyCategory('shared_exposure_hypothesis'), 'performance_exposure');
+  assert.equal(model.topologyCategory('unreviewed_relation'), 'unknown');
+});
+
 test('graph projection is bounded and keeps focused neighbors', () => {
   const claims = Array.from({ length: 24 }, (_, index) =>
     topologyClaim(`claim-${index}`, 'hub', `neighbor-${index}`,
