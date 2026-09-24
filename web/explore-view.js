@@ -9,6 +9,35 @@
       money, financials, companyDetail, commitState, writeUrl, pinCount
     } = context;
     const { node, append, link, title, metric, table } = globalScope.LogPoseUI;
+    const inventoryYears = [...new Set(discovery.artifacts.map(artifact => artifact.year))]
+      .sort((left, right) => left - right);
+
+    function inventoryCoverage() {
+      const panel = node('section', '', 'inventory-coverage');
+      const rawRows = discovery.artifacts.reduce((total, artifact) =>
+        total + (artifact.raw_item_count || 0), 0);
+      panel.append(node('p', 'PINNED INVENTORY COVERAGE', 'eyebrow'),
+        node('h3', `${inventoryYears[0]}–${inventoryYears.at(-1)} source snapshots`),
+        node('p', `${discovery.artifacts.length} dated source files · ${rawRows.toLocaleString()} raw source rows · `
+          + `${discovery.occurrences.length.toLocaleString()} tagged occurrences · `
+          + `${discovery.candidates.length.toLocaleString()} candidate keys`, 'inventory-coverage-summary'));
+      const years = node('div', '', 'inventory-year-grid');
+      inventoryYears.forEach(year => {
+        const artifacts = discovery.artifacts.filter(artifact => artifact.year === year);
+        const mapped = artifacts.reduce((total, artifact) =>
+          total + artifact.mapped_occurrence_count, 0);
+        const raw = artifacts.reduce((total, artifact) => total + artifact.raw_item_count, 0);
+        const cell = append(node('div', '', 'inventory-year-cell'),
+          node('strong', String(year)), node('span', `${mapped.toLocaleString()} tagged / ${raw.toLocaleString()} raw`),
+          node('small', artifacts.map(artifact => artifact.source.toUpperCase()).join(' + ') || 'no source'));
+        if (artifacts.some(artifact => artifact.coverage_status === 'partial_year_snapshot')) {
+          cell.append(node('small', 'partial year / source snapshot'));
+        }
+        years.append(cell);
+      });
+      panel.append(years, node('p', 'Each year counts inventory rows at pinned source revisions. Repeated rows across years are repeated observations. Tags are research leads; identity, U.S. eligibility, and relationships require separate review.', 'caveat'));
+      return panel;
+    }
 
     function occurrenceText(occurrence) {
       return [occurrence.name, occurrence.description, occurrence.homepage_url, occurrence.repo_url,
@@ -32,7 +61,8 @@
 
     function renderSearch() {
       root.append(title('03 / EXPLORE', 'explore evidence',
-        'filter leads. open source records or selected company history.'));
+        'filter dated inventory leads. open source records or selected company history.'),
+      inventoryCoverage());
 
       const controls = node('div', '', 'search-controls');
       const query = node('input');
@@ -57,7 +87,7 @@
       const year = node('select');
       year.setAttribute('aria-label', 'Record year');
       year.add(new Option('All years', 'all'));
-      data.years.forEach(value => year.add(new Option('Record year ' + value, String(value))));
+      inventoryYears.forEach(value => year.add(new Option('Record year ' + value, String(value))));
       year.value = state.searchYear;
       year.addEventListener('change', () => { state.searchYear = year.value; updateSearchResults(); });
       const source = node('select');
@@ -117,7 +147,7 @@
             item.candidate_tags.includes(tag))).length)))));
       const byYear = node('div');
       byYear.append(node('h4', 'Directory inventory years'));
-      data.years.forEach(year => byYear.append(append(node('p', '', 'aggregate-row'),
+      inventoryYears.forEach(year => byYear.append(append(node('p', '', 'aggregate-row'),
         node('span', String(year)),
         node('strong', String(hits.filter(hit => hit.occurrences.some(item =>
           item.year === year)).length)))));
@@ -141,7 +171,7 @@
           node('strong', String(providers.filter(item => item.candidate_tags.includes(tag)).length)))));
       const byProviderYear = node('div');
       byProviderYear.append(node('h4', 'Provider inventory years'));
-      data.years.forEach(year => byProviderYear.append(append(node('p', '', 'aggregate-row'),
+      inventoryYears.forEach(year => byProviderYear.append(append(node('p', '', 'aggregate-row'),
         node('span', String(year)),
         node('strong', String(providers.filter(item =>
           item.observed_inventory_years.includes(year)).length)))));

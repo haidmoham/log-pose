@@ -321,6 +321,18 @@ function sourceDetails() {
 function renderOverview() {
   root.append(title('01 / OVERVIEW', 'public-company comparison',
     'select a company to inspect. pin up to four to compare.'));
+  const inventoryYears = discovery.artifacts.map(artifact => artifact.year);
+  const exploreEntry = node('section', '', 'overview-inventory-entry');
+  exploreEntry.append(node('p', 'WIDER SOURCE INVENTORY', 'eyebrow'),
+    node('strong', `${Math.min(...inventoryYears)}–${Math.max(...inventoryYears)} · `
+      + `${discovery.candidates.length.toLocaleString()} candidate keys`),
+    node('p', 'Search pinned software inventories by year and source. Directory rows are leads; the company and relationship review is narrower.', 'muted'));
+  const exploreButton = node('button', 'explore source rows →', 'text-button');
+  exploreButton.type = 'button';
+  exploreButton.addEventListener('click', () => commitState({ view: 'explore',
+    searchYear: 'all', searchType: 'all', query: '', company: null }, { top: true }));
+  exploreEntry.append(exploreButton);
+  root.append(exploreEntry);
   const publicCompanies = data.companies.filter(company => company.cik)
     .sort((left, right) => (financials(right.slug, state.year).revenue || -Infinity)
       - (financials(left.slug, state.year).revenue || -Infinity));
@@ -425,6 +437,7 @@ function renderCompare() {
 
 function render() {
   if (!data || !exploreView || !topologyView) return;
+  topologyView.dispose();
   tabs.forEach(button => {
     if (button.dataset.view === state.view) button.setAttribute('aria-current', 'page');
     else button.removeAttribute('aria-current');
@@ -466,6 +479,11 @@ Promise.all(['./dashboard.json', './discovery.json'].map(url =>
     model.validateExports(pilot, pulled);
     data = pilot;
     discovery = pulled;
+    const inventoryYears = pulled.artifacts.map(artifact => artifact.year);
+    document.querySelector('#inventory-window').textContent = inventoryYears.length
+      ? `${Math.min(...inventoryYears)}–${Math.max(...inventoryYears)}${pulled.artifacts.some(
+        artifact => artifact.coverage_status === 'partial_year_snapshot') ? ' / partial' : ''}`
+      : 'unavailable';
     financialIndex = model.buildFinancialIndex(pilot.financials.cells);
     occurrenceById = new Map(pulled.occurrences.map(item => [item.id, item]));
     identityReviewById = new Map(pulled.identity_reviews.map(item => [item.id, item]));

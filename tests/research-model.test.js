@@ -145,3 +145,15 @@ test('graph coordinates stay stable when a claim filter hides an edge', () => {
   assert.deepEqual(model.topologyPositions(projected.claims).get('beta'), basePositions.get('beta'));
   assert.deepEqual(filtered.map(claim => claim.id), ['a']);
 });
+
+test('3d graph positions and projection remain deterministic across claim order', () => {
+  const claims = [topologyClaim('a', 'alpha', 'beta', 'integrates_with', '2023-01-01'),
+    topologyClaim('b', 'beta', 'gamma', 'named_competitor_of', '2025-01-01')];
+  const forward = model.topologyPositions3d(claims);
+  const reversed = model.topologyPositions3d(claims.slice().reverse());
+  assert.deepEqual([...forward], [...reversed]);
+  const front = model.projectTopologyPoint(forward.get('alpha'), 22, -14, 2.4);
+  const turned = model.projectTopologyPoint(forward.get('alpha'), 112, -14, 2.4);
+  assert.notEqual(front.x, turned.x);
+  assert.ok(Number.isFinite(front.depth));
+});

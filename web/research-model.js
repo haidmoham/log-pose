@@ -51,6 +51,31 @@
     return positions;
   }
 
+  function topologyPositions3d(claims) {
+    // Stable placement aids navigation; separation does not encode claim strength.
+    const slugs = [...new Set(claims.flatMap(claim => [claim.subject_slug, claim.object_slug]))].sort();
+    const positions = new Map();
+    slugs.forEach((slug, index) => {
+      const y = 1 - 2 * (index + 0.5) / slugs.length;
+      const radius = Math.sqrt(1 - y * y);
+      const angle = index * Math.PI * (3 - Math.sqrt(5));
+      positions.set(slug, { x: radius * Math.cos(angle), y,
+        z: radius * Math.sin(angle) });
+    });
+    return positions;
+  }
+
+  function projectTopologyPoint(point, yawDegrees, tiltDegrees, zoom) {
+    const yaw = yawDegrees * Math.PI / 180;
+    const tilt = tiltDegrees * Math.PI / 180;
+    const turnedX = point.x * Math.cos(yaw) + point.z * Math.sin(yaw);
+    const turnedZ = point.z * Math.cos(yaw) - point.x * Math.sin(yaw);
+    const turnedY = point.y * Math.cos(tilt) - turnedZ * Math.sin(tilt);
+    const depth = point.y * Math.sin(tilt) + turnedZ * Math.cos(tilt);
+    const scale = zoom / (3.7 - depth);
+    return { x: turnedX * scale, y: turnedY * scale, depth };
+  }
+
   function topologyGraphSlice(claims, focus = null, maxNodes = 16, maxClaims = 48) {
     const slugs = [...new Set(claims.flatMap(claim => [claim.subject_slug, claim.object_slug]))].sort();
     const neighbors = focus ? [...new Set(claims.filter(claim =>
@@ -280,6 +305,8 @@
     claimSourceDate,
     filterTopologyClaims,
     topologyPositions,
+    topologyPositions3d,
+    projectTopologyPoint,
     topologyGraphSlice,
     topologyPairGroups,
     validateTopology

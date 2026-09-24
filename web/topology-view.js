@@ -24,6 +24,9 @@
   function create({ root, state, data, model, commitState }) {
     const { node, append, link, title, svgNode } = globalScope.LogPoseUI;
     const topology = data.market_topology || { claims: [] };
+    let graphMode = '3d';
+    const graphView = { yaw: 22, tilt: -14, zoom: 2.4 };
+    let activeScene = null;
     const claims = topology.claims;
     const companies = new Map(data.companies.map(company => [company.slug, company]));
     for (const graphNode of topology.entities || topology.nodes || []) companies.set(graphNode.slug,
@@ -324,14 +327,32 @@
       const map = node('section', '', 'topology-map');
       map.append(node('div', '', 'topology-map-head'));
       map.firstChild.append(node('p', 'DATED RELATIONSHIP MAP', 'eyebrow'),
-        node('p', 'Select a node or line. Scroll sideways on a narrow screen.', 'muted'));
-      map.append(graph(projection.claims, graphClaims), node('p',
+        node('p', 'Focus a node or use the claim index to inspect evidence.', 'muted'));
+      const modeButton = node('button', graphMode === '3d' ? 'flat view' : '3d view',
+        'quiet-button topology-mode-button');
+      modeButton.type = 'button';
+      modeButton.setAttribute('aria-label', graphMode === '3d'
+        ? 'switch to flat relationship map' : 'switch to 3d relationship map');
+      modeButton.addEventListener('click', () => {
+        graphMode = graphMode === '3d' ? 'flat' : '3d';
+        commitState({}, { focus: '.topology-mode-button' });
+      });
+      map.firstChild.append(modeButton);
+      const scene = graphMode === '3d' ? globalScope.LogPoseTopologyWebGL?.create({
+        claims: projection.claims, visibleClaims: graphClaims, model, companyName,
+        selectedClaim: state.selectedClaim, view: graphView,
+        onCompany: slug => commitState({ company: slug, selectedClaim: null },
+          { focus: '#topology-inspector' })
+      }) : null;
+      if (!scene && graphMode === '3d') modeButton.hidden = true;
+      activeScene = scene;
+      map.append(scene || graph(projection.claims, graphClaims), node('p',
         `Map shows ${graphClaims.length} of ${visibleClaims.length} matching claims and ${new Set(graphClaims.flatMap(claim =>
           [claim.subject_slug, claim.object_slug])).size} entities.`
         + (graphClaims.length < visibleClaims.length ? ' All matching claims are in the index below.' : '')
         + (projection.hiddenNodes ? ` Focus a company to navigate ${projection.hiddenNodes} other mapped entities.` : ''),
         'topology-map-coverage'), legend(), node('p',
-        'Sources through a year means every cited source for a shown claim was published by that year. It does not mean the relationship was active then. Fiscal reporting periods elsewhere in this console are separate.', 'topology-time-note'));
+        'Placement, depth, and distance aid navigation; they do not measure relationship strength. Sources through a year means every cited source was published by then, not that the relationship was active. Fiscal reporting periods are separate.', 'topology-time-note'));
       layout.append(map, inspector(visibleClaims));
       const body = node('div');
       body.append(layout, claimList(visibleClaims));
@@ -368,7 +389,12 @@
       return section;
     }
 
-    return { render, companySummary };
+    function dispose() {
+      activeScene?.dispose?.();
+      activeScene = null;
+    }
+
+    return { render, companySummary, dispose };
   }
 
   globalScope.LogPoseTopology = { create };
