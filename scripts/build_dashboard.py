@@ -3,7 +3,7 @@
 import argparse
 import json
 import re
-from datetime import timezone
+from datetime import date, timezone
 from pathlib import Path
 
 from log_pose.storage import connect
@@ -26,15 +26,51 @@ def reviewed_quotes(audit_text):
     return quotes
 
 
-def build(cohort, ingestion, financials, audit_text, universe, connection):
+def validate_announcements(announcements, cohort):
+    slugs = {company["slug"] for company in cohort}
+    seen = set()
+    for event in announcements:
+        key = (event["slug"], event["announced_on"])
+        if key in seen or event["slug"] not in slugs:
+            raise ValueError(f"duplicate or unknown financing announcement: {key}")
+        seen.add(key)
+        if date.fromisoformat(event["announced_on"]).year not in YEARS:
+            raise ValueError(f"financing announcement outside study period: {key}")
+        if event["source_type"] != "company announcement" or not event["source_url"].startswith("https://"):
+            raise ValueError(f"financing announcement lacks a secure company source: {key}")
+        if event["amount_usd"] <= 0 or (event["valuation_usd"] is not None and event["valuation_usd"] <= 0):
+            raise ValueError(f"financing announcement has an invalid amount: {key}")
+
+
+def validate_location_reviews(reviews, cohort):
+    categories = {company["slug"]: company["category"] for company in cohort}
+    if len(reviews) != 12 or len({item["slug"] for item in reviews}) != 12:
+        raise ValueError("expected 12 distinct reviewed pilot companies")
+    category_counts = {category: 0 for category in set(categories.values())}
+    for item in reviews:
+        slug = item["slug"]
+        if slug not in categories:
+            raise ValueError(f"location review has unknown pilot slug: {slug}")
+        category_counts[categories[slug]] += 1
+        if item["source_year"] not in YEARS or not item["source_url"].startswith("https://"):
+            raise ValueError(f"location review lacks a dated first-party source: {slug}")
+        if item["decision"] not in {"documented_us_base", "unresolved"}:
+            raise ValueError(f"invalid location decision: {slug}")
+        if item["location_kind"] not in {"headquarters", "principal_executive_office", "none_declared"}:
+            raise ValueError(f"invalid location kind: {slug}")
+        if (item["decision"] == "documented_us_base") != (item["location_kind"] != "none_declared"):
+            raise ValueError(f"location decision and source fact disagree: {slug}")
+    if set(category_counts.values()) != {3}:
+        raise ValueError(f"expected three location reviews per category: {category_counts}")
+
+
+def build(cohort, ingestion, financials, announcements, location_reviews, audit_text, connection):
     if len(cohort) != 20 or ingestion["planned_company_year_cells"] != 80:
         raise ValueError("dashboard expects the reviewed 20-company, 80-cell pilot")
     if financials["policy_version"] != "sec-annual-earliest-filed-v1":
         raise ValueError("SEC selection policy changed; review the dashboard first")
-    if universe["verified_universe_count"] is not None:
-        raise ValueError("a verified universe count needs a reviewed candidate build")
-    if {count["year"] for source in universe["manifest_checks"] for count in source["counts"]} != {2021, 2024}:
-        raise ValueError("the universe view expects the reviewed 2021 and 2024 manifest checks")
+    validate_announcements(announcements, cohort)
+    validate_location_reviews(location_reviews, cohort)
 
     cells = ingestion["cells"]
     selected_ids = [cell["snapshot_id"] for cell in cells if cell["snapshot_id"]]
@@ -139,10 +175,12 @@ def build(cohort, ingestion, financials, audit_text, universe, connection):
 
     return {
         "years": YEARS,
-        "companies": [{key: item.get(key) for key in ("slug", "name", "category", "cik")}
+        "companies": [{key: item.get(key) for key in ("slug", "name", "category", "cik", "url", "purpose")}
                       for item in cohort],
         "evidence": evidence,
         "reviewed_quotes": quotes,
+        "financing_announcements": announcements,
+        "us_location_reviews": location_reviews,
         "financials": {
             "as_of": financials["as_of"],
             "policy_version": financials["policy_version"],
@@ -152,7 +190,6 @@ def build(cohort, ingestion, financials, audit_text, universe, connection):
             "cells": sec_cells,
         },
         "market": market,
-        "universe": universe,
     }
 
 
@@ -161,8 +198,9 @@ def main():
     parser.add_argument("--cohort", type=Path, default=Path("docs/research/pilot-cohort.json"))
     parser.add_argument("--ingestion", type=Path, default=Path("docs/research/ingestion-report.json"))
     parser.add_argument("--financials", type=Path, default=Path("docs/research/sec-analysis-build.json"))
+    parser.add_argument("--announcements", type=Path, default=Path("docs/research/financing-announcements.json"))
+    parser.add_argument("--location-reviews", type=Path, default=Path("docs/research/us-location-reviews.json"))
     parser.add_argument("--audit", type=Path, default=Path("docs/research/evidence-audit.md"))
-    parser.add_argument("--universe", type=Path, default=Path("docs/research/us-universe-dashboard.json"))
     parser.add_argument("--output", type=Path, default=Path("web/dashboard.json"))
     args = parser.parse_args()
     with connect() as connection:
@@ -170,14 +208,17 @@ def main():
             json.loads(args.cohort.read_text()),
             json.loads(args.ingestion.read_text()),
             json.loads(args.financials.read_text()),
+            json.loads(args.announcements.read_text()),
+            json.loads(args.location_reviews.read_text()),
             args.audit.read_text(),
-            json.loads(args.universe.read_text()),
             connection,
         )
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(payload, indent=2) + "\n")
     print(f"exported {len(payload['evidence'])} evidence cells, "
           f"{len(payload['financials']['cells'])} financial cells, "
+          f"{len(payload['financing_announcements'])} financing announcements, "
+          f"{len(payload['us_location_reviews'])} U.S. location reviews, "
           f"{len(payload['market'])} market years to {args.output}")
 
 
