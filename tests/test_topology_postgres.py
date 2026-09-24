@@ -54,13 +54,14 @@ def test_immutable_sources_and_reviewed_temporal_projection(db):
                           evidence_text="Example and Other announced an integration.",
                           interpretation="An integration was announced.",
                           alternative_or_unknown="Ongoing availability is unknown.",
+                          temporal_form="event", temporal_basis="Announcement date",
                           proposed_basis="source_statement", generator="manual",
                           generator_version="1", event_on=date(2022, 2, 24))
     assert store_candidate(db, **candidate_args) == "stored"
     assert store_candidate(db, **candidate_args) == "duplicate"
     assert reviewed_claims(db) == []
 
-    accepted_at = datetime(2026, 9, 24, 12, tzinfo=timezone.utc)
+    accepted_at = datetime(2026, 9, 25, 12, tzinfo=timezone.utc)
     record_review(db, candidate_id="c1", decision="accept", reviewer="test",
                   rationale="Exact statement in retained artifact", reviewed_at=accepted_at)
     assert reviewed_claims(db, source_date_cutoff=date(2021, 12, 31)) == []
@@ -71,8 +72,10 @@ def test_immutable_sources_and_reviewed_temporal_projection(db):
     assert rows[0]["event_on"] == date(2022, 2, 24)
     assert rows[0]["published_on"] == date(2022, 2, 24)
     assert rows[0]["retrieved_at"] == retrieved_at
+    assert rows[0]["temporal_form"] == "event"
+    assert rows[0]["valid_from"] is None
 
-    rejected_at = datetime(2026, 9, 25, tzinfo=timezone.utc)
+    rejected_at = datetime(2026, 9, 26, tzinfo=timezone.utc)
     record_review(db, candidate_id="c1", decision="needs_evidence", reviewer="test",
                   rationale="Duration is not established", reviewed_at=rejected_at)
     assert len(reviewed_claims(db, review_cutoff=accepted_at)) == 1

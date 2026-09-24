@@ -155,26 +155,31 @@ def store_candidate(conn, *, candidate_id: str, source_id: str,
                     direction: str, scope: str, evidence_locator: str,
                     evidence_text: str, interpretation: str,
                     alternative_or_unknown: str,
+                    temporal_form: str, temporal_basis: str,
                     proposed_basis: str, generator: str, generator_version: str,
-                    event_on: date | None = None, period_start: date | None = None,
+                    event_on: date | None = None, valid_from: date | None = None,
+                    valid_to: date | None = None, period_start: date | None = None,
                     period_end: date | None = None) -> str:
     """A proposal is not an accepted relationship until a review accepts it."""
     values = (source_id, subject_entity_id, object_entity_id, predicate, direction,
               scope, evidence_locator, evidence_text, interpretation,
-              alternative_or_unknown, event_on, period_start, period_end,
+              alternative_or_unknown, temporal_form, temporal_basis,
+              event_on, valid_from, valid_to, period_start, period_end,
               proposed_basis, generator, generator_version)
     with conn.cursor(row_factory=dict_row) as cur:
         cur.execute("""INSERT INTO topology_candidates(id,source_id,subject_entity_id,
             object_entity_id,predicate,direction,scope,evidence_locator,evidence_text,
-            interpretation,alternative_or_unknown,event_on,
-            period_start,period_end,proposed_basis,generator,generator_version)
-            VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+            interpretation,alternative_or_unknown,temporal_form,temporal_basis,
+            event_on,valid_from,valid_to,period_start,period_end,
+            proposed_basis,generator,generator_version)
+            VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
             ON CONFLICT (id) DO NOTHING RETURNING id""", (candidate_id, *values))
         inserted = cur.fetchone() is not None
         if not inserted:
             cur.execute("""SELECT source_id,subject_entity_id,object_entity_id,
                 predicate,direction,scope,evidence_locator,evidence_text,
-                interpretation,alternative_or_unknown,event_on,period_start,
+                interpretation,alternative_or_unknown,temporal_form,temporal_basis,
+                event_on,valid_from,valid_to,period_start,
                 period_end,proposed_basis,generator,generator_version
                 FROM topology_candidates WHERE id=%s""", (candidate_id,))
             if tuple(cur.fetchone().values()) != values:
@@ -213,7 +218,9 @@ def reviewed_claims(conn, *, source_date_cutoff: date | None = None,
             candidate.direction, candidate.scope, candidate.evidence_locator,
             candidate.evidence_text, candidate.interpretation,
             candidate.alternative_or_unknown,
-            candidate.event_on, candidate.period_start, candidate.period_end,
+            candidate.temporal_form, candidate.temporal_basis,
+            candidate.event_on, candidate.valid_from, candidate.valid_to,
+            candidate.period_start, candidate.period_end,
             candidate.proposed_basis, candidate.generator,
             candidate.generator_version, candidate.created_at,
             source.id AS source_id, source.source_url, source.publisher,
@@ -235,10 +242,13 @@ def reviewed_claims(conn, *, source_date_cutoff: date | None = None,
         ) AS review ON review.decision = 'accept'
         WHERE source.retrieval_status = 'retrieved'
             AND (%s::date IS NULL OR source.published_on <= %s)
+            AND (%s::timestamptz IS NULL OR source.retrieved_at <= %s)
+            AND (%s::timestamptz IS NULL OR candidate.created_at <= %s)
             AND (%s::text IS NULL OR candidate.subject_entity_id = %s
                 OR candidate.object_entity_id = %s)
         ORDER BY source.published_on DESC NULLS LAST, candidate.id
         LIMIT %s OFFSET %s""",
             (review_cutoff, review_cutoff, source_date_cutoff, source_date_cutoff,
+             review_cutoff, review_cutoff, review_cutoff, review_cutoff,
              entity_id, entity_id, entity_id, limit, offset))
         return cur.fetchall()

@@ -153,7 +153,7 @@ def test_migration_preserves_existing_wayback_snapshot():
                 assert cur.fetchone() == {"provider": "wayback", "provider_record_id": archive,
                                           "raw_sha256": sha256(raw)}
                 cur.execute("SELECT count(*) AS count FROM schema_migrations")
-                assert cur.fetchone()["count"] == 8
+                assert cur.fetchone()["count"] == 9
                 cur.execute("SELECT count(*) AS count FROM warehouse.page_observations")
                 assert cur.fetchone()["count"] == 1
     finally:
