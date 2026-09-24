@@ -181,8 +181,9 @@
       labels.replaceChildren();
       for (const point of ordered) {
         const active = activeSlugs.has(point.slug);
+        const depthScale = Math.max(0, Math.min(1, (point.depth + 1) / 2));
         const color = active ? [0.95, 0.9, 0.94] : [0.45, 0.39, 0.46];
-        nodes.push(point.x, point.y, ...color, active ? 15 : 9);
+        nodes.push(point.x, point.y, ...color, active ? 11 + depthScale * 7 : 8);
         const button = document.createElement('button');
         button.type = 'button';
         button.className = `topology-webgl-node${active ? '' : ' is-muted'}`;
@@ -190,6 +191,7 @@
         button.style.left = `${(point.x + 1) * 50}%`;
         button.style.top = `${(1 - point.y) * 50}%`;
         button.style.zIndex = String(Math.round((point.depth + 2) * 10));
+        button.style.transform = `translate(-50%, -50%) scale(${(0.84 + depthScale * 0.32).toFixed(2)})`;
         button.setAttribute('aria-label', `focus ${companyName(point.slug)} relationships`);
         button.addEventListener('click', () => onCompany(point.slug));
         labels.append(button);
