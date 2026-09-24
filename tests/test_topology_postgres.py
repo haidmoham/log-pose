@@ -29,6 +29,8 @@ def db():
                 topology_candidates, topology_acquisition_jobs,
                 topology_eligibility_reviews, topology_entity_aliases,
                 topology_entities, topology_sources CASCADE""")
+            cur.execute("""TRUNCATE discovery_inventory_rows, discovery_occurrences,
+                discovery_artifacts CASCADE""")
         conn.commit()
         yield conn
 
@@ -210,3 +212,38 @@ def test_reviewed_seed_import_preserves_source_passages_and_is_idempotent(db, mo
     changed["claims"][0]["interpretation"] = "A changed interpretation"
     with pytest.raises(ValueError, match="differs from reviewed store"):
         verify_topology_store(changed, db)
+
+
+def test_discovery_extension_import_is_immutable_and_idempotent(db):
+    from log_pose.discovery_store import store_discovery_extension
+
+    root = Path(__file__).parents[1]
+    index = json.loads((root / "web/discovery.json").read_text())
+    index["inventory_rows"] = []
+    for artifact in index["artifacts"]:
+        partition_path = root / artifact["inventory_export_path"]
+        index["inventory_rows"].extend(json.loads(partition_path.read_text())["rows"])
+    counts = store_discovery_extension(db, index, repository_root=root)
+    assert counts == {"artifacts_created": 14, "mapped_occurrences_created": 6096,
+                      "inventory_rows_created": 18076}
+    assert store_discovery_extension(db, index, repository_root=root) == {
+        "artifacts_created": 0, "mapped_occurrences_created": 0,
+        "inventory_rows_created": 0,
+    }
+    with db.cursor() as cursor:
+        cursor.execute("""SELECT artifact.study_year,artifact.coverage_status,
+                count(*) AS inventory_rows,
+                count(*) FILTER (WHERE record_type='product_or_project_candidate') AS mapped_rows
+            FROM discovery_artifacts AS artifact JOIN discovery_inventory_rows AS inventory
+              ON inventory.artifact_sha256=artifact.raw_sha256
+            GROUP BY artifact.study_year,artifact.coverage_status ORDER BY artifact.study_year""")
+        rows = cursor.fetchall()
+    assert rows == [
+        {"study_year": 2020, "coverage_status": "dated_inventory_snapshot", "inventory_rows": 1881, "mapped_rows": 598},
+        {"study_year": 2021, "coverage_status": "dated_inventory_snapshot", "inventory_rows": 2237, "mapped_rows": 700},
+        {"study_year": 2022, "coverage_status": "dated_inventory_snapshot", "inventory_rows": 2561, "mapped_rows": 799},
+        {"study_year": 2023, "coverage_status": "dated_inventory_snapshot", "inventory_rows": 2768, "mapped_rows": 901},
+        {"study_year": 2024, "coverage_status": "dated_inventory_snapshot", "inventory_rows": 2845, "mapped_rows": 1032},
+        {"study_year": 2025, "coverage_status": "dated_inventory_snapshot", "inventory_rows": 2884, "mapped_rows": 1053},
+        {"study_year": 2026, "coverage_status": "partial_year_snapshot", "inventory_rows": 2900, "mapped_rows": 1013},
+    ]

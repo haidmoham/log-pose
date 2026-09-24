@@ -74,8 +74,8 @@ def test_discovery_queue_is_bounded_reproducible_and_never_a_claim():
     queue = build_market_neighbor_queue(discovery, limit=100, random_seed=17)
     repeated = build_market_neighbor_queue(discovery, limit=100, random_seed=17)
     assert queue == repeated
-    assert queue["candidate_entity_count"] == 1091
-    assert len(discovery["candidates"]) == 1111
+    assert queue["candidate_entity_count"] == 1240
+    assert len(discovery["candidates"]) == 1266
     assert len(queue["pairs"]) == 100
     assert queue["priority_selection_count"] == 50
     assert queue["source_year_stratified_count"] == 25
