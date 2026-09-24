@@ -136,7 +136,7 @@
           const second = positions.get(claim.object_slug);
           const start = claim.direction === 'object_to_subject' ? second : first;
           const end = claim.direction === 'object_to_subject' ? first : second;
-          const offset = (index - (group.claims.length - 1) / 2) * 34;
+          const offset = (index - (group.claims.length - 1) / 2) * 70;
           const path = edgePath(start, end, offset);
           const category = model.topologyCategory(claim.predicate);
           const line = svgNode('path', { d: path,
