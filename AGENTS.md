@@ -9,4 +9,5 @@
 
 - `https://github.com/haidmoham/log-pose` is the source repository. the Vercel `log-pose` project builds the static `web/` export from `main`, with routes in `vercel.json`.
 - a push to `main` is the production publish path. verify the matching Vercel deployment and `https://logpose.mhaider.dev/` before reporting a release. check that the served HTML and `dashboard.json` match the pushed commit.
+- Cloudflare owns `mhaider.dev` DNS. keep the `logpose` CNAME in DNS-only mode and use the target currently recommended by Vercel; verify authoritative DNS and TLS after any domain change.
 - keep the old Sites project separate. do not treat a GitHub push as a Sites deployment or publish the same release through both hosts.

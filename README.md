@@ -4,7 +4,7 @@ Log Pose stores dated primary-source evidence about software companies. The curr
 
 This is an independent public experiment inspired by a conversation about investor research at Telescope Partners. It is not affiliated with Telescope and contains no internal Telescope material.
 
-The [public evidence preview](https://logpose.mhaider.dev/) currently serves the earlier six-capture export. The expanded dashboard is available in this repository as a static, read-only export backed by `web/dashboard.json`; it has not been published to that site. Neither static view hosts the local read API or Postgres database.
+The [public dashboard](https://logpose.mhaider.dev/) is a static, read-only export backed by `web/dashboard.json`. Vercel builds the repository's `web/` files from each push to `main`; `vercel.json` maps public URLs to those files. Cloudflare keeps the `logpose` CNAME in DNS-only mode and points it at the target shown in Vercel's domain settings. The local read API and Postgres database are not hosted with the dashboard.
 
 ## Local live preview
 
