@@ -9,7 +9,7 @@ from psycopg.rows import dict_row
 
 from log_pose.storage import migrate
 from log_pose.topology_store import (
-    claim_acquisitions, ensure_entity, finish_acquisition, plan_acquisition,
+    add_candidate_evidence, claim_acquisitions, ensure_entity, finish_acquisition, plan_acquisition,
     record_eligibility_review, record_review, reviewed_claims, store_candidate,
     store_source,
 )
@@ -122,3 +122,47 @@ def test_acquisition_queue_recovers_a_stale_lease_and_keeps_eligibility_separate
             ON eligibility.entity_id=entity.id WHERE entity.id='unknown'""")
         assert cur.fetchone() == {"identity_status": "unresolved",
                                   "universe_status": "unresolved"}
+
+
+def test_shared_exposure_requires_both_source_premises(db):
+    observed = datetime(2026, 9, 24, tzinfo=timezone.utc)
+    for source_id in ("left-source", "right-source"):
+        store_source(db, source_id=source_id,
+                     source_url=f"https://example.com/{source_id}",
+                     publisher=source_id, title="Filing", source_type="annual filing",
+                     published_on=date(2025, 2, 20), retrieved_at=observed,
+                     raw_body=source_id.encode())
+    ensure_entity(db, entity_id="left", name="Left", entity_kind="company")
+    ensure_entity(db, entity_id="right", name="Right", entity_kind="company")
+    store_candidate(db, candidate_id="shared", source_id="left-source",
+                    subject_entity_id="left", object_entity_id="right",
+                    predicate="shared_exposure_hypothesis", direction="symmetric",
+                    scope="customer usage", evidence_locator="risk factors",
+                    evidence_text="Left reports usage exposure.",
+                    interpretation="Both may be affected by usage changes.",
+                    alternative_or_unknown="Effects may differ; no co-movement test.",
+                    temporal_form="observed_state", temporal_basis="Two dated filings",
+                    proposed_basis="hypothesis", generator="manual", generator_version="1",
+                    period_start=date(2024, 1, 1), period_end=date(2024, 12, 31))
+    with pytest.raises(ValueError, match="two supporting sources"):
+        record_review(db, candidate_id="shared", decision="accept", reviewer="test",
+                      rationale="Both filings", reviewed_at=datetime(2026, 9, 25,
+                      tzinfo=timezone.utc))
+    db.rollback()
+    assert add_candidate_evidence(db, candidate_id="shared", source_id="right-source",
+                                  evidence_role="support", evidence_locator="business",
+                                  evidence_summary="Right reports usage exposure.",
+                                  period_start=date(2023, 2, 1),
+                                  period_end=date(2024, 1, 31)) == "stored"
+    assert add_candidate_evidence(db, candidate_id="shared", source_id="right-source",
+                                  evidence_role="support", evidence_locator="business",
+                                  evidence_summary="Right reports usage exposure.",
+                                  period_start=date(2023, 2, 1),
+                                  period_end=date(2024, 1, 31)) == "duplicate"
+    record_review(db, candidate_id="shared", decision="accept", reviewer="test",
+                  rationale="Two distinct disclosures motivate a hypothesis only",
+                  reviewed_at=datetime(2026, 9, 25, tzinfo=timezone.utc))
+    claim = reviewed_claims(db)[0]
+    assert claim["proposed_basis"] == "hypothesis"
+    assert claim["additional_evidence"][0]["source_id"] == "right-source"
+    assert claim["additional_evidence"][0]["period_end"] == "2024-01-31"

@@ -188,10 +188,52 @@ def store_candidate(conn, *, candidate_id: str, source_id: str,
     return "stored" if inserted else "duplicate"
 
 
+def add_candidate_evidence(conn, *, candidate_id: str, source_id: str,
+                           evidence_role: str, evidence_locator: str,
+                           evidence_summary: str, exact_quote: str | None = None,
+                           event_on: date | None = None,
+                           period_start: date | None = None,
+                           period_end: date | None = None) -> str:
+    """Retain an additional source passage without combining source claims."""
+    values = (candidate_id, source_id, evidence_role, evidence_locator,
+              evidence_summary, exact_quote, event_on, period_start, period_end)
+    with conn.cursor(row_factory=dict_row) as cur:
+        cur.execute("""INSERT INTO topology_candidate_evidence(candidate_id,source_id,
+            evidence_role,evidence_locator,evidence_summary,exact_quote,event_on,
+            period_start,period_end) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)
+            ON CONFLICT (candidate_id,source_id,evidence_role,evidence_locator)
+            DO NOTHING RETURNING id""", values)
+        inserted = cur.fetchone() is not None
+        if not inserted:
+            cur.execute("""SELECT evidence_summary,exact_quote,event_on,period_start,
+                period_end FROM topology_candidate_evidence WHERE candidate_id=%s
+                AND source_id=%s AND evidence_role=%s AND evidence_locator=%s""",
+                values[:4])
+            if tuple(cur.fetchone().values()) != values[4:]:
+                raise ValueError("evidence reference changed; original passage preserved")
+    conn.commit()
+    return "stored" if inserted else "duplicate"
+
+
 def record_review(conn, *, candidate_id: str, decision: str, reviewer: str,
                   rationale: str, reviewed_at: datetime) -> int:
     """Append a decision. A later decision supersedes it only in projections."""
     with conn.cursor(row_factory=dict_row) as cur:
+        if decision == "accept":
+            cur.execute("""SELECT predicate FROM topology_candidates WHERE id=%s""",
+                        (candidate_id,))
+            candidate = cur.fetchone()
+            if candidate is None:
+                raise ValueError("unknown candidate")
+            if candidate["predicate"] == "shared_exposure_hypothesis":
+                cur.execute("""SELECT count(DISTINCT source_id) AS sources FROM (
+                    SELECT source_id FROM topology_candidates WHERE id=%s
+                    UNION ALL
+                    SELECT source_id FROM topology_candidate_evidence
+                    WHERE candidate_id=%s AND evidence_role='support'
+                ) AS premises""", (candidate_id, candidate_id))
+                if cur.fetchone()["sources"] < 2:
+                    raise ValueError("shared exposure needs two supporting sources")
         cur.execute("""INSERT INTO topology_reviews(candidate_id,decision,reviewer,
             rationale,reviewed_at) VALUES (%s,%s,%s,%s,%s) RETURNING id""",
             (candidate_id, decision, reviewer, rationale, reviewed_at))
@@ -227,12 +269,33 @@ def reviewed_claims(conn, *, source_date_cutoff: date | None = None,
             source.title AS source_title, source.source_type,
             source.published_on, source.captured_at, source.retrieved_at,
             source.raw_sha256, source.snapshot_id,
+            COALESCE(extra.evidence, '[]'::jsonb) AS additional_evidence,
             review.id AS review_id, review.reviewer, review.reviewed_at,
             review.rationale
         FROM topology_candidates AS candidate
         JOIN topology_sources AS source ON source.id = candidate.source_id
         JOIN topology_entities AS subject ON subject.id = candidate.subject_entity_id
         JOIN topology_entities AS object_entity ON object_entity.id = candidate.object_entity_id
+        LEFT JOIN LATERAL (
+            SELECT jsonb_agg(jsonb_build_object(
+                'source_id', evidence.source_id,
+                'source_url', other_source.source_url,
+                'publisher', other_source.publisher,
+                'published_on', other_source.published_on,
+                'retrieved_at', other_source.retrieved_at,
+                'raw_sha256', other_source.raw_sha256,
+                'role', evidence.evidence_role,
+                'locator', evidence.evidence_locator,
+                'summary', evidence.evidence_summary,
+                'exact_quote', evidence.exact_quote,
+                'event_on', evidence.event_on,
+                'period_start', evidence.period_start,
+                'period_end', evidence.period_end
+            ) ORDER BY evidence.id) AS evidence
+            FROM topology_candidate_evidence AS evidence
+            JOIN topology_sources AS other_source ON other_source.id=evidence.source_id
+            WHERE evidence.candidate_id=candidate.id
+        ) AS extra ON true
         JOIN LATERAL (
             SELECT id, decision, reviewer, reviewed_at, rationale
             FROM topology_reviews
