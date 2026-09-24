@@ -6,9 +6,13 @@ The numerical layer stays descriptive. Revenue, growth, assets, and net income m
 
 The stable checkpoint consists of the export-backed console, pure tested research model, shared UI primitives, additive warehouse observation views, and explicit architecture contract. Advanced analytics can build on this only after a new source and selection policy earn them.
 
+## presentation contract
+
+keep the existing night-plum, lavender, and gold treatment. increase information density through navigable research views, compact numbers, and readable charts. keep copy minimal and instructional: explain the next action, source, period, or limit. positioning and promotional copy remain deferred. these are project decisions from the user's review, not a general design rule.
+
 ## verification
 
 - 32 Python tests passed against the disposable Postgres instance, including the observation-view grain and migration tests.
 - 7 Node tests passed for calculations, missing and invalid values, chart gaps and zero baselines, duplicate cells, export references, URL state, and comparison limits.
-- Desktop and actual 391 px mobile browser checks covered all three routes, year changes, pin capacity, public and private companies, empty and provider searches, disclosures, focus restoration, reloads, and browser history.
+- Desktop and a 391 px responsive browser viewport covered all three routes, year changes, pin capacity, public and private companies, empty and provider searches, disclosures, focus restoration, reloads, and browser history. No physical phone was tested.
 - The 391 px view had no document overflow with normal body overflow. Wide tables scrolled inside their local 331 px container.
