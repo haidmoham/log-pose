@@ -6,6 +6,12 @@ This is an independent public experiment inspired by a conversation about invest
 
 The [public dashboard](https://logpose.mhaider.dev/) is a static, read-only export backed by `web/dashboard.json`. Vercel builds the repository's `web/` files from each push to `main`; `vercel.json` maps public URLs to those files. Cloudflare keeps the `logpose` CNAME in DNS-only mode and points it at the target shown in Vercel's domain settings. The local read API and Postgres database are not hosted with the dashboard.
 
+## Export-backed research dashboard
+
+Run `npm run dashboard`, then open `http://127.0.0.1:8080/`. This serves the saved dashboard and discovery exports without starting Postgres or changing evidence. Run `npm run test:dashboard` for the pure calculation, missing-data, chart-scale, URL-state, and export-contract checks. Overview, compare, and explore state is encoded in the URL for reloads and browser navigation.
+
+The dashboard and local live inventory have separate browser entrypoints and styles. The [architecture and extension map](docs/architecture.md) documents their modules plus the database view grains, timestamps, provenance, and safe extension seams.
+
 ## Local live preview
 
 Run `npm run dev` from the repository root, then open `http://127.0.0.1:8000/`. The command creates a Python virtual environment, starts a project-local PostgreSQL 18 database on port 55432 when Homebrew's `postgresql@18` is installed, applies the schema, fetches missing curated Wayback captures, and serves the browser UI and read API from one origin. Node/npm and Python 3.11+ are required. Network access to the Internet Archive is needed to load missing captures. The database files stay under ignored `data/postgres/`; later runs reuse stored captures.
@@ -31,10 +37,11 @@ log-pose inspect weights-and-biases --year 2021
 log-pose serve --port 8000
 ```
 
-The read endpoint is `GET http://127.0.0.1:8000/api/companies/weights-and-biases?cutoff=2021-12-31T23:59:59Z`. Any timezone-aware ISO 8601 cutoff works. The older `log-pose export` command still writes `web/evidence.json`. To rebuild the pilot dashboard, run:
+The read endpoint is `GET http://127.0.0.1:8000/api/companies/weights-and-biases?cutoff=2021-12-31T23:59:59Z`. Any timezone-aware ISO 8601 cutoff works. The older `log-pose export` command still writes `web/evidence.json`. To rebuild the pilot dashboard, apply all additive migrations first, including the read-only `warehouse` observation views, then run:
 
 ```bash
 export DATABASE_URL=postgresql://127.0.0.1:55434/logpose_pilot
+log-pose migrate
 PYTHONPATH=src .venv/bin/python scripts/build_dashboard.py
 PYTHONPATH=src .venv/bin/python scripts/build_discovery_index.py
 python -m http.server 8080 --directory web

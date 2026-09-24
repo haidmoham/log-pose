@@ -1,82 +1,58 @@
 <!doctype html>
-<html lang="en" data-treatment="night">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Log Pose · sourced company search</title>
+    <meta name="theme-color" content="#172c2d" />
+    <title>Log Pose · research console</title>
     <meta
       name="description"
-      content="Search dated software product leads, company evidence, and public filings from 2021 to 2024."
+      content="Search dated software company evidence and inspect sourced public-company research from 2021 to 2024."
     />
+    <link rel="icon" href="./favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400..800&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400..800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="./style.css" />
-    <link rel="stylesheet" href="./treatments.css" />
+    <link rel="stylesheet" href="./console.css" />
   </head>
-  <body class="treatment-night">
+  <body>
+    <a class="skip-link" href="#view">skip to research view</a>
     <div class="shell">
       <header class="site-header">
         <div class="identity">
-          <span class="mark" aria-hidden="true">◉</span>
+          <span class="log-pose-mark" aria-hidden="true"><span></span></span>
           <div>
-            <p class="eyebrow">RESEARCH DESK / 2021–2024</p>
-            <h1>Log Pose</h1>
+            <h1 class="identity-name">Log Pose</h1>
+            <p class="identity-note">software evidence console</p>
           </div>
         </div>
-        <a href="https://github.com/haidmoham/log-pose">Source code ↗</a>
-        <ol class="rail-index" aria-hidden="true">
-          <li>01</li>
-          <li>02</li>
-          <li>03</li>
-          <li>04</li>
-        </ol>
+        <dl class="desk-status" aria-label="research scope">
+          <div><dt>window</dt><dd>2021–24</dd></div>
+          <div><dt>cohort</dt><dd>20 selected</dd></div>
+          <div><dt>sources</dt><dd>dated + pinned</dd></div>
+        </dl>
+        <a class="source-link" href="https://github.com/haidmoham/log-pose">source ↗</a>
       </header>
-      <section class="intro" aria-labelledby="intro-title">
-        <div class="intro-title">
-          <p class="eyebrow">DATED SOFTWARE COMPANY EVIDENCE</p>
-          <h2 id="intro-title">
-            Follow the source.<br /><em>Question the story.</em>
-          </h2>
-        </div>
-        <p>
-          Search pinned 2021–2024 software inventories, inspect the source rows,
-          and compare evidence for twenty selected companies. Candidate status
-          and review limits stay visible.
-        </p>
-        <p class="period-stamp" aria-label="Study period 2021 to 2024">
-          2021—24
-        </p>
-      </section>
-      <nav class="tabs" aria-label="Dashboard views">
-        <button type="button" data-view="search" aria-current="page">
-          01 <span>Search</span>
-        </button>
-        <button type="button" data-view="companies">
-          02 <span>Companies</span>
-        </button>
-        <button type="button" data-view="fundamentals">
-          03 <span>Public fundamentals</span>
-        </button>
-        <button type="button" data-view="market">
-          04 <span>Market activity</span>
-        </button>
-        <button type="button" data-view="readiness">
-          05 <span>Data readiness</span>
-        </button>
-        <button type="button" data-view="universe">
-          06 <span>Universe build</span>
-        </button>
+
+      <nav class="tabs" aria-label="research views">
+        <button type="button" data-view="overview" aria-current="page" disabled><span>01</span> overview</button>
+        <button type="button" data-view="compare" disabled><span>02</span> compare <output id="pin-count">0</output></button>
+        <button type="button" data-view="explore" disabled><span>03</span> explore</button>
       </nav>
-      <main id="view" aria-live="polite"><p>Loading source records…</p></main>
+
+      <main id="view" aria-live="polite" aria-busy="true">
+        <p class="loading">loading source records…</p>
+      </main>
+
       <footer>
-        <span>LOG POSE / RESEARCH PILOT</span
-        ><span>Source dates and limitations accompany each view.</span>
+        <span>log pose / research pilot</span>
+        <span>source dates and limits accompany each view.</span>
       </footer>
     </div>
+    <script src="./research-model.js"></script>
+    <script src="./console-ui.js"></script>
+    <script src="./explore-view.js"></script>
     <script src="./app.js"></script>
   </body>
 </html>

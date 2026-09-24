@@ -1,5 +1,7 @@
 # Dashboard chart direction
 
+This note describes the Postgres-backed live inventory surface. See [architecture and extension map](architecture.md) for the separate export-backed research console and its current module boundaries.
+
 The local dashboard is a working evidence chart. The opening view shows database inventory first; a company and cutoff select a dated source record. Nautical cues support orientation without changing the meaning of a count, date, or source.
 
 Two provisional design ideas informed this pass. The stable disclosure pattern observed in [Fourier Drawing](https://sketch.mhaider.dev) became fixed company and year choices with the selected route marked while details unfold below. The quiet hierarchy and localized accent observed in [Punkcubes](https://punkcubes.shin86.dev) became ink and paper for the inventory, with vermilion reserved for the active route. The compass, chart ticks, and material palette are original to Log Pose. Neither source supplied artwork or code.

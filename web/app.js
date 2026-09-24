@@ -1,47 +1,18 @@
 const root = document.querySelector('#view');
 const tabs = [...document.querySelectorAll('[data-view]')];
-const state = { view: 'search', year: 2024, category: 'all', query: '', company: null, sort: 'growth',
+const pinCount = document.querySelector('#pin-count');
+const model = window.LogPoseResearchModel;
+const { node, append, link, title, metric, table } = window.LogPoseUI;
+const seriesChart = (...args) => window.LogPoseUI.seriesChart(model, ...args);
+const state = { view: 'overview', year: 2024, category: 'all', query: '', company: null,
   searchYear: 'all', searchSource: 'all', searchType: 'all', searchUs: 'all',
   selectedCandidate: null, selectedProvider: null, searchLimit: 30, compareSlugs: [] };
 let data;
 let discovery;
 let occurrenceById;
 let identityReviewById;
-
-function node(tag, text = '', className = '') {
-  const item = document.createElement(tag);
-  item.textContent = text;
-  if (className) item.className = className;
-  return item;
-}
-
-function append(parent, ...items) {
-  parent.append(...items);
-  return parent;
-}
-
-function link(label, url) {
-  try {
-    if (!['http:', 'https:'].includes(new URL(url).protocol)) return node('span', label);
-  } catch {
-    return node('span', label);
-  }
-  const item = node('a', label);
-  item.href = url;
-  item.target = '_blank';
-  item.rel = 'noopener noreferrer';
-  return item;
-}
-
-function title(kicker, text, description) {
-  return append(node('div', '', 'view-heading'), node('p', kicker, 'eyebrow'),
-    node('h2', text), node('p', description, 'view-note'));
-}
-
-function metric(value, label, note) {
-  return append(node('div', '', 'metric'), node('strong', value),
-    node('span', label), node('small', note));
-}
+let financialIndex;
+let exploreView;
 
 function categoryName(value) {
   return {
@@ -50,158 +21,6 @@ function categoryName(value) {
     developer_tools: 'Developer tools',
     security_observability: 'Security / observability'
   }[value] || value;
-}
-
-function occurrenceText(occurrence) {
-  return [occurrence.name, occurrence.description, occurrence.homepage_url, occurrence.repo_url,
-    occurrence.source_category, occurrence.source_subcategory,
-    ...occurrence.candidate_tags.map(categoryName)]
-    .join(' ').toLocaleLowerCase();
-}
-
-function matchingOccurrences(candidate, terms) {
-  const review = identityReviewFor(candidate);
-  const reviewText = review && (state.searchYear === 'all'
-    || review.source_year === Number(state.searchYear))
-    ? [review.provider_name, review.review_note, review.provider_relation].join(' ').toLocaleLowerCase()
-    : '';
-  return candidate.occurrence_ids.map(id => occurrenceById.get(id)).filter(item =>
-    (state.category === 'all' || item.candidate_tags.includes(state.category))
-    && (state.searchYear === 'all' || item.year === Number(state.searchYear))
-    && (state.searchSource === 'all' || item.source === state.searchSource)
-    && terms.every(term => occurrenceText(item).includes(term) || reviewText.includes(term)));
-}
-
-function renderSearch() {
-  root.append(title('01 / SOURCE RECORDS', 'Search the software landscape',
-    'Find dated product and project leads. Open their original inventory rows; use the reviewed pilot for company pages and SEC facts.'));
-
-  const controls = node('div', '', 'search-controls');
-  const query = node('input');
-  query.type = 'search';
-  query.placeholder = 'Try vector database, observability, API gateway…';
-  query.setAttribute('aria-label', 'Search source records');
-  query.value = state.query;
-  query.addEventListener('input', () => {
-    state.query = query.value;
-    state.searchLimit = 30;
-    updateSearchResults();
-  });
-  controls.append(query);
-  const filters = node('div', '', 'search-filters');
-  const category = node('select');
-  category.setAttribute('aria-label', 'Candidate category');
-  category.add(new Option('All categories', 'all'));
-  ['data_infrastructure', 'developer_tools', 'security_observability', 'ai_automation']
-    .forEach(value => category.add(new Option(categoryName(value), value)));
-  category.value = state.category;
-  category.addEventListener('change', () => { state.category = category.value; updateSearchResults(); });
-  const year = node('select');
-  year.setAttribute('aria-label', 'Record year');
-  year.add(new Option('All years', 'all'));
-  data.years.forEach(value => year.add(new Option('Record year ' + value, String(value))));
-  year.value = state.searchYear;
-  year.addEventListener('change', () => { state.searchYear = year.value; updateSearchResults(); });
-  const source = node('select');
-  source.setAttribute('aria-label', 'Discovery source');
-  [['all', 'All sources'], ['cncf', 'CNCF landscape'], ['lfai', 'LF AI & Data']]
-    .forEach(([value, label]) => source.add(new Option(label, value)));
-  source.value = state.searchSource;
-  source.addEventListener('change', () => { state.searchSource = source.value; updateSearchResults(); });
-  const type = node('select');
-  type.setAttribute('aria-label', 'Record type');
-  [['all', 'All record types'], ['provider', 'Reviewed provider leads'],
-    ['lead', 'Directory leads'],
-    ['pilot', 'Selected pilot'], ['financing', 'Financing announcement'],
-    ['financial', 'SEC facts available']]
-    .forEach(([value, label]) => type.add(new Option(label, value)));
-  type.value = state.searchType;
-  type.addEventListener('change', () => { state.searchType = type.value; updateSearchResults(); });
-  const location = node('select');
-  location.setAttribute('aria-label', 'U.S. location evidence');
-  [['all', 'Any U.S. evidence'], ['documented', 'U.S. base documented'],
-    ['unresolved', 'Location review unresolved']]
-    .forEach(([value, label]) => location.add(new Option(label, value)));
-  location.value = state.searchUs;
-  location.addEventListener('change', () => { state.searchUs = location.value; updateSearchResults(); });
-  filters.append(category, year, source, type, location);
-  root.append(controls, filters);
-
-  const results = node('div');
-  results.id = 'search-results';
-  root.append(results);
-  updateSearchResults();
-}
-
-function candidateScore(candidate, query) {
-  if (!query) return candidate.observed_years.length;
-  const name = candidate.name.toLocaleLowerCase();
-  const phrase = query.toLocaleLowerCase().trim();
-  if (name === phrase) return 1000;
-  if (name.startsWith(phrase)) return 500;
-  if (name.includes(phrase)) return 200;
-  return candidate.observed_years.length;
-}
-
-function searchAggregation(hits, providers, pilots) {
-  const panel = node('section', '', 'search-aggregation');
-  panel.append(node('p', 'AGGREGATION / CURRENT RESULT SET', 'eyebrow'),
-    node('h3', 'Where the matches appear'));
-  const counts = node('div', '', 'search-aggregate-grid');
-  const byCategory = node('div');
-  byCategory.append(node('h4', 'Directory candidate tags'));
-  ['data_infrastructure', 'developer_tools', 'security_observability', 'ai_automation']
-    .forEach(tag => byCategory.append(append(node('p', '', 'aggregate-row'),
-      node('span', categoryName(tag)),
-      node('strong', String(hits.filter(hit => hit.occurrences.some(item =>
-        item.candidate_tags.includes(tag))).length)))));
-  const byYear = node('div');
-  byYear.append(node('h4', 'Directory inventory years'));
-  data.years.forEach(year => byYear.append(append(node('p', '', 'aggregate-row'),
-    node('span', String(year)),
-    node('strong', String(hits.filter(hit => hit.occurrences.some(item =>
-      item.year === year)).length)))));
-  const byPilotCategory = node('div');
-  byPilotCategory.append(node('h4', 'Pilot company categories'));
-  ['data_infrastructure', 'developer_tools', 'security_observability', 'ai_automation']
-    .forEach(tag => byPilotCategory.append(append(node('p', '', 'aggregate-row'),
-      node('span', categoryName(tag)),
-      node('strong', String(pilots.filter(hit => hit.company.category === tag).length)))));
-  const byPilotYear = node('div');
-  byPilotYear.append(node('h4', 'Pilot archived-page years'));
-  data.years.forEach(year => byPilotYear.append(append(node('p', '', 'aggregate-row'),
-    node('span', String(year)),
-    node('strong', String(pilots.filter(hit => data.evidence.some(cell =>
-      cell.slug === hit.company.slug && cell.year === year && cell.snapshot_id)).length)))));
-  const byProviderCategory = node('div');
-  byProviderCategory.append(node('h4', 'Reviewed provider tags'));
-  ['data_infrastructure', 'developer_tools', 'security_observability', 'ai_automation']
-    .forEach(tag => byProviderCategory.append(append(node('p', '', 'aggregate-row'),
-      node('span', categoryName(tag)),
-      node('strong', String(providers.filter(item => item.candidate_tags.includes(tag)).length)))));
-  const byProviderYear = node('div');
-  byProviderYear.append(node('h4', 'Provider inventory years'));
-  data.years.forEach(year => byProviderYear.append(append(node('p', '', 'aggregate-row'),
-    node('span', String(year)),
-    node('strong', String(providers.filter(item =>
-      item.observed_inventory_years.includes(year)).length)))));
-  counts.append(byCategory, byYear, byProviderCategory, byProviderYear,
-    byPilotCategory, byPilotYear);
-  const reviewedProviders = new Set(hits.map(hit => hit.candidate.identity_review_id)
-    .filter(id => id && identityReviewById.get(id)?.provider_name));
-  const usProviderGroups = new Set(hits.filter(hit =>
-    candidateLocationFor(hit.candidate)?.decision === 'documented_us_base')
-    .map(hit => hit.candidate.identity_review_id));
-  panel.append(counts, node('p', hits.length + ' distinct directory candidate keys · '
-    + reviewedProviders.size + ' reviewed provider relationships · '
-    + usProviderGroups.size + ' with dated U.S. base evidence · '
-    + providers.length + ' reviewed provider leads in results ('
-    + providers.filter(item => providerLocationInSelectedYear(item)?.decision === 'documented_us_base').length
-    + ' with dated U.S. base evidence) · '
-    + pilots.length + ' selected pilot companies · '
-    + pilots.filter(hit => financingFor(hit.company.slug).length).length
-    + ' with a financing announcement. Tags and years overlap; these are not market-size counts.', 'muted'));
-  return panel;
 }
 
 function financingFor(slug) {
@@ -238,323 +57,6 @@ function providerLocationInSelectedYear(provider) {
     || item.source_year === Number(state.searchYear));
 }
 
-function providerDetail(provider) {
-  const section = node('section', '', 'candidate-detail');
-  section.append(node('p', 'REVIEWED PROVIDER LEAD / COMPANY ELIGIBILITY UNREVIEWED', 'eyebrow'),
-    node('h3', provider.name),
-    node('p', provider.directory_item_names.join(' · ') + ' · '
-      + provider.provider_relations.map(item => item.replaceAll('_', ' ')).join(', '), 'muted'));
-  const location = providerLocationInSelectedYear(provider);
-  if (location) section.append(append(node('div', '', 'identity-review'),
-    node('p', 'U.S. LOCATION SOURCE / ' + location.source_year, 'eyebrow'),
-    node('p', location.source_note), link('Open location source ↗', location.source_url)));
-  else section.append(node('p', provider.us_status === 'reviewed_unresolved'
-    ? 'Location review is unresolved for this provider and selected year.'
-    : 'No reviewed U.S. base source for this provider and selected year.', 'caveat'));
-  provider.identity_review_ids.forEach(id => {
-    const review = identityReviewById.get(id);
-    section.append(append(node('div', '', 'identity-review'),
-      node('p', review.item_kind.replaceAll('_', ' ') + ' · '
-        + review.provider_relation.replaceAll('_', ' ') + ' · source ' + review.source_year, 'eyebrow'),
-      node('p', review.review_note), link('Open relationship source ↗', review.source_url)));
-  });
-  const list = node('div', '', 'occurrence-list');
-  provider.directory_candidate_ids.forEach(id => {
-    const candidate = discovery.candidates.find(item => item.id === id);
-    const first = occurrenceById.get(candidate.occurrence_ids[0]);
-    list.append(append(node('article', '', 'occurrence'),
-      node('p', candidate.name + ' · inventory years '
-        + candidate.observed_years.join(', '), 'eyebrow'),
-      node('p', candidate.homepage_url || candidate.repo_url || 'No listed URL.'),
-      link('Pinned source row ↗', first.source_url),
-      node('small', 'Row path ' + first.source_path.join('.') + ' · SHA-256 '
-        + first.artifact_sha256.slice(0, 12) + '…')));
-  });
-  section.append(node('h4', 'Linked directory keys'), list,
-    node('p', 'The provider relationship is reviewed, but the source inventories do not establish company eligibility or continuous U.S. status.', 'caveat'));
-  return section;
-}
-
-function matchingPilotEvidence(slug, terms) {
-  return data.evidence.filter(cell => cell.slug === slug && cell.snapshot_id
-    && (state.searchYear === 'all' || cell.year === Number(state.searchYear))
-    && terms.every(term => (cell.excerpt || '').toLocaleLowerCase().includes(term)));
-}
-
-function matchingFinancing(slug, terms) {
-  return financingFor(slug).filter(event =>
-    (state.searchYear === 'all' || Number(event.announced_on.slice(0, 4)) === Number(state.searchYear))
-    && terms.every(term => [event.round, event.announced_on, String(event.amount_usd),
-      money(event.amount_usd), event.valuation_usd ? money(event.valuation_usd) : '']
-      .join(' ').toLocaleLowerCase().includes(term)));
-}
-
-function comparisonPanel(pilots) {
-  const selected = pilots.map(hit => hit.company)
-    .filter(company => state.compareSlugs.includes(company.slug));
-  if (!selected.length) return null;
-  const section = node('section', '', 'comparison-panel');
-  section.append(node('p', 'COMPARISON / SELECTED PILOT COMPANIES', 'eyebrow'),
-    node('h3', 'Review evidence side by side'));
-  const year = state.searchYear === 'all' ? 2024 : Number(state.searchYear);
-  const rows = selected.map(company => {
-    const location = locationReviewInSelectedYear(company.slug);
-    const event = financingFor(company.slug)
-      .filter(item => state.searchYear === 'all'
-        || Number(item.announced_on.slice(0, 4)) === year).at(-1);
-    const reported = company.cik ? financials(company.slug, year) : null;
-    const locationCell = node('td');
-    if (location) locationCell.append(node('span', location.decision === 'documented_us_base'
-      ? location.location_kind.replaceAll('_', ' ') + ' · ' + location.place
-      : 'reviewed; unresolved'), link(' source ↗', location.source_url));
-    else locationCell.textContent = state.searchYear !== 'all' && locationReviewFor(company.slug)
-      ? 'no location review dated ' + year : 'unreviewed';
-    const fundingCell = node('td');
-    if (event) fundingCell.append(node('span', event.announced_on + ' · ' + event.round
-      + ' · ' + money(event.amount_usd)), link(' source ↗', event.source_url));
-    else fundingCell.textContent = 'no selected announcement';
-    return append(node('tr'), node('td', company.name),
-      node('td', categoryName(company.category)), locationCell, fundingCell,
-      node('td', reported ? money(reported.revenue) : 'no SEC series'));
-  });
-  section.append(node('p', 'SEC revenue uses periods ending in ' + year
-    + '. Funding values are company announcements from their own dates. Missing evidence is not a zero.', 'muted'),
-  table(['Company', 'Pilot category', 'U.S. location evidence', 'Financing news', 'SEC revenue'], rows));
-  return section;
-}
-
-function candidateDetail(candidate) {
-  const section = node('section', '', 'candidate-detail');
-  const review = identityReviewFor(candidate);
-  section.append(node('p', review ? 'DIRECTORY LEAD / MANUAL IDENTITY REVIEW' :
-    'DIRECTORY LEAD / IDENTITY AND U.S. LOCATION UNREVIEWED', 'eyebrow'),
-    node('h3', candidate.name),
-    node('p', candidate.description || 'The source inventory provides no description.', 'muted'));
-  if (candidate.homepage_url) section.append(link('Source-listed website ↗', candidate.homepage_url));
-  if (review) {
-    const identity = node('div', '', 'identity-review');
-    identity.append(node('p', review.item_kind.replaceAll('_', ' ') + ' · '
-      + (review.provider_name ? review.provider_relation.replaceAll('_', ' ') + ': '
-        + review.provider_name : 'no single provider established'), 'eyebrow'),
-    node('p', review.review_note),
-    link('Open identity source ↗', review.source_url),
-    node('p', 'Reviewed source year ' + review.source_year + ' · '
-      + review.candidate_ids.length + ' linked directory keys', 'caption'));
-    if (review.candidate_ids.length > 1) {
-      const aliases = node('ul', '', 'identity-aliases');
-      review.candidate_ids.forEach(id => {
-        const linked = discovery.candidates.find(item => item.id === id);
-        aliases.append(append(node('li'), node('span', linked.observed_years.join(', ') + ' · '),
-          link(linked.homepage_url || linked.repo_url || linked.name,
-            linked.homepage_url || linked.repo_url)));
-      });
-      identity.append(aliases);
-    }
-    section.append(identity);
-    const location = candidateLocationFor(candidate);
-    if (location) section.append(append(node('div', '', 'identity-review'),
-      node('p', 'U.S. LOCATION SOURCE / ' + location.source_year, 'eyebrow'),
-      node('p', location.source_note),
-      link('Open location source ↗', location.source_url)));
-  }
-  const observations = candidate.occurrence_ids.map(id => occurrenceById.get(id));
-  section.append(node('h4', 'Dated source occurrences'));
-  const list = node('div', '', 'occurrence-list');
-  observations.forEach(item => list.append(append(node('article', '', 'occurrence'),
-    node('p', item.source.toUpperCase() + ' · ' + item.year + ' · '
-      + item.source_category + ' / ' + item.source_subcategory, 'eyebrow'),
-    node('p', item.description || 'No source description.'),
-    link('Pinned inventory ↗', item.source_url),
-    node('small', 'Row path ' + item.source_path.join('.') + ' · SHA-256 '
-      + item.artifact_sha256.slice(0, 12) + '…'))));
-  section.append(list, node('p', 'Inventory presence is a dated directory observation. A reviewed provider relationship does not establish exclusive ownership, U.S. location, financing, or traction.', 'caveat'));
-  return section;
-}
-
-function updateSearchResults() {
-  const target = document.querySelector('#search-results');
-  target.replaceChildren();
-  const terms = state.query.toLocaleLowerCase().trim().split(/\s+/).filter(Boolean);
-  const hits = ['provider', 'pilot', 'financial', 'financing'].includes(state.searchType) ? []
-    : discovery.candidates.map(candidate => ({
-      candidate,
-      occurrences: matchingOccurrences(candidate, terms)
-    })).filter(hit => hit.occurrences.length && (state.searchUs === 'all'
-      || candidateLocationFor(hit.candidate)?.decision ===
-        (state.searchUs === 'documented' ? 'documented_us_base' : 'unresolved')));
-  const providers = !['all', 'provider'].includes(state.searchType) ? []
-    : discovery.provider_candidates.filter(provider =>
-      (state.searchUs === 'all' || providerLocationInSelectedYear(provider)?.decision ===
-        (state.searchUs === 'documented' ? 'documented_us_base' : 'unresolved'))
-      && provider.directory_candidate_ids.some(id => {
-        const candidate = discovery.candidates.find(item => item.id === id);
-        return matchingOccurrences(candidate, terms).length > 0;
-      }));
-  const pilots = data.companies.map(item => ({
-    company: item,
-    evidenceMatches: matchingPilotEvidence(item.slug, terms),
-    financingMatches: matchingFinancing(item.slug, terms)
-  })).filter(({ company: item, evidenceMatches, financingMatches }) =>
-    (state.category === 'all' || item.category === state.category)
-    && (state.searchYear === 'all' || (state.searchType === 'financing'
-      ? financingFor(item.slug).some(event => Number(event.announced_on.slice(0, 4)) === Number(state.searchYear))
-      : data.evidence.some(cell => cell.slug === item.slug
-        && cell.year === Number(state.searchYear) && cell.snapshot_id)))
-    && state.searchSource === 'all'
-    && !['lead', 'provider'].includes(state.searchType)
-    && (state.searchUs === 'all'
-      || (state.searchUs === 'documented' && locationReviewInSelectedYear(item.slug)?.decision === 'documented_us_base')
-      || (state.searchUs === 'unresolved' && locationReviewInSelectedYear(item.slug)?.decision === 'unresolved'))
-    && (state.searchType !== 'financial' || item.cik)
-    && (state.searchType !== 'financing' || financingMatches.length)
-    && (terms.every(term => [item.name, item.purpose, item.url].join(' ')
-      .toLocaleLowerCase().includes(term)) || evidenceMatches.length > 0
-      || financingMatches.length > 0));
-  hits.sort((left, right) => candidateScore(right.candidate, state.query)
-    - candidateScore(left.candidate, state.query)
-    || left.candidate.name.localeCompare(right.candidate.name));
-  target.append(append(node('div', '', 'search-summary'),
-    metric(String(hits.length), 'Directory leads', 'Product or project keys; U.S. evidence varies'),
-    metric(String(providers.length), 'Provider leads', 'Reviewed relationships; eligibility open'),
-    metric(String(pilots.length), 'Pilot companies', 'Selected and separately sourced'),
-    metric(String(pilots.filter(hit => hit.company.cik).length), 'With SEC facts', 'Reported fundamentals; no price series'),
-    metric(String(pilots.filter(hit => financingFor(hit.company.slug).length).length),
-      'With financing news', 'Company announcements; selected events only'),
-    metric(String(pilots.filter(hit => locationReviewInSelectedYear(hit.company.slug)?.decision === 'documented_us_base').length),
-      'With U.S. base evidence', 'Source year matches selected year')));
-  target.append(searchAggregation(hits, providers, pilots));
-  const comparison = comparisonPanel(pilots);
-  if (comparison) target.append(comparison);
-  const resultList = node('div', '', 'search-result-list');
-  providers.forEach(provider => {
-    const button = node('button', state.selectedProvider === provider.id
-      ? 'Hide reviewed evidence' : 'Inspect reviewed evidence →', 'text-button');
-    button.type = 'button';
-    button.addEventListener('click', () => {
-      state.selectedProvider = state.selectedProvider === provider.id ? null : provider.id;
-      updateSearchResults();
-      document.querySelector('#provider-' + provider.id)?.scrollIntoView({ block: 'nearest' });
-    });
-    const location = providerLocationInSelectedYear(provider);
-    const card = append(node('article', '', 'search-result'),
-      node('p', 'REVIEWED PROVIDER LEAD · '
-        + provider.observed_inventory_years.join(', '), 'eyebrow'),
-      node('h3', provider.name),
-      node('p', provider.directory_item_names.join(' · '), 'muted'),
-      node('p', provider.provider_relations.map(item => item.replaceAll('_', ' ')).join(' · '), 'search-tags'),
-      node('p', location?.decision === 'documented_us_base'
-        ? 'U.S. ' + location.location_kind.replaceAll('_', ' ') + ' · '
-          + location.place + ' · source ' + location.source_year
-        : location ? 'U.S. location review unresolved · source ' + location.source_year
-          : 'U.S. location unreviewed', 'search-tags'), button);
-    card.id = 'provider-' + provider.id;
-    resultList.append(card);
-    if (state.selectedProvider === provider.id) resultList.append(providerDetail(provider));
-  });
-  pilots.forEach(({ company: item, evidenceMatches }) => {
-    const announcements = financingFor(item.slug);
-    const locationReview = locationReviewInSelectedYear(item.slug);
-    const button = node('button', 'Open dated company evidence →', 'text-button');
-    button.type = 'button';
-    button.addEventListener('click', () => {
-      state.view = 'companies';
-      state.company = item.slug;
-      render();
-      document.querySelector('#company-detail')?.scrollIntoView({ block: 'start' });
-    });
-    const card = append(node('article', '', 'search-result'),
-      node('p', 'SELECTED PILOT COMPANY' + (item.cik ? ' · SEC FACTS' : '')
-        + (announcements.length ? ' · FINANCING NEWS' : ''), 'eyebrow'),
-      node('h3', item.name), node('p', item.purpose || '', 'muted'),
-      ...(announcements.length ? [node('p', announcements.map(event =>
-        event.announced_on + ' · ' + event.round + ' · ' + money(event.amount_usd)).join(' / '), 'search-tags')] : []),
-      button);
-    const compare = node('button', state.compareSlugs.includes(item.slug)
-      ? 'Remove from comparison' : 'Add to comparison', 'quiet-button');
-    compare.type = 'button';
-    compare.setAttribute('aria-pressed', String(state.compareSlugs.includes(item.slug)));
-    compare.addEventListener('click', () => {
-      if (state.compareSlugs.includes(item.slug)) {
-        state.compareSlugs = state.compareSlugs.filter(slug => slug !== item.slug);
-      } else {
-        state.compareSlugs.push(item.slug);
-      }
-      updateSearchResults();
-    });
-    card.append(compare);
-    if (locationReview) card.append(node('p', locationReview.decision === 'documented_us_base'
-      ? 'U.S. ' + locationReview.location_kind.replaceAll('_', ' ') + ' · '
-        + locationReview.place + ' · source ' + locationReview.source_year
-      : 'location review unresolved · source ' + locationReview.source_year
-        + ' · no headquarters declared', 'search-tags'));
-    if (terms.length && evidenceMatches.length) {
-      const match = evidenceMatches[0];
-      card.append(node('p', 'Archived page · ' + match.year + ' · captured '
-        + match.captured_at.slice(0, 10), 'caption'),
-      node('p', match.excerpt.slice(0, 240) + (match.excerpt.length > 240 ? '…' : ''), 'muted'),
-      link('Open archived page ↗', match.archive_url));
-    }
-    resultList.append(card);
-  });
-  hits.slice(0, state.searchLimit).forEach(hit => {
-    const item = hit.candidate;
-    const review = identityReviewFor(item);
-    const matchingDescription = hit.occurrences.find(occurrence => occurrence.description)?.description
-      || hit.occurrences.map(occurrence => occurrence.source_category + ' / '
-        + occurrence.source_subcategory).join(' · ');
-    const matchedYears = [...new Set(hit.occurrences.map(occurrence => occurrence.year))].sort();
-    const matchedSources = [...new Set(hit.occurrences.map(occurrence => occurrence.source))].sort();
-    const matchedTags = [...new Set(hit.occurrences.flatMap(occurrence => occurrence.candidate_tags))];
-    const button = node('button', state.selectedCandidate === item.id ? 'Hide source records' : 'Inspect source records →', 'text-button');
-    button.type = 'button';
-    button.addEventListener('click', () => {
-      state.selectedCandidate = state.selectedCandidate === item.id ? null : item.id;
-      updateSearchResults();
-      document.querySelector('#candidate-' + item.id)?.scrollIntoView({ block: 'nearest' });
-    });
-    const card = append(node('article', '', 'search-result'),
-      node('p', 'DIRECTORY LEAD · ' + matchedYears.join(', ') + ' · '
-        + matchedSources.join(' + ').toUpperCase(), 'eyebrow'),
-      node('h3', item.name),
-      node('p', matchingDescription, 'muted'),
-      node('p', matchedTags.map(categoryName).join(' · '), 'search-tags'), button);
-    if (review) card.append(node('p', review.provider_name
-      ? 'reviewed ' + review.item_kind.replaceAll('_', ' ') + ' · '
-        + review.provider_relation.replaceAll('_', ' ') + ': ' + review.provider_name
-      : 'reviewed project · no single company established', 'search-tags'));
-    const leadLocation = candidateLocationFor(item);
-    if (leadLocation) card.append(node('p', leadLocation.decision === 'documented_us_base'
-      ? 'U.S. ' + leadLocation.location_kind.replaceAll('_', ' ') + ' · '
-        + leadLocation.place + ' · source ' + leadLocation.source_year
-      : 'location review unresolved · source ' + leadLocation.source_year, 'search-tags'));
-    if (item.pilot_match) {
-      const evidenceButton = node('button', 'Open pilot company evidence →', 'text-button');
-      evidenceButton.type = 'button';
-      evidenceButton.addEventListener('click', () => {
-        state.view = 'companies';
-        state.company = item.pilot_match.slug;
-        render();
-        document.querySelector('#company-detail')?.scrollIntoView({ block: 'start' });
-      });
-      card.append(node('p', review?.pilot_slug === item.pilot_match.slug
-        ? 'reviewed provider link to pilot; location evidence is separate.'
-        : 'possible link: exact name and listed homepage. Legal identity unreviewed.', 'caption'),
-        evidenceButton);
-    }
-    card.id = 'candidate-' + item.id;
-    resultList.append(card);
-    if (state.selectedCandidate === item.id) resultList.append(candidateDetail(item));
-  });
-  target.append(resultList);
-  if (hits.length > state.searchLimit) {
-    const more = node('button', 'Show 30 more leads', 'quiet-button');
-    more.type = 'button';
-    more.addEventListener('click', () => { state.searchLimit += 30; updateSearchResults(); });
-    target.append(more);
-  }
-  if (!hits.length && !providers.length && !pilots.length) target.append(node('p', 'No records match these filters.', 'muted'));
-}
-
 function formatNumber(value, places = 1) {
   return new Intl.NumberFormat('en-US', { maximumFractionDigits: places }).format(value);
 }
@@ -576,39 +78,8 @@ function evidence(slug, year) {
   return data.evidence.find(item => item.slug === slug && item.year === year);
 }
 
-function facts(slug, year) {
-  return Object.fromEntries(data.financials.cells
-    .filter(item => item.slug === slug && item.year === year)
-    .map(item => [item.concept, item.selected]));
-}
-
 function financials(slug, year) {
-  const current = facts(slug, year);
-  const prior = year > 2021 ? facts(slug, year - 1) : {};
-  const revenue = current.revenue ? Number(current.revenue.value) : null;
-  const netIncome = current.net_income ? Number(current.net_income.value) : null;
-  const priorRevenue = prior.revenue ? Number(prior.revenue.value) : null;
-  const aligned = current.revenue && current.net_income
-    && current.revenue.start_date === current.net_income.start_date
-    && current.revenue.end_date === current.net_income.end_date;
-  return {
-    revenue, netIncome,
-    growth: revenue !== null && priorRevenue > 0 ? (revenue / priorRevenue - 1) * 100 : null,
-    margin: aligned && revenue > 0 ? netIncome / revenue * 100 : null,
-    assets: current.assets ? Number(current.assets.value) : null,
-    periodEnd: current.revenue?.end_date,
-    filed: current.revenue?.filed_date
-  };
-}
-
-function table(headers, rows) {
-  const wrap = node('div', '', 'table-wrap');
-  const tableNode = node('table');
-  const header = node('tr');
-  headers.forEach(label => header.append(node('th', label)));
-  tableNode.append(append(node('thead'), header), append(node('tbody'), ...rows));
-  wrap.append(tableNode);
-  return wrap;
+  return model.financialsFor(financialIndex, slug, year);
 }
 
 function companyDetail(slug) {
@@ -679,263 +150,306 @@ function companyDetail(slug) {
   return section;
 }
 
-function renderCompanies() {
-  const good = data.evidence.filter(item => item.status === 'retrieved').length;
-  root.append(title('02 / COMPANY LENS', 'Companies in the study',
-    'Scan evidence availability, then open a company to inspect dated pages and reported facts.'),
-    append(node('div', '', 'metric-row'),
-      metric(String(data.companies.length), 'Selected companies', 'Fixed, purposive cohort'),
-      metric(good + ' / 80', 'Extractable page cells', 'Not all reviewed for useful claims'),
-      metric('10 / 20', 'SEC registrants', 'Annual reported facts available')));
-
-  const controls = node('div', '', 'toolbar');
-  const search = node('input');
-  search.type = 'search';
-  search.placeholder = 'Find a company';
-  search.setAttribute('aria-label', 'Find a company');
-  search.value = state.query;
-  search.addEventListener('input', () => {
-    state.query = search.value;
-    updateCompanyResults();
-  });
-  const select = node('select');
-  select.setAttribute('aria-label', 'Filter by category');
-  select.add(new Option('All categories', 'all'));
-  [...new Set(data.companies.map(item => item.category))]
-    .forEach(value => select.add(new Option(categoryName(value), value)));
-  select.value = state.category;
-  select.addEventListener('change', () => { state.category = select.value; updateCompanyResults(); });
-  root.append(append(controls, search, select));
-  const results = node('div');
-  results.id = 'company-results';
-  root.append(results);
-  updateCompanyResults();
-}
-
-function updateCompanyResults() {
-  const results = document.querySelector('#company-results');
-  results.replaceChildren();
-  const matches = data.companies.filter(item =>
-    (state.category === 'all' || item.category === state.category)
-    && item.name.toLowerCase().includes(state.query.toLowerCase()));
-  const rows = matches.map(item => {
-    const retrieved = data.evidence.filter(cell => cell.slug === item.slug
-      && cell.status === 'retrieved').length;
-    const button = node('button', item.name, 'text-button');
-    button.type = 'button';
-    button.addEventListener('click', () => {
-      state.company = item.slug;
-      updateCompanyResults();
-      document.querySelector('#company-detail')?.scrollIntoView({ block: 'start' });
-    });
-    return append(node('tr'), append(node('td'), button), node('td', categoryName(item.category)),
-      node('td', retrieved + ' / 4 extractable'),
-      node('td', item.cik ? '10-K candidates' : 'No SEC series'));
-  });
-  if (!rows.length) rows.push(append(node('tr'), node('td', 'No companies match this filter.')));
-  results.append(table(['Company', 'Category', 'Archived pages', 'SEC facts'], rows));
-  if (state.company) {
-    const detail = companyDetail(state.company);
-    detail.id = 'company-detail';
-    results.append(detail);
-  }
-}
-
 function yearControl() {
   const select = node('select');
   select.setAttribute('aria-label', 'Select period-end year');
   data.years.forEach(year => select.add(new Option('Periods ending ' + year, year)));
   select.value = state.year;
-  select.addEventListener('change', () => { state.year = Number(select.value); render(); });
+  select.addEventListener('change', () => commitState({ year: Number(select.value) }));
   return select;
 }
 
 function bar(value, maximum) {
   const track = node('div', '', 'bar-track');
   const fill = node('span', '', 'bar-fill');
-  fill.style.width = Math.max(2, value / maximum * 100) + '%';
+  fill.style.width = Number.isFinite(value) && maximum > 0
+    ? Math.max(2, value / maximum * 100) + '%' : '0';
   return append(track, fill);
 }
 
-function fundamentalsDetail(slug) {
-  const company = data.companies.find(item => item.slug === slug);
-  const section = node('section', '', 'detail-panel');
-  section.id = 'financial-detail';
-  const close = node('button', 'Close ×', 'quiet-button');
-  close.type = 'button';
-  close.addEventListener('click', () => { state.company = null; render(); });
-  section.append(append(node('div', '', 'detail-head'),
-    append(node('div'), node('p', 'FOUR REPORTED PERIODS', 'eyebrow'), node('h3', company.name)), close));
-  const values = data.years.map(year => financials(slug, year));
-  const maximum = Math.max(...values.map(item => item.revenue || 0));
-  const series = node('div', '', 'finance-series');
-  data.years.forEach((year, index) => {
-    const item = values[index];
-    series.append(append(node('div', '', 'finance-row'), node('span', String(year)),
-      bar(item.revenue, maximum), node('strong', money(item.revenue)),
-      node('span', item.growth === null ? 'First period' : percent(item.growth) + ' vs prior')));
+function writeUrl(replace = false) {
+  const query = model.toUrlParams(state);
+  const url = location.pathname + (query ? `?${query}` : '');
+  if (url === location.pathname + location.search) return;
+  history[replace ? 'replaceState' : 'pushState'](null, '', url);
+}
+
+function commitState(changes, options = {}) {
+  Object.assign(state, changes);
+  render();
+  writeUrl(Boolean(options.replace));
+  if (options.top) root.scrollIntoView({ block: 'start' });
+  if (options.focus) document.querySelector(options.focus)?.focus();
+}
+
+function pinButton(company, className = 'quiet-button') {
+  const selected = state.compareSlugs.includes(company.slug);
+  const atCapacity = !selected && state.compareSlugs.length >= model.MAX_PINNED;
+  const button = node('button', selected ? 'unpin' : atCapacity ? '4 pinned' : 'pin to compare', className);
+  button.type = 'button';
+  button.disabled = atCapacity;
+  button.dataset.pin = company.slug;
+  button.setAttribute('aria-pressed', String(selected));
+  button.addEventListener('click', () => {
+    state.compareSlugs = model.togglePinned(state.compareSlugs, company.slug);
+    render();
+    writeUrl();
+    document.querySelector(`[data-pin="${company.slug}"]`)?.focus();
   });
-  section.append(series);
-  const selected = facts(slug, state.year);
-  const current = financials(slug, state.year);
-  section.append(append(node('div', '', 'provenance'),
-    node('p', 'Selected period: ' + selected.revenue.start_date + ' to ' + current.periodEnd
-      + '. Filed ' + current.filed + '. Accession ' + selected.revenue.accession_number + '.', 'muted'),
-    node('p', 'Net income ' + money(current.netIncome) + ' · Assets ' + money(current.assets)
-      + ' · SEC member ' + selected.revenue.raw_sha256.slice(0, 16) + '…', 'muted'),
-    link('SEC companyfacts source ↗', data.financials.artifact_url)));
-  section.append(node('p', 'These are period-end-year buckets, not common calendar years. Values were selected from a later SEC bulk snapshot using filings through 2025-04-01.', 'caveat'));
+  return button;
+}
+
+function companySeries(company, key) {
+  return data.years.map(year => financials(company.slug, year)[key]);
+}
+
+function overviewCompanyPanel(company) {
+  const section = node('section', '', 'overview-inspector');
+  const current = financials(company.slug, state.year);
+  section.append(append(node('div', '', 'inspector-head'),
+    append(node('div'), node('p', 'selected company / public subset', 'eyebrow'),
+      node('h3', company.name), node('p', categoryName(company.category), 'muted')),
+    pinButton(company)));
+  const numbers = node('div', '', 'inspector-numbers');
+  numbers.append(metric(money(current.revenue), 'revenue', 'reported period ending ' + (current.periodEnd || 'unknown')),
+    metric(percent(current.growth), 'change', 'versus prior selected period'),
+    metric(percent(current.margin), 'net income margin', 'aligned reported periods'));
+  section.append(numbers);
+  const charts = node('div', '', 'inspector-charts');
+  const revenue = append(node('div', '', 'trend-panel'),
+    node('p', 'revenue / usd', 'eyebrow'), node('h4', 'four reported periods'),
+    seriesChart(companySeries(company, 'revenue'), data.years, money,
+      `${company.name} reported revenue, 2021 through 2024`));
+  const margins = append(node('div', '', 'trend-panel'),
+    node('p', 'net income margin / percent', 'eyebrow'), node('h4', 'same-period revenue and net income'),
+    seriesChart(companySeries(company, 'margin'), data.years, percent,
+      `${company.name} net income margin, 2021 through 2024`));
+  charts.append(revenue, margins);
+  const inspect = node('button', 'inspect dated evidence →', 'text-button');
+  inspect.type = 'button';
+  inspect.addEventListener('click', () => commitState({
+    view: 'explore', company: company.slug, query: company.name, category: 'all',
+    searchYear: 'all', searchSource: 'all', searchType: 'all', searchUs: 'all'
+  }, { top: true, focus: '#company-detail' }));
+  section.append(charts, node('p', 'period-end-year buckets can reflect different fiscal calendars. change compares adjacent periods for the same company; missing values remain gaps.', 'caveat'), inspect);
   return section;
 }
 
-function renderFundamentals() {
-  const sort = node('select');
-  sort.setAttribute('aria-label', 'Sort public companies');
-  [['growth', 'Revenue growth'], ['revenue', 'Revenue'], ['margin', 'Net income margin'], ['name', 'Company name']]
-    .forEach(([value, label]) => sort.add(new Option('Sort: ' + label, value)));
-  sort.value = state.sort;
-  sort.addEventListener('change', () => { state.sort = sort.value; render(); });
-  root.append(title('03 / REPORTED RESULTS', 'Public fundamentals',
-    'Compare reported revenue and net income across the public subset. Open a company for its four selected periods and filing trail.'),
-    append(node('div', '', 'section-controls'), yearControl(), sort,
-      node('p', 'USD · Filings through ' + data.financials.as_of + ' · 10 public companies', 'muted')));
-  const companies = data.companies.filter(item => item.cik);
-  companies.sort((left, right) => {
-    if (state.sort === 'name') return left.name.localeCompare(right.name);
-    const first = financials(left.slug, state.year)[state.sort];
-    const second = financials(right.slug, state.year)[state.sort];
-    if (first === null) return 1;
-    if (second === null) return -1;
-    return second - first;
-  });
-  const rows = companies.map(company => {
-    const result = financials(company.slug, state.year);
-    const button = node('button', company.name, 'text-button');
+function overviewRanking(companies, selectedSlug) {
+  const panel = node('section', '', 'ranking-panel');
+  panel.append(node('p', 'public subset / selected period', 'eyebrow'),
+    node('h3', 'reported revenue, growth, and margin'),
+    append(node('div', '', 'rank-legend'), node('span', 'company'), node('span', 'revenue'),
+      node('span', 'usd'), node('span', 'change'), node('span', 'margin')));
+  const maximum = Math.max(...companies.map(company => financials(company.slug, state.year).revenue || 0));
+  companies.forEach(company => {
+    const current = financials(company.slug, state.year);
+    const button = node('button', '', 'rank-row');
     button.type = 'button';
+    button.dataset.company = company.slug;
+    if (selectedSlug === company.slug) button.setAttribute('aria-current', 'true');
+    button.setAttribute('aria-pressed', String(selectedSlug === company.slug));
+    button.setAttribute('aria-label', `inspect ${company.name}`);
+    button.append(node('strong', company.name), bar(current.revenue, maximum),
+      node('span', money(current.revenue), 'rank-value'),
+      node('span', percent(current.growth), current.growth >= 0 ? 'positive' : 'negative'),
+      node('span', percent(current.margin), current.margin >= 0 ? 'positive' : 'negative'));
     button.addEventListener('click', () => {
-      state.company = company.slug;
-      render();
-      document.querySelector('#financial-detail')?.scrollIntoView({ block: 'start' });
+      if (selectedSlug === company.slug) {
+        button.focus();
+        return;
+      }
+      commitState({ company: company.slug }, { focus: `[data-company="${company.slug}"]` });
     });
-    return append(node('tr'), append(node('td'), button),
-      node('td', money(result.revenue)),
-      node('td', percent(result.growth), result.growth >= 0 ? 'positive' : 'negative'),
-      node('td', percent(result.margin), result.margin >= 0 ? 'positive' : 'negative'),
-      node('td', result.periodEnd || '—'));
+    panel.append(button);
   });
-  root.append(table(['Company', 'Revenue', 'Change vs prior period', 'Net income margin', 'Period end'], rows));
-  if (state.company && data.companies.find(item => item.slug === state.company)?.cik) {
-    root.append(fundamentalsDetail(state.company));
-  }
-  root.append(node('p', 'Revenue change compares adjacent period-end years for the same company. Net income margin uses matching revenue and net income periods. Neither is a valuation, retention, or capital-efficiency measure.', 'caveat'));
+  return panel;
 }
 
-function renderMarket() {
-  root.append(title('04 / EXTERNAL CONTEXT', 'U.S. equity activity',
-    'Cboe market-wide daily data, averaged within each year. This series spans all U.S. equities, not only software companies.'));
+function coverageStrip() {
+  const extractable = data.evidence.filter(item => item.status === 'retrieved').length;
+  const panel = node('section', '', 'coverage-strip');
+  panel.append(metric(String(data.companies.length), 'selected companies', 'purposive cohort'),
+    metric(`${extractable} / 80`, 'extractable pages', 'four dated cells each'),
+    metric('10', 'public issuers', 'four reported periods'),
+    metric(String(discovery.provider_candidates.length), 'provider leads', 'identity reviewed'),
+    metric(String(data.reviewed_quotes.length), 'reviewed passages', 'fixed evidence audit'));
+  return panel;
+}
+
+function marketDetails() {
+  const details = node('details', '', 'desk-disclosure');
+  details.append(node('summary', 'market-wide context / Cboe activity'));
+  const body = node('div', '', 'disclosure-body');
   const panels = node('div', '', 'market-panels');
   const measures = [
-    ['mean_daily_notional', 'Mean daily notional', 'USD BILLIONS', 1e9],
-    ['mean_daily_shares', 'Mean daily shares', 'BILLIONS OF SHARES', 1e9],
-    ['mean_daily_trades', 'Mean daily trades', 'MILLIONS OF TRADES', 1e6]
+    ['mean_daily_notional', 'mean daily notional', 'usd billions', 1e9],
+    ['mean_daily_shares', 'mean daily shares', 'billions of shares', 1e9],
+    ['mean_daily_trades', 'mean daily trades', 'millions of trades', 1e6]
   ];
-  for (const [key, name, unit, scale] of measures) {
+  measures.forEach(([key, name, unit, scale]) => {
     const panel = append(node('section', '', 'market-panel'), node('p', unit, 'eyebrow'), node('h3', name));
     const maximum = Math.max(...data.market.map(item => item[key]));
     data.market.forEach(item => panel.append(append(node('div', '', 'market-row'),
-      node('span', String(item.year)), bar(item[key], maximum),
-      node('strong', formatNumber(item[key] / scale)))));
+      node('span', String(item.year)), bar(item[key], maximum), node('strong', formatNumber(item[key] / scale)))));
     panels.append(panel);
-  }
-  root.append(panels);
-  const source = append(node('section', '', 'market-source'), node('h3', 'Source and scope'),
-    node('p', '19,093 stored participant-day rows from four annual Cboe CSVs. Each annual value sums market participants by trading day, then divides by observed trading days.'),
-    node('p', 'Cboe Exchange, Inc. These values show market-wide trading activity. They cannot establish company returns or software demand.', 'caveat'));
-  const list = node('div', '', 'source-list');
-  data.market.forEach(item => list.append(link(item.year + ' CSV ↗', item.source_url),
-    node('span', item.rows.toLocaleString() + ' rows · ' + item.trading_days
-      + ' days · SHA-256 ' + item.raw_sha256.slice(0, 12) + '…')));
-  root.append(append(source, list));
+  });
+  body.append(panels, node('p', '19,093 stored participant-day rows from four annual Cboe files. this is all U.S. equity activity, not software-company performance.', 'caveat'));
+  details.append(body);
+  return details;
 }
 
-function renderReadiness() {
-  root.append(title('05 / RESEARCH BOUNDARY', 'What can we answer?',
-    'The next data pull should follow a question that the current pilot cannot answer.'));
-  root.append(append(node('div', '', 'readiness-grid'),
-    metric('72 / 80', 'Extractable page cells', 'Eight yield short visible text'),
-    metric('15 / 16', 'Fixed audit cells with claims', 'Four recovery cells reviewed separately'),
-    metric('120 / 120', 'Selected SEC concept cells', '10 companies × 4 years × 3 concepts'),
-    metric('0', 'Verified security price series', 'No company return or valuation view')));
-  const entries = [
-    ['How did a company describe its product?', 'Dated pages and 19 reviewed passages', 'Review more pages and resolve eight short-text cells'],
-    ['How did reported scale change?', 'Revenue, net income, assets for ten SEC registrants', 'Validate more original filings and fiscal-calendar comparisons'],
-    ['How did investors price that change?', 'No verified company-level price series', 'Dated securities, permitted prices, share counts, cash and debt'],
-    ['Which companies won a category?', 'Purposive study with no representative denominator', 'A defined universe and comparable adoption or customer measures']
-  ];
-  root.append(table(['Research question', 'Available now', 'Needed next'],
-    entries.map(values => append(node('tr'), ...values.map(value => node('td', value))))));
-  root.append(node('p', 'This pilot supports sourced case studies and exploratory public-company trends. It cannot establish market share, investment performance, customer traction, or valuation.', 'caveat'));
-  const searchButton = node('button', 'Search source records →', 'text-button');
-  searchButton.type = 'button';
-  searchButton.addEventListener('click', () => {
-    state.view = 'search';
-    render();
-    root.scrollIntoView({ block: 'start' });
-  });
-  root.append(searchButton);
-  const coverageButton = node('button', 'Review source coverage →', 'text-button');
-  coverageButton.type = 'button';
-  coverageButton.addEventListener('click', () => {
-    state.view = 'universe';
-    render();
-    root.scrollIntoView({ block: 'start' });
-  });
-  root.append(coverageButton);
-}
-
-function renderUniverse() {
-  root.append(title('06 / SOURCE COVERAGE', 'Building the company universe',
-    'The search pull is a dated lead frame. Identity, U.S. location, and company eligibility require separate review.'));
-  root.append(append(node('div', '', 'metric-row'),
-    metric(String(discovery.artifacts.length), 'Pinned inventories', 'Two sources across four years'),
-    metric(String(discovery.candidates.length), 'Directory candidate keys', 'Products or projects; identities may repeat'),
-    metric(String(discovery.provider_candidates.length), 'Reviewed provider leads', 'Every company eligibility decision remains open')));
-  const scope = append(node('section', '', 'universe-scope'),
-    node('p', 'WORKING BOUNDARY / 2021–2024', 'eyebrow'),
-    node('h3', 'U.S. software company search frame'),
-    node('p', 'The four tags are data infrastructure, developer tools, security and observability, and AI and automation. Inventory membership is a lead, not proof of a U.S. company.'));
-  root.append(scope);
+function sourceDetails() {
+  const details = node('details', '', 'desk-disclosure');
+  details.append(node('summary', 'coverage, methods, and pinned inventories'));
+  const body = node('div', '', 'disclosure-body');
   const rows = discovery.artifacts.map(item => append(node('tr'),
     node('td', item.source.toUpperCase()), node('td', String(item.year)),
-    node('td', item.raw_item_count.toLocaleString()),
-    node('td', item.mapped_occurrence_count.toLocaleString()),
+    node('td', item.raw_item_count.toLocaleString()), node('td', item.mapped_occurrence_count.toLocaleString()),
     append(node('td'), link(item.commit.slice(0, 12) + ' ↗', item.url))));
-  root.append(append(node('div', '', 'universe-heading'),
-    node('h3', 'Historical inventory versions'),
-    node('p', 'Raw item counts include entries outside the four mapped tags. Source versions are pinned by commit and hash.', 'muted')),
-  table(['Source', 'Year', 'Raw items', 'Mapped occurrences', 'Pinned file'], rows),
-  node('p', 'CNCF and LF AI & Data maintain separate inventories within the Linux Foundation ecosystem. Their overlap is not independent sampling evidence. The pull is not a complete census.', 'caveat'));
+  body.append(node('p', 'directory membership is a dated lead. identity, U.S. location, and company eligibility are reviewed separately. the selected cohort is not a representative market sample.', 'caveat'),
+    table(['source', 'year', 'raw items', 'mapped occurrences', 'pinned file'], rows),
+    node('p', `SEC facts use ${data.financials.policy_version}; filings through ${data.financials.as_of}. price series, market share, customer traction, and valuation remain unavailable.`, 'muted'));
+  details.append(body);
+  return details;
+}
+
+function renderOverview() {
+  root.append(title('01 / OVERVIEW', 'public-company comparison',
+    'select a company to inspect. pin up to four to compare.'));
+  const publicCompanies = data.companies.filter(company => company.cik)
+    .sort((left, right) => (financials(right.slug, state.year).revenue || -Infinity)
+      - (financials(left.slug, state.year).revenue || -Infinity));
+  const selected = publicCompanies.find(company => company.slug === state.company) || publicCompanies[0];
+  const controls = append(node('div', '', 'section-controls'), yearControl(),
+    node('p', `ranking: SEC periods ending ${state.year} · inspector charts: all four periods · selected facts through ${data.financials.as_of}`, 'muted'));
+  const dashboard = node('div', '', 'overview-grid');
+  dashboard.append(overviewRanking(publicCompanies, selected.slug), overviewCompanyPanel(selected));
+  root.append(controls, dashboard, coverageStrip(), marketDetails(), sourceDetails());
+}
+
+function comparePicker() {
+  const panel = node('section', '', 'compare-picker');
+  panel.append(node('p', `pin up to ${model.MAX_PINNED} selected companies`, 'eyebrow'));
+  const controls = node('div', '', 'pin-controls');
+  data.companies.forEach(company => controls.append(pinButton(company, 'pin-chip')));
+  data.companies.forEach((company, index) => {
+    controls.children[index].prepend(company.name + ' · ');
+  });
+  panel.append(controls);
+  return panel;
+}
+
+function compareFacts(companies) {
+  const headers = ['measure', ...companies.map(company => company.name)];
+  const measures = [
+    ['category', company => categoryName(company.category)],
+    [`revenue / ${state.year}`, company => company.cik ? money(financials(company.slug, state.year).revenue) : 'no SEC series'],
+    ['change vs prior', company => company.cik ? percent(financials(company.slug, state.year).growth) : '—'],
+    ['net income margin', company => company.cik ? percent(financials(company.slug, state.year).margin) : '—'],
+    ['reported period', company => {
+      const result = company.cik ? financials(company.slug, state.year) : null;
+      return result?.periodStart ? `${result.periodStart} to ${result.periodEnd}` : '—';
+    }],
+    ['filing trail', company => {
+      const result = company.cik ? financials(company.slug, state.year) : null;
+      return result?.filed ? `${result.filed} · ${result.accession || 'no accession'}` : '—';
+    }],
+    ['extractable pages', company => `${data.evidence.filter(item => item.slug === company.slug && item.status === 'retrieved').length} / 4`],
+    ['U.S. location review', company => {
+      const review = locationReviewFor(company.slug);
+      return review ? `${review.source_year} · ${review.decision.replaceAll('_', ' ')}` : 'unreviewed';
+    }],
+    ['inspect', company => {
+      const button = node('button', 'dated evidence →', 'text-button');
+      button.type = 'button';
+      button.addEventListener('click', () => commitState({
+        view: 'explore', company: company.slug, query: company.name, category: 'all',
+        searchYear: 'all', searchSource: 'all', searchType: 'all', searchUs: 'all'
+      }, { top: true, focus: '#company-detail' }));
+      return button;
+    }]
+  ];
+  return table(headers, measures.map(([label, read]) => append(node('tr'), node('td', label),
+    ...companies.map(company => {
+      const value = read(company);
+      const cell = node('td');
+      if (value instanceof Node) cell.append(value);
+      else cell.textContent = value;
+      return cell;
+    }))));
+}
+
+function compareEvidence(companies) {
+  const headers = ['source year', ...companies.map(company => company.name)];
+  const rows = data.years.map(year => append(node('tr'), node('td', String(year)),
+    ...companies.map(company => {
+      const item = evidence(company.slug, year);
+      const cell = node('td');
+      if (!item?.snapshot_id) return append(cell, node('span', 'no stored capture', 'muted'));
+      cell.append(node('span', `${item.status} · ${item.captured_at.slice(0, 10)} · ${item.provider}`),
+        link(item.provider === 'wayback' ? ' archived page ↗' : ' WARC record ↗',
+          item.archive_url || item.source_url));
+      return cell;
+    })));
+  return table(headers, rows);
+}
+
+function renderCompare() {
+  root.append(title('02 / COMPARE', 'compare companies',
+    'review selected periods, filing trails, and dated source coverage.'));
+  root.append(append(node('div', '', 'section-controls'), yearControl(),
+    node('p', 'missing evidence is shown as missing, never as zero.', 'muted')), comparePicker());
+  const companies = state.compareSlugs.map(slug => data.companies.find(company => company.slug === slug)).filter(Boolean);
+  if (!companies.length) {
+    root.append(node('p', 'pin two or more companies to begin a comparison.', 'empty-state'));
+    return;
+  }
+  root.append(node('h3', 'reported facts and coverage', 'section-title'), compareFacts(companies),
+    append(node('p', '', 'source-inline'),
+      node('span', `selected facts through ${data.financials.as_of} · `),
+      link('SEC companyfacts source ↗', data.financials.artifact_url)));
+  const series = node('div', '', 'comparison-series');
+  companies.filter(company => company.cik).forEach(company => series.append(append(node('section', '', 'trend-panel'),
+    node('p', 'reported revenue / usd', 'eyebrow'), node('h4', company.name),
+    seriesChart(companySeries(company, 'revenue'), data.years, money,
+      `${company.name} reported revenue, 2021 through 2024`))));
+  if (series.children.length) root.append(node('h3', 'four-period revenue paths', 'section-title'), series,
+    node('p', 'each chart uses its own revenue scale and that company’s selected SEC periods. compare direction and the labeled values; fiscal calendars differ.', 'caveat'));
+  root.append(node('h3', 'dated source coverage', 'section-title'), compareEvidence(companies), sourceDetails());
 }
 
 function render() {
+  if (!data || !exploreView) return;
   tabs.forEach(button => {
     if (button.dataset.view === state.view) button.setAttribute('aria-current', 'page');
     else button.removeAttribute('aria-current');
   });
   root.replaceChildren();
-  if (state.view === 'search') renderSearch();
-  else if (state.view === 'companies') renderCompanies();
-  else if (state.view === 'fundamentals') renderFundamentals();
-  else if (state.view === 'market') renderMarket();
-  else if (state.view === 'universe') renderUniverse();
-  else renderReadiness();
+  root.setAttribute('aria-busy', 'false');
+  pinCount.textContent = String(state.compareSlugs.length);
+  if (state.view === 'overview') renderOverview();
+  else if (state.view === 'compare') renderCompare();
+  else exploreView.render();
 }
 
 tabs.forEach(button => button.addEventListener('click', () => {
-  state.view = button.dataset.view;
-  state.company = null;
-  render();
+  const view = button.dataset.view;
+  commitState({ view, company: view === 'explore' ? null : state.company,
+    selectedCandidate: null, selectedProvider: null }, { top: true });
 }));
+
+window.addEventListener('popstate', () => {
+  const slugs = new Set(data.companies.map(company => company.slug));
+  const fromUrl = model.parseUrlState(location.search, slugs, data.years);
+  Object.assign(state, {
+    view: fromUrl.view,
+    year: fromUrl.year,
+    company: fromUrl.company,
+    compareSlugs: fromUrl.pinned
+  });
+  render();
+});
 
 Promise.all(['./dashboard.json', './discovery.json'].map(url =>
   fetch(url).then(response => {
@@ -943,10 +457,34 @@ Promise.all(['./dashboard.json', './discovery.json'].map(url =>
     return response.json();
   })))
   .then(([pilot, pulled]) => {
+    model.validateExports(pilot, pulled);
     data = pilot;
     discovery = pulled;
+    financialIndex = model.buildFinancialIndex(pilot.financials.cells);
     occurrenceById = new Map(pulled.occurrences.map(item => [item.id, item]));
     identityReviewById = new Map(pulled.identity_reviews.map(item => [item.id, item]));
+    exploreView = window.LogPoseExplore.create({
+      root, state, data, discovery, occurrenceById, identityReviewById, model,
+      categoryName, financingFor, locationReviewFor, locationReviewInSelectedYear,
+      identityReviewFor, candidateLocationFor, providerLocationInSelectedYear,
+      money, financials, companyDetail, commitState, writeUrl, pinCount
+    });
+    const fromUrl = model.parseUrlState(location.search,
+      new Set(pilot.companies.map(company => company.slug)), pilot.years);
+    Object.assign(state, {
+      view: fromUrl.view,
+      year: fromUrl.year,
+      company: fromUrl.company,
+      compareSlugs: fromUrl.pinned
+    });
+    tabs.forEach(button => { button.disabled = false; });
+    writeUrl(true);
     render();
   })
-  .catch(error => { root.replaceChildren(node('p', 'Source export unavailable: ' + error.message, 'error')); });
+  .catch(error => {
+    root.setAttribute('aria-busy', 'false');
+    const retry = node('button', 'reload exports', 'quiet-button');
+    retry.type = 'button';
+    retry.addEventListener('click', () => location.reload());
+    root.replaceChildren(node('p', 'source exports unavailable: ' + error.message, 'error'), retry);
+  });
