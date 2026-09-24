@@ -1,0 +1,25 @@
+# Topology source and review method
+
+Checked 2026-09-24. The topology has two separate inputs: reviewed claims backed by retained source captures, and unreviewed research candidates from the larger software discovery frame. The current graph seed has four claims across Datadog–Elastic and dbt Labs–Snowflake. The broader review queue is generated from the eight pinned CNCF and LF AI & Data inventory files already described in the [company-universe plan](us-company-universe-plan.md).
+
+## Current source-backed seed
+
+The seed records Datadog's 2025-02-20 Form 10-K statement about competition with Elastic in log management; dbt Labs' 2022-02-24 partnership statement with Snowflake; Snowflake's participation as a strategic investor in dbt Labs' Series D; and a Datadog–Snowflake shared customer-workload exposure hypothesis. The first two sources preserve filing or event time separately from retrieval time. The Datadog filing reports on the fiscal year ended 2024-12-31; Snowflake's filing reports on the fiscal year ended 2024-01-31. Those reporting periods do not establish when a relationship began or ended.
+
+The partnership and investment are separate claims even though one announcement supports both. The performance-exposure hypothesis requires evidence from both firms. Datadog describes customer usage expanding with cloud workloads and possible effects from reduced IT spending. Snowflake describes consumption-based product revenue and customer budget/consumption optimization. These disclosures support a possible common driver. They do not show shared customers, revenue co-movement, stock-return correlation, or causality. The outcome remains untested.
+
+All three original HTML responses are retained under `source-artifacts/topology/`. The source manifest records the exact URL, publisher, publication date, reporting-period end where applicable, retrieval date, byte hash, and artifact path. A new retrieval must not overwrite a prior capture. Changed content is written to a new file and must be reviewed before it can support a claim. The HTTP retrieval report is a separate generated artifact; a source URL alone is not an archived observation.
+
+## Broader discovery and review queue
+
+`build_topology_review_queue.py` consumes `web/discovery.json`, which contains 3,432 dated inventory occurrences grouped into 1,111 product or project candidates. It proposes at most 100 pairs that co-occur in a named inventory category and year. The default queue takes 50 pairs with the broadest category/year overlap, 25 candidates sampled across shared source/year strata, and 25 candidates selected with a fixed random seed. Each row records its selection reason and the shared inventory evidence.
+
+This is a transparent research queue, not a relationship graph. Inventory entries can describe projects or products, not companies. The queue does not establish company identity, U.S. software eligibility, active dates, competition, partnership, integration, investment, or shared exposure. Candidate U.S. eligibility remains unreviewed until a dated source supports the company and product in the relevant period. The inventory's curation and visibility biases mean the queue cannot represent the U.S. market.
+
+The capture CLI accepts an explicit source manifest, limit, byte cap, timeout, and retry budget. It stores source bytes and SHA-256 hashes, records failures, and can persist retrieved source observations through `topology_store`. It does not turn extracted names or category matches into accepted relationships. A reviewer must attach a scoped predicate, endpoint identities, dates, interpretation, and an explicit unknown/alternative before an assertion can enter the reviewed export. Rejected and unresolved proposals remain review outcomes, not deleted evidence.
+
+The first bounded larger milestone is the 100-pair review queue plus the three retained primary-source captures and four reviewed seed claims. It demonstrates repeatable sourcing and review queue generation over the 1,111-candidate frame. The 2026-09-24 live refresh retrieved the dbt Labs page with HTTP 200 and the same hash; the local SEC requests received HTTP 403. The already-retained SEC filings still match their manifest hashes and were readable in the current SEC source view. This access difference remains in the [acquisition report](topology-acquisition-report.json); it is not hidden by the successful artifact check.
+
+Each source's `evidence_text` is a short summary, labeled as such. The records also retain a locator into the source and a short exact span where it can be checked against the saved HTML. The validator checks each quoted span against the hashed artifact. Reporting-period dates stay on the source record; only the explicit event date is used for event claims.
+
+This milestone is not a completed review of the broader U.S. universe and does not estimate market coverage or relation prevalence. Expand acquisition in measured batches, and report planned, attempted, retrieved, identity-resolved, proposed, reviewed, accepted, rejected, and unresolved counts with their source-family denominators.

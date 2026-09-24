@@ -7,6 +7,7 @@ from datetime import date, timezone
 from pathlib import Path
 
 from log_pose.storage import connect
+from log_pose.topology import validate_topology
 
 
 YEARS = (2021, 2022, 2023, 2024)
@@ -64,13 +65,15 @@ def validate_location_reviews(reviews, cohort):
         raise ValueError(f"expected three location reviews per category: {category_counts}")
 
 
-def build(cohort, ingestion, financials, announcements, location_reviews, audit_text, connection):
+def build(cohort, ingestion, financials, announcements, location_reviews, market_topology,
+          audit_text, connection):
     if len(cohort) != 20 or ingestion["planned_company_year_cells"] != 80:
         raise ValueError("dashboard expects the reviewed 20-company, 80-cell pilot")
     if financials["policy_version"] != "sec-annual-earliest-filed-v1":
         raise ValueError("SEC selection policy changed; review the dashboard first")
     validate_announcements(announcements, cohort)
     validate_location_reviews(location_reviews, cohort)
+    validate_topology(market_topology, cohort)
 
     cells = ingestion["cells"]
     selected_ids = [cell["snapshot_id"] for cell in cells if cell["snapshot_id"]]
@@ -180,6 +183,7 @@ def build(cohort, ingestion, financials, announcements, location_reviews, audit_
         "reviewed_quotes": quotes,
         "financing_announcements": announcements,
         "us_location_reviews": location_reviews,
+        "market_topology": market_topology,
         "financials": {
             "as_of": financials["as_of"],
             "policy_version": financials["policy_version"],
@@ -199,6 +203,7 @@ def main():
     parser.add_argument("--financials", type=Path, default=Path("docs/research/sec-analysis-build.json"))
     parser.add_argument("--announcements", type=Path, default=Path("docs/research/financing-announcements.json"))
     parser.add_argument("--location-reviews", type=Path, default=Path("docs/research/us-location-reviews.json"))
+    parser.add_argument("--topology", type=Path, default=Path("docs/research/market-topology.json"))
     parser.add_argument("--audit", type=Path, default=Path("docs/research/evidence-audit.md"))
     parser.add_argument("--output", type=Path, default=Path("web/dashboard.json"))
     args = parser.parse_args()
@@ -209,6 +214,7 @@ def main():
             json.loads(args.financials.read_text()),
             json.loads(args.announcements.read_text()),
             json.loads(args.location_reviews.read_text()),
+            json.loads(args.topology.read_text()),
             args.audit.read_text(),
             connection,
         )

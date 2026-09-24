@@ -1,0 +1,44 @@
+[
+  {
+    "id": "datadog-2024-10k",
+    "publisher": "Datadog, Inc. / U.S. Securities and Exchange Commission",
+    "title": "Datadog 2024 Form 10-K",
+    "source_type": "SEC Form 10-K",
+    "source_family": "sec_filing",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1561550/000156155025000025/ddog-20241231.htm",
+    "published_on": "2025-02-20",
+    "period_end": "2024-12-31",
+    "retrieved_at": "2026-09-24T17:50:30+00:00",
+    "event_on": null,
+    "artifact_path": "docs/research/source-artifacts/topology/datadog-2024-10k.html",
+    "expected_sha256": "711ee14f238f3e12597a03d889b7d8c29785eee865e1cecd8e20e0578a67facf"
+  },
+  {
+    "id": "snowflake-fy2024-10k",
+    "publisher": "Snowflake Inc. / U.S. Securities and Exchange Commission",
+    "title": "Snowflake fiscal 2024 Form 10-K",
+    "source_type": "SEC Form 10-K",
+    "source_family": "sec_filing",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1640147/000164014724000101/snow-20240131.htm",
+    "published_on": "2024-03-26",
+    "period_end": "2024-01-31",
+    "retrieved_at": "2026-09-24T17:50:30+00:00",
+    "event_on": null,
+    "artifact_path": "docs/research/source-artifacts/topology/snowflake-fy2024-10k.html",
+    "expected_sha256": "6c1f7dc96b0e484160a38025fcf2895a016a02a5f918ad5fb2250476e191a5a6"
+  },
+  {
+    "id": "dbt-series-d-2022",
+    "publisher": "dbt Labs",
+    "title": "dbt Labs raises $222M in Series D funding",
+    "source_type": "company announcement",
+    "source_family": "company_announcement",
+    "source_url": "https://www.getdbt.com/blog/dbt-labs-raises-222m-in-series-d-funding-at-4-2b-valuation-led-by-altimeter-with-participation-from-databricks-and-snowflake",
+    "published_on": "2022-02-24",
+    "period_end": null,
+    "event_on": "2022-02-24",
+    "retrieved_at": "2026-09-24T17:50:30+00:00",
+    "artifact_path": "docs/research/source-artifacts/topology/dbt-series-d-2022.html",
+    "expected_sha256": "64694c906f3c8be8b3fd90d88725fe3598a896533adf3123a24dc684610ffece"
+  }
+]
