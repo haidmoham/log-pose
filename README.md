@@ -1,10 +1,10 @@
 # Log Pose
 
-Log Pose stores dated primary-source evidence about software companies. The first sample compares what dbt Labs, Weights & Biases, and Confluent said on archived pages in December 2021 and December 2024. It does not yet infer markets, customers, or winners. A page is an observation, not a classification.
+Log Pose stores dated primary-source evidence about software companies. The current pilot follows 20 selected companies across 2021–2024, with SEC facts for ten public companies and market-wide Cboe activity. It does not infer markets, customers, or winners. A page is an observation, not a classification.
 
 This is an independent public experiment inspired by a conversation about investor research at Telescope Partners. It is not affiliated with Telescope and contains no internal Telescope material.
 
-The [public evidence preview](https://log-pose.shin86dev.chatgpt.site) is a static export of six stored captures. The local read API and Postgres database are not hosted by this preview.
+The existing [public evidence preview](https://log-pose.shin86dev.chatgpt.site) may still show the earlier six-capture export. The larger local dashboard is a static, read-only export; the local read API and Postgres database are not hosted with it.
 
 ## Run locally
 
@@ -22,7 +22,15 @@ log-pose inspect weights-and-biases --year 2021
 log-pose serve --port 8000
 ```
 
-The read endpoint is `GET http://127.0.0.1:8000/api/companies/weights-and-biases?cutoff=2021-12-31T23:59:59Z`. Any timezone-aware ISO 8601 cutoff works. Run `log-pose export` to write the short-preview public inspector at `web/evidence.json`; serve `web/` with `python -m http.server 8080 --directory web` and visit `http://localhost:8080`. The export is generated from the database, never from a hand-written fixture.
+The read endpoint is `GET http://127.0.0.1:8000/api/companies/weights-and-biases?cutoff=2021-12-31T23:59:59Z`. Any timezone-aware ISO 8601 cutoff works. The older `log-pose export` command still writes `web/evidence.json`. To rebuild the pilot dashboard, run:
+
+```bash
+export DATABASE_URL=postgresql://127.0.0.1:55434/logpose_pilot
+PYTHONPATH=src .venv/bin/python scripts/build_dashboard.py
+python -m http.server 8080 --directory web
+```
+
+Visit `http://localhost:8080`. The dashboard export reads the saved ingestion and SEC selection reports, checks their selected capture IDs against Postgres, and aggregates the stored Cboe files. It contains short page previews, reviewed source passages, selected SEC values, and market-wide annual summaries. Raw HTML, full extracted text, and original CSVs stay in Postgres. Rebuild the two reports first if the pilot database has changed.
 
 Run focused checks with:
 
