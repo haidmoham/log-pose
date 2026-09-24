@@ -157,27 +157,28 @@ def store_candidate(conn, *, candidate_id: str, source_id: str,
                     alternative_or_unknown: str,
                     temporal_form: str, temporal_basis: str,
                     proposed_basis: str, generator: str, generator_version: str,
+                    exact_quote: str | None = None,
                     event_on: date | None = None, valid_from: date | None = None,
                     valid_to: date | None = None, period_start: date | None = None,
                     period_end: date | None = None) -> str:
     """A proposal is not an accepted relationship until a review accepts it."""
     values = (source_id, subject_entity_id, object_entity_id, predicate, direction,
-              scope, evidence_locator, evidence_text, interpretation,
+              scope, evidence_locator, evidence_text, exact_quote, interpretation,
               alternative_or_unknown, temporal_form, temporal_basis,
               event_on, valid_from, valid_to, period_start, period_end,
               proposed_basis, generator, generator_version)
     with conn.cursor(row_factory=dict_row) as cur:
         cur.execute("""INSERT INTO topology_candidates(id,source_id,subject_entity_id,
-            object_entity_id,predicate,direction,scope,evidence_locator,evidence_text,
+            object_entity_id,predicate,direction,scope,evidence_locator,evidence_text,exact_quote,
             interpretation,alternative_or_unknown,temporal_form,temporal_basis,
             event_on,valid_from,valid_to,period_start,period_end,
             proposed_basis,generator,generator_version)
-            VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+            VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
             ON CONFLICT (id) DO NOTHING RETURNING id""", (candidate_id, *values))
         inserted = cur.fetchone() is not None
         if not inserted:
             cur.execute("""SELECT source_id,subject_entity_id,object_entity_id,
-                predicate,direction,scope,evidence_locator,evidence_text,
+                predicate,direction,scope,evidence_locator,evidence_text,exact_quote,
                 interpretation,alternative_or_unknown,temporal_form,temporal_basis,
                 event_on,valid_from,valid_to,period_start,
                 period_end,proposed_basis,generator,generator_version
@@ -258,7 +259,8 @@ def reviewed_claims(conn, *, source_date_cutoff: date | None = None,
             subject.name AS subject_name, candidate.object_entity_id,
             object_entity.name AS object_name, candidate.predicate,
             candidate.direction, candidate.scope, candidate.evidence_locator,
-            candidate.evidence_text, candidate.interpretation,
+            candidate.evidence_text, candidate.exact_quote,
+            candidate.interpretation,
             candidate.alternative_or_unknown,
             candidate.temporal_form, candidate.temporal_basis,
             candidate.event_on, candidate.valid_from, candidate.valid_to,
@@ -304,14 +306,34 @@ def reviewed_claims(conn, *, source_date_cutoff: date | None = None,
             ORDER BY reviewed_at DESC, id DESC LIMIT 1
         ) AS review ON review.decision = 'accept'
         WHERE source.retrieval_status = 'retrieved'
+            AND NOT EXISTS (
+                SELECT 1 FROM topology_candidate_evidence AS premise
+                JOIN topology_sources AS premise_source ON premise_source.id=premise.source_id
+                WHERE premise.candidate_id=candidate.id AND premise.evidence_role='support'
+                    AND premise_source.retrieval_status <> 'retrieved'
+            )
             AND (%s::date IS NULL OR source.published_on <= %s)
+            AND (%s::date IS NULL OR NOT EXISTS (
+                SELECT 1 FROM topology_candidate_evidence AS premise
+                JOIN topology_sources AS premise_source ON premise_source.id=premise.source_id
+                WHERE premise.candidate_id=candidate.id AND premise.evidence_role='support'
+                    AND (premise_source.published_on IS NULL OR premise_source.published_on > %s)
+            ))
             AND (%s::timestamptz IS NULL OR source.retrieved_at <= %s)
             AND (%s::timestamptz IS NULL OR candidate.created_at <= %s)
+            AND (%s::timestamptz IS NULL OR NOT EXISTS (
+                SELECT 1 FROM topology_candidate_evidence AS premise
+                JOIN topology_sources AS premise_source ON premise_source.id=premise.source_id
+                WHERE premise.candidate_id=candidate.id AND premise.evidence_role='support'
+                    AND (premise.added_at > %s OR premise_source.retrieved_at > %s)
+            ))
             AND (%s::text IS NULL OR candidate.subject_entity_id = %s
                 OR candidate.object_entity_id = %s)
         ORDER BY source.published_on DESC NULLS LAST, candidate.id
         LIMIT %s OFFSET %s""",
             (review_cutoff, review_cutoff, source_date_cutoff, source_date_cutoff,
+             source_date_cutoff, source_date_cutoff,
              review_cutoff, review_cutoff, review_cutoff, review_cutoff,
+             review_cutoff, review_cutoff, review_cutoff,
              entity_id, entity_id, entity_id, limit, offset))
         return cur.fetchall()

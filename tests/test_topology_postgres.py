@@ -1,7 +1,9 @@
 """Topology storage checks against an explicitly disposable Postgres database."""
 
 import os
+import json
 from datetime import date, datetime, timezone
+from pathlib import Path
 
 import psycopg
 import pytest
@@ -52,6 +54,7 @@ def test_immutable_sources_and_reviewed_temporal_projection(db):
                           predicate="integrates_with", direction="subject_to_object",
                           scope="analytics ingestion", evidence_locator="paragraph 2",
                           evidence_text="Example and Other announced an integration.",
+                          exact_quote="Example and Other announced an integration.",
                           interpretation="An integration was announced.",
                           alternative_or_unknown="Ongoing availability is unknown.",
                           temporal_form="event", temporal_basis="Announcement date",
@@ -73,6 +76,7 @@ def test_immutable_sources_and_reviewed_temporal_projection(db):
     assert rows[0]["published_on"] == date(2022, 2, 24)
     assert rows[0]["retrieved_at"] == retrieved_at
     assert rows[0]["temporal_form"] == "event"
+    assert rows[0]["exact_quote"] == "Example and Other announced an integration."
     assert rows[0]["valid_from"] is None
 
     rejected_at = datetime(2026, 9, 26, tzinfo=timezone.utc)
@@ -130,7 +134,8 @@ def test_shared_exposure_requires_both_source_premises(db):
         store_source(db, source_id=source_id,
                      source_url=f"https://example.com/{source_id}",
                      publisher=source_id, title="Filing", source_type="annual filing",
-                     published_on=date(2025, 2, 20), retrieved_at=observed,
+                     published_on=date(2025, 2, 20) if source_id == "left-source"
+                     else date(2026, 2, 20), retrieved_at=observed,
                      raw_body=source_id.encode())
     ensure_entity(db, entity_id="left", name="Left", entity_kind="company")
     ensure_entity(db, entity_id="right", name="Right", entity_kind="company")
@@ -166,3 +171,42 @@ def test_shared_exposure_requires_both_source_premises(db):
     assert claim["proposed_basis"] == "hypothesis"
     assert claim["additional_evidence"][0]["source_id"] == "right-source"
     assert claim["additional_evidence"][0]["period_end"] == "2024-01-31"
+    assert reviewed_claims(db, source_date_cutoff=date(2025, 12, 31)) == []
+
+
+def test_reviewed_seed_import_preserves_source_passages_and_is_idempotent(db, monkeypatch):
+    from scripts.import_topology_seed import import_seed
+    from scripts.build_dashboard import verify_topology_store
+
+    root = Path(__file__).parents[1]
+    cohort = json.loads((root / "docs/research/pilot-cohort.json").read_text())
+    topology = json.loads((root / "docs/research/market-topology.json").read_text())
+    manifest = json.loads((root / "docs/research/topology-source-manifest.json").read_text())
+    with db.cursor() as cur:
+        for company in cohort:
+            cur.execute("""INSERT INTO companies(slug,name) VALUES (%s,%s)
+                ON CONFLICT (slug) DO UPDATE SET name=EXCLUDED.name""",
+                (company["slug"], company["name"]))
+    db.commit()
+    monkeypatch.setenv("DATABASE_URL", os.environ["LOG_POSE_TEST_DATABASE_URL"])
+
+    first = import_seed(topology, manifest, cohort, repository_root=root,
+                        reviewer="test source review")
+    assert first["source_assertions_created"] == 4
+    assert first["secondary_evidence_links_created"] == 1
+    assert first["reviews_appended"] == 4
+    assert all(count == 0 for count in import_seed(
+        topology, manifest, cohort, repository_root=root,
+        reviewer="test source review").values())
+    claims = reviewed_claims(db)
+    assert len(claims) == 4
+    assert all(claim["exact_quote"] for claim in claims)
+    hypothesis = next(claim for claim in claims
+                      if claim["predicate"] == "shared_exposure_hypothesis")
+    assert len(hypothesis["additional_evidence"]) == 1
+    assert hypothesis["additional_evidence"][0]["exact_quote"]
+    verify_topology_store(topology, db)
+    changed = json.loads(json.dumps(topology))
+    changed["claims"][0]["interpretation"] = "A changed interpretation"
+    with pytest.raises(ValueError, match="differs from reviewed store"):
+        verify_topology_store(changed, db)

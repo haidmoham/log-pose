@@ -1,6 +1,7 @@
 """Export the verified pilot into a small, read-only dashboard dataset."""
 
 import argparse
+import hashlib
 import json
 import re
 from datetime import date, timezone
@@ -8,9 +9,58 @@ from pathlib import Path
 
 from log_pose.storage import connect
 from log_pose.topology import validate_topology
+from log_pose.topology_store import reviewed_claims
 
 
 YEARS = (2021, 2022, 2023, 2024)
+
+
+def verify_topology_store(topology, connection):
+    """The public seed must match accepted, retained database assertions."""
+    accepted = {row["id"]: row for row in reviewed_claims(connection, limit=500)}
+    basis_by_status = {
+        "documented": "source_statement",
+        "reviewed_inference": "reviewed_inference",
+        "hypothesis": "hypothesis",
+    }
+    for claim in topology["claims"]:
+        primary = claim["sources"][0]
+        url_hash = hashlib.sha256(primary["source_url"].encode()).hexdigest()[:12]
+        candidate_id = f"seed-claim:{claim['id']}:{url_hash}"
+        stored = accepted.get(candidate_id)
+        if stored is None:
+            raise ValueError(f"topology claim lacks an accepted database review: {claim['id']}")
+        expected = {
+            "subject_entity_id": claim["subject_slug"],
+            "object_entity_id": claim["object_slug"],
+            "predicate": claim["predicate"],
+            "direction": claim["direction"],
+            "scope": claim["scope"],
+            "interpretation": claim["interpretation"],
+            "alternative_or_unknown": claim["alternative_or_unknown"],
+            "temporal_form": claim["temporal_form"],
+            "temporal_basis": claim["temporal_basis"],
+            "proposed_basis": basis_by_status[claim["claim_status"]],
+            "source_url": primary["source_url"],
+            "raw_sha256": primary["artifact_sha256"],
+            "evidence_locator": primary["evidence_locator"],
+            "evidence_text": primary["evidence_text"],
+            "exact_quote": primary.get("evidence_quote"),
+        }
+        for field, value in expected.items():
+            if stored[field] != value:
+                raise ValueError(f"topology claim differs from reviewed store: {claim['id']}.{field}")
+        extra_sources = {item["source_url"]: item
+                         for item in stored["additional_evidence"] if item["role"] == "support"}
+        if set(extra_sources) != {item["source_url"] for item in claim["sources"][1:]}:
+            raise ValueError(f"topology claim has different supporting sources: {claim['id']}")
+        for source in claim["sources"][1:]:
+            stored_source = extra_sources[source["source_url"]]
+            if (stored_source["raw_sha256"] != source["artifact_sha256"]
+                    or stored_source["locator"] != source["evidence_locator"]
+                    or stored_source["summary"] != source["evidence_text"]
+                    or stored_source["exact_quote"] != source.get("evidence_quote")):
+                raise ValueError(f"topology supporting evidence differs from store: {claim['id']}")
 
 
 def reviewed_quotes(audit_text):
@@ -74,6 +124,7 @@ def build(cohort, ingestion, financials, announcements, location_reviews, market
     validate_announcements(announcements, cohort)
     validate_location_reviews(location_reviews, cohort)
     validate_topology(market_topology, cohort)
+    verify_topology_store(market_topology, connection)
 
     cells = ingestion["cells"]
     selected_ids = [cell["snapshot_id"] for cell in cells if cell["snapshot_id"]]

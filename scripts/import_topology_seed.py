@@ -5,7 +5,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-from datetime import date, datetime
+from datetime import date, datetime, timezone
 from pathlib import Path
 
 from log_pose.topology import validate_topology
@@ -76,7 +76,7 @@ def import_seed(topology: dict, manifest: list[dict], cohort: list[dict], *,
             artifact = repository_root / source["artifact_path"]
             raw = artifact.read_bytes()
             digest = hashlib.sha256(raw).hexdigest()
-            if digest != source["artifact_sha256"]:
+            if digest != source["expected_sha256"]:
                 raise ValueError(f"source artifact changed before import: {artifact}")
             retrieved_at = datetime.fromisoformat(source["retrieved_at"])
             source_id = _source_identifier(manifest_item, digest)
@@ -90,7 +90,7 @@ def import_seed(topology: dict, manifest: list[dict], cohort: list[dict], *,
                 retrieved_at=retrieved_at,
                 raw_body=raw,
                 raw_sha256=digest,
-                published_on=date.fromisoformat(source["source_date"]),
+                published_on=date.fromisoformat(source["published_on"]),
             )
             stored_sources += result == "stored"
             source_records[url] = (source_id, source, retrieved_at)
@@ -116,6 +116,7 @@ def import_seed(topology: dict, manifest: list[dict], cohort: list[dict], *,
                 scope=claim["scope"],
                 evidence_locator=primary["evidence_locator"],
                 evidence_text=primary["evidence_text"],
+                exact_quote=primary.get("evidence_quote"),
                 interpretation=claim["interpretation"],
                 alternative_or_unknown=claim["alternative_or_unknown"],
                 temporal_form=claim["temporal_form"],

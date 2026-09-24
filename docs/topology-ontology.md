@@ -67,7 +67,7 @@ An explicit denial or contradiction needs its own attributed source, scope, and 
 
 ## provenance and wording
 
-Every displayed claim retains endpoint IDs, predicate, direction, scope, interpretation, remaining unknowns, source attribution, source URL, evidence summary, publication date, and available event, reporting, retrieval, artifact-hash, and review details. `evidence_text` in the present seed is a **paraphrase**, so the UI labels it “evidence summary.” Only an exact retained passage may be styled as a quotation. A source locator or passage hash should be added when extraction moves beyond these manually reviewed seeds.
+Every displayed claim retains endpoint IDs, predicate, direction, scope, interpretation, remaining unknowns, source attribution, source URL, evidence summary, publication date, and available event, reporting, retrieval, artifact-hash, and review details. `evidence_text` in the present seed is a **paraphrase**, so the UI labels it “evidence summary.” Its separate `evidence_quote` is checked against the retained artifact and displayed as a quotation. Automated extraction should add exact span offsets or passage hashes when it moves beyond these manually reviewed seeds.
 
 The [source-backed seed](research/market-topology.json) illustrates the boundaries:
 

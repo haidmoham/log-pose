@@ -207,6 +207,8 @@
       panel.append(node('p', `${CATEGORY_LABELS[category]} / ${STATUS_LABELS[claim.claim_status]}`, 'eyebrow'),
         node('h3', claimLabel(claim)), node('p', claim.interpretation, 'topology-interpretation'),
         append(node('div', '', 'topology-fact'), node('strong', 'Scope'), node('span', claim.scope)),
+        append(node('div', '', 'topology-fact'), node('strong', 'Time meaning'),
+          node('span', claim.temporal_basis)),
         append(node('div', '', 'topology-fact'), node('strong', 'What remains unknown'),
           node('span', claim.alternative_or_unknown)));
       const sourceList = node('div', '', 'topology-source-list');
@@ -217,7 +219,10 @@
           + (source.period_end ? ` · reporting period ended ${source.period_end}` : ''), 'eyebrow'),
         node('p', 'Evidence summary', 'topology-evidence-label'),
         node('p', source.evidence_text, 'topology-evidence-summary'),
-        append(node('div', '', 'topology-source-foot'),
+        node('p', `Source location: ${source.evidence_locator}`, 'caption'));
+        if (source.evidence_quote) sourceCard.append(
+          node('blockquote', source.evidence_quote, 'topology-exact-quote'));
+        sourceCard.append(append(node('div', '', 'topology-source-foot'),
           node('span', source.source_type.replaceAll('_', ' ')),
           link('Open source ↗', source.source_url)));
         if (source.retrieved_on) sourceCard.append(node('p',

@@ -1759,6 +1759,185 @@
       "source_url": "https://www.itochu.co.jp/en/news/press/2022/220810.html"
     }
   ],
+  "market_topology": {
+    "schema_version": "1.0",
+    "reviewed_at": "2026-09-24",
+    "entities": [
+      {
+        "slug": "datadog",
+        "name": "Datadog",
+        "category": "security_observability",
+        "identity_status": "reviewed_pilot_company"
+      },
+      {
+        "slug": "elastic",
+        "name": "Elastic",
+        "category": "security_observability",
+        "identity_status": "reviewed_pilot_company"
+      },
+      {
+        "slug": "dbt-labs",
+        "name": "dbt Labs",
+        "category": "data_infrastructure",
+        "identity_status": "reviewed_pilot_company"
+      },
+      {
+        "slug": "snowflake",
+        "name": "Snowflake",
+        "category": "data_infrastructure",
+        "identity_status": "reviewed_pilot_company"
+      }
+    ],
+    "claims": [
+      {
+        "id": "datadog-named-competitor-elastic-log-management-2024",
+        "subject_slug": "datadog",
+        "object_slug": "elastic",
+        "predicate": "named_competitor_of",
+        "direction": "subject_to_object",
+        "scope": "log management, as reported for Datadog's fiscal year ended 2024-12-31",
+        "claim_status": "documented",
+        "temporal_form": "observed_state",
+        "temporal_basis": "Datadog's SEC filing published 2025-02-20 describes its competitive landscape for the fiscal year ended 2024-12-31; it gives no relationship validity interval.",
+        "interpretation": "Datadog's 2024 Form 10-K names Elastic N.V. as a company it competes with in log management.",
+        "event_date": null,
+        "sources": [
+          {
+            "publisher": "Datadog, Inc. / U.S. Securities and Exchange Commission",
+            "source_date": "2025-02-20",
+            "period_start": "2024-01-01",
+            "period_end": "2024-12-31",
+            "evidence_locator": "Form 10-K, Item 1, Our Competition, printed page 11",
+            "event_date": null,
+            "source_url": "https://www.sec.gov/Archives/edgar/data/1561550/000156155025000025/ddog-20241231.htm",
+            "source_type": "SEC Form 10-K",
+            "evidence_text": "In its competition section, Datadog says it competes with Elastic N.V. with respect to log management.",
+            "retrieved_on": "2026-09-24",
+            "retrieved_at": "2026-09-24T17:50:30+00:00",
+            "evidence_kind": "summary",
+            "evidence_quote": "with respect to Log Management, we compete with Cisco Systems, Inc., and Elastic N.V.",
+            "artifact_path": "docs/research/source-artifacts/topology/datadog-2024-10k.html",
+            "artifact_sha256": "711ee14f238f3e12597a03d889b7d8c29785eee865e1cecd8e20e0578a67facf"
+          }
+        ],
+        "alternative_or_unknown": "This is Datadog's own named competitor for one product category. It does not establish market share, customer switching, competitive intensity, or competition across Elastic's full portfolio. The filing was published in 2025 and reports on fiscal 2024."
+      },
+      {
+        "id": "dbt-labs-announced-partnership-snowflake-2022",
+        "subject_slug": "dbt-labs",
+        "object_slug": "snowflake",
+        "predicate": "announced_partnership_with",
+        "direction": "symmetric",
+        "scope": "joint analytics-engineering workflows for customers using dbt with Snowflake products",
+        "claim_status": "documented",
+        "temporal_form": "event",
+        "temporal_basis": "The source publishes a partnership statement on 2022-02-24; it does not date the relationship's start or end.",
+        "interpretation": "The 2022 dbt Labs financing announcement describes the companies as deepening their partnership and serving joint customers.",
+        "event_date": "2022-02-24",
+        "sources": [
+          {
+            "publisher": "dbt Labs",
+            "source_date": "2022-02-24",
+            "period_end": null,
+            "event_date": "2022-02-24",
+            "evidence_locator": "Series D announcement, statement attributed to Snowflake's SVP of Product about deepening the partnership and serving joint customers",
+            "source_url": "https://www.getdbt.com/blog/dbt-labs-raises-222m-in-series-d-funding-at-4-2b-valuation-led-by-altimeter-with-participation-from-databricks-and-snowflake",
+            "source_type": "company announcement",
+            "evidence_text": "The announcement says Snowflake and dbt Labs were deepening their partnership, refers to joint customers, and lists existing integrations with Snowflake products.",
+            "retrieved_on": "2026-09-24",
+            "retrieved_at": "2026-09-24T17:50:30+00:00",
+            "evidence_kind": "summary",
+            "evidence_quote": "By deepening our partnership with dbt Labs, we offer joint customers",
+            "artifact_path": "docs/research/source-artifacts/topology/dbt-series-d-2022.html",
+            "artifact_sha256": "64694c906f3c8be8b3fd90d88725fe3598a896533adf3123a24dc684610ffece"
+          }
+        ],
+        "alternative_or_unknown": "The announcement establishes a dated partnership statement, not the partnership's start, current status, exclusivity, commercial terms, or contribution to either company's results."
+      },
+      {
+        "id": "snowflake-invested-in-dbt-labs-series-d-2022",
+        "subject_slug": "snowflake",
+        "object_slug": "dbt-labs",
+        "predicate": "invested_in",
+        "direction": "subject_to_object",
+        "scope": "dbt Labs Series D financing announced 2022-02-24",
+        "claim_status": "documented",
+        "temporal_form": "event",
+        "temporal_basis": "The source announces dbt Labs' Series D financing on 2022-02-24; it does not establish later ownership.",
+        "interpretation": "dbt Labs names Snowflake as a strategic investor participating in its Series D financing.",
+        "event_date": "2022-02-24",
+        "sources": [
+          {
+            "publisher": "dbt Labs",
+            "source_date": "2022-02-24",
+            "period_end": null,
+            "event_date": "2022-02-24",
+            "evidence_locator": "Series D announcement, financing paragraph naming Snowflake among the strategic investors",
+            "source_url": "https://www.getdbt.com/blog/dbt-labs-raises-222m-in-series-d-funding-at-4-2b-valuation-led-by-altimeter-with-participation-from-databricks-and-snowflake",
+            "source_type": "company announcement",
+            "evidence_text": "dbt Labs says Snowflake participated in the Series D as one of three strategic investors.",
+            "retrieved_on": "2026-09-24",
+            "retrieved_at": "2026-09-24T17:50:30+00:00",
+            "evidence_kind": "summary",
+            "evidence_quote": "Databricks, Salesforce Ventures, and Snowflake \u2013 also participated.",
+            "artifact_path": "docs/research/source-artifacts/topology/dbt-series-d-2022.html",
+            "artifact_sha256": "64694c906f3c8be8b3fd90d88725fe3598a896533adf3123a24dc684610ffece"
+          }
+        ],
+        "alternative_or_unknown": "The announcement establishes participation in this financing, not ownership percentage, later holdings, governance rights, or a continuing strategic relationship."
+      },
+      {
+        "id": "datadog-snowflake-shared-customer-workload-exposure-hypothesis-2024",
+        "subject_slug": "datadog",
+        "object_slug": "snowflake",
+        "predicate": "shared_exposure_hypothesis",
+        "direction": "symmetric",
+        "scope": "operating-performance exposure to customer cloud/data workload usage and technology-spending optimization",
+        "claim_status": "hypothesis",
+        "temporal_form": "observed_state",
+        "temporal_basis": "The hypothesis combines operating-model disclosures in two separate annual filings; each source has its own reporting period and neither describes a relationship interval.",
+        "interpretation": "Both companies' disclosures support a testable hypothesis that customer workload and technology-spending changes can affect operating performance: Datadog says customer usage expands with cloud workloads and warns that IT spending changes may affect its business; Snowflake reports consumption-based product revenue and says customers may optimize consumption in response to macroeconomic uncertainty. This establishes a common possible driver, not shared customers or observed co-movement.",
+        "event_date": null,
+        "sources": [
+          {
+            "publisher": "Datadog, Inc. / U.S. Securities and Exchange Commission",
+            "source_date": "2025-02-20",
+            "period_start": "2024-01-01",
+            "period_end": "2024-12-31",
+            "evidence_locator": "Form 10-K, Item 7, Overview and Revenue; printed pages 44 and 47",
+            "event_date": null,
+            "source_url": "https://www.sec.gov/Archives/edgar/data/1561550/000156155025000025/ddog-20241231.htm",
+            "source_type": "SEC Form 10-K",
+            "evidence_text": "Datadog says customers expand usage as they expand public- and private-cloud workloads, describes host- and data-volume-based usage pricing, and warns that businesses may slow IT spending during economic uncertainty.",
+            "retrieved_on": "2026-09-24",
+            "retrieved_at": "2026-09-24T17:50:30+00:00",
+            "evidence_kind": "summary",
+            "evidence_quote": "We grow with our customers as they expand their workloads",
+            "artifact_path": "docs/research/source-artifacts/topology/datadog-2024-10k.html",
+            "artifact_sha256": "711ee14f238f3e12597a03d889b7d8c29785eee865e1cecd8e20e0578a67facf"
+          },
+          {
+            "publisher": "Snowflake Inc. / U.S. Securities and Exchange Commission",
+            "source_date": "2024-03-26",
+            "period_start": "2023-02-01",
+            "period_end": "2024-01-31",
+            "evidence_locator": "Form 10-K, Item 7, revenue model and customer consumption/macroeconomic risk discussion",
+            "event_date": null,
+            "source_url": "https://www.sec.gov/Archives/edgar/data/1640147/000164014724000101/snow-20240131.htm",
+            "source_type": "SEC Form 10-K",
+            "evidence_text": "Snowflake says most revenue comes from customer consumption of compute, storage, and data transfer, and warns that customers may rationalize budgets and optimize consumption amid macroeconomic uncertainty.",
+            "retrieved_on": "2026-09-24",
+            "retrieved_at": "2026-09-24T17:50:30+00:00",
+            "evidence_kind": "summary",
+            "evidence_quote": "customers may continue to optimize consumption, rationalize budgets",
+            "artifact_path": "docs/research/source-artifacts/topology/snowflake-fy2024-10k.html",
+            "artifact_sha256": "6c1f7dc96b0e484160a38025fcf2895a016a02a5f918ad5fb2250476e191a5a6"
+          }
+        ],
+        "alternative_or_unknown": "Revenue sensitivity may differ because Datadog's revenue is largely subscription-based while Snowflake recognizes most product revenue on consumption. No shared-customer evidence has been established. Revenue and stock-return co-movement remain untested, as do causal effects and effect size."
+      }
+    ]
+  },
   "financials": {
     "as_of": "2025-04-01",
     "policy_version": "sec-annual-earliest-filed-v1",
