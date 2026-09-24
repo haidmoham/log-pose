@@ -11,6 +11,7 @@
     const { node, append, link, title, metric, table } = globalScope.LogPoseUI;
     const inventoryYears = [...new Set(discovery.artifacts.map(artifact => artifact.year))]
       .sort((left, right) => left - right);
+    const partitionCache = new Map();
 
     function inventoryCoverage() {
       const panel = node('section', '', 'inventory-coverage');
@@ -20,6 +21,7 @@
         node('h3', `${inventoryYears[0]}–${inventoryYears.at(-1)} source snapshots`),
         node('p', `${discovery.artifacts.length} dated source files · ${rawRows.toLocaleString()} raw source rows · `
           + `${discovery.occurrences.length.toLocaleString()} tagged occurrences · `
+          + `${(rawRows - discovery.occurrences.length).toLocaleString()} untagged rows · `
           + `${discovery.candidates.length.toLocaleString()} candidate keys`, 'inventory-coverage-summary'));
       const years = node('div', '', 'inventory-year-grid');
       inventoryYears.forEach(year => {
@@ -40,8 +42,7 @@
     }
 
     function fullInventoryBrowser() {
-      const panel = node('details', '', 'full-inventory');
-      panel.append(node('summary', 'browse every source row, including untagged rows'));
+      const panel = node('section', '', 'full-inventory');
       const body = node('div', '', 'full-inventory-body');
       body.append(node('p', 'RAW DIRECTORY ROWS', 'eyebrow'),
         node('h3', 'inspect a pinned inventory'),
@@ -51,13 +52,16 @@
       source.setAttribute('aria-label', 'Pinned source and year');
       const artifacts = discovery.artifacts.slice().sort((left, right) =>
         right.year - left.year || left.source.localeCompare(right.source));
-      artifacts.forEach((artifact, index) => source.add(new Option(
+      artifacts.forEach(artifact => source.add(new Option(
         `${artifact.source.toUpperCase()} · ${artifact.year}${artifact.coverage_status === 'partial_year_snapshot' ? ' / partial' : ''}`,
-        String(index))));
+        `${artifact.source}-${artifact.year}`)));
+      source.value = artifacts.some(artifact => `${artifact.source}-${artifact.year}` === state.inventoryArtifact)
+        ? state.inventoryArtifact : `${artifacts[0].source}-${artifacts[0].year}`;
       const query = node('input');
       query.type = 'search';
       query.placeholder = 'Search this source snapshot';
       query.setAttribute('aria-label', 'Search all rows in selected source snapshot');
+      query.value = state.inventoryQuery;
       const status = node('p', '', 'muted');
       status.setAttribute('role', 'status');
       const results = node('div', '', 'full-inventory-results');
@@ -95,7 +99,7 @@
       }
 
       function loadRows() {
-        const artifact = artifacts[Number(source.value)];
+        const artifact = artifacts.find(item => `${item.source}-${item.year}` === source.value);
         if (!artifact) return;
         const currentRequest = ++request;
         loaded = null;
@@ -108,12 +112,20 @@
           return;
         }
         const path = `./discovery-inventory/${artifact.source}-${artifact.year}.json`;
-        fetch(path).then(response => {
+        const artifactKey = `${artifact.source}-${artifact.year}`;
+        const pending = partitionCache.get(artifactKey) || fetch(path).then(response => {
           if (!response.ok) throw new Error(`HTTP ${response.status}`);
           return response.json();
         }).then(partition => {
-          if (currentRequest !== request) return;
           model.validateInventoryPartition(artifact, partition);
+          return partition;
+        }).catch(error => {
+          partitionCache.delete(artifactKey);
+          throw error;
+        });
+        partitionCache.set(artifactKey, pending);
+        pending.then(partition => {
+          if (currentRequest !== request) return;
           loaded = partition;
           showRows();
         }).catch(error => {
@@ -126,15 +138,22 @@
         });
       }
 
-      source.addEventListener('change', loadRows);
-      query.addEventListener('input', () => { limit = 40; showRows(); });
-      panel.addEventListener('toggle', () => {
-        if (panel.open && !loaded) loadRows();
+      source.addEventListener('change', () => {
+        state.inventoryArtifact = source.value;
+        writeUrl();
+        loadRows();
+      });
+      query.addEventListener('input', () => {
+        state.inventoryQuery = query.value;
+        limit = 40;
+        showRows();
+        writeUrl(true);
       });
       controls.append(source, query);
       body.append(controls, status, results,
         node('p', 'One row records an item at a pinned source path. Listing does not verify a company, current operating status, U.S. location, or any relationship.', 'caveat'));
       panel.append(body);
+      loadRows();
       return panel;
     }
 
@@ -159,8 +178,8 @@
     }
 
     function renderSearch() {
-      root.append(title('03 / EXPLORE', 'explore evidence',
-        'filter dated inventory leads. open source records or selected company history.'),
+      root.append(title('01 / MARKET INVENTORY · 2020–2026', 'explore software sources',
+        'browse pinned source rows, including untagged listings. filter tagged leads below.'),
       inventoryCoverage(), fullInventoryBrowser());
 
       const controls = node('div', '', 'search-controls');
@@ -173,6 +192,7 @@
         state.query = query.value;
         state.searchLimit = 30;
         updateSearchResults();
+        writeUrl(true);
       });
       controls.append(query);
       const filters = node('div', '', 'search-filters');
@@ -182,19 +202,19 @@
       ['data_infrastructure', 'developer_tools', 'security_observability', 'ai_automation']
         .forEach(value => category.add(new Option(categoryName(value), value)));
       category.value = state.category;
-      category.addEventListener('change', () => { state.category = category.value; updateSearchResults(); });
+      category.addEventListener('change', () => { state.category = category.value; updateSearchResults(); writeUrl(); });
       const year = node('select');
       year.setAttribute('aria-label', 'Record year');
       year.add(new Option('All years', 'all'));
       inventoryYears.forEach(value => year.add(new Option('Record year ' + value, String(value))));
       year.value = state.searchYear;
-      year.addEventListener('change', () => { state.searchYear = year.value; updateSearchResults(); });
+      year.addEventListener('change', () => { state.searchYear = year.value; updateSearchResults(); writeUrl(); });
       const source = node('select');
       source.setAttribute('aria-label', 'Discovery source');
       [['all', 'All sources'], ['cncf', 'CNCF landscape'], ['lfai', 'LF AI & Data']]
         .forEach(([value, label]) => source.add(new Option(label, value)));
       source.value = state.searchSource;
-      source.addEventListener('change', () => { state.searchSource = source.value; updateSearchResults(); });
+      source.addEventListener('change', () => { state.searchSource = source.value; updateSearchResults(); writeUrl(); });
       const type = node('select');
       type.setAttribute('aria-label', 'Record type');
       [['all', 'All record types'], ['provider', 'Reviewed provider leads'],
@@ -203,14 +223,14 @@
         ['financial', 'SEC facts available']]
         .forEach(([value, label]) => type.add(new Option(label, value)));
       type.value = state.searchType;
-      type.addEventListener('change', () => { state.searchType = type.value; updateSearchResults(); });
+      type.addEventListener('change', () => { state.searchType = type.value; updateSearchResults(); writeUrl(); });
       const location = node('select');
       location.setAttribute('aria-label', 'U.S. location evidence');
       [['all', 'Any U.S. evidence'], ['documented', 'U.S. base documented'],
         ['unresolved', 'Location review unresolved']]
         .forEach(([value, label]) => location.add(new Option(label, value)));
       location.value = state.searchUs;
-      location.addEventListener('change', () => { state.searchUs = location.value; updateSearchResults(); });
+      location.addEventListener('change', () => { state.searchUs = location.value; updateSearchResults(); writeUrl(); });
       filters.append(category, year, source, type, location);
       root.append(controls, filters);
 
@@ -345,6 +365,20 @@
           .join(' ').toLocaleLowerCase().includes(term)));
     }
 
+    function pilotAvailableInSelectedYear(slug) {
+      if (state.searchYear === 'all') return true;
+      const year = Number(state.searchYear);
+      if (state.searchType === 'financing') {
+        return financingFor(slug).some(event => Number(event.announced_on.slice(0, 4)) === year);
+      }
+      if (state.searchType === 'financial') {
+        return data.financials.cells.some(cell => cell.slug === slug
+          && cell.year === year && cell.selected);
+      }
+      return data.evidence.some(cell => cell.slug === slug
+        && cell.year === year && cell.snapshot_id);
+    }
+
     function candidateDetail(candidate) {
       const section = node('section', '', 'candidate-detail');
       const review = identityReviewFor(candidate);
@@ -418,10 +452,7 @@
         financingMatches: matchingFinancing(item.slug, terms)
       })).filter(({ company: item, evidenceMatches, financingMatches }) =>
         (state.category === 'all' || item.category === state.category)
-        && (state.searchYear === 'all' || (state.searchType === 'financing'
-          ? financingFor(item.slug).some(event => Number(event.announced_on.slice(0, 4)) === Number(state.searchYear))
-          : data.evidence.some(cell => cell.slug === item.slug
-            && cell.year === Number(state.searchYear) && cell.snapshot_id)))
+        && pilotAvailableInSelectedYear(item.slug)
         && state.searchSource === 'all'
         && !['lead', 'provider'].includes(state.searchType)
         && (state.searchUs === 'all'

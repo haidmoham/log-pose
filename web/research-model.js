@@ -280,9 +280,9 @@
     return segments;
   }
 
-  function parseUrlState(search, validSlugs, years) {
+  function parseUrlState(search, validSlugs, years, artifacts = []) {
     const params = new URLSearchParams(search);
-    const view = VALID_VIEWS.has(params.get('view')) ? params.get('view') : 'overview';
+    const view = VALID_VIEWS.has(params.get('view')) ? params.get('view') : 'explore';
     const requestedYear = Number(params.get('year'));
     const year = years.includes(requestedYear) ? requestedYear : Math.max(...years);
     const company = validSlugs.has(params.get('company')) ? params.get('company') : null;
@@ -290,15 +290,40 @@
     for (const slug of (params.get('pinned') || '').split(',')) {
       if (validSlugs.has(slug) && !pinned.includes(slug) && pinned.length < MAX_PINNED) pinned.push(slug);
     }
-    return { view, year, company, pinned };
+    const inventoryArtifact = artifacts.includes(params.get('inventory'))
+      ? params.get('inventory') : artifacts[0] || null;
+    const searchYear = artifacts.some(artifact => artifact.endsWith('-' + params.get('recordYear')))
+      ? params.get('recordYear') : 'all';
+    const allowedSource = new Set(['all', 'cncf', 'lfai']);
+    const allowedType = new Set(['all', 'provider', 'lead', 'pilot', 'financing', 'financial']);
+    const allowedUs = new Set(['all', 'documented', 'unresolved']);
+    const allowedCategory = new Set(['all', 'data_infrastructure', 'developer_tools',
+      'security_observability', 'ai_automation']);
+    const choice = (name, allowed) => allowed.has(params.get(name)) ? params.get(name) : 'all';
+    return { view, year, company, pinned, inventoryArtifact,
+      inventoryQuery: (params.get('inventoryQuery') || '').slice(0, 200),
+      query: (params.get('q') || '').slice(0, 200), searchYear,
+      searchSource: choice('source', allowedSource), searchType: choice('type', allowedType),
+      searchUs: choice('us', allowedUs), category: choice('category', allowedCategory) };
   }
 
   function toUrlParams(state) {
     const params = new URLSearchParams();
-    if (state.view !== 'overview') params.set('view', state.view);
-    if (state.year) params.set('year', String(state.year));
+    if (state.view !== 'explore') params.set('view', state.view);
+    if (state.view !== 'explore' && state.year) params.set('year', String(state.year));
     if (state.company) params.set('company', state.company);
     if (state.compareSlugs.length) params.set('pinned', state.compareSlugs.join(','));
+    if (state.view === 'explore') {
+      if (state.inventoryArtifact && state.inventoryArtifact !== 'cncf-2026')
+        params.set('inventory', state.inventoryArtifact);
+      if (state.inventoryQuery) params.set('inventoryQuery', state.inventoryQuery);
+      if (state.query) params.set('q', state.query);
+      if (state.searchYear !== 'all') params.set('recordYear', state.searchYear);
+      if (state.searchSource !== 'all') params.set('source', state.searchSource);
+      if (state.searchType !== 'all') params.set('type', state.searchType);
+      if (state.searchUs !== 'all') params.set('us', state.searchUs);
+      if (state.category !== 'all') params.set('category', state.category);
+    }
     return params.toString();
   }
 

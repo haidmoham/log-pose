@@ -4,7 +4,9 @@ from pathlib import Path
 import yaml
 
 from log_pose.discovery import (EXPECTED_SHA256, EXTENDED_INVENTORY_YEARS, PINS, STUDY_YEARS, build_candidates,
-                                candidate_tags, link_pilot_candidates, parse_occurrences)
+                                candidate_tags, link_pilot_candidates, parse_occurrences,
+                                parse_inventory_rows)
+from log_pose.discovery_store import reconcile_source_rows
 from scripts.audit_discovery import CHALLENGE
 
 
@@ -116,6 +118,20 @@ def test_partitioned_inventory_exports_every_raw_directory_row():
         mapped_rows += sum(bool(row["candidate_tags"]) for row in partition["rows"])
         unmapped_rows += sum(not row["candidate_tags"] for row in partition["rows"])
     assert (raw_rows, mapped_rows, unmapped_rows) == (18076, 6096, 11980)
+
+
+def test_import_rejects_changed_parsed_rows_before_database_write():
+    export = json.loads(Path("web/discovery.json").read_text())
+    artifact = export["artifacts"][0]
+    raw = Path(artifact["artifact_path"]).read_bytes()
+    rows = parse_inventory_rows(raw, artifact)
+    mapped, _ = parse_occurrences(raw, artifact)
+    reconcile_source_rows(raw, artifact, rows, mapped)
+    changed = [dict(row) for row in rows]
+    changed[0]["name"] = "changed without updating the source"
+    import pytest
+    with pytest.raises(ValueError, match="inventory rows differ"):
+        reconcile_source_rows(raw, artifact, changed, mapped)
 
 
 def test_identity_review_covers_challenge_and_groups_weaviate_aliases():

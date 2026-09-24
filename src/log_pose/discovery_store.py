@@ -6,6 +6,19 @@ import hashlib
 from datetime import datetime
 from pathlib import Path
 
+from log_pose.discovery import parse_inventory_rows, parse_occurrences
+
+
+def reconcile_source_rows(raw: bytes, artifact: dict, inventory_rows: list[dict],
+                          mapped_rows: list[dict]) -> None:
+    """Check exported rows against the retained source before any database write."""
+    parsed_inventory = parse_inventory_rows(raw, artifact)
+    parsed_occurrences, source_count = parse_occurrences(raw, artifact)
+    if source_count != artifact["raw_item_count"] or parsed_inventory != inventory_rows:
+        raise ValueError(f"inventory rows differ from retained source: {artifact['source']} {artifact['year']}")
+    if parsed_occurrences != mapped_rows:
+        raise ValueError(f"mapped occurrences differ from retained source: {artifact['source']} {artifact['year']}")
+
 
 def store_discovery_extension(connection, index: dict, *, repository_root: Path) -> dict[str, int]:
     """Store all pinned raw artifacts, mapped leads, and unmapped directory rows.
@@ -39,6 +52,7 @@ def store_discovery_extension(connection, index: dict, *, repository_root: Path)
                 raise ValueError(f"inventory row count differs from source artifact: {path}")
             if len(mapped_rows) != artifact["mapped_occurrence_count"]:
                 raise ValueError(f"mapped occurrence count differs from source artifact: {path}")
+            reconcile_source_rows(raw, artifact, rows, mapped_rows)
             committed_at = datetime.fromisoformat(artifact["commit_at"].replace("Z", "+00:00"))
             artifact_values = (
                 digest, artifact["source"], artifact["repository"], artifact["year"],

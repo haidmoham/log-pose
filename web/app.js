@@ -4,8 +4,9 @@ const pinCount = document.querySelector('#pin-count');
 const model = window.LogPoseResearchModel;
 const { node, append, link, title, metric, table } = window.LogPoseUI;
 const seriesChart = (...args) => window.LogPoseUI.seriesChart(model, ...args);
-const state = { view: 'overview', year: 2024, category: 'all', query: '', company: null,
+const state = { view: 'explore', year: 2024, category: 'all', query: '', company: null,
   searchYear: 'all', searchSource: 'all', searchType: 'all', searchUs: 'all',
+  inventoryArtifact: 'cncf-2026', inventoryQuery: '',
   selectedCandidate: null, selectedProvider: null, searchLimit: 30, compareSlugs: [],
   topologySourceYear: 'all', topologyCategory: 'all', topologyStatus: 'all',
   topologyListLimit: 40, selectedClaim: null };
@@ -319,7 +320,7 @@ function sourceDetails() {
 }
 
 function renderOverview() {
-  root.append(title('01 / OVERVIEW', 'public-company comparison',
+  root.append(title('02 / SELECTED COMPANY RESEARCH · 2021–2024', 'public-company comparison',
     'select a company to inspect. pin up to four to compare.'));
   const inventoryYears = discovery.artifacts.map(artifact => artifact.year);
   const exploreEntry = node('section', '', 'overview-inventory-entry');
@@ -412,7 +413,7 @@ function compareEvidence(companies) {
 }
 
 function renderCompare() {
-  root.append(title('02 / COMPARE', 'compare companies',
+  root.append(title('03 / SELECTED COMPANY RESEARCH', 'compare companies',
     'review selected periods, filing trails, and dated source coverage.'));
   root.append(append(node('div', '', 'section-controls'), yearControl(),
     node('p', 'missing evidence is shown as missing, never as zero.', 'muted')), comparePicker());
@@ -457,14 +458,18 @@ tabs.forEach(button => button.addEventListener('click', () => {
     selectedCandidate: null, selectedProvider: null }, { top: true });
 }));
 
-window.addEventListener('popstate', () => {
+function routeState() {
   const slugs = new Set([...data.companies, ...(data.market_topology?.entities || data.market_topology?.nodes || [])]
     .map(company => company.slug));
-  const fromUrl = model.parseUrlState(location.search, slugs, data.years);
+  const artifacts = ['cncf-2026', ...discovery.artifacts.map(artifact => `${artifact.source}-${artifact.year}`)
+    .filter(key => key !== 'cncf-2026')];
+  return model.parseUrlState(location.search, slugs, data.years, artifacts);
+}
+
+window.addEventListener('popstate', () => {
+  const fromUrl = routeState();
   Object.assign(state, {
-    view: fromUrl.view,
-    year: fromUrl.year,
-    company: fromUrl.company,
+    ...fromUrl,
     compareSlugs: fromUrl.pinned
   });
   render();
@@ -494,13 +499,9 @@ Promise.all(['./dashboard.json', './discovery.json'].map(url =>
       money, financials, companyDetail, commitState, writeUrl, pinCount
     });
     topologyView = window.LogPoseTopology.create({ root, state, data, model, commitState });
-    const fromUrl = model.parseUrlState(location.search,
-      new Set([...pilot.companies, ...(pilot.market_topology?.entities || pilot.market_topology?.nodes || [])]
-        .map(company => company.slug)), pilot.years);
+    const fromUrl = routeState();
     Object.assign(state, {
-      view: fromUrl.view,
-      year: fromUrl.year,
-      company: fromUrl.company,
+      ...fromUrl,
       compareSlugs: fromUrl.pinned
     });
     tabs.forEach(button => { button.disabled = false; });

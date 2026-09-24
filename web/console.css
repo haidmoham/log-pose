@@ -575,6 +575,7 @@ footer { display: flex; justify-content: space-between; gap: 20px; padding: 18px
 .full-inventory-controls select, .full-inventory-controls input { min-height: 38px; border: 1px solid var(--rule-strong); padding: 7px 10px; color: var(--ink); background: var(--surface-cool); font-size: 11px; }
 .full-inventory-controls select { flex: 1 1 160px; }
 .full-inventory-controls input { flex: 3 1 240px; }
+.full-inventory-controls select:focus-visible, .full-inventory-controls input:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
 .full-inventory-results { display: grid; gap: 5px; }
 .full-inventory-row { padding: 11px 13px; border: 1px solid var(--rule); background: var(--surface-cool); }
 .full-inventory-row h4 { margin: 5px 0; font: 650 14px/1.2 var(--heading); }

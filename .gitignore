@@ -8,3 +8,4 @@ data/
 .codex/
 site/
 .env.local
+node_modules/

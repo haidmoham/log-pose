@@ -50,11 +50,27 @@ test('chart scale keeps a zero baseline and splits missing periods', () => {
 test('URL state validates routes, years, slugs, duplicates, and pin capacity', () => {
   const slugs = new Set(['a', 'b', 'c', 'd', 'e']);
   const state = model.parseUrlState('?view=compare&year=2023&company=b&pinned=a,b,a,c,d,e,nope', slugs, [2021, 2022, 2023, 2024]);
-  assert.deepEqual(state, {
-    view: 'compare', year: 2023, company: 'b', pinned: ['a', 'b', 'c', 'd']
-  });
-  assert.equal(model.parseUrlState('?view=unknown&year=1999', slugs, [2021, 2022]).view, 'overview');
+  assert.equal(state.view, 'compare');
+  assert.equal(state.year, 2023);
+  assert.equal(state.company, 'b');
+  assert.deepEqual(state.pinned, ['a', 'b', 'c', 'd']);
+  assert.equal(model.parseUrlState('?view=unknown&year=1999', slugs, [2021, 2022]).view, 'explore');
   assert.equal(model.parseUrlState('?view=topology', slugs, [2024]).view, 'topology');
+});
+
+test('market route keeps inventory controls separate from the SEC period', () => {
+  const artifacts = ['cncf-2026', 'cncf-2020', 'lfai-2020'];
+  const parsed = model.parseUrlState(
+    '?inventory=lfai-2020&inventoryQuery=untagged&q=vector&recordYear=2020&source=lfai&type=lead&category=data_infrastructure',
+    new Set(), [2021, 2022, 2023, 2024], artifacts);
+  assert.equal(parsed.view, 'explore');
+  assert.equal(parsed.year, 2024);
+  assert.equal(parsed.inventoryArtifact, 'lfai-2020');
+  assert.equal(parsed.inventoryQuery, 'untagged');
+  assert.equal(parsed.searchYear, '2020');
+  const url = model.toUrlParams({ ...parsed, compareSlugs: [] });
+  assert(!url.includes('year=2024'));
+  assert.deepEqual(model.parseUrlState('?' + url, new Set(), [2021, 2022, 2023, 2024], artifacts), parsed);
 });
 
 test('pinning is immutable and enforces the comparison cap', () => {

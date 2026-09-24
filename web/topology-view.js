@@ -307,7 +307,7 @@
     }
 
     function render() {
-      root.append(title('04 / TOPOLOGY', 'relationship claims',
+      root.append(title('04 / REVIEWED RELATIONSHIPS', 'relationship claims',
         'explore a bounded map of dated, source-backed claims. the map is a reading aid, not a market model.'));
       const visibleClaims = model.filterTopologyClaims(claims, {
         sourceYear: state.topologySourceYear,
