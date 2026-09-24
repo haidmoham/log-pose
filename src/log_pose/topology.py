@@ -219,16 +219,27 @@ def build_market_neighbor_queue(discovery: dict[str, Any], *, limit: int = 100,
     if limit < 1 or limit > 1000:
         raise ValueError("queue limit must be between 1 and 1000")
     candidates = load_discovery_candidates(discovery)
+    occurrences = {item["id"]: item for item in discovery["occurrences"]}
+    candidate_observations = {}
+    for candidate in candidates:
+        observations = set()
+        for occurrence_id in candidate["occurrence_ids"]:
+            occurrence = occurrences[occurrence_id]
+            category = occurrence["source_category"]
+            if occurrence.get("source_subcategory"):
+                category += f" / {occurrence['source_subcategory']}"
+            observations.add((occurrence["source"], occurrence["year"], category))
+        candidate_observations[candidate["id"]] = observations
     pairs: dict[tuple[str, str], dict[str, Any]] = {}
     for first_index, first in enumerate(candidates):
-        first_categories = set(first["source_categories"])
-        first_years = set(first["observed_years"])
         for second in candidates[first_index + 1:]:
-            shared_categories = sorted(first_categories & set(second["source_categories"]))
-            shared_years = sorted(first_years & set(second["observed_years"]))
-            shared_sources = sorted(set(first.get("sources", [])) & set(second.get("sources", [])))
-            if not shared_categories or not shared_years or not shared_sources:
+            shared_observations = (candidate_observations[first["id"]]
+                                   & candidate_observations[second["id"]])
+            if not shared_observations:
                 continue
+            shared_categories = sorted({category for _, _, category in shared_observations})
+            shared_years = sorted({year for _, year, _ in shared_observations})
+            shared_sources = sorted({source for source, _, _ in shared_observations})
             left, right = sorted((first["id"], second["id"]))
             key = (left, right)
             pairs[key] = {
@@ -240,7 +251,7 @@ def build_market_neighbor_queue(discovery: dict[str, Any], *, limit: int = 100,
                 "shared_source_categories": shared_categories,
                 "shared_inventory_years": shared_years,
                 "shared_inventory_sources": shared_sources,
-                "source_year_strata": [f"{source}:{year}" for source in shared_sources for year in shared_years],
+                "source_year_strata": sorted({f"{source}:{year}" for source, year, _ in shared_observations}),
                 "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
                 "claim": None,
                 "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",

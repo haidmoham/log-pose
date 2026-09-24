@@ -89,6 +89,32 @@ def test_discovery_queue_is_bounded_reproducible_and_never_a_claim():
     }
 
 
+def test_discovery_queue_requires_category_overlap_in_the_same_source_and_year():
+    discovery = json.loads((ROOT / "web/discovery.json").read_text())
+    queue = build_market_neighbor_queue(discovery, limit=100)
+    candidates = {item["id"]: item for item in discovery["candidates"]}
+    occurrences = {item["id"]: item for item in discovery["occurrences"]}
+
+    def observations(candidate_id):
+        result = set()
+        for occurrence_id in candidates[candidate_id]["occurrence_ids"]:
+            occurrence = occurrences[occurrence_id]
+            category = occurrence["source_category"]
+            if occurrence.get("source_subcategory"):
+                category += f" / {occurrence['source_subcategory']}"
+            result.add((occurrence["source"], occurrence["year"], category))
+        return result
+
+    for pair in queue["pairs"]:
+        shared = (observations(pair["subject_candidate_id"])
+                  & observations(pair["object_candidate_id"]))
+        assert shared
+        assert pair["shared_source_categories"] == sorted({category for _, _, category in shared})
+        assert pair["shared_inventory_years"] == sorted({year for _, year, _ in shared})
+        assert pair["shared_inventory_sources"] == sorted({source for source, _, _ in shared})
+        assert pair["source_year_strata"] == sorted({f"{source}:{year}" for source, year, _ in shared})
+
+
 def test_source_capture_uses_manifest_time_not_checkout_file_mtime(tmp_path):
     import hashlib
 

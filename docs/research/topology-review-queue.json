@@ -4,7 +4,7 @@
   "source_mapping_version": "landscape-category-candidates-v1",
   "universe_status": "discovery_leads_unreviewed_for_us_company_eligibility",
   "candidate_entity_count": 1091,
-  "possible_pair_count": 36711,
+  "possible_pair_count": 36630,
   "queue_limit": 100,
   "random_seed": 20260924,
   "priority_selection_count": 50,
@@ -1519,82 +1519,22 @@
       "selection_method": "highest_shared_category_and_year_overlap"
     },
     {
-      "id": "inventory-overlap-b014fa3634f7a85de445-e9257c99d12a9f7b0c7f",
-      "subject_candidate_id": "b014fa3634f7a85de445",
-      "object_candidate_id": "e9257c99d12a9f7b0c7f",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "Observability and Analysis / Observability"
-      ],
-      "shared_inventory_years": [
-        2021,
-        2022,
-        2023,
-        2024
-      ],
-      "shared_inventory_sources": [
-        "cncf"
-      ],
-      "source_year_strata": [
-        "cncf:2021",
-        "cncf:2022",
-        "cncf:2023",
-        "cncf:2024"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "source_year_stratified_sample"
-    },
-    {
-      "id": "inventory-overlap-2f505f12e253a06e800d-4243cd8164765bf57f7b",
-      "subject_candidate_id": "2f505f12e253a06e800d",
-      "object_candidate_id": "4243cd8164765bf57f7b",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "Runtime / Cloud Native Storage"
-      ],
-      "shared_inventory_years": [
-        2021,
-        2022,
-        2023,
-        2024
-      ],
-      "shared_inventory_sources": [
-        "cncf"
-      ],
-      "source_year_strata": [
-        "cncf:2021",
-        "cncf:2022",
-        "cncf:2023",
-        "cncf:2024"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "source_year_stratified_sample"
-    },
-    {
-      "id": "inventory-overlap-6604670f2a805b3ffa66-9bb0127e90ec33ada2ae",
-      "subject_candidate_id": "6604670f2a805b3ffa66",
-      "object_candidate_id": "9bb0127e90ec33ada2ae",
+      "id": "inventory-overlap-70814356f1f68f7bbb3b-f4f57a0a917225f66b57",
+      "subject_candidate_id": "70814356f1f68f7bbb3b",
+      "object_candidate_id": "f4f57a0a917225f66b57",
       "candidate_kind": "inventory_category_overlap",
       "status": "needs_company_identity_and_relation_evidence",
       "shared_source_categories": [
         "Provisioning / Security & Compliance"
       ],
       "shared_inventory_years": [
-        2022,
-        2023
+        2021
       ],
       "shared_inventory_sources": [
         "cncf"
       ],
       "source_year_strata": [
-        "cncf:2022",
-        "cncf:2023"
+        "cncf:2021"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
@@ -1602,9 +1542,65 @@
       "selection_method": "source_year_stratified_sample"
     },
     {
-      "id": "inventory-overlap-03d7b75e98317192b791-e7680d6ac021cd79e4d7",
-      "subject_candidate_id": "03d7b75e98317192b791",
-      "object_candidate_id": "e7680d6ac021cd79e4d7",
+      "id": "inventory-overlap-af67823de1a549a292d5-dbeb1d7d507f307cb5a9",
+      "subject_candidate_id": "af67823de1a549a292d5",
+      "object_candidate_id": "dbeb1d7d507f307cb5a9",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "App Definition and Development / Database"
+      ],
+      "shared_inventory_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "shared_inventory_sources": [
+        "cncf"
+      ],
+      "source_year_strata": [
+        "cncf:2021",
+        "cncf:2022",
+        "cncf:2023",
+        "cncf:2024"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "source_year_stratified_sample"
+    },
+    {
+      "id": "inventory-overlap-74f8c095536f02de679a-c5f73a888ab9062b18fa",
+      "subject_candidate_id": "74f8c095536f02de679a",
+      "object_candidate_id": "c5f73a888ab9062b18fa",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "App Definition and Development / Streaming & Messaging"
+      ],
+      "shared_inventory_years": [
+        2022,
+        2023,
+        2024
+      ],
+      "shared_inventory_sources": [
+        "cncf"
+      ],
+      "source_year_strata": [
+        "cncf:2022",
+        "cncf:2023",
+        "cncf:2024"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "source_year_stratified_sample"
+    },
+    {
+      "id": "inventory-overlap-2df15fe8eb4541b17ad2-456cdfb6cc39f6591ac6",
+      "subject_candidate_id": "2df15fe8eb4541b17ad2",
+      "object_candidate_id": "456cdfb6cc39f6591ac6",
       "candidate_kind": "inventory_category_overlap",
       "status": "needs_company_identity_and_relation_evidence",
       "shared_source_categories": [
@@ -1612,6 +1608,8 @@
         "Observability and Analysis / Observability"
       ],
       "shared_inventory_years": [
+        2021,
+        2022,
         2023,
         2024
       ],
@@ -1619,6 +1617,8 @@
         "cncf"
       ],
       "source_year_strata": [
+        "cncf:2021",
+        "cncf:2022",
         "cncf:2023",
         "cncf:2024"
       ],
@@ -1628,13 +1628,13 @@
       "selection_method": "source_year_stratified_sample"
     },
     {
-      "id": "inventory-overlap-0645065265fc3e0de88c-e21278dece72ba13a566",
-      "subject_candidate_id": "0645065265fc3e0de88c",
-      "object_candidate_id": "e21278dece72ba13a566",
+      "id": "inventory-overlap-565690d11ec9083316ca-5d3b0ba92cf71300a4c7",
+      "subject_candidate_id": "565690d11ec9083316ca",
+      "object_candidate_id": "5d3b0ba92cf71300a4c7",
       "candidate_kind": "inventory_category_overlap",
       "status": "needs_company_identity_and_relation_evidence",
       "shared_source_categories": [
-        "Machine Learning / Platform"
+        "Model / Workflow"
       ],
       "shared_inventory_years": [
         2021,
@@ -1657,13 +1657,13 @@
       "selection_method": "source_year_stratified_sample"
     },
     {
-      "id": "inventory-overlap-1dd2c02837970efded85-333342b4cc958c41193f",
-      "subject_candidate_id": "1dd2c02837970efded85",
-      "object_candidate_id": "333342b4cc958c41193f",
+      "id": "inventory-overlap-41a42b426805699b10a2-6342360ccdbec1eafc34",
+      "subject_candidate_id": "41a42b426805699b10a2",
+      "object_candidate_id": "6342360ccdbec1eafc34",
       "candidate_kind": "inventory_category_overlap",
       "status": "needs_company_identity_and_relation_evidence",
       "shared_source_categories": [
-        "Reinforcement Learning / Reinforcement Learning"
+        "Machine Learning / Library"
       ],
       "shared_inventory_years": [
         2021,
@@ -1686,15 +1686,16 @@
       "selection_method": "source_year_stratified_sample"
     },
     {
-      "id": "inventory-overlap-2f43efef46b898846761-8460e647e5a4f5436eb9",
-      "subject_candidate_id": "2f43efef46b898846761",
-      "object_candidate_id": "8460e647e5a4f5436eb9",
+      "id": "inventory-overlap-51c2fa82df65085ddab7-fd394545b0983a74e6e2",
+      "subject_candidate_id": "51c2fa82df65085ddab7",
+      "object_candidate_id": "fd394545b0983a74e6e2",
       "candidate_kind": "inventory_category_overlap",
       "status": "needs_company_identity_and_relation_evidence",
       "shared_source_categories": [
-        "Data / Store & Format"
+        "Data / Feature Engineering"
       ],
       "shared_inventory_years": [
+        2021,
         2022,
         2023,
         2024
@@ -1703,6 +1704,7 @@
         "lfai"
       ],
       "source_year_strata": [
+        "lfai:2021",
         "lfai:2022",
         "lfai:2023",
         "lfai:2024"
@@ -1713,9 +1715,9 @@
       "selection_method": "source_year_stratified_sample"
     },
     {
-      "id": "inventory-overlap-05f2126d0c8e34e6ba11-dcb8d50d0eea1e9aa5ec",
-      "subject_candidate_id": "05f2126d0c8e34e6ba11",
-      "object_candidate_id": "dcb8d50d0eea1e9aa5ec",
+      "id": "inventory-overlap-730e778c8205b5784682-b1316cc01aec7b0fab9d",
+      "subject_candidate_id": "730e778c8205b5784682",
+      "object_candidate_id": "b1316cc01aec7b0fab9d",
       "candidate_kind": "inventory_category_overlap",
       "status": "needs_company_identity_and_relation_evidence",
       "shared_source_categories": [
@@ -1742,8 +1744,67 @@
       "selection_method": "source_year_stratified_sample"
     },
     {
-      "id": "inventory-overlap-08778cfad808511a1026-b014fa3634f7a85de445",
-      "subject_candidate_id": "08778cfad808511a1026",
+      "id": "inventory-overlap-633eb48dd6ce5a709a87-f4e204d64cab102800ee",
+      "subject_candidate_id": "633eb48dd6ce5a709a87",
+      "object_candidate_id": "f4e204d64cab102800ee",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "Provisioning / Security & Compliance"
+      ],
+      "shared_inventory_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "shared_inventory_sources": [
+        "cncf"
+      ],
+      "source_year_strata": [
+        "cncf:2021",
+        "cncf:2022",
+        "cncf:2023",
+        "cncf:2024"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "source_year_stratified_sample"
+    },
+    {
+      "id": "inventory-overlap-3dc442fc475e4311a525-c20958fae904691baf6f",
+      "subject_candidate_id": "3dc442fc475e4311a525",
+      "object_candidate_id": "c20958fae904691baf6f",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "Observability and Analysis / Observability",
+        "Observability and Analysis / Tracing"
+      ],
+      "shared_inventory_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "shared_inventory_sources": [
+        "cncf"
+      ],
+      "source_year_strata": [
+        "cncf:2021",
+        "cncf:2022",
+        "cncf:2023",
+        "cncf:2024"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "source_year_stratified_sample"
+    },
+    {
+      "id": "inventory-overlap-60cf7bff317239823cee-b014fa3634f7a85de445",
+      "subject_candidate_id": "60cf7bff317239823cee",
       "object_candidate_id": "b014fa3634f7a85de445",
       "candidate_kind": "inventory_category_overlap",
       "status": "needs_company_identity_and_relation_evidence",
@@ -1772,25 +1833,21 @@
       "selection_method": "source_year_stratified_sample"
     },
     {
-      "id": "inventory-overlap-25f0cdb284e7865eed2a-a76ce7d956bcbd8f3f3f",
-      "subject_candidate_id": "25f0cdb284e7865eed2a",
-      "object_candidate_id": "a76ce7d956bcbd8f3f3f",
+      "id": "inventory-overlap-8020cda364c2d6d1e53e-866c851860c664d1cb6b",
+      "subject_candidate_id": "8020cda364c2d6d1e53e",
+      "object_candidate_id": "866c851860c664d1cb6b",
       "candidate_kind": "inventory_category_overlap",
       "status": "needs_company_identity_and_relation_evidence",
       "shared_source_categories": [
-        "Provisioning / Security & Compliance"
+        "CNAI / Model/LLM Observability"
       ],
       "shared_inventory_years": [
-        2022,
-        2023,
         2024
       ],
       "shared_inventory_sources": [
         "cncf"
       ],
       "source_year_strata": [
-        "cncf:2022",
-        "cncf:2023",
         "cncf:2024"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
@@ -1799,669 +1856,25 @@
       "selection_method": "source_year_stratified_sample"
     },
     {
-      "id": "inventory-overlap-053991422a3031f1e93b-1a61e31f01488b55a780",
-      "subject_candidate_id": "053991422a3031f1e93b",
-      "object_candidate_id": "1a61e31f01488b55a780",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "Observability and Analysis / Observability"
-      ],
-      "shared_inventory_years": [
-        2023,
-        2024
-      ],
-      "shared_inventory_sources": [
-        "cncf"
-      ],
-      "source_year_strata": [
-        "cncf:2023",
-        "cncf:2024"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "source_year_stratified_sample"
-    },
-    {
-      "id": "inventory-overlap-6402c81e10c5e8328893-ceca587bab766c2a054b",
-      "subject_candidate_id": "6402c81e10c5e8328893",
-      "object_candidate_id": "ceca587bab766c2a054b",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "Runtime / Cloud Native Storage"
-      ],
-      "shared_inventory_years": [
-        2022,
-        2023,
-        2024
-      ],
-      "shared_inventory_sources": [
-        "cncf"
-      ],
-      "source_year_strata": [
-        "cncf:2022",
-        "cncf:2023",
-        "cncf:2024"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "source_year_stratified_sample"
-    },
-    {
-      "id": "inventory-overlap-1719ed103e4378608cb2-5d7bf068ea8c6de07c84",
-      "subject_candidate_id": "1719ed103e4378608cb2",
-      "object_candidate_id": "5d7bf068ea8c6de07c84",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "Model / Tool"
-      ],
-      "shared_inventory_years": [
-        2021,
-        2022,
-        2023,
-        2024
-      ],
-      "shared_inventory_sources": [
-        "lfai"
-      ],
-      "source_year_strata": [
-        "lfai:2021",
-        "lfai:2022",
-        "lfai:2023",
-        "lfai:2024"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "source_year_stratified_sample"
-    },
-    {
-      "id": "inventory-overlap-2f43efef46b898846761-7dff23fb106aa9ee6d25",
-      "subject_candidate_id": "2f43efef46b898846761",
-      "object_candidate_id": "7dff23fb106aa9ee6d25",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "Data / Store & Format"
-      ],
-      "shared_inventory_years": [
-        2022,
-        2023,
-        2024
-      ],
-      "shared_inventory_sources": [
-        "lfai"
-      ],
-      "source_year_strata": [
-        "lfai:2022",
-        "lfai:2023",
-        "lfai:2024"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "source_year_stratified_sample"
-    },
-    {
-      "id": "inventory-overlap-3abff3d85310ac850d9d-752ae5f3231651c1284e",
-      "subject_candidate_id": "3abff3d85310ac850d9d",
-      "object_candidate_id": "752ae5f3231651c1284e",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "Machine Learning / Library"
-      ],
-      "shared_inventory_years": [
-        2021,
-        2022,
-        2023,
-        2024
-      ],
-      "shared_inventory_sources": [
-        "lfai"
-      ],
-      "source_year_strata": [
-        "lfai:2021",
-        "lfai:2022",
-        "lfai:2023",
-        "lfai:2024"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "source_year_stratified_sample"
-    },
-    {
-      "id": "inventory-overlap-0a9b17c2d25edd9275b7-ecb49eb34177ec92909d",
-      "subject_candidate_id": "0a9b17c2d25edd9275b7",
-      "object_candidate_id": "ecb49eb34177ec92909d",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "Deep Learning / Framework"
-      ],
-      "shared_inventory_years": [
-        2021,
-        2022,
-        2023,
-        2024
-      ],
-      "shared_inventory_sources": [
-        "lfai"
-      ],
-      "source_year_strata": [
-        "lfai:2021",
-        "lfai:2022",
-        "lfai:2023",
-        "lfai:2024"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "source_year_stratified_sample"
-    },
-    {
-      "id": "inventory-overlap-bbdc82f459caaf60d4ff-e9257c99d12a9f7b0c7f",
-      "subject_candidate_id": "bbdc82f459caaf60d4ff",
-      "object_candidate_id": "e9257c99d12a9f7b0c7f",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "Observability and Analysis / Observability"
-      ],
-      "shared_inventory_years": [
-        2021,
-        2022,
-        2023,
-        2024
-      ],
-      "shared_inventory_sources": [
-        "cncf"
-      ],
-      "source_year_strata": [
-        "cncf:2021",
-        "cncf:2022",
-        "cncf:2023",
-        "cncf:2024"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "source_year_stratified_sample"
-    },
-    {
-      "id": "inventory-overlap-23604e5be3bdd3bd14c1-cc3b34959973e678aacf",
-      "subject_candidate_id": "23604e5be3bdd3bd14c1",
-      "object_candidate_id": "cc3b34959973e678aacf",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "App Definition and Development / Database"
-      ],
-      "shared_inventory_years": [
-        2022,
-        2023,
-        2024
-      ],
-      "shared_inventory_sources": [
-        "cncf"
-      ],
-      "source_year_strata": [
-        "cncf:2022",
-        "cncf:2023",
-        "cncf:2024"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "source_year_stratified_sample"
-    },
-    {
-      "id": "inventory-overlap-b8224b83da54fda5a648-f833a19c0fa5c1f5c8b0",
-      "subject_candidate_id": "b8224b83da54fda5a648",
-      "object_candidate_id": "f833a19c0fa5c1f5c8b0",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "App Definition and Development / Database"
-      ],
-      "shared_inventory_years": [
-        2023
-      ],
-      "shared_inventory_sources": [
-        "cncf"
-      ],
-      "source_year_strata": [
-        "cncf:2023"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "source_year_stratified_sample"
-    },
-    {
-      "id": "inventory-overlap-380b272781cd8c99e72d-d3f5b95015193d81993d",
-      "subject_candidate_id": "380b272781cd8c99e72d",
-      "object_candidate_id": "d3f5b95015193d81993d",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "Observability and Analysis / Observability"
-      ],
-      "shared_inventory_years": [
-        2022,
-        2023,
-        2024
-      ],
-      "shared_inventory_sources": [
-        "cncf"
-      ],
-      "source_year_strata": [
-        "cncf:2022",
-        "cncf:2023",
-        "cncf:2024"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "source_year_stratified_sample"
-    },
-    {
-      "id": "inventory-overlap-d0a782423582785d9074-e21278dece72ba13a566",
-      "subject_candidate_id": "d0a782423582785d9074",
-      "object_candidate_id": "e21278dece72ba13a566",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "Machine Learning / Platform"
-      ],
-      "shared_inventory_years": [
-        2021,
-        2022,
-        2023,
-        2024
-      ],
-      "shared_inventory_sources": [
-        "lfai"
-      ],
-      "source_year_strata": [
-        "lfai:2021",
-        "lfai:2022",
-        "lfai:2023",
-        "lfai:2024"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "source_year_stratified_sample"
-    },
-    {
-      "id": "inventory-overlap-5280b39f05a6f1769ee4-8fd9508f82517e7445e1",
-      "subject_candidate_id": "5280b39f05a6f1769ee4",
-      "object_candidate_id": "8fd9508f82517e7445e1",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "Model / Tool"
-      ],
-      "shared_inventory_years": [
-        2021,
-        2022,
-        2023,
-        2024
-      ],
-      "shared_inventory_sources": [
-        "lfai"
-      ],
-      "source_year_strata": [
-        "lfai:2021",
-        "lfai:2022",
-        "lfai:2023",
-        "lfai:2024"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "source_year_stratified_sample"
-    },
-    {
-      "id": "inventory-overlap-bb8f01ae24b31de86217-ea334b4c4010098a0e08",
-      "subject_candidate_id": "bb8f01ae24b31de86217",
-      "object_candidate_id": "ea334b4c4010098a0e08",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "Data / Store & Format"
-      ],
-      "shared_inventory_years": [
-        2021,
-        2022,
-        2023,
-        2024
-      ],
-      "shared_inventory_sources": [
-        "lfai"
-      ],
-      "source_year_strata": [
-        "lfai:2021",
-        "lfai:2022",
-        "lfai:2023",
-        "lfai:2024"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "source_year_stratified_sample"
-    },
-    {
-      "id": "inventory-overlap-0ccaeabe25d2663f4edc-debe1b165887cef1a3c5",
-      "subject_candidate_id": "0ccaeabe25d2663f4edc",
-      "object_candidate_id": "debe1b165887cef1a3c5",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "Machine Learning / Library"
-      ],
-      "shared_inventory_years": [
-        2021,
-        2022,
-        2023,
-        2024
-      ],
-      "shared_inventory_sources": [
-        "lfai"
-      ],
-      "source_year_strata": [
-        "lfai:2021",
-        "lfai:2022",
-        "lfai:2023",
-        "lfai:2024"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "source_year_stratified_sample"
-    },
-    {
-      "id": "inventory-overlap-70814356f1f68f7bbb3b-a76ce7d956bcbd8f3f3f",
-      "subject_candidate_id": "70814356f1f68f7bbb3b",
-      "object_candidate_id": "a76ce7d956bcbd8f3f3f",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "Provisioning / Security & Compliance"
-      ],
-      "shared_inventory_years": [
-        2021
-      ],
-      "shared_inventory_sources": [
-        "cncf"
-      ],
-      "source_year_strata": [
-        "cncf:2021"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "source_year_stratified_sample"
-    },
-    {
-      "id": "inventory-overlap-792578f5d2f4937f6ff9-afc12acec52518ed901f",
-      "subject_candidate_id": "792578f5d2f4937f6ff9",
-      "object_candidate_id": "afc12acec52518ed901f",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "App Definition and Development / Database"
-      ],
-      "shared_inventory_years": [
-        2023,
-        2024
-      ],
-      "shared_inventory_sources": [
-        "cncf"
-      ],
-      "source_year_strata": [
-        "cncf:2023",
-        "cncf:2024"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "deterministic_random_sample"
-    },
-    {
-      "id": "inventory-overlap-c90c5b5127ba83923bad-d6eb75dd78b60b9c8830",
-      "subject_candidate_id": "c90c5b5127ba83923bad",
-      "object_candidate_id": "d6eb75dd78b60b9c8830",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "App Definition and Development / Database"
-      ],
-      "shared_inventory_years": [
-        2021,
-        2022,
-        2023,
-        2024
-      ],
-      "shared_inventory_sources": [
-        "cncf"
-      ],
-      "source_year_strata": [
-        "cncf:2021",
-        "cncf:2022",
-        "cncf:2023",
-        "cncf:2024"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "deterministic_random_sample"
-    },
-    {
-      "id": "inventory-overlap-83e316271faf8b9cfaad-dad84438921fd9a4de50",
-      "subject_candidate_id": "83e316271faf8b9cfaad",
-      "object_candidate_id": "dad84438921fd9a4de50",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "Provisioning / Security & Compliance"
-      ],
-      "shared_inventory_years": [
-        2021,
-        2022,
-        2023,
-        2024
-      ],
-      "shared_inventory_sources": [
-        "cncf"
-      ],
-      "source_year_strata": [
-        "cncf:2021",
-        "cncf:2022",
-        "cncf:2023",
-        "cncf:2024"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "deterministic_random_sample"
-    },
-    {
-      "id": "inventory-overlap-1078874d57991f964ba7-750b8042ff191a835a36",
-      "subject_candidate_id": "1078874d57991f964ba7",
-      "object_candidate_id": "750b8042ff191a835a36",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "App Definition and Development / Application Definition & Image Build"
-      ],
-      "shared_inventory_years": [
-        2021,
-        2022
-      ],
-      "shared_inventory_sources": [
-        "cncf"
-      ],
-      "source_year_strata": [
-        "cncf:2021",
-        "cncf:2022"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "deterministic_random_sample"
-    },
-    {
-      "id": "inventory-overlap-0645065265fc3e0de88c-b79b511fafb10b076483",
-      "subject_candidate_id": "0645065265fc3e0de88c",
-      "object_candidate_id": "b79b511fafb10b076483",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "Machine Learning / Platform"
-      ],
-      "shared_inventory_years": [
-        2021,
-        2022,
-        2023,
-        2024
-      ],
-      "shared_inventory_sources": [
-        "lfai"
-      ],
-      "source_year_strata": [
-        "lfai:2021",
-        "lfai:2022",
-        "lfai:2023",
-        "lfai:2024"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "deterministic_random_sample"
-    },
-    {
-      "id": "inventory-overlap-067da58dfc2529bcf64b-172c379611b08a792ffe",
-      "subject_candidate_id": "067da58dfc2529bcf64b",
-      "object_candidate_id": "172c379611b08a792ffe",
+      "id": "inventory-overlap-19b24baff0e7829dc899-71992bc3bedc003b0f8d",
+      "subject_candidate_id": "19b24baff0e7829dc899",
+      "object_candidate_id": "71992bc3bedc003b0f8d",
       "candidate_kind": "inventory_category_overlap",
       "status": "needs_company_identity_and_relation_evidence",
       "shared_source_categories": [
         "Model / Workflow"
       ],
       "shared_inventory_years": [
-        2021
-      ],
-      "shared_inventory_sources": [
-        "lfai"
-      ],
-      "source_year_strata": [
-        "lfai:2021"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "deterministic_random_sample"
-    },
-    {
-      "id": "inventory-overlap-008f15fb016e197095c7-26a96adeaca587b96399",
-      "subject_candidate_id": "008f15fb016e197095c7",
-      "object_candidate_id": "26a96adeaca587b96399",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "Observability and Analysis / Observability"
-      ],
-      "shared_inventory_years": [
         2021,
         2022,
         2023,
         2024
       ],
       "shared_inventory_sources": [
-        "cncf"
-      ],
-      "source_year_strata": [
-        "cncf:2021",
-        "cncf:2022",
-        "cncf:2023",
-        "cncf:2024"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "deterministic_random_sample"
-    },
-    {
-      "id": "inventory-overlap-3078d0a975020d90460e-457add637134a9da3110",
-      "subject_candidate_id": "3078d0a975020d90460e",
-      "object_candidate_id": "457add637134a9da3110",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "Observability and Analysis / Observability"
-      ],
-      "shared_inventory_years": [
-        2024
-      ],
-      "shared_inventory_sources": [
-        "cncf"
-      ],
-      "source_year_strata": [
-        "cncf:2024"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "deterministic_random_sample"
-    },
-    {
-      "id": "inventory-overlap-0daece52e0ae83d894f9-47196a62b41ee1976421",
-      "subject_candidate_id": "0daece52e0ae83d894f9",
-      "object_candidate_id": "47196a62b41ee1976421",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "Data / Store & Format"
-      ],
-      "shared_inventory_years": [
-        2024
-      ],
-      "shared_inventory_sources": [
         "lfai"
       ],
       "source_year_strata": [
-        "lfai:2024"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "deterministic_random_sample"
-    },
-    {
-      "id": "inventory-overlap-1fcbed11562834bb5a31-58dede10b192e48000a4",
-      "subject_candidate_id": "1fcbed11562834bb5a31",
-      "object_candidate_id": "58dede10b192e48000a4",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "Reinforcement Learning / Reinforcement Learning"
-      ],
-      "shared_inventory_years": [
-        2022,
-        2023,
-        2024
-      ],
-      "shared_inventory_sources": [
-        "lfai"
-      ],
-      "source_year_strata": [
+        "lfai:2021",
         "lfai:2022",
         "lfai:2023",
         "lfai:2024"
@@ -2469,80 +1882,11 @@
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
       "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "deterministic_random_sample"
+      "selection_method": "source_year_stratified_sample"
     },
     {
-      "id": "inventory-overlap-3d3aae5607b3449b2463-d90a302e75c089bb6855",
-      "subject_candidate_id": "3d3aae5607b3449b2463",
-      "object_candidate_id": "d90a302e75c089bb6855",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "Provisioning / Security & Compliance"
-      ],
-      "shared_inventory_years": [
-        2022
-      ],
-      "shared_inventory_sources": [
-        "cncf"
-      ],
-      "source_year_strata": [
-        "cncf:2022"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "deterministic_random_sample"
-    },
-    {
-      "id": "inventory-overlap-4cc3dc68fb618a78569a-6bcfda200ae40f84fd82",
-      "subject_candidate_id": "4cc3dc68fb618a78569a",
-      "object_candidate_id": "6bcfda200ae40f84fd82",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "Provisioning / Security & Compliance"
-      ],
-      "shared_inventory_years": [
-        2024
-      ],
-      "shared_inventory_sources": [
-        "cncf"
-      ],
-      "source_year_strata": [
-        "cncf:2024"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "deterministic_random_sample"
-    },
-    {
-      "id": "inventory-overlap-86c78ded3269e73f7b35-d9042252bd448a97692f",
-      "subject_candidate_id": "86c78ded3269e73f7b35",
-      "object_candidate_id": "d9042252bd448a97692f",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "Observability and Analysis / Observability"
-      ],
-      "shared_inventory_years": [
-        2024
-      ],
-      "shared_inventory_sources": [
-        "cncf"
-      ],
-      "source_year_strata": [
-        "cncf:2024"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "deterministic_random_sample"
-    },
-    {
-      "id": "inventory-overlap-2fd1588bf140a638ab21-effde5e270335beafc34",
-      "subject_candidate_id": "2fd1588bf140a638ab21",
+      "id": "inventory-overlap-4f41f68387145a22bbe7-effde5e270335beafc34",
+      "subject_candidate_id": "4f41f68387145a22bbe7",
       "object_candidate_id": "effde5e270335beafc34",
       "candidate_kind": "inventory_category_overlap",
       "status": "needs_company_identity_and_relation_evidence",
@@ -2567,34 +1911,176 @@
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
       "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "deterministic_random_sample"
+      "selection_method": "source_year_stratified_sample"
     },
     {
-      "id": "inventory-overlap-4e4ad368a0c8837223fb-77a756e308b68b530df6",
-      "subject_candidate_id": "4e4ad368a0c8837223fb",
-      "object_candidate_id": "77a756e308b68b530df6",
+      "id": "inventory-overlap-3dd5b2ca30b8da3c1590-fe63b698ba312b209c1e",
+      "subject_candidate_id": "3dd5b2ca30b8da3c1590",
+      "object_candidate_id": "fe63b698ba312b209c1e",
       "candidate_kind": "inventory_category_overlap",
       "status": "needs_company_identity_and_relation_evidence",
       "shared_source_categories": [
-        "CNAI / Distributed Training"
+        "Machine Learning / Library"
       ],
       "shared_inventory_years": [
+        2023,
+        2024
+      ],
+      "shared_inventory_sources": [
+        "lfai"
+      ],
+      "source_year_strata": [
+        "lfai:2023",
+        "lfai:2024"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "source_year_stratified_sample"
+    },
+    {
+      "id": "inventory-overlap-067da58dfc2529bcf64b-fe94868553f59949b2f0",
+      "subject_candidate_id": "067da58dfc2529bcf64b",
+      "object_candidate_id": "fe94868553f59949b2f0",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "Model / Workflow"
+      ],
+      "shared_inventory_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "shared_inventory_sources": [
+        "lfai"
+      ],
+      "source_year_strata": [
+        "lfai:2021",
+        "lfai:2022",
+        "lfai:2023",
+        "lfai:2024"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "source_year_stratified_sample"
+    },
+    {
+      "id": "inventory-overlap-78c036ed5586008be32f-e31f2e67a6113365a794",
+      "subject_candidate_id": "78c036ed5586008be32f",
+      "object_candidate_id": "e31f2e67a6113365a794",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "Observability and Analysis / Monitoring"
+      ],
+      "shared_inventory_years": [
+        2021
+      ],
+      "shared_inventory_sources": [
+        "cncf"
+      ],
+      "source_year_strata": [
+        "cncf:2021"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "source_year_stratified_sample"
+    },
+    {
+      "id": "inventory-overlap-86a7dfe3599600974f45-91d035d27c63d9b309a0",
+      "subject_candidate_id": "86a7dfe3599600974f45",
+      "object_candidate_id": "91d035d27c63d9b309a0",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "App Definition and Development / Streaming & Messaging"
+      ],
+      "shared_inventory_years": [
+        2021,
+        2022,
+        2023,
         2024
       ],
       "shared_inventory_sources": [
         "cncf"
       ],
       "source_year_strata": [
+        "cncf:2021",
+        "cncf:2022",
+        "cncf:2023",
         "cncf:2024"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
       "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "deterministic_random_sample"
+      "selection_method": "source_year_stratified_sample"
     },
     {
-      "id": "inventory-overlap-aa8d570f86b5a3f9901a-dcd070cc31d0fc66b13c",
-      "subject_candidate_id": "aa8d570f86b5a3f9901a",
+      "id": "inventory-overlap-1a61e31f01488b55a780-86c78ded3269e73f7b35",
+      "subject_candidate_id": "1a61e31f01488b55a780",
+      "object_candidate_id": "86c78ded3269e73f7b35",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "Observability and Analysis / Monitoring",
+        "Observability and Analysis / Observability"
+      ],
+      "shared_inventory_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "shared_inventory_sources": [
+        "cncf"
+      ],
+      "source_year_strata": [
+        "cncf:2021",
+        "cncf:2022",
+        "cncf:2023",
+        "cncf:2024"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "source_year_stratified_sample"
+    },
+    {
+      "id": "inventory-overlap-1c4c5e95dd263d21e3a9-ce280db87d8b60a865ea",
+      "subject_candidate_id": "1c4c5e95dd263d21e3a9",
+      "object_candidate_id": "ce280db87d8b60a865ea",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "Runtime / Cloud Native Storage"
+      ],
+      "shared_inventory_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "shared_inventory_sources": [
+        "cncf"
+      ],
+      "source_year_strata": [
+        "cncf:2021",
+        "cncf:2022",
+        "cncf:2023",
+        "cncf:2024"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "source_year_stratified_sample"
+    },
+    {
+      "id": "inventory-overlap-9db52d7e64aef8bcc0e1-dcd070cc31d0fc66b13c",
+      "subject_candidate_id": "9db52d7e64aef8bcc0e1",
       "object_candidate_id": "dcd070cc31d0fc66b13c",
       "candidate_kind": "inventory_category_overlap",
       "status": "needs_company_identity_and_relation_evidence",
@@ -2602,46 +2088,112 @@
         "Natural Language Processing / Natural Language Processing"
       ],
       "shared_inventory_years": [
-        2021
+        2021,
+        2022,
+        2023,
+        2024
       ],
       "shared_inventory_sources": [
         "lfai"
       ],
       "source_year_strata": [
-        "lfai:2021"
+        "lfai:2021",
+        "lfai:2022",
+        "lfai:2023",
+        "lfai:2024"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
       "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "deterministic_random_sample"
+      "selection_method": "source_year_stratified_sample"
     },
     {
-      "id": "inventory-overlap-1185729b02b5762cae61-3d379dfc3d98783f1ab5",
-      "subject_candidate_id": "1185729b02b5762cae61",
-      "object_candidate_id": "3d379dfc3d98783f1ab5",
+      "id": "inventory-overlap-b8848196d61f5c814143-bd9f1e229e93cfd3bb11",
+      "subject_candidate_id": "b8848196d61f5c814143",
+      "object_candidate_id": "bd9f1e229e93cfd3bb11",
       "candidate_kind": "inventory_category_overlap",
       "status": "needs_company_identity_and_relation_evidence",
       "shared_source_categories": [
-        "Observability and Analysis / Observability"
+        "Natural Language Processing / Natural Language Processing"
       ],
       "shared_inventory_years": [
+        2022,
+        2023,
         2024
       ],
       "shared_inventory_sources": [
-        "cncf"
+        "lfai"
       ],
       "source_year_strata": [
-        "cncf:2024"
+        "lfai:2022",
+        "lfai:2023",
+        "lfai:2024"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
       "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "deterministic_random_sample"
+      "selection_method": "source_year_stratified_sample"
     },
     {
-      "id": "inventory-overlap-83e316271faf8b9cfaad-a0f249b3b86397b726f2",
-      "subject_candidate_id": "83e316271faf8b9cfaad",
-      "object_candidate_id": "a0f249b3b86397b726f2",
+      "id": "inventory-overlap-1bc7109603adaf270e12-b8848196d61f5c814143",
+      "subject_candidate_id": "1bc7109603adaf270e12",
+      "object_candidate_id": "b8848196d61f5c814143",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "Natural Language Processing / Natural Language Processing"
+      ],
+      "shared_inventory_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "shared_inventory_sources": [
+        "lfai"
+      ],
+      "source_year_strata": [
+        "lfai:2021",
+        "lfai:2022",
+        "lfai:2023",
+        "lfai:2024"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "source_year_stratified_sample"
+    },
+    {
+      "id": "inventory-overlap-560d798046e64e58edd1-e4a87e19b5f729b4204c",
+      "subject_candidate_id": "560d798046e64e58edd1",
+      "object_candidate_id": "e4a87e19b5f729b4204c",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "Model / Tool"
+      ],
+      "shared_inventory_years": [
+        2022,
+        2023,
+        2024
+      ],
+      "shared_inventory_sources": [
+        "lfai"
+      ],
+      "source_year_strata": [
+        "lfai:2022",
+        "lfai:2023",
+        "lfai:2024"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "source_year_stratified_sample"
+    },
+    {
+      "id": "inventory-overlap-3dae93a613cddfa579b7-41d5ea6ca49a15636270",
+      "subject_candidate_id": "3dae93a613cddfa579b7",
+      "object_candidate_id": "41d5ea6ca49a15636270",
       "candidate_kind": "inventory_category_overlap",
       "status": "needs_company_identity_and_relation_evidence",
       "shared_source_categories": [
@@ -2665,25 +2217,29 @@
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
       "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "deterministic_random_sample"
+      "selection_method": "source_year_stratified_sample"
     },
     {
-      "id": "inventory-overlap-4eb50b566f03ac391f7e-c99d19ecfd8695799821",
-      "subject_candidate_id": "4eb50b566f03ac391f7e",
-      "object_candidate_id": "c99d19ecfd8695799821",
+      "id": "inventory-overlap-1958a51a425f8b6047ac-57927fb0e7a8b03c8082",
+      "subject_candidate_id": "1958a51a425f8b6047ac",
+      "object_candidate_id": "57927fb0e7a8b03c8082",
       "candidate_kind": "inventory_category_overlap",
       "status": "needs_company_identity_and_relation_evidence",
       "shared_source_categories": [
-        "App Definition and Development / Database"
+        "Provisioning / Security & Compliance"
       ],
       "shared_inventory_years": [
-        2021
+        2022,
+        2023,
+        2024
       ],
       "shared_inventory_sources": [
         "cncf"
       ],
       "source_year_strata": [
-        "cncf:2021"
+        "cncf:2022",
+        "cncf:2023",
+        "cncf:2024"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
@@ -2691,22 +2247,26 @@
       "selection_method": "deterministic_random_sample"
     },
     {
-      "id": "inventory-overlap-3db9d33a5598227b4f10-6b2d1799d09623a1b745",
-      "subject_candidate_id": "3db9d33a5598227b4f10",
-      "object_candidate_id": "6b2d1799d09623a1b745",
+      "id": "inventory-overlap-297a460e9dc19db3e230-b92d0b675873d704e3d1",
+      "subject_candidate_id": "297a460e9dc19db3e230",
+      "object_candidate_id": "b92d0b675873d704e3d1",
       "candidate_kind": "inventory_category_overlap",
       "status": "needs_company_identity_and_relation_evidence",
       "shared_source_categories": [
-        "Runtime / Cloud Native Storage"
+        "Provisioning / Security & Compliance"
       ],
       "shared_inventory_years": [
-        2021
+        2022,
+        2023,
+        2024
       ],
       "shared_inventory_sources": [
         "cncf"
       ],
       "source_year_strata": [
-        "cncf:2021"
+        "cncf:2022",
+        "cncf:2023",
+        "cncf:2024"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
@@ -2714,9 +2274,9 @@
       "selection_method": "deterministic_random_sample"
     },
     {
-      "id": "inventory-overlap-14a837378bc39fd6f8d2-eafefaf6daf4a79bc0ba",
-      "subject_candidate_id": "14a837378bc39fd6f8d2",
-      "object_candidate_id": "eafefaf6daf4a79bc0ba",
+      "id": "inventory-overlap-2eed231857bf8706e604-78f71dc81aca97d93ebe",
+      "subject_candidate_id": "2eed231857bf8706e604",
+      "object_candidate_id": "78f71dc81aca97d93ebe",
       "candidate_kind": "inventory_category_overlap",
       "status": "needs_company_identity_and_relation_evidence",
       "shared_source_categories": [
@@ -2737,9 +2297,208 @@
       "selection_method": "deterministic_random_sample"
     },
     {
-      "id": "inventory-overlap-41b347f10e77a11013f0-e18cb1892b32f8443875",
-      "subject_candidate_id": "41b347f10e77a11013f0",
-      "object_candidate_id": "e18cb1892b32f8443875",
+      "id": "inventory-overlap-4ea33d173d51af084252-9a74d332af617c4e44cf",
+      "subject_candidate_id": "4ea33d173d51af084252",
+      "object_candidate_id": "9a74d332af617c4e44cf",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "App Definition and Development / Application Definition & Image Build"
+      ],
+      "shared_inventory_years": [
+        2023,
+        2024
+      ],
+      "shared_inventory_sources": [
+        "cncf"
+      ],
+      "source_year_strata": [
+        "cncf:2023",
+        "cncf:2024"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "deterministic_random_sample"
+    },
+    {
+      "id": "inventory-overlap-05bc495b4cb59fcb0ff0-e531c9be13eb984c2362",
+      "subject_candidate_id": "05bc495b4cb59fcb0ff0",
+      "object_candidate_id": "e531c9be13eb984c2362",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "App Definition and Development / Application Definition & Image Build"
+      ],
+      "shared_inventory_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "shared_inventory_sources": [
+        "cncf"
+      ],
+      "source_year_strata": [
+        "cncf:2021",
+        "cncf:2022",
+        "cncf:2023",
+        "cncf:2024"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "deterministic_random_sample"
+    },
+    {
+      "id": "inventory-overlap-3e51782902e054fbd263-b94c86dd8e305b97de32",
+      "subject_candidate_id": "3e51782902e054fbd263",
+      "object_candidate_id": "b94c86dd8e305b97de32",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "Observability and Analysis / Monitoring",
+        "Observability and Analysis / Observability"
+      ],
+      "shared_inventory_years": [
+        2023,
+        2024
+      ],
+      "shared_inventory_sources": [
+        "cncf"
+      ],
+      "source_year_strata": [
+        "cncf:2023",
+        "cncf:2024"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "deterministic_random_sample"
+    },
+    {
+      "id": "inventory-overlap-03b5903305bb4069347b-b7033dea6774b50414e3",
+      "subject_candidate_id": "03b5903305bb4069347b",
+      "object_candidate_id": "b7033dea6774b50414e3",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "App Definition and Development / Application Definition & Image Build"
+      ],
+      "shared_inventory_years": [
+        2023,
+        2024
+      ],
+      "shared_inventory_sources": [
+        "cncf"
+      ],
+      "source_year_strata": [
+        "cncf:2023",
+        "cncf:2024"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "deterministic_random_sample"
+    },
+    {
+      "id": "inventory-overlap-61723ea4fd1e037896d6-ca2244c2b90266532f57",
+      "subject_candidate_id": "61723ea4fd1e037896d6",
+      "object_candidate_id": "ca2244c2b90266532f57",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "Provisioning / Security & Compliance"
+      ],
+      "shared_inventory_years": [
+        2023,
+        2024
+      ],
+      "shared_inventory_sources": [
+        "cncf"
+      ],
+      "source_year_strata": [
+        "cncf:2023",
+        "cncf:2024"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "deterministic_random_sample"
+    },
+    {
+      "id": "inventory-overlap-2cccbd71f491df5ba90e-97e33facc32bc8b2a161",
+      "subject_candidate_id": "2cccbd71f491df5ba90e",
+      "object_candidate_id": "97e33facc32bc8b2a161",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "Provisioning / Security & Compliance"
+      ],
+      "shared_inventory_years": [
+        2024
+      ],
+      "shared_inventory_sources": [
+        "cncf"
+      ],
+      "source_year_strata": [
+        "cncf:2024"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "deterministic_random_sample"
+    },
+    {
+      "id": "inventory-overlap-a4b58963fa3d3abf31d5-afc12acec52518ed901f",
+      "subject_candidate_id": "a4b58963fa3d3abf31d5",
+      "object_candidate_id": "afc12acec52518ed901f",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "App Definition and Development / Database"
+      ],
+      "shared_inventory_years": [
+        2024
+      ],
+      "shared_inventory_sources": [
+        "cncf"
+      ],
+      "source_year_strata": [
+        "cncf:2024"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "deterministic_random_sample"
+    },
+    {
+      "id": "inventory-overlap-5fe518a122a0e16c69d3-981b914689e279029595",
+      "subject_candidate_id": "5fe518a122a0e16c69d3",
+      "object_candidate_id": "981b914689e279029595",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "Observability and Analysis / Observability"
+      ],
+      "shared_inventory_years": [
+        2024
+      ],
+      "shared_inventory_sources": [
+        "cncf"
+      ],
+      "source_year_strata": [
+        "cncf:2024"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "deterministic_random_sample"
+    },
+    {
+      "id": "inventory-overlap-109cef81e5886e92bd40-351acd74fe261b6b3235",
+      "subject_candidate_id": "109cef81e5886e92bd40",
+      "object_candidate_id": "351acd74fe261b6b3235",
       "candidate_kind": "inventory_category_overlap",
       "status": "needs_company_identity_and_relation_evidence",
       "shared_source_categories": [
@@ -2764,9 +2523,115 @@
       "selection_method": "deterministic_random_sample"
     },
     {
-      "id": "inventory-overlap-1185729b02b5762cae61-60e5020d4be7f349b47f",
-      "subject_candidate_id": "1185729b02b5762cae61",
-      "object_candidate_id": "60e5020d4be7f349b47f",
+      "id": "inventory-overlap-38602cce458a7fa46b9d-cc28c31b994283b3375b",
+      "subject_candidate_id": "38602cce458a7fa46b9d",
+      "object_candidate_id": "cc28c31b994283b3375b",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "Observability and Analysis / Observability",
+        "Observability and Analysis / Tracing"
+      ],
+      "shared_inventory_years": [
+        2022,
+        2023,
+        2024
+      ],
+      "shared_inventory_sources": [
+        "cncf"
+      ],
+      "source_year_strata": [
+        "cncf:2022",
+        "cncf:2023",
+        "cncf:2024"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "deterministic_random_sample"
+    },
+    {
+      "id": "inventory-overlap-3f3407d3bfd0a963b40c-9a74d332af617c4e44cf",
+      "subject_candidate_id": "3f3407d3bfd0a963b40c",
+      "object_candidate_id": "9a74d332af617c4e44cf",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "App Definition and Development / Application Definition & Image Build"
+      ],
+      "shared_inventory_years": [
+        2024
+      ],
+      "shared_inventory_sources": [
+        "cncf"
+      ],
+      "source_year_strata": [
+        "cncf:2024"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "deterministic_random_sample"
+    },
+    {
+      "id": "inventory-overlap-6af3ff48a352aba9cc61-98a8594ecbae715bdd18",
+      "subject_candidate_id": "6af3ff48a352aba9cc61",
+      "object_candidate_id": "98a8594ecbae715bdd18",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "Observability and Analysis / Logging",
+        "Observability and Analysis / Observability"
+      ],
+      "shared_inventory_years": [
+        2022,
+        2023,
+        2024
+      ],
+      "shared_inventory_sources": [
+        "cncf"
+      ],
+      "source_year_strata": [
+        "cncf:2022",
+        "cncf:2023",
+        "cncf:2024"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "deterministic_random_sample"
+    },
+    {
+      "id": "inventory-overlap-7b9933b07f4ce3f76726-d1083c2c7dee76c6848d",
+      "subject_candidate_id": "7b9933b07f4ce3f76726",
+      "object_candidate_id": "d1083c2c7dee76c6848d",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "Runtime / Cloud Native Storage"
+      ],
+      "shared_inventory_years": [
+        2021,
+        2022,
+        2023
+      ],
+      "shared_inventory_sources": [
+        "cncf"
+      ],
+      "source_year_strata": [
+        "cncf:2021",
+        "cncf:2022",
+        "cncf:2023"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "deterministic_random_sample"
+    },
+    {
+      "id": "inventory-overlap-29085b3d5049742abd4e-9f8e9732d3a909f0a8ca",
+      "subject_candidate_id": "29085b3d5049742abd4e",
+      "object_candidate_id": "9f8e9732d3a909f0a8ca",
       "candidate_kind": "inventory_category_overlap",
       "status": "needs_company_identity_and_relation_evidence",
       "shared_source_categories": [
@@ -2787,9 +2652,9 @@
       "selection_method": "deterministic_random_sample"
     },
     {
-      "id": "inventory-overlap-336547a63615bbc1b5b8-f7fc8f1a21d35cf1ee94",
-      "subject_candidate_id": "336547a63615bbc1b5b8",
-      "object_candidate_id": "f7fc8f1a21d35cf1ee94",
+      "id": "inventory-overlap-4f7d358cd697bb4919b0-c20958fae904691baf6f",
+      "subject_candidate_id": "4f7d358cd697bb4919b0",
+      "object_candidate_id": "c20958fae904691baf6f",
       "candidate_kind": "inventory_category_overlap",
       "status": "needs_company_identity_and_relation_evidence",
       "shared_source_categories": [
@@ -2810,9 +2675,172 @@
       "selection_method": "deterministic_random_sample"
     },
     {
-      "id": "inventory-overlap-ca2244c2b90266532f57-da5ec84b0cb829bec60c",
-      "subject_candidate_id": "ca2244c2b90266532f57",
-      "object_candidate_id": "da5ec84b0cb829bec60c",
+      "id": "inventory-overlap-48ca7d40732830adc0f1-99ce61b69f9202382521",
+      "subject_candidate_id": "48ca7d40732830adc0f1",
+      "object_candidate_id": "99ce61b69f9202382521",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "App Definition and Development / Application Definition & Image Build"
+      ],
+      "shared_inventory_years": [
+        2024
+      ],
+      "shared_inventory_sources": [
+        "cncf"
+      ],
+      "source_year_strata": [
+        "cncf:2024"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "deterministic_random_sample"
+    },
+    {
+      "id": "inventory-overlap-0735ccb08be6af7d8fa7-af67823de1a549a292d5",
+      "subject_candidate_id": "0735ccb08be6af7d8fa7",
+      "object_candidate_id": "af67823de1a549a292d5",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "App Definition and Development / Database"
+      ],
+      "shared_inventory_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "shared_inventory_sources": [
+        "cncf"
+      ],
+      "source_year_strata": [
+        "cncf:2021",
+        "cncf:2022",
+        "cncf:2023",
+        "cncf:2024"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "deterministic_random_sample"
+    },
+    {
+      "id": "inventory-overlap-86c78ded3269e73f7b35-a7111a9721bf1132c0dd",
+      "subject_candidate_id": "86c78ded3269e73f7b35",
+      "object_candidate_id": "a7111a9721bf1132c0dd",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "Observability and Analysis / Monitoring"
+      ],
+      "shared_inventory_years": [
+        2021,
+        2022,
+        2023
+      ],
+      "shared_inventory_sources": [
+        "cncf"
+      ],
+      "source_year_strata": [
+        "cncf:2021",
+        "cncf:2022",
+        "cncf:2023"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "deterministic_random_sample"
+    },
+    {
+      "id": "inventory-overlap-7a2f8d5cacc444b06b03-e9dd606d7efdc6f400af",
+      "subject_candidate_id": "7a2f8d5cacc444b06b03",
+      "object_candidate_id": "e9dd606d7efdc6f400af",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "Provisioning / Security & Compliance"
+      ],
+      "shared_inventory_years": [
+        2022,
+        2023,
+        2024
+      ],
+      "shared_inventory_sources": [
+        "cncf"
+      ],
+      "source_year_strata": [
+        "cncf:2022",
+        "cncf:2023",
+        "cncf:2024"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "deterministic_random_sample"
+    },
+    {
+      "id": "inventory-overlap-1a61e31f01488b55a780-8f73a1524bec7c5c9ccd",
+      "subject_candidate_id": "1a61e31f01488b55a780",
+      "object_candidate_id": "8f73a1524bec7c5c9ccd",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "Observability and Analysis / Monitoring",
+        "Observability and Analysis / Observability"
+      ],
+      "shared_inventory_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "shared_inventory_sources": [
+        "cncf"
+      ],
+      "source_year_strata": [
+        "cncf:2021",
+        "cncf:2022",
+        "cncf:2023",
+        "cncf:2024"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "deterministic_random_sample"
+    },
+    {
+      "id": "inventory-overlap-2b11db5c2c764c150517-526f389f1a7e41c63d66",
+      "subject_candidate_id": "2b11db5c2c764c150517",
+      "object_candidate_id": "526f389f1a7e41c63d66",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "Runtime / Cloud Native Storage"
+      ],
+      "shared_inventory_years": [
+        2022,
+        2023,
+        2024
+      ],
+      "shared_inventory_sources": [
+        "cncf"
+      ],
+      "source_year_strata": [
+        "cncf:2022",
+        "cncf:2023",
+        "cncf:2024"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "deterministic_random_sample"
+    },
+    {
+      "id": "inventory-overlap-5e339b9338e34a5429f8-876038538a6e5afa44fa",
+      "subject_candidate_id": "5e339b9338e34a5429f8",
+      "object_candidate_id": "876038538a6e5afa44fa",
       "candidate_kind": "inventory_category_overlap",
       "status": "needs_company_identity_and_relation_evidence",
       "shared_source_categories": [
