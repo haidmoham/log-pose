@@ -4,7 +4,7 @@ Log Pose stores dated primary-source evidence about software companies. The curr
 
 This is an independent public experiment inspired by a conversation about investor research at Telescope Partners. It is not affiliated with Telescope and contains no internal Telescope material.
 
-The [public dashboard](https://logpose.mhaider.dev/) is a static, read-only export. It does not host the local read API or Postgres database. The `web/evidence.json` six-capture export remains available, while `web/dashboard.json` backs the expanded dashboard.
+The [public evidence preview](https://logpose.mhaider.dev/) currently serves the earlier six-capture export. The expanded dashboard is available in this repository as a static, read-only export backed by `web/dashboard.json`; it has not been published to that site. Neither static view hosts the local read API or Postgres database.
 
 ## Local live preview
 
