@@ -95,9 +95,9 @@ function topologyClaim(id, subject, object, predicate, sourceDate) {
   };
 }
 
-test('topology validation resolves optional external nodes and rejects broken claims', () => {
+test('topology validation resolves optional external entities and rejects broken claims', () => {
   const claim = topologyClaim('one', 'pilot', 'external', 'integrates_with', '2024-03-01');
-  const topology = { nodes: [{ slug: 'external', name: 'External lead',
+  const topology = { entities: [{ slug: 'external', name: 'External lead',
     identity_status: 'provider_lead' }], claims: [claim] };
   assert.equal(model.validateTopology(topology, new Set(['pilot'])), true);
   assert.throws(() => model.validateTopology({ claims: [claim] }, new Set(['pilot'])),

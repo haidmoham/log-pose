@@ -25,7 +25,7 @@
     const topology = data.market_topology || { claims: [] };
     const claims = topology.claims;
     const companies = new Map(data.companies.map(company => [company.slug, company]));
-    for (const graphNode of topology.nodes || []) companies.set(graphNode.slug,
+    for (const graphNode of topology.entities || topology.nodes || []) companies.set(graphNode.slug,
       { ...companies.get(graphNode.slug), ...graphNode });
     const mappedSlugs = [...new Set(claims.flatMap(claim =>
       [claim.subject_slug, claim.object_slug]))].sort((left, right) =>
@@ -201,13 +201,17 @@
       claim.sources.forEach(source => {
         const sourceCard = node('article', '', 'topology-source');
         sourceCard.append(node('p', `${source.publisher} · published ${source.source_date}`
-          + (source.event_date ? ` · event ${source.event_date}` : ''), 'eyebrow'),
+          + (source.event_date ? ` · event ${source.event_date}` : '')
+          + (source.period_end ? ` · reporting period ended ${source.period_end}` : ''), 'eyebrow'),
         node('blockquote', source.evidence_text),
         append(node('div', '', 'topology-source-foot'),
           node('span', source.source_type.replaceAll('_', ' ')),
           link('Open source ↗', source.source_url)));
         if (source.retrieved_on) sourceCard.append(node('p',
           `Retrieved ${source.retrieved_on}; this date does not establish historical page content.`, 'caption'));
+        if (source.artifact_sha256) sourceCard.append(node('p',
+          `Stored artifact SHA-256 ${source.artifact_sha256}`
+          + (source.artifact_path ? ` · ${source.artifact_path}` : ''), 'topology-artifact'));
         sourceList.append(sourceCard);
       });
       panel.append(node('h4', `Sources · ${claim.sources.length}`, 'section-title'), sourceList,

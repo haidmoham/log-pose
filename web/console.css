@@ -585,6 +585,7 @@ footer { display: flex; justify-content: space-between; gap: 20px; padding: 18px
 .topology-source blockquote { margin: 11px 0; padding-left: 12px; border-left: 2px solid var(--teal); color: var(--ink); font-size: 12px; line-height: 1.5; }
 .topology-source-foot { display: flex; justify-content: space-between; align-items: center; gap: 9px; border-top: 1px solid var(--rule); padding-top: 8px; color: var(--muted); font: 9px/1.4 var(--mono); }
 .topology-source .caption { margin-top: 9px; }
+.topology-source .topology-artifact { margin-top: 7px; color: var(--muted); font: 8px/1.4 var(--mono); overflow-wrap: anywhere; }
 .topology-list { margin-top: 10px; padding: 15px; }
 .topology-list h3 { margin: 5px 0 12px; font-family: var(--heading); font-size: 22px; }
 .topology-claim-button { display: grid; width: 100%; grid-template-columns: 120px minmax(0, 1fr) 230px; gap: 12px; align-items: center; min-height: 51px; border: 0; border-top: 1px solid var(--rule); padding: 8px 6px; color: var(--ink); background: transparent; text-align: left; }

@@ -78,11 +78,14 @@
   function validateTopology(topology, slugs) {
     if (!topology) return true;
     if (!Array.isArray(topology.claims)) throw new Error('source export is missing market_topology.claims');
+    if (topology.entities !== undefined && !Array.isArray(topology.entities)) {
+      throw new Error('source export has invalid market_topology.entities');
+    }
     if (topology.nodes !== undefined && !Array.isArray(topology.nodes)) {
       throw new Error('source export has invalid market_topology.nodes');
     }
     const nodeIds = new Set();
-    for (const graphNode of topology.nodes || []) {
+    for (const graphNode of [...(topology.entities || []), ...(topology.nodes || [])]) {
       if (!graphNode.slug || !graphNode.name || nodeIds.has(graphNode.slug)) {
         throw new Error(`invalid or duplicate topology node: ${graphNode.slug || 'missing slug'}`);
       }

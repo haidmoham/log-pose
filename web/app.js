@@ -445,7 +445,7 @@ tabs.forEach(button => button.addEventListener('click', () => {
 }));
 
 window.addEventListener('popstate', () => {
-  const slugs = new Set([...data.companies, ...(data.market_topology?.nodes || [])]
+  const slugs = new Set([...data.companies, ...(data.market_topology?.entities || data.market_topology?.nodes || [])]
     .map(company => company.slug));
   const fromUrl = model.parseUrlState(location.search, slugs, data.years);
   Object.assign(state, {
@@ -477,7 +477,7 @@ Promise.all(['./dashboard.json', './discovery.json'].map(url =>
     });
     topologyView = window.LogPoseTopology.create({ root, state, data, model, commitState });
     const fromUrl = model.parseUrlState(location.search,
-      new Set([...pilot.companies, ...(pilot.market_topology?.nodes || [])]
+      new Set([...pilot.companies, ...(pilot.market_topology?.entities || pilot.market_topology?.nodes || [])]
         .map(company => company.slug)), pilot.years);
     Object.assign(state, {
       view: fromUrl.view,
