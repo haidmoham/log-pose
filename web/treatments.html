@@ -8,6 +8,7 @@
       name="description"
       content="Dated software company evidence, filings, and market activity from 2021 to 2024."
     />
+    <meta name="robots" content="noindex, nofollow" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -51,6 +52,36 @@
           2021—24
         </p>
       </section>
+      <section
+        class="treatment-switcher"
+        aria-label="Homepage visual treatments"
+      >
+        <p class="eyebrow">
+          DESIGN STUDY <span> / 4 HOMEPAGE DIRECTIONS</span>
+        </p>
+        <div
+          class="treatment-options"
+          role="group"
+          aria-label="Choose a visual treatment"
+        >
+          <button type="button" data-treatment="paper" aria-pressed="false">
+            <span>01</span> Paper / pigment
+          </button>
+          <button type="button" data-treatment="ledger" aria-pressed="false">
+            <span>02</span> Cobalt ledger
+          </button>
+          <button type="button" data-treatment="night" aria-pressed="true">
+            <span>03</span> Night archive
+          </button>
+          <button type="button" data-treatment="folio" aria-pressed="false">
+            <span>04</span> Vermilion folio
+          </button>
+        </div>
+        <p class="treatment-state" aria-live="polite">
+          Current treatment: Night archive
+        </p>
+        <button class="treatment-reset" type="button">Reset to default</button>
+      </section>
       <nav class="tabs" aria-label="Dashboard views">
         <button type="button" data-view="companies" aria-current="page">
           01 <span>Companies</span>
@@ -72,5 +103,6 @@
       </footer>
     </div>
     <script src="./app.js"></script>
+    <script src="./treatments.js"></script>
   </body>
 </html>
