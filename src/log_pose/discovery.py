@@ -18,37 +18,50 @@ import yaml
 
 
 STUDY_YEARS = (2021, 2022, 2023, 2024)
+EXTENDED_INVENTORY_YEARS = (2020, 2025, 2026)
 
 PINS = {
     "cncf": {
         "repository": "cncf/landscape",
         "commits": {
+            2020: ("28a8fde7a335237d1a2ee1c9c327fbd37763aff4", "2020-12-31T00:34:10Z"),
             2021: ("f3ff2dc3fd73c9239eb454e189934fb150afb383", "2021-12-24T05:52:34Z"),
             2022: ("8b765491cc9a6e94e52039c2c515c68638e2c743", "2022-12-30T20:05:50Z"),
             2023: ("bd539b9fef36c09fbdc99a6063ad53e8515baf53", "2023-12-23T01:01:22Z"),
             2024: ("e4f13c918275affaefb3dbe1a21a4a8e38ee3842", "2024-12-31T14:58:22Z"),
+            2025: ("1f32900465c936f9acb4ff77485f58ac28943ffb", "2025-12-17T01:27:26Z"),
+            2026: ("97b2e16fdf4147166df9427299998a83991b0958", "2026-09-24T17:42:07Z"),
         },
     },
     "lfai": {
         "repository": "lfai/lfai-landscape",
         "commits": {
+            2020: ("625e263540f5981f8f5ac87c9fa247f9cf6c12c5", "2020-12-24T01:45:12Z"),
             2021: ("b7bad8d8d544f2a7dca4c933ac76652e0ae5cee0", "2021-12-18T04:32:45Z"),
             2022: ("1c995e69a864aedd7f0df72211dab36c5592dadb", "2022-12-31T04:20:38Z"),
             2023: ("a634762cbac70264b3033b985a6743f8c0363d6b", "2023-12-27T09:26:18Z"),
             2024: ("9999a5ca4ddae6d202e83606ed6f84b368bc0099", "2024-12-19T04:29:51Z"),
+            2025: ("0d5994f96e08f09b422c66ab18d58726a0f81198", "2025-11-12T23:34:02Z"),
+            2026: ("89922e943636db043e9a1c6cf47ce5cebfa5a9a7", "2026-09-02T15:52:50Z"),
         },
     },
 }
 
 EXPECTED_SHA256 = {
+    ("cncf", 2020): "9b14a66831a391b1d15ee0068e9acbea06a119c26c9aaf2903e02246aaf38577",
     ("cncf", 2021): "da810037b82d7d4f8b73b7fd92d93421e082225b0ea4ba72e63221ace8277ed6",
     ("cncf", 2022): "fd5c99efd9bb8981f86cec6855f59978e956452d7e0638dd41bd79b34e71a3d2",
     ("cncf", 2023): "2bc00cfcfef6f5b908a2da0f6993bc7aa01879faf72a8461f7bbc0060dd75432",
     ("cncf", 2024): "f1036cb6b8e9b9ef7647a0203ac349ba308173bf407f79cc8ccd4d4a2e7d46fd",
+    ("cncf", 2025): "bec9090cd40a09a8f1bd913cc4d47a5710ce7d3a92ee7091369d54a31d1f677f",
+    ("cncf", 2026): "23b2b56cf6cb60d48b7f0923a527ebd9aac1e3418d30ce593ff7739cc8483e9b",
+    ("lfai", 2020): "7bff0e731a826d45fe71f1793e19c850ac3f1640ebcb62c83c82a84876e1dd09",
     ("lfai", 2021): "67a01cf1866de1c62ef79d43e3e2bb2da17e8622b94255c1e81120d827144f2d",
     ("lfai", 2022): "e2583bce1f7ac000ff894032116d44946686dfa05c8adff6d5483ca1aa8e3fe3",
     ("lfai", 2023): "0765d26680e0f526665600790b291ccb42e8716807366b2f1d5c5c5e3d50106a",
     ("lfai", 2024): "22915df88f4e3b18f28563445baeb22bceb446763774015edcf74b788480adb8",
+    ("lfai", 2025): "2649f7727e419fd38892e58dabf75316c12f869f0fa859c2bb44d9a5055602f3",
+    ("lfai", 2026): "8a929756135009f7373b9c4b0a8a1a965f681f70972eefdaa39336774619a378",
 }
 
 # Exact source paths only. These tags nominate records for review; they do not
@@ -120,8 +133,11 @@ def fetch_pinned(source: str, year: int, cache_dir: Path, *, offline: bool = Fal
     commit, commit_at = pin["commits"][year]
     cache_path = cache_dir / f"{source}-{year}-{commit}.yml"
     downloaded = False
+    retained_path = Path("docs/research/source-artifacts/discovery") / f"{source}-{year}-{commit[:12]}.yml"
     if cache_path.exists():
         raw = cache_path.read_bytes()
+    elif retained_path.exists():
+        raw = retained_path.read_bytes()
     elif offline:
         raise FileNotFoundError(cache_path)
     else:
@@ -151,9 +167,12 @@ def fetch_pinned(source: str, year: int, cache_dir: Path, *, offline: bool = Fal
         "year": year,
         "commit": commit,
         "commit_at": commit_at,
+        "observation_basis": "point_in_time_repository_state",
+        "coverage_status": "partial_year_snapshot" if year == 2026 else "dated_inventory_snapshot",
         "url": source_url(pin["repository"], commit, raw=False),
         "raw_sha256": digest,
         "bytes": len(raw),
+        "artifact_path": f"docs/research/source-artifacts/discovery/{source}-{year}-{commit[:12]}.yml",
     }
 
 
@@ -169,7 +188,7 @@ def parse_occurrences(raw: bytes, artifact: dict) -> tuple[list[dict], int]:
         for subcategory_index, subcategory in enumerate(category["subcategories"]):
             subcategory_name = subcategory["name"]
             tags = candidate_tags(artifact["source"], category_name, subcategory_name)
-            for item_index, item in enumerate(subcategory.get("items", [])):
+            for item_index, item in enumerate(subcategory.get("items") or []):
                 raw_item_count += 1
                 if not tags or not isinstance(item, dict):
                     continue
@@ -194,6 +213,42 @@ def parse_occurrences(raw: bytes, artifact: dict) -> tuple[list[dict], int]:
                     "candidate_tags": list(tags),
                 })
     return observations, raw_item_count
+
+
+def parse_inventory_rows(raw: bytes, artifact: dict) -> list[dict]:
+    """Return every dictionary item at its source path, including unmapped rows."""
+    document = yaml.safe_load(raw)
+    categories = document.get("landscape") if isinstance(document, dict) else None
+    if not isinstance(categories, list):
+        raise ValueError("landscape.yml has no category list")
+    rows = []
+    for category_index, category in enumerate(categories):
+        for subcategory_index, subcategory in enumerate(category["subcategories"]):
+            for item_index, item in enumerate(subcategory.get("items") or []):
+                if not isinstance(item, dict):
+                    continue
+                name = item.get("name")
+                tags = candidate_tags(artifact["source"], category["name"], subcategory["name"])
+                location = [category_index, subcategory_index, item_index]
+                identity = json.dumps([artifact["source"], artifact["year"], location])
+                rows.append({
+                    "id": hashlib.sha256(identity.encode()).hexdigest()[:20],
+                    "source": artifact["source"],
+                    "year": artifact["year"],
+                    "artifact_sha256": artifact["raw_sha256"],
+                    "source_url": artifact["url"],
+                    "source_path": location,
+                    "name": name.strip() if isinstance(name, str) else "",
+                    "description": item.get("description", "") if isinstance(item.get("description"), str) else "",
+                    "homepage_url": item.get("homepage_url", "") if isinstance(item.get("homepage_url"), str) else "",
+                    "repo_url": item.get("repo_url", "") if isinstance(item.get("repo_url"), str) else "",
+                    "source_category": category["name"],
+                    "source_subcategory": subcategory["name"],
+                    "candidate_tags": list(tags),
+                    "mapping_status": "mapped_category" if tags else "unmapped_category",
+                    "record_type": "product_or_project_candidate" if tags else "unmapped_directory_row",
+                })
+    return rows
 
 
 def normalized_url(value: str) -> str:
@@ -406,22 +461,29 @@ def build_provider_candidates(index: dict, location_reviews: list[dict]) -> list
 
 def build_index(cache_dir: Path, *, offline: bool = False) -> dict:
     for source, pin in PINS.items():
-        if set(pin["commits"]) != set(STUDY_YEARS):
+        expected_years = set(STUDY_YEARS) | set(EXTENDED_INVENTORY_YEARS)
+        if set(pin["commits"]) != expected_years:
             raise ValueError(f"{source} is missing a study year")
     artifacts = []
     observations = []
+    inventory_rows = []
     for source in PINS:
         for year in PINS[source]["commits"]:
             raw, artifact = fetch_pinned(source, year, cache_dir, offline=offline)
             source_observations, item_count = parse_occurrences(raw, artifact)
+            source_inventory_rows = parse_inventory_rows(raw, artifact)
             artifact["raw_item_count"] = item_count
             artifact["mapped_occurrence_count"] = len(source_observations)
+            artifact["inventory_row_count"] = len(source_inventory_rows)
+            artifact["unmapped_row_count"] = len(source_inventory_rows) - len(source_observations)
             artifacts.append(artifact)
             observations.extend(source_observations)
+            inventory_rows.extend(source_inventory_rows)
     return {
         "mapping_version": "landscape-category-candidates-v1",
         "scope_note": "Dated product/project leads with a separate, partial manual identity review. U.S. eligibility is not inferred from inventory rows.",
         "artifacts": artifacts,
         "occurrences": observations,
+        "inventory_rows": inventory_rows,
         "candidates": build_candidates(observations),
     }

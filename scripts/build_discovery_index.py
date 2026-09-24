@@ -26,6 +26,26 @@ def main():
         result, json.loads(args.identity_reviews.read_text()), cohort)
     result["provider_candidates"] = build_provider_candidates(
         result, json.loads(args.location_reviews.read_text()))
+    inventory_by_artifact = {}
+    for row in result.pop("inventory_rows"):
+        inventory_by_artifact.setdefault(row["artifact_sha256"], []).append(row)
+    inventory_dir = args.output.parent / "discovery-inventory"
+    for artifact in result["artifacts"]:
+        artifact["inventory_export_path"] = (
+            f"{inventory_dir.as_posix()}/{artifact['source']}-{artifact['year']}.json"
+        )
+        partition = {
+            "source": artifact["source"], "year": artifact["year"],
+            "source_commit": artifact["commit"], "source_committed_at": artifact["commit_at"],
+            "source_url": artifact["url"], "raw_sha256": artifact["raw_sha256"],
+            "observation_basis": artifact["observation_basis"],
+            "coverage_status": artifact["coverage_status"],
+            "row_grain": "one directory item at source_path",
+            "rows": inventory_by_artifact[artifact["raw_sha256"]],
+        }
+        path = Path(artifact["inventory_export_path"])
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps(partition, ensure_ascii=False, indent=2) + "\n")
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n")
     print(f"{len(result['artifacts'])} pinned inventories, "

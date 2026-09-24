@@ -3,7 +3,7 @@ from pathlib import Path
 
 import yaml
 
-from log_pose.discovery import (EXPECTED_SHA256, PINS, STUDY_YEARS, build_candidates,
+from log_pose.discovery import (EXPECTED_SHA256, EXTENDED_INVENTORY_YEARS, PINS, STUDY_YEARS, build_candidates,
                                 candidate_tags, link_pilot_candidates, parse_occurrences)
 from scripts.audit_discovery import CHALLENGE
 
@@ -42,6 +42,15 @@ def test_repeated_top_level_name_keeps_distinct_source_paths():
     assert observations[0]["candidate_tags"] == ["data_infrastructure", "ai_automation"]
 
 
+def test_null_inventory_items_are_empty_categories():
+    document = {"landscape": [{"name": "CNAI", "subcategories": [
+        {"name": "Vector Databases", "items": None},
+    ]}]}
+    observations, total = parse_occurrences(yaml.safe_dump(document).encode(), artifact(2026))
+    assert observations == []
+    assert total == 0
+
+
 def test_candidate_grouping_needs_both_name_and_specific_url():
     first = {
         "id": "one", "name": "Example", "description": "", "homepage_url": "https://example.com/tool",
@@ -77,9 +86,36 @@ def test_pilot_navigation_match_requires_name_and_homepage():
 def test_committed_export_covers_every_pinned_source_year():
     export = json.loads(Path("web/discovery.json").read_text())
     actual = {(item["source"], item["year"]): item for item in export["artifacts"]}
-    expected = {(source, year) for source in PINS for year in STUDY_YEARS}
+    expected = {(source, year) for source, pin in PINS.items() for year in pin["commits"]}
     assert set(actual) == expected
     assert all(actual[key]["raw_sha256"] == EXPECTED_SHA256[key] for key in expected)
+    for source in PINS:
+        for year in EXTENDED_INVENTORY_YEARS:
+            item = actual[(source, year)]
+            assert item["artifact_path"]
+            assert item["observation_basis"] == "point_in_time_repository_state"
+            assert item["coverage_status"] == ("partial_year_snapshot" if year == 2026
+                                                 else "dated_inventory_snapshot")
+            raw = Path(item["artifact_path"]).read_bytes()
+            import hashlib
+            assert hashlib.sha256(raw).hexdigest() == item["raw_sha256"]
+
+
+def test_partitioned_inventory_exports_every_raw_directory_row():
+    export = json.loads(Path("web/discovery.json").read_text())
+    raw_rows = mapped_rows = unmapped_rows = 0
+    for artifact in export["artifacts"]:
+        partition = json.loads(Path(artifact["inventory_export_path"]).read_text())
+        assert partition["raw_sha256"] == artifact["raw_sha256"]
+        assert len(partition["rows"]) == artifact["inventory_row_count"]
+        assert sum(bool(row["candidate_tags"]) for row in partition["rows"]) == artifact["mapped_occurrence_count"]
+        assert all(row["record_type"] == ("product_or_project_candidate" if row["candidate_tags"]
+                                          else "unmapped_directory_row")
+                   for row in partition["rows"])
+        raw_rows += len(partition["rows"])
+        mapped_rows += sum(bool(row["candidate_tags"]) for row in partition["rows"])
+        unmapped_rows += sum(not row["candidate_tags"] for row in partition["rows"])
+    assert (raw_rows, mapped_rows, unmapped_rows) == (18076, 6096, 11980)
 
 
 def test_identity_review_covers_challenge_and_groups_weaviate_aliases():
