@@ -75,20 +75,20 @@ def build(cohort, ingestion, financials, announcements, location_reviews, audit_
     cells = ingestion["cells"]
     selected_ids = [cell["snapshot_id"] for cell in cells if cell["snapshot_id"]]
     with connection.cursor() as cursor:
-        cursor.execute("""SELECT id, normalized_text, archive_url, provider_record_id, raw_sha256,
-                captured_at, text_status, provider
-            FROM snapshots WHERE id = ANY(%s)""", (selected_ids,))
+        cursor.execute("""SELECT observation_id AS id, normalized_text, archive_url,
+                provider_record_id, raw_sha256, captured_at, text_status, provider
+            FROM warehouse.page_observations WHERE observation_id = ANY(%s)""", (selected_ids,))
         snapshots = {row["id"]: row for row in cursor.fetchall()}
         cursor.execute("""SELECT file.id, file.study_year, file.source_url, file.raw_sha256,
-                file.retrieved_at, count(daily.row_number) AS rows,
-                count(DISTINCT daily.trade_date) AS trading_days,
+                file.retrieved_at,
+                sum(daily.participant_rows)::bigint AS rows,
+                count(*) AS trading_days,
                 sum(daily.total_shares) AS shares,
                 sum(daily.total_notional) AS notional,
                 sum(daily.total_trade_count) AS trades,
-                sum(daily.total_shares) FILTER (
-                    WHERE daily.market_participant LIKE 'FINRA /%') AS trf_shares
+                sum(daily.trf_shares) AS trf_shares
             FROM market_files AS file
-            JOIN market_daily AS daily ON daily.file_id=file.id
+            JOIN warehouse.market_daily_totals AS daily ON daily.file_id=file.id
             WHERE file.provider='cboe'
             GROUP BY file.id ORDER BY file.study_year, file.retrieved_at""")
         market_rows = cursor.fetchall()
@@ -96,11 +96,10 @@ def build(cohort, ingestion, financials, announcements, location_reviews, audit_
         artifact_versions = [row["artifact_version"].strip() for row in cursor.fetchall()]
         cursor.execute("SELECT count(*) AS facts FROM sec_financial_facts")
         stored_fact_count = cursor.fetchone()["facts"]
-        cursor.execute("""SELECT fact.id, fact.value, fact.unit, fact.start_date,
-                fact.end_date, fact.filed_date, fact.tag, fact.accession_number,
-                member.raw_sha256, member.artifact_version
-            FROM sec_financial_facts AS fact
-            JOIN sec_companyfacts AS member ON member.id=fact.companyfacts_id""")
+        cursor.execute("""SELECT fact_id AS id, value, unit, start_date,
+                end_date, filed_date, tag, accession_number,
+                raw_sha256, artifact_version
+            FROM warehouse.sec_fact_observations""")
         stored_facts = {row["id"]: row for row in cursor.fetchall()}
 
     if len(snapshots) != len(set(selected_ids)):

@@ -1,4 +1,5 @@
 """Runs against an explicitly supplied disposable Postgres database."""
+import json
 import os
 import uuid
 from datetime import datetime, timezone
@@ -6,6 +7,7 @@ from pathlib import Path
 
 import psycopg
 import pytest
+from psycopg.conninfo import conninfo_to_dict
 from psycopg import sql
 from psycopg.rows import dict_row
 
@@ -25,6 +27,9 @@ def db():
     with psycopg.connect(url, row_factory=dict_row) as conn:
         migrate(conn)
         with conn.cursor() as cur:
+            cur.execute("DELETE FROM sec_financial_facts")
+            cur.execute("DELETE FROM sec_companyfacts")
+            cur.execute("DELETE FROM sec_artifacts")
             cur.execute("DELETE FROM market_daily")
             cur.execute("DELETE FROM market_files")
             cur.execute("DELETE FROM ingestion_attempts")
@@ -34,6 +39,9 @@ def db():
         conn.commit()
         yield conn
         with conn.cursor() as cur:
+            cur.execute("DELETE FROM sec_financial_facts")
+            cur.execute("DELETE FROM sec_companyfacts")
+            cur.execute("DELETE FROM sec_artifacts")
             cur.execute("DELETE FROM market_daily")
             cur.execute("DELETE FROM market_files")
             cur.execute("DELETE FROM snapshots")
@@ -115,13 +123,17 @@ def test_migration_preserves_existing_wayback_snapshot():
     database_url = os.getenv("LOG_POSE_TEST_DATABASE_URL")
     if not database_url:
         pytest.skip("set LOG_POSE_TEST_DATABASE_URL to a disposable Postgres database")
-    schema_name = "migration_" + uuid.uuid4().hex
+    database_name = "migration_" + uuid.uuid4().hex
+    connection_parameters = conninfo_to_dict(database_url)
+    admin_parameters = {**connection_parameters, "dbname": "postgres"}
+    test_parameters = {**connection_parameters, "dbname": database_name}
     initial_sql = (Path(__file__).parents[1] / "sql/001_initial.sql").read_text()
-    with psycopg.connect(database_url, row_factory=dict_row) as conn:
-        try:
+    with psycopg.connect(**admin_parameters, autocommit=True) as admin:
+        with admin.cursor() as cur:
+            cur.execute(sql.SQL("CREATE DATABASE {}").format(sql.Identifier(database_name)))
+    try:
+        with psycopg.connect(**test_parameters, row_factory=dict_row) as conn:
             with conn.cursor() as cur:
-                cur.execute(sql.SQL("CREATE SCHEMA {}").format(sql.Identifier(schema_name)))
-                cur.execute(sql.SQL("SET search_path TO {}").format(sql.Identifier(schema_name)))
                 cur.execute(initial_sql)
                 cur.execute("INSERT INTO companies(slug,name) VALUES ('old','Old') RETURNING id")
                 company_id = cur.fetchone()["id"]
@@ -141,9 +153,74 @@ def test_migration_preserves_existing_wayback_snapshot():
                 assert cur.fetchone() == {"provider": "wayback", "provider_record_id": archive,
                                           "raw_sha256": sha256(raw)}
                 cur.execute("SELECT count(*) AS count FROM schema_migrations")
-                assert cur.fetchone()["count"] == 6
-        finally:
-            conn.rollback()
-            with conn.cursor() as cur:
-                cur.execute(sql.SQL("DROP SCHEMA IF EXISTS {} CASCADE").format(sql.Identifier(schema_name)))
-            conn.commit()
+                assert cur.fetchone()["count"] == 7
+                cur.execute("SELECT count(*) AS count FROM warehouse.page_observations")
+                assert cur.fetchone()["count"] == 1
+    finally:
+        with psycopg.connect(**admin_parameters, autocommit=True) as admin:
+            with admin.cursor() as cur:
+                cur.execute(sql.SQL("DROP DATABASE IF EXISTS {} WITH (FORCE)")
+                            .format(sql.Identifier(database_name)))
+
+
+def test_warehouse_views_preserve_grain_time_and_provenance(db):
+    source_id = ensure_source(db, "warehouse-example", "Warehouse Example",
+                              "https://example.com/", "homepage")
+    captured_at = datetime(2024, 6, 1, tzinfo=timezone.utc)
+    capture = Capture("https://example.com/", "https://web.archive.org/example", captured_at,
+                      b"<body>Long enough historical product evidence for the observation view.</body>",
+                      "text/html", 200)
+    _, snapshot_id = store(db, source_id, capture)
+
+    second_row = ROW.replace("Example Market", "Second Market")
+    market_rows = parse_cboe((HEADER + ROW + second_row).encode(), 2022)
+    _, file_id = store_market_file(db, 2022, "https://example.com/warehouse.csv",
+                                   (HEADER + ROW + second_row).encode(), market_rows)
+
+    artifact_version = "a" * 64
+    raw_hash = "b" * 64
+    with db.cursor() as cur:
+        cur.execute("""INSERT INTO sec_artifacts(artifact_version,source_url,etag,last_modified,
+            content_length,observed_at) VALUES (%s,'https://sec.example/archive.zip','etag','date',1,%s)""",
+                    (artifact_version, captured_at))
+        cur.execute("""INSERT INTO sec_companyfacts(artifact_version,cik,member_name,entity_name,
+            raw_json,raw_sha256) VALUES (%s,'0000000001','CIK0000000001.json','Example Inc.',%s,%s)
+            RETURNING id""", (artifact_version, b"{}", raw_hash))
+        member_id = cur.fetchone()["id"]
+        cur.execute("""INSERT INTO sec_financial_facts(companyfacts_id,concept_group,taxonomy,tag,
+            unit,fact_index,value,start_date,end_date,filed_date)
+            VALUES (%s,'revenue','us-gaap','Revenues','USD',0,100,'2024-01-01','2024-12-31','2025-02-01')
+            RETURNING id""", (member_id,))
+        fact_id = cur.fetchone()["id"]
+    db.commit()
+
+    with db.cursor() as cur:
+        cur.execute("""SELECT observation_id, company_slug, source_id, provider,
+            captured_at, raw_sha256 FROM warehouse.page_observations""")
+        page = cur.fetchone()
+        assert page["observation_id"] == snapshot_id
+        assert page["company_slug"] == "warehouse-example"
+        assert page["captured_at"] == captured_at
+        assert page["raw_sha256"] == sha256(capture.raw_html)
+
+        cur.execute("""SELECT file_id, trade_date, participant_rows, total_shares,
+            total_notional FROM warehouse.market_daily_totals""")
+        market = cur.fetchone()
+        assert market["file_id"] == file_id
+        assert market["participant_rows"] == 2
+        assert market["total_shares"] == 12
+        assert market["total_notional"] == 15
+        cur.execute("""SELECT sum(participant_rows)::bigint AS rows,
+            count(*) AS trading_days FROM warehouse.market_daily_totals
+            WHERE file_id=%s""", (file_id,))
+        export_summary = cur.fetchone()
+        assert json.loads(json.dumps(export_summary)) == {"rows": 2, "trading_days": 1}
+
+        cur.execute("""SELECT fact_id, cik, artifact_version, artifact_source_url,
+            start_date, end_date, filed_date, raw_sha256
+            FROM warehouse.sec_fact_observations""")
+        fact = cur.fetchone()
+        assert fact["fact_id"] == fact_id
+        assert fact["cik"].strip() == "0000000001"
+        assert fact["artifact_version"].strip() == artifact_version
+        assert fact["raw_sha256"] == raw_hash

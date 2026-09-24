@@ -26,12 +26,11 @@ def main() -> None:
             raise ValueError(f"expected one pinned SEC artifact, found {len(artifacts)}")
         artifact = artifacts[0]
         artifact_version = artifact["artifact_version"].strip()
-        cur.execute("""SELECT sc.cik, sc.entity_name, sc.raw_sha256, sc.artifact_version,
-                sf.id AS fact_id, sf.concept_group, sf.taxonomy, sf.tag, sf.unit,
-                sf.value, sf.start_date, sf.end_date, sf.filed_date,
-                sf.accession_number, sf.form, sf.fy, sf.fp, sf.frame
-            FROM sec_companyfacts sc JOIN sec_financial_facts sf ON sf.companyfacts_id=sc.id
-            WHERE sc.artifact_version=%s ORDER BY sc.cik, sf.id""", (artifact_version,))
+        cur.execute("""SELECT cik, entity_name, raw_sha256, artifact_version,
+                fact_id, concept_group, taxonomy, tag, unit, value, start_date,
+                end_date, filed_date, accession_number, form, fy, fp, frame
+            FROM warehouse.sec_fact_observations
+            WHERE artifact_version=%s ORDER BY cik, fact_id""", (artifact_version,))
         facts = cur.fetchall()
 
     grouped = defaultdict(list)
