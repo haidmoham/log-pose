@@ -1,0 +1,41 @@
+/* One research workspace: an atlas first, supporting analytical tools close at hand. */
+:root { --paper: #18151d; --surface: #25202b; --surface-cool: #28222f; --rule: #413747; --ink: #e8e1ec; --muted: #b6aabd; }
+body { background: #131117; }
+.shell { max-width: none; width: 100%; border: 0; background: #18151d; }
+.site-header { min-height: 64px; padding: 12px 32px; border: 0; background: #18151d; gap: 24px; }
+.identity-name { font-family: Bricolage, var(--sans); font-size: 23px; font-weight: 500; }
+.identity-note { color: #9b8ba4; letter-spacing: .1em; font-size: 9px; }
+.log-pose-mark { border-color: #71617d; width: 33px; height: 33px; }
+.desk-status { opacity: .82; }
+.desk-status div { border-color: #352c3c; }
+.desk-status dt { font-size: 9px; }
+.desk-status dd { font-size: 10px; }
+.source-link { font: 10px var(--mono); color: #b9a9c3; }
+.tabs { margin: 0 32px; padding: 0; gap: 24px; display: flex; border: 0; border-bottom: 1px solid #39303e; background: none; overflow-x: auto; }
+.tabs button { flex: 0 0 auto; min-height: 46px; padding: 12px 2px; border: 0; border-bottom: 2px solid transparent; color: #a899b2; background: transparent; font: 12px var(--sans); font-weight: 450; box-shadow: none; }
+.tabs button span { display: none; }
+.tabs button:hover { color: #eee1f6; background: transparent; }
+.tabs button[aria-current="page"] { color: #eee0f5; background: transparent; border-bottom-color: #c5a3d9; box-shadow: none; }
+.tabs button[data-view="topology"] { order: -1; font-weight: 650; }
+.tabs #pin-count { font-size: 9px; background: #43344d; color: #dbc8e6; }
+#view { padding: 26px 32px 40px; max-width: 1800px; margin: 0 auto; }
+.view-title { border: 0; padding-bottom: 12px; }
+.view-title h2 { font-family: Bricolage, var(--sans); font-weight: 450; letter-spacing: -.04em; }
+body[data-layer="temporal"] .topology-layer-nav { margin: 0 0 16px; border: 0; gap: 6px; }
+.topology-layer-button { border-radius: 18px; font-size: 11px; padding: 8px 13px; border: 1px solid #403447; background: transparent; }
+.topology-layer-button[aria-current="page"] { border-color: #7e608e; background: #35283e; box-shadow: none; }
+body[data-layer="temporal"] #view > .view-title { display: none; }
+body[data-layer="temporal"] .temporal-constellation { border-radius: 10px; }
+body[data-layer="temporal"] .temporal-constellation h3 { text-transform: none; }
+body[data-layer="temporal"] .temporal-constellation .constellation-map { min-height: 520px; }
+body[data-layer="temporal"] .temporal-constellation .constellation-note { font-size: 9px; }
+button:focus-visible, select:focus-visible, summary:focus-visible, input:focus-visible, a:focus-visible { outline: 2px solid #e4c790; outline-offset: 3px; }
+.shell > footer { padding: 16px 32px; border-top: 1px solid #332a39; color: #9b8ca5; font-size: 10px; }
+@media (max-width: 780px) {
+  .site-header { padding: 12px 18px; grid-template-columns: 1fr auto; }
+  .site-header .desk-status { display: none; }
+  .tabs { margin-inline: 18px; gap: 20px; }
+  #view { padding: 18px 14px 28px; }
+  body[data-layer="temporal"] .temporal-constellation .constellation-map { min-height: 380px; }
+  .shell > footer { padding: 16px 18px; }
+}
