@@ -256,3 +256,12 @@ body[data-layer=temporal] .topology-layer-button { font: 550 var(--type-caption)
   .temporal-facets select { font-size: 12px; }
   .temporal-search-form input { font-size: 16px; }
 }
+@font-face { font-family: 'Atlas Slab'; src: url('./fonts/rokkitt-latin.woff2') format('woff2'); font-weight: 100 900; font-display: swap; }
+/* A single expressive slab heading; analytical and interface text remain sans. */
+body[data-layer=temporal] .view-heading h2 {
+  font-family: 'Atlas Slab', Rockwell, var(--font-interface);
+  font-weight: 600;
+  letter-spacing: -.035em;
+  font-size: clamp(2.6rem, 4.7vw, 4.9rem);
+  line-height: 1.02;
+}

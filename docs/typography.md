@@ -1,10 +1,11 @@
 # typography
 
-log pose uses two voices. the interface uses the locally served Manrope variable font, with its SIL Open Font License retained in `web/fonts/`. literal source metadata uses the platform's UI monospace. the distinction indicates authorship and provenance, never evidence quality or certainty.
+log pose uses a sans-serif foundation, literal source mono, and one expressive slab accent. the interface uses the locally served Manrope variable font, with its SIL Open Font License retained in `web/fonts/`. the main atlas heading uses locally served Rokkitt, a playful slab-serif accent approved by the user. its OFL is retained alongside the font. literal source metadata uses the platform's UI monospace. the distinction indicates authorship and provenance, never evidence quality or certainty.
 
 | role | treatment | use |
 | --- | --- | --- |
-| display | sans, responsive 38–72 px, weight 520, 1.08 leading, tight spacing | the atlas title; one primary heading per surface |
+| atlas display | Rokkitt slab, responsive 42–78 px, weight 600, 1.02 leading | the main atlas heading only; no serif reading text |
+| display | sans, responsive 38–72 px, weight 520, 1.08 leading | primary headings in analytical tools |
 | title | sans, 24–36 px, weight 480–550, 1.15–1.2 leading | selected candidate and evidence inspector |
 | reading | sans, 14 px, weight 450, 1.65 leading | explanations and analytical prose |
 | control | sans, 13 px, weight 500–650, 1.35–1.45 leading | navigation, search, actions and ledger names |
