@@ -135,3 +135,41 @@ html, body, button, input, select, textarea, output, summary, code, pre, .eyebro
   .temporal-facets select { height: 42px; }
   .temporal-suggestion { min-height: 34px; padding: 8px 10px; }
 }
+/* The atlas is the first large surface; the time instrument stays directly below it. */
+.shell { position: relative; }
+.site-header { min-height: 74px; padding: 18px 4.1%; }
+.site-header .desk-status { display: none; }
+.site-header { grid-template-columns: 1fr auto; }
+.tabs { position: absolute; top: 17px; left: 300px; right: 160px; margin: 0; border: 0; justify-content: center; gap: 26px; }
+#view { padding-top: 18px; }
+body[data-layer=temporal] .view-heading { padding: 12px 0 20px; border-bottom: 0; grid-template-columns: 1fr 1fr; align-items: end; }
+body[data-layer=temporal] .view-heading h2 { font: 500 clamp(32px, 4vw, 66px)/1.05 var(--sans); letter-spacing: -.07em; }
+body[data-layer=temporal] .view-heading .eyebrow { color: #737263; font: 11px var(--sans); letter-spacing: .025em; }
+body[data-layer=temporal] .view-heading .view-note { max-width: 470px; font-size: 12px; line-height: 1.7; justify-self: end; }
+body[data-layer=temporal] .topology-layer-nav { margin-bottom: 6px; }
+body[data-layer=temporal] .topology-layer-button { padding: 6px 10px; font-size: 10px; background: transparent; border: 0; border-radius: 0; }
+body[data-layer=temporal] .topology-layer-button[aria-current=page] { border-bottom: 1px solid #796275; }
+.temporal-view-state { display: flex; flex-direction: column; }
+.temporal-workspace { order: 1; }
+.temporal-controls { order: 2; margin-top: 15px; max-width: calc(100% - 318px); }
+.temporal-limitations { order: 3; }
+.temporal-loading, .temporal-missing { order: 1; }
+body[data-layer=temporal] .temporal-constellation { border-radius: 3px; }
+body[data-layer=temporal] .temporal-constellation .constellation-map { min-height: 440px; height: min(58vh, 650px); max-height: none; aspect-ratio: auto; }
+.constellation-heading h3 { font-size: clamp(24px, 2vw, 36px); letter-spacing: -.05em; }
+.temporal-controls-head > .eyebrow { display: none; }
+.temporal-controls-head { margin-bottom: 8px; }
+.temporal-stop-detail { width: 100%; justify-content: space-between; }
+.temporal-sidebar { max-height: 660px; }
+@media (max-width:1000px) { .temporal-controls { max-width: calc(100% - 268px); } .tabs { left: 230px; right: 100px; gap: 16px; } }
+@media (max-width:720px) {
+  .site-header { min-height: 65px; padding: 14px 18px; }
+  .tabs { position: static; margin-inline: 18px; justify-content: start; gap: 24px; border-bottom: 1px solid #d3cfc2; }
+  body[data-layer=temporal] .view-heading { display: block; padding-top: 0; }
+  body[data-layer=temporal] .view-heading h2 { font-size: 38px; }
+  body[data-layer=temporal] .view-heading .view-note { margin-top: 10px; font-size: 11px; }
+  .temporal-controls { max-width: none; order: 0; margin-top: 10px; }
+  .temporal-workspace { order: 1; }
+  .temporal-sidebar { max-height: none; }
+  body[data-layer=temporal] .temporal-constellation .constellation-map { height: 390px; min-height: 390px; }
+}

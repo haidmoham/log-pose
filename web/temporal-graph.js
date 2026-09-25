@@ -38,9 +38,9 @@
     scene.setAttribute('aria-label', 'inventory constellation');
     const header = element('div', 'constellation-heading');
     const title = element('div');
-    title.append(element('span', 'constellation-eyebrow', 'the observation field'));
+    title.append(element('span', 'constellation-eyebrow', `${frame.source?.toUpperCase() || 'inventory'} / ${frame.temporal_mode === 'accumulated' ? 'observed through' : 'inventory year'} ${frame.year || ''}`));
     const focus = frame.nodes.find(node => node.id === frame.focus);
-    title.append(element('h3', '', focus?.name || 'a field of possibilities'));
+    title.append(element('h3', '', focus?.name || 'the source constellation'));
     header.append(title);
     const count = element('div', 'constellation-count');
     count.append(element('strong', '', String(frame.focus ? frame.edges.length : frame.nodes.length)), element('span', '', frame.focus ? 'visible co-listings' : 'observed candidates'));
