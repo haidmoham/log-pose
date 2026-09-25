@@ -1,11 +1,15 @@
 from __future__ import annotations
 
 import json
+import sys
 from pathlib import Path
 
 import pytest
 
-from log_pose.benchmark import (
+ROOT = Path(__file__).resolve().parents[4]
+sys.path.insert(0, str(ROOT))
+
+from experiments.ml.benchmark.runner import (
     ArtifactReceipt,
     BenchmarkError,
     _case_label,
@@ -22,9 +26,6 @@ from log_pose.benchmark import (
     scored_ranking_metrics,
     temporal_eligibility,
 )
-
-
-ROOT = Path(__file__).resolve().parents[1]
 
 
 def cases_and_labels():

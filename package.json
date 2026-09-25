@@ -5,7 +5,8 @@
     "dev": "bash scripts/dev.sh",
     "dashboard": "node scripts/market_field_dev.js",
     "build:market-field": "PYTHONPATH=src python3 scripts/build_market_field_graph.py",
-    "test:dashboard": "node --test tests/research-model.test.js tests/discovery-topology-model.test.js tests/market-route.test.js tests/market-field-api.test.js tests/market-field-provenance.test.js tests/research-set-route.test.js"
+    "test:dashboard": "node --test tests/research-model.test.js tests/discovery-topology-model.test.js tests/market-route.test.js tests/market-field-api.test.js tests/market-field-provenance.test.js tests/experimental-boundary.test.js",
+    "test:experimental": "node --test experiments/ml/mlops-2024/tests/*.test.js"
   },
   "devDependencies": {
     "jsdom": "^26.1.0"

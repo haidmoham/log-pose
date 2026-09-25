@@ -13,8 +13,7 @@ const state = { view: 'data', year: 2024, category: 'all', query: '', company: n
   topologySourceYear: 'all', topologyCategory: 'all', topologyStatus: 'all',
   topologyListLimit: 40, selectedClaim: null, topologyLayer: 'field',
   fieldQuery: '', fieldSource: 'all', fieldYear: 'all', fieldTag: 'all',
-  fieldCategory: 'all', fieldIdentity: 'all', fieldCandidate: null, fieldNeighbor: null,
-  researchMember: null, researchRole: 'all', researchDisposition: 'all', researchQuery: '' };
+  fieldCategory: 'all', fieldIdentity: 'all', fieldCandidate: null, fieldNeighbor: null };
 let data;
 let discovery;
 let dataIndex;
@@ -25,7 +24,6 @@ let exploreView;
 let topologyView;
 let discoveryTopologyView;
 let dataView;
-let researchSetView;
 
 function categoryName(value) {
   return {
@@ -464,8 +462,7 @@ function renderCompare() {
 }
 
 function render() {
-  if (!data || !exploreView || !topologyView || !discoveryTopologyView || !dataView
-      || !researchSetView) return;
+  if (!data || !exploreView || !topologyView || !discoveryTopologyView || !dataView) return;
   topologyView.dispose();
   tabs.forEach(button => {
     if (button.dataset.view === state.view) button.setAttribute('aria-current', 'page');
@@ -475,7 +472,6 @@ function render() {
   root.setAttribute('aria-busy', 'false');
   pinCount.textContent = String(state.compareSlugs.length);
   if (state.view === 'data') dataView.render();
-  else if (state.view === 'research-set') researchSetView.render();
   else if (state.view === 'overview') renderOverview();
   else if (state.view === 'compare') renderCompare();
   else if (state.view === 'topology') {
@@ -506,8 +502,7 @@ tabs.forEach(button => button.addEventListener('click', () => {
   commitState({ view, company: view === 'explore' || view === 'data' ? null : state.company,
     topologyLayer: view === 'topology' ? 'field' : state.topologyLayer,
     selectedClaim: view === 'topology' ? null : state.selectedClaim,
-    selectedCandidate: null, selectedProvider: null,
-    researchMember: view === 'research-set' ? state.researchMember : null }, { top: true });
+    selectedCandidate: null, selectedProvider: null }, { top: true });
 }));
 
 function routeState() {
@@ -528,7 +523,10 @@ window.addEventListener('popstate', () => {
   render();
 });
 
-Promise.all(['./dashboard.json', './discovery.json', './data/index.json'].map(url =>
+const legacyStudyTarget = model.legacyResearchSetTarget(location.search);
+if (legacyStudyTarget) {
+  location.replace(legacyStudyTarget);
+} else Promise.all(['./dashboard.json', './discovery.json', './data/index.json'].map(url =>
   fetch(url).then(response => {
     if (!response.ok) throw new Error(url + ' HTTP ' + response.status);
     return response.json();
@@ -581,7 +579,6 @@ Promise.all(['./dashboard.json', './discovery.json', './data/index.json'].map(ur
         fieldCategory: 'all', fieldIdentity: 'all', fieldCandidate: null,
         fieldNeighbor: null }, { top: true })
     });
-    researchSetView = window.LogPoseResearchSetView.create({ root, state, commitState, writeUrl });
     const fromUrl = routeState();
     Object.assign(state, {
       ...fromUrl,

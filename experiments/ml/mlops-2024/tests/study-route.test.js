@@ -4,7 +4,7 @@ const fs = require('node:fs/promises');
 const path = require('node:path');
 const { JSDOM, ResourceLoader, VirtualConsole } = require('jsdom');
 
-const web = path.resolve(__dirname, '../web');
+const web = path.resolve(__dirname, '../../../../web');
 const evidence = {
   id: 'source-1', title: 'Dated product statement', publisher: 'Example publisher',
   url: 'https://example.test/source', publication_date: '2024-03-02',
@@ -31,7 +31,11 @@ const researchSet = { schema_version: '1.0', id: 'mlops-2024', title: 'MLOps eig
 class LocalResources extends ResourceLoader {
   fetch(url) {
     if (!url.startsWith('https://logpose.test/')) return null;
-    return fs.readFile(path.join(web, new URL(url).pathname));
+    const pathname = new URL(url).pathname;
+    if (pathname.endsWith('.js') && !pathname.startsWith('/experimental/mlops-2024/')) {
+      throw new Error('experimental study requested a core application script');
+    }
+    return fs.readFile(path.join(web, pathname));
   }
 }
 
@@ -46,11 +50,12 @@ async function waitFor(predicate) {
 async function page(route, failResearchOnce = false, useSavedArtifact = false) {
   const errors = [];
   let researchFetches = 0;
+  const requests = [];
   const virtualConsole = new VirtualConsole();
   virtualConsole.on('jsdomError', error => errors.push(error));
-  const html = await fs.readFile(path.join(web, 'index.html'), 'utf8');
+  const html = await fs.readFile(path.join(web, 'experimental/mlops-2024/index.html'), 'utf8');
   const dom = new JSDOM(html, {
-    url: `https://logpose.test/${route}`,
+    url: `https://logpose.test/experimental/mlops-2024/index.html${route}`,
     runScripts: 'dangerously',
     resources: new LocalResources(),
     virtualConsole,
@@ -58,7 +63,8 @@ async function page(route, failResearchOnce = false, useSavedArtifact = false) {
       window.HTMLElement.prototype.scrollIntoView = function scrollIntoView() {};
       window.fetch = async url => {
         const pathname = new URL(url, window.location.href).pathname;
-        if (pathname === '/data/research-set-mlops-2024.json') {
+        requests.push(pathname);
+        if (pathname === '/experimental/mlops-2024/study.json') {
           researchFetches += 1;
           if (failResearchOnce && researchFetches === 1) return { ok: false, status: 503 };
           return { ok: true, json: async () => useSavedArtifact
@@ -75,14 +81,15 @@ async function page(route, failResearchOnce = false, useSavedArtifact = false) {
   });
   await waitFor(() => dom.window.document.querySelector('#view')?.getAttribute('aria-busy') === 'false');
   assert.deepEqual(errors, []);
+  assert.ok(requests.every(pathname => pathname === '/experimental/mlops-2024/study.json'));
+  assert.match(dom.window.document.title, /experimental/);
+  assert.match(dom.window.document.querySelector('.experimental-notice').textContent, /provisional/);
   return { dom, researchFetches: () => researchFetches };
 }
 
-test('saved research set loads lazily, filters all eight leads, and opens passage details with URL state', async () => {
-  const { dom, researchFetches } = await page('?view=data');
+test('experimental study loads independently, filters all eight leads, and opens passage details with URL state', async () => {
+  const { dom, researchFetches } = await page('');
   const { document, Event } = dom.window;
-  assert.equal(researchFetches(), 0);
-  document.querySelector('[data-view="research-set"]').click();
   await waitFor(() => document.querySelectorAll('.research-set-table tbody tr').length === 8);
   assert.equal(researchFetches(), 1);
   assert.match(document.querySelector('.research-set-identity-count').textContent, /5 \/ 8/);
@@ -99,6 +106,9 @@ test('saved research set loads lazily, filters all eight leads, and opens passag
     /retained passage describes a dated product statement/);
   assert.match(document.querySelector('.research-set-passages').textContent, /does not establish economic truth/);
   assert.equal(document.querySelector('.research-set-evidence a').getAttribute('href'), 'https://example.test/source');
+  dom.window.history.back();
+  await waitFor(() => !document.querySelector('.research-set-detail'));
+  assert.equal(document.querySelector('[aria-label="role"]').value, 'observability');
   dom.window.close();
 });
 

@@ -11,8 +11,10 @@ from pathlib import Path
 from typing import Any, Iterable
 
 
-CASE_MANIFEST = Path("docs/research/benchmark/cases-v1.json")
-LABEL_MANIFEST = Path("docs/research/benchmark/evaluator-labels-v1.json")
+BENCHMARK_DIR = Path(__file__).resolve().parent
+CASE_MANIFEST = BENCHMARK_DIR / "data" / "cases-v1.json"
+LABEL_MANIFEST = BENCHMARK_DIR / "data" / "evaluator-labels-v1.json"
+PREDICTION_FIXTURES = BENCHMARK_DIR / "data" / "prediction-fixtures-v1.json"
 
 
 class BenchmarkError(ValueError):
@@ -346,7 +348,7 @@ def run_benchmark(root: Path, output_dir: Path) -> dict[str, Any]:
         results[control] = [_run_control(case, root, control, _case_label(label_map, case["id"])) for case in cases_manifest["cases"]]
 
     case_manifest_hash = canonical_sha256(cases_manifest)
-    prediction_fixture = _load_json(root, "docs/research/benchmark/prediction-fixtures-v1.json")
+    prediction_fixture = _load_json(root, str(PREDICTION_FIXTURES))
     if prediction_fixture.get("version") != "prediction-fixtures-v1" or prediction_fixture.get("fixture_type") != "synthetic_metric_contract_only":
         raise BenchmarkError("prediction fixture must be explicitly synthetic")
     prediction_rows = [(row["probability"], resolve_binary_outcome(row["resolution_status"])) for row in prediction_fixture["predictions"]]
@@ -414,7 +416,7 @@ def _git_commit(root: Path) -> str | None:
     import subprocess
 
     result = subprocess.run(
-        ["git", "log", "-1", "--format=%H", "--", "src/log_pose/benchmark.py", "scripts/run_benchmark.py"],
+        ["git", "log", "-1", "--format=%H", "--", "experiments/ml/benchmark/runner.py", "experiments/ml/benchmark/run.py"],
         cwd=root, text=True, capture_output=True, check=False,
     )
     return result.stdout.strip() if result.returncode == 0 else None

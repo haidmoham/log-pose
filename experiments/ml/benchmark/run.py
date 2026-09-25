@@ -7,16 +7,17 @@ import argparse
 import sys
 from pathlib import Path
 
-REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(REPOSITORY_ROOT / "src"))
+BENCHMARK_DIR = Path(__file__).resolve().parent
+REPOSITORY_ROOT = BENCHMARK_DIR.parents[2]
+sys.path.insert(0, str(REPOSITORY_ROOT))
 
-from log_pose.benchmark import BenchmarkError, run_benchmark  # noqa: E402
+from experiments.ml.benchmark.runner import BenchmarkError, run_benchmark  # noqa: E402
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root", type=Path, default=REPOSITORY_ROOT, help="repository root containing frozen artifacts")
-    parser.add_argument("--output-dir", type=Path, default=Path("docs/research/benchmark/scorecard"), help="directory for JSON and Markdown receipts")
+    parser.add_argument("--output-dir", type=Path, required=True, help="directory for new JSON and Markdown receipts; existing frozen scorecards are not overwritten by default")
     args = parser.parse_args()
     root = args.root.resolve()
     output_dir = args.output_dir if args.output_dir.is_absolute() else root / args.output_dir
