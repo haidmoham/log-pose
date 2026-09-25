@@ -1,7 +1,7 @@
 (function exposeResearchModel(globalScope) {
   'use strict';
 
-  const VALID_VIEWS = new Set(['overview', 'compare', 'explore', 'topology']);
+  const VALID_VIEWS = new Set(['data', 'overview', 'compare', 'explore', 'topology']);
   const MAX_PINNED = 4;
   const TOPOLOGY_PREDICATES = new Set([
     'possible_substitute_for', 'named_competitor_of', 'integrates_with',
@@ -25,6 +25,11 @@
   function claimSourceDate(claim) {
     return claim.sources.reduce((latest, source) =>
       source.source_date > latest ? source.source_date : latest, '');
+  }
+
+  function safeDataRecord(value) {
+    return typeof value === 'string' && value.length <= 160
+      && /^[A-Za-z0-9][A-Za-z0-9._:-]*$/.test(value) ? value : '';
   }
 
   function filterTopologyClaims(claims, { sourceYear = 'all', category = 'all', status = 'all',
@@ -76,18 +81,45 @@
     return { x: turnedX * scale, y: turnedY * scale, depth };
   }
 
-  function topologyGraphSlice(claims, focus = null, maxNodes = 16, maxClaims = 48) {
-    const slugs = [...new Set(claims.flatMap(claim => [claim.subject_slug, claim.object_slug]))].sort();
+  function topologyGraphSlice(claims, focus = null, maxNodes = 16, maxClaims = 48,
+    selectedClaimId = null) {
+    const slugs = [...new Set(claims.flatMap(claim => [claim.subject_slug, claim.object_slug]))];
+    const degree = new Map(slugs.map(slug => [slug, 0]));
+    for (const claim of claims) {
+      degree.set(claim.subject_slug, degree.get(claim.subject_slug) + 1);
+      degree.set(claim.object_slug, degree.get(claim.object_slug) + 1);
+    }
+    const compareByDegree = (left, right) => degree.get(right) - degree.get(left)
+      || left.localeCompare(right);
     const neighbors = focus ? [...new Set(claims.filter(claim =>
       claim.subject_slug === focus || claim.object_slug === focus).map(claim =>
-      claim.subject_slug === focus ? claim.object_slug : claim.subject_slug))].sort() : [];
-    const chosen = focus ? [focus, ...neighbors].slice(0, maxNodes) : slugs.slice(0, maxNodes);
+      claim.subject_slug === focus ? claim.object_slug : claim.subject_slug))]
+      .sort(compareByDegree) : [];
+    const chosen = focus
+      ? [focus, ...neighbors].slice(0, maxNodes)
+      : [...slugs].sort(compareByDegree).slice(0, maxNodes);
+    const selected = claims.find(claim => claim.id === selectedClaimId);
+    if (selected) {
+      const requiredSlugs = [selected.subject_slug, selected.object_slug];
+      const missingRequired = requiredSlugs.filter(slug => !chosen.includes(slug));
+      const removable = chosen.map((slug, index) => ({ slug, index }))
+        .filter(({ slug }) => slug !== focus && !requiredSlugs.includes(slug))
+        .sort((left, right) => degree.get(left.slug) - degree.get(right.slug)
+          || right.slug.localeCompare(left.slug));
+      for (const item of removable.slice(0, missingRequired.length).sort((a, b) => b.index - a.index)) {
+        chosen.splice(item.index, 1);
+      }
+      chosen.push(...missingRequired.slice(0, Math.max(0, maxNodes - chosen.length)));
+    }
     const chosenSlugs = new Set(chosen);
     const connectedClaims = claims.filter(claim => chosenSlugs.has(claim.subject_slug)
-      && chosenSlugs.has(claim.object_slug)).sort((left, right) => left.id.localeCompare(right.id));
-    return { claims: connectedClaims.slice(0, maxClaims),
-      hiddenClaims: claims.length - Math.min(connectedClaims.length, maxClaims),
-      hiddenNodes: (focus ? neighbors.length + 1 : slugs.length) - chosen.length };
+      && chosenSlugs.has(claim.object_slug))
+      .sort((left, right) => Number(right.id === selectedClaimId) - Number(left.id === selectedClaimId)
+        || left.id.localeCompare(right.id));
+    const graphClaims = connectedClaims.slice(0, maxClaims);
+    return { claims: graphClaims,
+      hiddenClaims: claims.length - graphClaims.length,
+      hiddenNodes: slugs.length - chosen.length };
   }
 
   function topologyPairGroups(claims) {
@@ -280,9 +312,13 @@
     return segments;
   }
 
-  function parseUrlState(search, validSlugs, years, artifacts = []) {
+  function parseUrlState(search, validSlugs, years, artifacts = [], pilotSlugs = new Set()) {
     const params = new URLSearchParams(search);
-    const view = VALID_VIEWS.has(params.get('view')) ? params.get('view') : 'explore';
+    const requestedView = params.get('view');
+    const hasLegacyExploreState = ['company', 'pinned', 'inventory', 'inventoryQuery', 'q',
+      'recordYear', 'source', 'type', 'us', 'category'].some(name => params.has(name));
+    const view = VALID_VIEWS.has(requestedView) ? requestedView
+      : requestedView === null && hasLegacyExploreState ? 'explore' : 'data';
     const requestedYear = Number(params.get('year'));
     const year = years.includes(requestedYear) ? requestedYear : Math.max(...years);
     const company = validSlugs.has(params.get('company')) ? params.get('company') : null;
@@ -299,21 +335,35 @@
     const allowedUs = new Set(['all', 'documented', 'unresolved']);
     const allowedCategory = new Set(['all', 'data_infrastructure', 'developer_tools',
       'security_observability', 'ai_automation']);
+    const allowedDataFamily = new Set(['all', 'inventory', 'pages', 'sec', 'market', 'topology']);
     const choice = (name, allowed) => allowed.has(params.get(name)) ? params.get(name) : 'all';
+    const requestedDataYear = params.get('dataYear') || 'all';
+    const dataYear = requestedDataYear === 'all'
+      || (/^20(?:20|2[1-6])$/.test(requestedDataYear)) ? requestedDataYear : 'all';
+    const requestedDataCompany = params.get('dataCompany') || 'all';
+    const dataCompany = requestedDataCompany === 'all' || pilotSlugs.has(requestedDataCompany)
+      ? requestedDataCompany : 'all';
+    const dataRecord = safeDataRecord(params.get('dataRecord') || '');
     return { view, year, company, pinned, inventoryArtifact,
       inventoryQuery: (params.get('inventoryQuery') || '').slice(0, 200),
       query: (params.get('q') || '').slice(0, 200), searchYear,
       searchSource: choice('source', allowedSource), searchType: choice('type', allowedType),
-      searchUs: choice('us', allowedUs), category: choice('category', allowedCategory) };
+      searchUs: choice('us', allowedUs), category: choice('category', allowedCategory),
+      dataFamily: choice('dataFamily', allowedDataFamily),
+      dataQuery: (params.get('dataQuery') || '').slice(0, 200), dataCompany,
+      dataYear, dataRecord };
   }
 
   function toUrlParams(state) {
     const params = new URLSearchParams();
-    if (state.view !== 'explore') params.set('view', state.view);
-    if (state.view !== 'explore' && state.year) params.set('year', String(state.year));
+    if (state.view !== 'data') params.set('view', state.view);
+    if (state.view !== 'data' && state.view !== 'explore' && state.year) {
+      params.set('year', String(state.year));
+    }
     if (state.company) params.set('company', state.company);
     if (state.compareSlugs.length) params.set('pinned', state.compareSlugs.join(','));
     if (state.view === 'explore') {
+      params.set('view', 'explore');
       if (state.inventoryArtifact && state.inventoryArtifact !== 'cncf-2026')
         params.set('inventory', state.inventoryArtifact);
       if (state.inventoryQuery) params.set('inventoryQuery', state.inventoryQuery);
@@ -323,6 +373,14 @@
       if (state.searchType !== 'all') params.set('type', state.searchType);
       if (state.searchUs !== 'all') params.set('us', state.searchUs);
       if (state.category !== 'all') params.set('category', state.category);
+    }
+    if (state.view === 'data') {
+      if (state.dataFamily && state.dataFamily !== 'all') params.set('dataFamily', state.dataFamily);
+      if (state.dataQuery) params.set('dataQuery', state.dataQuery.slice(0, 200));
+      if (state.dataCompany && state.dataCompany !== 'all') params.set('dataCompany', state.dataCompany);
+      if (state.dataYear && state.dataYear !== 'all') params.set('dataYear', state.dataYear);
+      const dataRecord = safeDataRecord(state.dataRecord);
+      if (dataRecord) params.set('dataRecord', dataRecord);
     }
     return params.toString();
   }
