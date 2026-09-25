@@ -23,6 +23,7 @@ async function main() {
     const commitSha = process.env.EXPECTED_SHA ||
       execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
     if (!/^[a-f0-9]{40}$/.test(commitSha)) throw new Error('expected commit must be a full SHA');
+    report.expected_sha = commitSha;
     const graph = JSON.parse(execFileSync('git', ['show',
       `${commitSha}:api/data/market-field-graph.json`], { maxBuffer: 10 * 1024 * 1024 }));
     const [left, right] = graph.pairs[0];
