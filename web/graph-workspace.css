@@ -66,3 +66,72 @@ body, .shell, .site-header { background: #f2efe6; color: #242922; }
 .shell > footer { border-top-color: #d3cfc2; color: #767366; }
 .temporal-constellation { --focus: #e4c790; color: #e8e0ed; }
 .temporal-constellation h3 { color: #eee6ef; }
+@font-face { font-family: 'Atlas Sans'; src: url('./fonts/manrope-latin-wght-normal.woff2') format('woff2'); font-weight: 200 800; font-display: swap; }
+:root { --sans: 'Atlas Sans', Manrope, ui-sans-serif, system-ui, sans-serif; --heading: var(--sans); --mono: var(--sans); }
+html, body, button, input, select, textarea, output, summary, code, pre, .eyebrow,
+.identity-name, .constellation-heading h3, .constellation-count strong { font-family: var(--sans); }
+.temporal-workspace { display: grid; grid-template-columns: minmax(0, 1fr) 290px; gap: 28px; align-items: start; }
+.temporal-main, .temporal-sidebar { min-width: 0; }
+.temporal-sidebar { padding-top: 24px; max-height: 760px; overflow-y: auto; scrollbar-width: thin; scrollbar-color: #c5beb2 transparent; }
+.temporal-frame-summary { display: flex; flex-wrap: wrap; gap: 18px; align-items: center; min-height: 28px; color: #6f6c60; font: 11px/1.5 var(--sans); }
+.temporal-graph-heading { display: none; }
+.temporal-controls { margin-bottom: 16px; padding: 0; }
+.temporal-controls-head { display: flex; justify-content: space-between; align-items: center; gap: 15px; margin-bottom: 9px; }
+.temporal-controls-head > .eyebrow { font-size: 10px; color: #686b60; letter-spacing: .04em; }
+.temporal-controls-head > .muted { display: none; }
+.temporal-stop-detail { display: flex; align-items: center; gap: 14px; font-size: 11px; color: #747267; }
+.temporal-stop-detail strong { font-size: 14px; font-weight: 650; color: #393d33; }
+.temporal-stop-detail time { font-size: 10px; }
+.temporal-facets { display: grid; grid-template-columns: 1fr 1.5fr 1fr 1.3fr; gap: 10px; }
+.temporal-facets select { width: 100%; min-width: 0; height: 36px; border: 1px solid #d6d0c3; background: #f5f2e9; color: #41463b; padding: 0 10px; border-radius: 4px; font: 11px var(--sans); }
+.temporal-rail { display: flex; align-items: center; gap: 18px; margin-top: 10px; }
+.temporal-rail input[type=range] { flex: 1; min-width: 60px; accent-color: #6c526a; cursor: ew-resize; }
+.temporal-rail button, .temporal-search-submit { height: 32px; background: none; color: #5f4c5b; border: 1px solid #c7bdbf; padding: 0 12px; border-radius: 4px; font: 11px var(--sans); }
+.temporal-rail button:disabled { opacity: .35; cursor: default; }
+.temporal-coverage-note { margin: 7px 0 0; color: #7b715d; font: 10px/1.5 var(--sans); }
+.temporal-search > .eyebrow, .temporal-ledger > .eyebrow, .temporal-inspector > .eyebrow { font-size: 10px; letter-spacing: .04em; color: #756a71; margin-top: 0; }
+.temporal-search-form { display: flex; gap: 7px; }
+.temporal-search-form input { width: 100%; min-width: 0; background: #faf7ef; border: 1px solid #cbc6b9; padding: 10px; border-radius: 3px; color: #333b31; font-size: 11px; }
+.temporal-search-submit { height: 37px; }
+.temporal-suggestions { margin: 12px 0 24px; display: flex; flex-wrap: wrap; gap: 6px; max-height: 150px; overflow: auto; }
+.temporal-suggestion { padding: 5px 9px; border: 1px solid #d4ccbf; background: transparent; border-radius: 15px; color: #61584f; font: 10px var(--sans); }
+.temporal-suggestion:hover { background: #e8e0d6; }
+.temporal-ledger { margin-top: 20px; max-height: 310px; overflow-y: auto; scrollbar-width: thin; }
+.temporal-change { display: flex; flex-direction: column; width: 100%; align-items: start; gap: 4px; padding: 12px 5px; text-align: left; background: none; border: 0; border-bottom: 1px solid #dad4c7; color: #393b33; }
+.temporal-change strong { font-size: 12px; font-weight: 620; }
+.temporal-change span { font-size: 10px; color: #776875; }
+.temporal-change small { font-size: 9px; color: #7a7569; }
+.temporal-change[aria-pressed=true] { background: #e9e0e5; border-left: 2px solid #826480; padding-left: 10px; }
+.temporal-change[data-status=newly_observed_in_selected_frame] strong::before { content: '◇ '; color: #516978; }
+.temporal-change[data-status=absent_from_selected_frame] strong::before { content: '◌ '; color: #786e80; }
+.temporal-inspector { margin-top: 24px; border-top: 1px solid #c8beae; padding-top: 20px; }
+.temporal-inspector h3 { font: 550 23px/1.3 var(--sans); letter-spacing: -.045em; color: #35392f; margin: 8px 0 12px; }
+.temporal-inspector p, .temporal-ledger > p:not(.eyebrow) { font: 12px/1.65 var(--sans); color: #6d695d; }
+.temporal-inspector h4 { font: 650 11px var(--sans); margin-top: 20px; }
+.temporal-status-label { color: #6b5067 !important; }
+.temporal-evidence-card { padding: 12px 0; border-bottom: 1px solid #d6cebf; }
+.temporal-evidence-card .eyebrow { font: 650 10px/1.6 var(--sans); letter-spacing: 0; }
+.temporal-evidence-card a { font-size: 11px; }
+.temporal-evidence-card small { display: block; font-size: 9px; line-height: 1.7; overflow-wrap: anywhere; margin: 7px 0; color: #777267; }
+.temporal-row-link { display: block; width: 100%; text-align: left; margin: 8px 0; padding: 9px 10px; border: 1px solid #cfc4b8; background: #eee8de; color: #685166; border-radius: 3px; font: 11px/1.5 var(--sans); }
+.temporal-limitations { margin-top: 24px; padding-top: 16px; border-top: 1px solid #d3cabb; color: #716b5e; max-width: 1100px; }
+.temporal-limitations summary { font-size: 11px; cursor: pointer; }
+.temporal-limitations p { font-size: 11px; line-height: 1.6; }
+.temporal-missing, .temporal-loading { min-height: 440px; padding: 65px 40px; background: #eae4da; border: 1px solid #cec3b2; }
+@media (max-width: 1000px) {
+  .temporal-workspace { grid-template-columns: minmax(0,1fr) 250px; gap: 18px; }
+  .temporal-stop-detail time { display: none; }
+  .temporal-facets { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 720px) {
+  .temporal-workspace { display: flex; flex-direction: column; }
+  .temporal-main, .temporal-sidebar { width: 100%; }
+  .temporal-sidebar { max-height: none; overflow: visible; }
+  .temporal-controls-head { display: block; }
+  .temporal-stop-detail { margin-top: 8px; }
+  .temporal-stop-detail time { display: block; max-width: 150px; }
+  .temporal-rail { gap: 8px; }
+  .temporal-rail button { min-height: 40px; padding-inline: 8px; }
+  .temporal-facets select { height: 42px; }
+  .temporal-suggestion { min-height: 34px; padding: 8px 10px; }
+}
