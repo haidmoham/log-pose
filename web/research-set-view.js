@@ -182,9 +182,40 @@
       return element;
     }
 
+    function memoPanel() {
+      const memo = payload.memo;
+      if (!memo) return null;
+      const panel = node('section', '', 'research-set-memo');
+      panel.append(node('p', 'RESEARCH DECISION / 2024-12-31', 'eyebrow'),
+        node('h3', `${(memo.priority_ids || []).length} unconditional priorities`),
+        node('p', memo.decision || '', 'research-set-memo-decision'));
+      const cases = node('div', '', 'research-set-memo-cases');
+      for (const hypothesis of memo.conditional_hypotheses || []) {
+        const member = payload.members.find(item => item.id === hypothesis.member_id);
+        if (!member) continue;
+        const card = node('article', '', 'research-set-memo-case');
+        card.append(node('p', 'CONDITIONAL HYPOTHESIS', 'eyebrow'), node('h4', member.name));
+        for (const [label, value] of [
+          ['case', hypothesis.case], ['counterargument', hypothesis.counterargument],
+          ['could change', hypothesis.could_change], ['next question', hypothesis.next_question],
+        ]) {
+          if (value) card.append(append(node('p'), node('strong', `${label}: `),
+            document.createTextNode(value)));
+        }
+        const open = node('button', `inspect ${member.name} evidence →`, 'research-set-open');
+        open.type = 'button';
+        open.addEventListener('click', () => setState({ researchMember: member.id },
+          'button.research-set-open'));
+        card.append(open);
+        cases.append(card);
+      }
+      panel.append(cases, node('p', memo.limits || '', 'caveat'));
+      return panel;
+    }
+
     function evidenceIds(member) {
       const ids = new Set();
-      for (const [, gateKey] of GATE_LABELS) {
+      for (const [gateKey] of GATE_LABELS) {
         for (const id of member.gates?.[gateKey]?.evidence_ids || []) ids.add(id);
       }
       for (const claim of member.claims || []) {
@@ -312,6 +343,8 @@
         node('small', `${unreviewed} unreviewed or unresolved identities`));
       root.replaceChildren(heading, identityMetric, filterPanel(members),
         compactComparison(visible));
+      const memo = memoPanel();
+      if (memo) root.append(memo);
       const selected = members.find(member => member.id === state.researchMember);
       if (selected) root.append(memberDetail(selected));
     }

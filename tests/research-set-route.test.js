@@ -43,7 +43,7 @@ async function waitFor(predicate) {
   throw new Error('research set route did not reach expected state');
 }
 
-async function page(route, failResearchOnce = false) {
+async function page(route, failResearchOnce = false, useSavedArtifact = false) {
   const errors = [];
   let researchFetches = 0;
   const virtualConsole = new VirtualConsole();
@@ -61,7 +61,8 @@ async function page(route, failResearchOnce = false) {
         if (pathname === '/data/research-set-mlops-2024.json') {
           researchFetches += 1;
           if (failResearchOnce && researchFetches === 1) return { ok: false, status: 503 };
-          return { ok: true, json: async () => researchSet };
+          return { ok: true, json: async () => useSavedArtifact
+            ? JSON.parse(await fs.readFile(path.join(web, pathname), 'utf8')) : researchSet };
         }
         try {
           const body = await fs.readFile(path.join(web, pathname), 'utf8');
@@ -109,5 +110,20 @@ test('saved research set shows a retry after a lazy data load fails', async () =
   document.querySelector('.research-set-error button').click();
   await waitFor(() => document.querySelectorAll('.research-set-table tbody tr').length === 8);
   assert.equal(researchFetches(), 2);
+  dom.window.close();
+});
+
+test('the versioned eight-lead artifact renders its memo and opens a real passage', async () => {
+  const { dom } = await page('?view=research-set', false, true);
+  const { document } = dom.window;
+  await waitFor(() => document.querySelectorAll('.research-set-table tbody tr').length === 8);
+  assert.match(document.querySelector('.research-set-identity-count').textContent, /4 \/ 8/);
+  assert.match(document.querySelector('.research-set-memo').textContent, /0 unconditional priorities/);
+  const open = [...document.querySelectorAll('.research-set-memo .research-set-open')]
+    .find(button => button.textContent.includes('Weights & Biases'));
+  open.click();
+  await waitFor(() => document.querySelector('.research-set-detail h3')?.textContent === 'Weights & Biases');
+  assert.match(document.querySelector('.research-set-passages').textContent, /San Francisco/);
+  assert.ok(document.querySelectorAll('.research-set-evidence').length >= 4);
   dom.window.close();
 });
