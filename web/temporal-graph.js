@@ -143,7 +143,7 @@
       action('+', 'zoom in graph', () => zoomTo(camera.zoom * 1.25)),
       action('↺', 'reset graph view', () => { camera.x = 0; camera.y = 0; camera.zoom = 1; updateCamera(); }));
     footer.append(controls); scene.append(footer);
-    scene.append(element('p', 'constellation-note', (frame.context_edges_truncated ? `${(frame.context_edges || []).length.toLocaleString()} of ${(frame.context_edge_count || frame.total_edges || 0).toLocaleString()} context connections drawn. ` : '') + 'positions stay fixed through time. spacing, light and line length carry no measure of strength.'));
+    scene.append(element('p', 'constellation-note', (frame.context_edges_truncated ? `${(frame.context_edges || []).length.toLocaleString()} of ${(frame.total_context_edges || 0).toLocaleString()} context connections drawn. ` : '') + 'positions stay fixed through time. spacing, light and line length carry no measure of strength.'));
 
     const tuning = element('details', 'constellation-tuning');
     tuning.append(element('summary', '', 'view settings'));
