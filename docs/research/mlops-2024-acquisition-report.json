@@ -1,0 +1,149 @@
+{
+  "schema_version": "1.0",
+  "manifest_count": 11,
+  "planned_count": 11,
+  "captured_or_verified_count": 10,
+  "failed_count": 1,
+  "refresh_mode": false,
+  "results": [
+    {
+      "id": "datarobot-series-g-2021",
+      "outcome": "verified_existing",
+      "source_url": "https://www.datarobot.com/newsroom/press/datarobot-unveils-major-milestones-including-300m-series-g-funding-investment/",
+      "final_url": "https://www.datarobot.com/newsroom/press/datarobot-unveils-major-milestones-including-300m-series-g-funding-investment/",
+      "http_status": null,
+      "retrieved_at": "2026-09-25T15:24:33.907643+00:00",
+      "verified_at": "2026-09-25T15:41:11.007028+00:00",
+      "artifact_path": "docs/research/source-artifacts/mlops-2024/datarobot-series-g-2021.html",
+      "bytes": 165697,
+      "sha256": "1a025c36b81bb6bf950f4a64533efddae2fbc4c9ad8ea67e806912509c4b8a02",
+      "expected_sha256": "1a025c36b81bb6bf950f4a64533efddae2fbc4c9ad8ea67e806912509c4b8a02"
+    },
+    {
+      "id": "wandb-round-2023",
+      "outcome": "verified_existing",
+      "source_url": "https://wandb.ai/site/press-release/weights-biases-raises-50-million-round-led-by-daniel-gross-and-nat-friedman-announces-wb-prompts/",
+      "final_url": "https://wandb.ai/site/press-release/weights-biases-raises-50-million-round-led-by-daniel-gross-and-nat-friedman-announces-wb-prompts/",
+      "http_status": null,
+      "retrieved_at": "2026-09-25T15:24:34.877402+00:00",
+      "verified_at": "2026-09-25T15:41:11.011033+00:00",
+      "artifact_path": "docs/research/source-artifacts/mlops-2024/wandb-round-2023.html.gz",
+      "bytes": 415443,
+      "sha256": "05901f2e0f5ec789fe3cc8ba41584160a2bc2b04b921a55e9faac084cbccd811",
+      "expected_sha256": "05901f2e0f5ec789fe3cc8ba41584160a2bc2b04b921a55e9faac084cbccd811"
+    },
+    {
+      "id": "iterative-series-a-2021",
+      "outcome": "verified_existing",
+      "source_url": "https://www.globenewswire.com/news-release/2021/06/02/2240670/0/en/mlops-company-iterative-raises-20-million-series-a-funding-led-by-468-capital.html",
+      "final_url": "https://www.globenewswire.com/news-release/2021/06/02/2240670/0/en/mlops-company-iterative-raises-20-million-series-a-funding-led-by-468-capital.html",
+      "http_status": null,
+      "retrieved_at": "2026-09-25T15:24:38.276578+00:00",
+      "verified_at": "2026-09-25T15:41:11.011985+00:00",
+      "artifact_path": "docs/research/source-artifacts/mlops-2024/iterative-series-a-2021.html",
+      "bytes": 55138,
+      "sha256": "61aeaaba453acf829fdab69b6f2cd7ec812f14e17c78034d873409346e676d35",
+      "expected_sha256": "61aeaaba453acf829fdab69b6f2cd7ec812f14e17c78034d873409346e676d35"
+    },
+    {
+      "id": "bentoml-tomtom-2024",
+      "outcome": "verified_existing",
+      "source_url": "https://www.bentoml.com/blog/tomtom-and-bentoml-are-advancing-location-based-ai-together",
+      "final_url": "https://www.bentoml.com/blog/tomtom-and-bentoml-are-advancing-location-based-ai-together",
+      "http_status": null,
+      "retrieved_at": "2026-09-25T15:24:39.068524+00:00",
+      "verified_at": "2026-09-25T15:41:11.012686+00:00",
+      "artifact_path": "docs/research/source-artifacts/mlops-2024/bentoml-tomtom-2024.html",
+      "bytes": 116315,
+      "sha256": "0213e9bb5d83725c0f3567cedf12a6fdc6def71758301a682a7b964fe97f6c9f",
+      "expected_sha256": "0213e9bb5d83725c0f3567cedf12a6fdc6def71758301a682a7b964fe97f6c9f"
+    },
+    {
+      "id": "zenml-funding-2023",
+      "outcome": "verified_existing",
+      "source_url": "https://www.zenml.io/blog/were-revving-up-zenml-exciting-news-and-what-it-means-for-you",
+      "final_url": "https://www.zenml.io/blog/were-revving-up-zenml-exciting-news-and-what-it-means-for-you",
+      "http_status": null,
+      "retrieved_at": "2026-09-25T15:24:44.012875+00:00",
+      "verified_at": "2026-09-25T15:41:11.013249+00:00",
+      "artifact_path": "docs/research/source-artifacts/mlops-2024/zenml-funding-2023.html",
+      "bytes": 115752,
+      "sha256": "b360bb5d98ec96fd6144859e2cea126e18e50237071b4b07c3976fce6c169515",
+      "expected_sha256": "b360bb5d98ec96fd6144859e2cea126e18e50237071b4b07c3976fce6c169515"
+    },
+    {
+      "id": "zenml-terms-2024",
+      "outcome": "verified_existing",
+      "source_url": "https://www.zenml.io/terms-of-service",
+      "final_url": "https://www.zenml.io/terms-of-service",
+      "http_status": null,
+      "retrieved_at": "2026-09-25T15:24:44.246998+00:00",
+      "verified_at": "2026-09-25T15:41:11.013755+00:00",
+      "artifact_path": "docs/research/source-artifacts/mlops-2024/zenml-terms-2024.html",
+      "bytes": 101212,
+      "sha256": "a09fab1370dc41297c88bb525e98c7cf35fa4564c3c655bd59eb564ef3bee3c2",
+      "expected_sha256": "a09fab1370dc41297c88bb525e98c7cf35fa4564c3c655bd59eb564ef3bee3c2"
+    },
+    {
+      "id": "datarobot-itochu-2022",
+      "outcome": "verified_existing",
+      "source_url": "https://www.itochu.co.jp/en/news/press/2022/220810.html",
+      "final_url": "https://www.itochu.co.jp/en/news/press/2022/220810.html",
+      "http_status": null,
+      "retrieved_at": "2026-09-25T15:28:09.171029+00:00",
+      "verified_at": "2026-09-25T15:41:11.014510+00:00",
+      "artifact_path": "docs/research/source-artifacts/mlops-2024/datarobot-itochu-2022.html",
+      "bytes": 62733,
+      "sha256": "daea865f5eae005637c14e7303a7366640f2265875221543273dd074ce4dc1c6",
+      "expected_sha256": "daea865f5eae005637c14e7303a7366640f2265875221543273dd074ce4dc1c6"
+    },
+    {
+      "id": "wandb-nairr-2024",
+      "outcome": "verified_existing",
+      "source_url": "https://wandb.ai/site/press-release/national-artificial-intelligence-research-resource-nairr-selects-weights-biases-for-pilot-program/",
+      "final_url": "https://wandb.ai/site/press-release/national-artificial-intelligence-research-resource-nairr-selects-weights-biases-for-pilot-program/",
+      "http_status": null,
+      "retrieved_at": "2026-09-25T15:28:10.593200+00:00",
+      "verified_at": "2026-09-25T15:41:11.015774+00:00",
+      "artifact_path": "docs/research/source-artifacts/mlops-2024/wandb-nairr-2024.html.gz",
+      "bytes": 413732,
+      "sha256": "fcf3906d279ef92c4f5136bebd356034559d0b0a7b2f8d5a0e27a9e6d1f4ed54",
+      "expected_sha256": "fcf3906d279ef92c4f5136bebd356034559d0b0a7b2f8d5a0e27a9e6d1f4ed54"
+    },
+    {
+      "id": "federal-register-ai-consortium-2022",
+      "outcome": "verified_existing",
+      "source_url": "https://www.govinfo.gov/content/pkg/FR-2022-05-12/pdf/2022-10215.pdf",
+      "final_url": "https://www.govinfo.gov/content/pkg/FR-2022-05-12/pdf/2022-10215.pdf",
+      "http_status": null,
+      "retrieved_at": "2026-09-25T15:28:11.109695+00:00",
+      "verified_at": "2026-09-25T15:41:11.016443+00:00",
+      "artifact_path": "docs/research/source-artifacts/mlops-2024/federal-register-ai-consortium-2022.pdf",
+      "bytes": 172096,
+      "sha256": "daf0aabefca94df59f0bc0967cdf0fa911afcfe2097013019ccc901e470a3a61",
+      "expected_sha256": "daf0aabefca94df59f0bc0967cdf0fa911afcfe2097013019ccc901e470a3a61"
+    },
+    {
+      "id": "wandb-aws-2024",
+      "outcome": "verified_existing",
+      "source_url": "https://wandb.ai/site/de/articles/press-release/weights-biases-named-a-2024-geo-and-global-aws-partner-award-finalist/",
+      "final_url": "https://wandb.ai/site/de/articles/press-release/weights-biases-named-a-2024-geo-and-global-aws-partner-award-finalist/",
+      "http_status": null,
+      "retrieved_at": "2026-09-25T15:32:14.820260+00:00",
+      "verified_at": "2026-09-25T15:41:11.018131+00:00",
+      "artifact_path": "docs/research/source-artifacts/mlops-2024/wandb-aws-2024.html.gz",
+      "bytes": 87834,
+      "sha256": "fb0e2424c39d65a8c8c3ca7a3e9bcc0e64b39cbeea30be32a924e5fe1fe9fb9f",
+      "expected_sha256": "fb0e2424c39d65a8c8c3ca7a3e9bcc0e64b39cbeea30be32a924e5fe1fe9fb9f"
+    }
+  ],
+  "failures": [
+    {
+      "id": "databricks-managed-mlflow-2021",
+      "source_url": "https://community.databricks.com/t5/machine-learning/how-does-databricks-managed-mlflow-compare-with-open-source-oss/td-p/24711",
+      "outcome": "failed",
+      "retrieved_at": "2026-09-25T15:41:12.683830+00:00",
+      "error": "capture failed for databricks-managed-mlflow-2021: HTTP Error 403: Forbidden"
+    }
+  ]
+}

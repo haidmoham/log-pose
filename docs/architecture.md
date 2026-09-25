@@ -4,6 +4,7 @@ Log Pose serves one research console from retained exports.
 
 - `npm run dashboard` serves the read-only research console from saved JSON exports. `web/index.html` loads `research-model.js` for validation, calculations, deterministic reviewed-graph coordinates, and URL state; `console-ui.js` for DOM and chart primitives; `data-view.js` for full cross-source search and retained-record inspection; `explore-view.js` for source audits; `discovery-topology-model.js` for exact source overlap and field coordinates; `discovery-topology-view.js` for its filters, field, and inspector; `topology-view.js` for the separate reviewed claim map; `topology-webgl.js` for its optional 3D renderer; and `app.js` for state and route composition. It does not require Postgres.
 - `npm run dev` serves the same `web/index.html`, scripts, styles, and lazy data partitions. It does not migrate the database or fetch new evidence when opening the interface. An explicit `DATABASE_URL` enables the retained read-only `/api/companies` and `/api/overview` endpoints; the console itself does not require Postgres. Static paths are confined to `web/`.
+- `web/research-set-view.js` renders the lazy saved ML operations study route. It reads `web/data/research-set-mlops-2024.json` and owns only filtering, memo/lead composition, and passage navigation. `scripts/build_mlops_research_set.py` owns the frozen cohort, evidence joins, cutoff checks, gate decisions, and deterministic export. The versioned source record and memo live in `docs/research/mlops-2024-study.json` and `docs/research/mlops-2024-memo.md`.
 
 ## data contracts
 
@@ -19,6 +20,8 @@ The database remains the durable evidence store. Migration `007_warehouse_views.
 | `gold` | one reproducible analytical build, daily aggregate, or current topology review projection | keep input/build IDs and denominators; current review is not historical replay, relation strength, or probability |
 
 `gold.topology_current_review` has one row per topology candidate, including candidates without a review and those whose latest review is not `accept`. Its key is `candidate_id`. It exposes the latest review ID, decision, reviewer, rationale, and time alongside source publication and retrieval. A consumer must filter by decision explicitly and must not infer relationship validity from the current view. The existing `reviewed_claims` query remains the time-aware publication path because it also checks supporting premises and review cutoffs.
+
+The ML operations study is a bounded versioned analytical export, not a new database entity or canonical ontology. Its `members` grain is one of eight fixed leads keyed by `id`; `evidence` has one retained passage keyed by `id`. Each evidence row carries the source URL, publication or displayed update date, capture/arrival time where available, artifact SHA-256, and an optional retained record ID. An inventory occurrence is a project listing, not a provider or adoption observation. Lead roles may overlap. The reviewed-identity numerator is over the eight frozen leads, including unresolved and comparator members; no UI filter changes that denominator. Gate decisions remain separate from provider identity and from memo priorities.
 
 | relation | row grain and key | time | provenance |
 | --- | --- | --- | --- |
@@ -61,6 +64,7 @@ The [benchmark protocol](research/benchmark-protocol.md) defines a separate, off
 - add a new source by retaining its immutable payload and provider identity first, then expose a read view with grain, key, source time, arrival time, and provenance.
 - add a reported metric by extending SEC candidate retention and selection policy before exporting it. Do not derive an unlabeled metric in the browser.
 - add a dashboard comparison in `research-model.js`, including missing-value and duplicate-grain tests, then compose it in `app.js` with period and source labels.
+- add a saved research set by first freezing its cohort and source-time cutoff in a versioned build input. Keep source bodies or immutable archive references, review decisions, the export, and a memo together. A browser filter changes the view, not the historical denominator or eligibility decision.
 - add schema through a new tested migration. Do not rewrite applied migrations or replace raw evidence.
 - assign each new durable record family to exactly one medallion layer, and document grain, key, clocks, and provenance before adding downstream projections. Keep raw bytes and failed acquisition records; keep bronze parsing, silver judgments, and gold aggregates traceable to upstream IDs.
 - add a topology predicate only after defining its direction, scope, evidence rule, and non-implications in the ontology. Keep different claims between the same entities separate and preserve each source premise.
