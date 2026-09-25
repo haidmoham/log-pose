@@ -267,6 +267,7 @@
 
     function claimList(visibleClaims) {
       const section = node('section', '', 'topology-list');
+      section.id = 'topology-claim-index';
       section.append(node('p', 'CLAIM INDEX', 'eyebrow'), node('h3', `${visibleClaims.length} mapped relationships`));
       if (!visibleClaims.length) {
         section.append(node('p', 'No claims match the selected source date, type, status, and company. Change a filter to see the mapped research slice.', 'empty-state'));
@@ -301,7 +302,7 @@
       const unmapped = data.companies.filter(company => !allMapped.has(company.slug));
       const panel = node('div', '', 'topology-coverage');
       panel.append(node('strong', `${visibleClaims.length} shown claims`),
-        node('span', `${visibleMapped.size} entities in view · ${allMapped.size} entities mapped in this slice · ${unmapped.length} selected companies with no mapped claim`));
+        node('span', `${visibleMapped.size} entities in matching claims · ${allMapped.size} entities mapped in this slice · ${unmapped.length} selected companies with no mapped claim`));
       if (unmapped.length) panel.append(node('p', `Not mapped here: ${unmapped.map(company => company.name).join(', ')}. Missing lines mean no claim is recorded in this bounded review.`, 'muted'));
       return panel;
     }
@@ -320,9 +321,14 @@
         root.append(node('p', 'No relationship claims are published in this export yet.', 'empty-state'));
         return;
       }
-      const projection = model.topologyGraphSlice(claims, state.company);
-      const visibleIds = new Set(visibleClaims.map(claim => claim.id));
-      const graphClaims = projection.claims.filter(claim => visibleIds.has(claim.id));
+      if (!visibleClaims.length) {
+        root.append(node('p', 'No graph is shown because no claim matches these filters. Change a filter to see the mapped research slice.', 'empty-state'),
+          claimList(visibleClaims));
+        return;
+      }
+      const projection = model.topologyGraphSlice(visibleClaims, state.company, 16, 48,
+        state.selectedClaim);
+      const graphClaims = projection.claims;
       const layout = node('div', '', 'topology-layout');
       const map = node('section', '', 'topology-map');
       map.append(node('div', '', 'topology-map-head'));
@@ -339,9 +345,11 @@
       });
       map.firstChild.append(modeButton);
       const scene = graphMode === '3d' ? globalScope.LogPoseTopologyWebGL?.create({
-        claims: projection.claims, visibleClaims: graphClaims, model, companyName,
+        claims: projection.claims, visibleClaims: graphClaims, model, companyName, claimLabel,
         selectedClaim: state.selectedClaim, view: graphView,
         onCompany: slug => commitState({ company: slug, selectedClaim: null },
+          { focus: '#topology-inspector' }),
+        onClaim: claimId => commitState({ selectedClaim: claimId },
           { focus: '#topology-inspector' })
       }) : null;
       if (!scene && graphMode === '3d') modeButton.hidden = true;
@@ -349,7 +357,7 @@
       map.append(scene || graph(projection.claims, graphClaims), node('p',
         `Map shows ${graphClaims.length} of ${visibleClaims.length} matching claims and ${new Set(graphClaims.flatMap(claim =>
           [claim.subject_slug, claim.object_slug])).size} entities.`
-        + (graphClaims.length < visibleClaims.length ? ' All matching claims are in the index below.' : '')
+        + (projection.hiddenClaims ? ' Select any matching claim in the index below to bring its edge onto the map and inspect it.' : '')
         + (projection.hiddenNodes ? ` Focus a company to navigate ${projection.hiddenNodes} other mapped entities.` : ''),
         'topology-map-coverage'), legend(), node('p',
         'Placement, depth, and distance aid navigation; they do not measure relationship strength. Sources through a year means every cited source was published by then, not that the relationship was active. Fiscal reporting periods are separate.', 'topology-time-note'));

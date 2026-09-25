@@ -8,7 +8,8 @@
     performance_exposure: [0.608, 0.82, 0.82]
   };
 
-  function create({ claims, visibleClaims, model, companyName, selectedClaim, onCompany, view }) {
+  function create({ claims, visibleClaims, model, companyName, claimLabel, selectedClaim,
+    onCompany, onClaim, view }) {
     const canvas = document.createElement('canvas');
     const gl = canvas.getContext('webgl', { alpha: true, antialias: true });
     if (!gl) return null;
@@ -135,6 +136,32 @@
       gl.drawArrays(primitive, 0, vertices.length / 6);
     }
 
+    function appendLine(vertices, start, end, color, light) {
+      for (const point of [start, end]) vertices.push(point.x, point.y,
+        ...color.map(channel => channel * light), 1);
+    }
+
+    function appendClaimLeg(vertices, start, end, claim, color, light) {
+      if (claim.claim_status === 'documented') {
+        appendLine(vertices, start, end, color, light);
+        return;
+      }
+      const dash = claim.claim_status === 'hypothesis' ? 0.035 : 0.13;
+      const gap = claim.claim_status === 'hypothesis' ? 0.055 : 0.075;
+      for (let from = 0; from < 1; from += dash + gap) {
+        const to = Math.min(1, from + dash);
+        const pieceStart = {
+          x: start.x + (end.x - start.x) * from,
+          y: start.y + (end.y - start.y) * from
+        };
+        const pieceEnd = {
+          x: start.x + (end.x - start.x) * to,
+          y: start.y + (end.y - start.y) * to
+        };
+        appendLine(vertices, pieceStart, pieceEnd, color, light);
+      }
+    }
+
     function draw() {
       for (const key of Object.keys(outputs)) outputs[key].value = String(Number(values[key].toFixed(1)));
       gl.clearColor(0, 0, 0, 0);
@@ -155,8 +182,8 @@
             y: (first.y + second.y) / 2 + dx / length * offset };
           const color = COLORS[model.topologyCategory(claim.predicate)] || [0.7, 0.7, 0.7];
           const light = claim.id === selectedClaim ? 1 : 0.76;
-          for (const point of [first, middle, middle, second]) edges.push(point.x, point.y,
-            ...color.map(channel => channel * light), 1);
+          appendClaimLeg(edges, first, middle, claim, color, light);
+          appendClaimLeg(edges, middle, second, claim, color, light);
           if (claim.direction !== 'symmetric') {
             const tailLength = Math.hypot(second.x - middle.x, second.y - middle.y) || 1;
             const forwardX = (second.x - middle.x) / tailLength;
@@ -195,6 +222,40 @@
         button.setAttribute('aria-label', `focus ${companyName(point.slug)} relationships`);
         button.addEventListener('click', () => onCompany(point.slug));
         labels.append(button);
+      }
+      const statusMarker = {
+        documented: '●',
+        reviewed_inference: '┄',
+        hypothesis: '···'
+      };
+      for (const group of model.topologyPairGroups(claims)) {
+        group.claims.forEach((claim, index) => {
+          if (!visibleIds.has(claim.id)) return;
+          const first = projected(claim.direction === 'object_to_subject'
+            ? claim.object_slug : claim.subject_slug);
+          const second = projected(claim.direction === 'object_to_subject'
+            ? claim.subject_slug : claim.object_slug);
+          const dx = second.x - first.x;
+          const dy = second.y - first.y;
+          const length = Math.hypot(dx, dy) || 1;
+          const offset = (index - (group.claims.length - 1) / 2) * 0.055;
+          const middle = { x: (first.x + second.x) / 2 - dy / length * offset,
+            y: (first.y + second.y) / 2 + dx / length * offset };
+          const control = document.createElement('button');
+          control.type = 'button';
+          control.className = `topology-webgl-node topology-webgl-edge-button topology-${claim.claim_status}`
+            + (claim.id === selectedClaim ? ' is-selected' : '');
+          control.textContent = statusMarker[claim.claim_status] || '●';
+          control.setAttribute('aria-label', `Inspect ${claimLabel(claim)} · ${claim.claim_status.replaceAll('_', ' ')}`);
+          control.title = claimLabel(claim);
+          control.dataset.claimId = claim.id;
+          control.dataset.claimStatus = claim.claim_status;
+          control.setAttribute('aria-pressed', String(claim.id === selectedClaim));
+          control.style.left = `${(middle.x + 1) * 50}%`;
+          control.style.top = `${(1 - middle.y) * 50}%`;
+          control.addEventListener('click', () => onClaim(claim.id));
+          labels.append(control);
+        });
       }
       drawGeometry(nodes, gl.POINTS);
     }

@@ -54,8 +54,52 @@ test('URL state validates routes, years, slugs, duplicates, and pin capacity', (
   assert.equal(state.year, 2023);
   assert.equal(state.company, 'b');
   assert.deepEqual(state.pinned, ['a', 'b', 'c', 'd']);
-  assert.equal(model.parseUrlState('?view=unknown&year=1999', slugs, [2021, 2022]).view, 'explore');
+  assert.equal(model.parseUrlState('?view=unknown&year=1999', slugs, [2021, 2022]).view, 'data');
   assert.equal(model.parseUrlState('?view=topology', slugs, [2024]).view, 'topology');
+});
+
+test('data desk URL state defaults to all sources and validates each selector', () => {
+  const allSlugs = new Set(['pilot', 'external']);
+  const pilotSlugs = new Set(['pilot']);
+  const defaults = model.parseUrlState('', allSlugs, [2021, 2022, 2023, 2024], [], pilotSlugs);
+  assert.equal(defaults.view, 'data');
+  assert.equal(defaults.dataFamily, 'all');
+  assert.equal(defaults.dataCompany, 'all');
+  assert.equal(defaults.dataYear, 'all');
+  assert.equal(defaults.dataRecord, '');
+
+  const parsed = model.parseUrlState(
+    '?view=data&dataFamily=topology&dataQuery=Snowflake&dataCompany=pilot&dataYear=2026&dataRecord=claim:seed-1',
+    allSlugs, [2021, 2022, 2023, 2024], [], pilotSlugs);
+  assert.deepEqual([parsed.dataFamily, parsed.dataQuery, parsed.dataCompany,
+    parsed.dataYear, parsed.dataRecord], ['topology', 'Snowflake', 'pilot', '2026', 'claim:seed-1']);
+
+  const invalid = model.parseUrlState(
+    '?view=data&dataFamily=unknown&dataQuery=' + 'x'.repeat(230)
+      + '&dataCompany=external&dataYear=2029&dataRecord=../../bad',
+    allSlugs, [2021, 2022, 2023, 2024], [], pilotSlugs);
+  assert.equal(invalid.dataFamily, 'all');
+  assert.equal(invalid.dataQuery.length, 200);
+  assert.equal(invalid.dataCompany, 'all');
+  assert.equal(invalid.dataYear, 'all');
+  assert.equal(invalid.dataRecord, '');
+
+  const serialized = model.toUrlParams({ ...parsed, compareSlugs: [] });
+  assert.equal(serialized.includes('year='), false);
+  assert.deepEqual(model.parseUrlState('?' + serialized, allSlugs,
+    [2021, 2022, 2023, 2024], [], pilotSlugs), parsed);
+});
+
+test('legacy explore URLs remain explore routes after the data desk becomes default', () => {
+  const slugs = new Set(['pilot']);
+  assert.equal(model.parseUrlState('?q=datadog', slugs, [2021, 2024]).view, 'explore');
+  const legacy = model.parseUrlState('?company=pilot&inventory=cncf-2024', slugs,
+    [2021, 2024], ['cncf-2026', 'cncf-2024']);
+  assert.equal(legacy.view, 'explore');
+  const serialized = model.toUrlParams({ ...legacy, compareSlugs: [] });
+  assert.equal(new URLSearchParams(serialized).get('view'), 'explore');
+  assert.equal(model.parseUrlState('?' + serialized, slugs, [2021, 2024],
+    ['cncf-2026', 'cncf-2024']).inventoryArtifact, 'cncf-2024');
 });
 
 test('market route keeps inventory controls separate from the SEC period', () => {
@@ -150,6 +194,32 @@ test('graph projection is bounded and keeps focused neighbors', () => {
   assert(slice.claims.every(claim => claim.subject_slug === 'hub'));
   assert.equal(slice.hiddenNodes, 19);
   assert.equal(model.topologyCategory(claims[0].predicate), 'performance_exposure');
+});
+
+test('graph slice starts with connected high-degree nodes and includes a selected claim', () => {
+  const claims = [
+    topologyClaim('hub-a', 'hub', 'a', 'integrates_with', '2024-01-01'),
+    topologyClaim('hub-b', 'hub', 'b', 'integrates_with', '2024-01-01'),
+    topologyClaim('hub-c', 'hub', 'c', 'integrates_with', '2024-01-01'),
+    topologyClaim('solo-z', 'y', 'z', 'named_competitor_of', '2024-01-01')
+  ];
+  const slice = model.topologyGraphSlice(claims, null, 3, 48);
+  assert.deepEqual(new Set(slice.claims.map(claim => claim.id)), new Set(['hub-a', 'hub-b']));
+  assert.equal(slice.hiddenClaims, 2);
+
+  const selected = model.topologyGraphSlice(claims, null, 3, 48, 'solo-z');
+  assert(selected.claims.some(claim => claim.id === 'solo-z'));
+  assert.equal(selected.hiddenClaims, 3);
+});
+
+test('filtered graph slice cannot hide every matching claim behind unrelated nodes', () => {
+  const claims = Array.from({ length: 24 }, (_, index) =>
+    topologyClaim(`claim-${index}`, 'hub', `neighbor-${index}`,
+      'shared_exposure_hypothesis', '2025-01-01'));
+  const matching = model.filterTopologyClaims(claims, { company: 'neighbor-23' });
+  const slice = model.topologyGraphSlice(matching, 'neighbor-23');
+  assert.deepEqual(slice.claims.map(claim => claim.id), ['claim-23']);
+  assert.equal(slice.hiddenClaims, 0);
 });
 
 test('graph coordinates stay stable when a claim filter hides an edge', () => {
