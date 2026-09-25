@@ -11,10 +11,18 @@
     let timelineRequest = 0;
     let frameRequest = 0;
     let frameKey = '';
+    let displayedKey = '';
     let frameLoading = false;
+    const frameCache = new Map();
     let playTimer = null;
     let committedQuery = state.temporalQuery || '';
     let queryDraft = committedQuery;
+    let surface = null;
+    let frameContent = null;
+    let transitionStatus = null;
+    let controlRefs = null;
+    let renderedFrame = null;
+    let limitationsNode = null;
 
     const endpoint = params => `./api/market-field?${new URLSearchParams(params).toString()}`;
     const formatCount = value => Number(value || 0).toLocaleString();
@@ -77,26 +85,37 @@
       const key = selectedFrameKey();
       if (frameKey !== key) {
         frameKey = key;
-        frame = null;
         frameError = null;
         frameLoading = false;
         frameRequest += 1;
+        if (frameCache.has(key)) {
+          frame = frameCache.get(key);
+          displayedKey = key;
+        }
       }
-      if (frameLoading || frame || frameError) return;
+      if (frameLoading || displayedKey === key || frameError) return;
       const requestId = ++frameRequest;
       frameLoading = true;
-      root.setAttribute('aria-busy', 'true');
       requestJson(endpoint(frameParams())).then(result => {
         if (requestId !== frameRequest || selectedFrameKey() !== key) return;
         if (result.build_id !== timeline.build_id) {
           timeline = null;
+          frame = null;
+          displayedKey = '';
+          frameCache.clear();
           frameKey = '';
+          frameLoading = false;
           timelineRequest = 0;
           frameRequest += 1;
           loadTimeline();
+          render();
           return;
         }
         frame = result;
+        displayedKey = key;
+        frameCache.delete(key);
+        frameCache.set(key, result);
+        if (frameCache.size > 3) frameCache.delete(frameCache.keys().next().value);
         frameLoading = false;
         frameError = null;
         render();
@@ -109,7 +128,7 @@
     }
 
     function change(changes, options = {}) {
-      commitState(changes, { replace: true, ...options });
+      commitState(changes, { replace: true, updateTemporalView: true, ...options });
     }
 
     function stopPlayback() {
@@ -122,36 +141,7 @@
       const index = frames.findIndex(item => item.year === Number(state.temporalYear));
       const next = frames[index + amount];
       if (!next) return;
-      change({ temporalYear: String(next.year) });
-    }
-
-    function playbackButton() {
-      const button = node('button', playTimer === null ? 'play frames' : 'pause', 'temporal-play');
-      button.type = 'button';
-      button.setAttribute('aria-pressed', String(playTimer !== null));
-      button.addEventListener('click', () => {
-        if (playTimer !== null) {
-          stopPlayback();
-          render();
-          return;
-        }
-        if (globalScope.matchMedia?.('(prefers-reduced-motion: reduce)').matches) {
-          navigateStep(1);
-          return;
-        }
-        playTimer = globalScope.setInterval(() => {
-          const frames = currentTimeline();
-          const index = frames.findIndex(item => item.year === Number(state.temporalYear));
-          if (index < 0 || index === frames.length - 1) {
-            stopPlayback();
-            render();
-            return;
-          }
-          navigateStep(1);
-        }, 1250);
-        render();
-      });
-      return button;
+      change({ temporalYear: String(next.year), temporalOffset: 0 });
     }
 
     function controls() {
@@ -159,12 +149,14 @@
       const head = append(node('div', '', 'temporal-controls-head'),
         node('p', 'INVENTORY OBSERVATION / YEAR PRECISION', 'eyebrow'),
         node('p', 'A stop is a retained source revision. The year is not a capture timestamp.', 'muted'));
+      const stopDetail = node('div', '', 'temporal-stop-detail');
+      head.append(stopDetail);
       const source = node('select');
       source.setAttribute('aria-label', 'Inventory provider');
       [['lfai', 'LF AI landscape'], ['cncf', 'CNCF landscape']]
         .forEach(([value, label]) => source.add(new Option(label, value)));
-      source.value = state.temporalSource;
       source.addEventListener('change', () => {
+        if (!timeline) return;
         const sourceFrames = timeline.frames.filter(item => item.source === source.value);
         const preferred = sourceFrames.find(item => item.year === Number(state.temporalYear))
           || sourceFrames.filter(item => item.coverage_status === 'dated_inventory_snapshot').at(-1)
@@ -176,39 +168,22 @@
       mode.setAttribute('aria-label', 'Temporal evidence meaning');
       mode.add(new Option('snapshot · selected source slice', 'snapshot'));
       mode.add(new Option('accumulated · observed through this year', 'accumulated'));
-      mode.value = state.temporalMode;
       mode.addEventListener('change', () => change({ temporalMode: mode.value, temporalOffset: 0 }));
       const compare = node('select');
       compare.setAttribute('aria-label', 'Comparable inventory stop');
-      compare.add(new Option('previous retained stop', 'auto'));
-      compare.add(new Option('no comparison', 'none'));
-      const frameStops = currentTimeline();
-      frameStops.filter(item => item.year < Number(state.temporalYear)).forEach(item =>
-        compare.add(new Option(`${item.year} · ${item.coverage_status.replaceAll('_', ' ')}`,
-          String(item.year))));
-      compare.value = state.temporalCompareYear || 'auto';
       compare.addEventListener('change', () => change({ temporalCompareYear: compare.value,
         temporalOffset: 0 }));
       const category = node('select');
       category.setAttribute('aria-label', 'Exact source category filter');
-      category.add(new Option('all exact categories', 'all'));
-      const categories = frame?.available_categories || [];
-      categories.forEach(value => category.add(new Option(value, value)));
-      category.value = categories.includes(state.temporalCategory) ? state.temporalCategory : 'all';
       category.addEventListener('change', () => change({ temporalCategory: category.value,
         temporalOffset: 0 }));
       const form = append(node('div', '', 'temporal-facets'), source, mode, compare, category);
-      const selectedIndex = frameStops.findIndex(item => item.year === Number(state.temporalYear));
       const yearControl = node('input');
       yearControl.type = 'range';
-      yearControl.min = '0';
-      yearControl.max = String(Math.max(0, frameStops.length - 1));
       yearControl.step = '1';
-      yearControl.value = String(Math.max(0, selectedIndex));
       yearControl.setAttribute('aria-label', 'Scrub retained inventory year');
-      yearControl.disabled = selectedIndex < 0;
       yearControl.addEventListener('input', () => {
-        const target = frameStops[Number(yearControl.value)];
+        const target = currentTimeline()[Number(yearControl.value)];
         if (target) change({ temporalYear: String(target.year), temporalOffset: 0 });
       });
       yearControl.addEventListener('keydown', event => {
@@ -217,31 +192,90 @@
       });
       const previous = node('button', '← previous', 'temporal-step');
       previous.type = 'button';
-      previous.disabled = selectedIndex <= 0;
       previous.addEventListener('click', () => navigateStep(-1));
       const next = node('button', 'next →', 'temporal-step');
       next.type = 'button';
-      next.disabled = selectedIndex >= frameStops.length - 1;
       next.addEventListener('click', () => navigateStep(1));
+      const playback = node('button', 'play frames', 'temporal-play');
+      playback.type = 'button';
+      playback.addEventListener('click', () => {
+        if (playTimer !== null) {
+          stopPlayback();
+          syncControls();
+          return;
+        }
+        if (globalScope.matchMedia?.('(prefers-reduced-motion: reduce)').matches) {
+          navigateStep(1);
+          return;
+        }
+        playTimer = globalScope.setInterval(() => {
+          const frames = currentTimeline();
+          const index = frames.findIndex(item => item.year === Number(state.temporalYear));
+          if (index < 0 || index === frames.length - 1) {
+            stopPlayback();
+            syncControls();
+            return;
+          }
+          navigateStep(1);
+        }, 1250);
+        syncControls();
+      });
       const rail = append(node('div', '', 'temporal-rail'), previous, yearControl,
-        playbackButton(), next);
+        playback, next);
+      const partialNote = node('p', '2026 is a partial-year inventory. Its counts do not cover a complete calendar year.', 'temporal-coverage-note');
+      section.append(head, form, rail, partialNote);
+      return { section, stopDetail, source, mode, compare, category, yearControl,
+        previous, next, playback, partialNote, compareOptionsKey: '', categoryOptionsKey: '' };
+    }
+
+    function syncControls() {
+      const { stopDetail, source, mode, compare, category, yearControl,
+        previous, next, playback, partialNote } = controlRefs;
+      const frameStops = currentTimeline();
+      const selectedIndex = frameStops.findIndex(item => item.year === Number(state.temporalYear));
+      source.value = state.temporalSource;
+      mode.value = state.temporalMode;
+      const compareOptionsKey = JSON.stringify([state.temporalSource, state.temporalYear,
+        frameStops.map(item => [item.year, item.coverage_status])]);
+      if (controlRefs.compareOptionsKey !== compareOptionsKey) {
+        compare.replaceChildren(new Option('previous retained stop', 'auto'),
+          new Option('no comparison', 'none'));
+        frameStops.filter(item => item.year < Number(state.temporalYear)).forEach(item =>
+          compare.add(new Option(`${item.year} · ${item.coverage_status.replaceAll('_', ' ')}`,
+            String(item.year))));
+        controlRefs.compareOptionsKey = compareOptionsKey;
+      }
+      compare.value = state.temporalCompareYear || 'auto';
+      const categories = frame?.available_categories || [];
+      const categoryOptionsKey = JSON.stringify(categories);
+      if (controlRefs.categoryOptionsKey !== categoryOptionsKey) {
+        category.replaceChildren(new Option('all exact categories', 'all'));
+        categories.forEach(value => category.add(new Option(value, value)));
+        controlRefs.categoryOptionsKey = categoryOptionsKey;
+      }
+      category.value = categories.includes(state.temporalCategory) ? state.temporalCategory : 'all';
+      yearControl.min = '0';
+      yearControl.max = String(Math.max(0, frameStops.length - 1));
+      yearControl.disabled = selectedIndex < 0;
+      const yearValue = String(Math.max(0, selectedIndex));
+      if (yearControl.value !== yearValue) yearControl.value = yearValue;
+      previous.disabled = selectedIndex <= 0;
+      next.disabled = selectedIndex >= frameStops.length - 1;
+      playback.textContent = playTimer === null ? 'play frames' : 'pause';
+      playback.setAttribute('aria-pressed', String(playTimer !== null));
       const currentArtifact = frameStops.find(item => item.year === Number(state.temporalYear));
       if (currentArtifact) {
-        const selected = append(node('div', '', 'temporal-stop-detail'),
-          node('strong', `${currentArtifact.source.toUpperCase()} · ${currentArtifact.year}`),
-          node('span', currentArtifact.coverage_status.replaceAll('_', ' ')),
-          node('time', `source revision committed ${currentArtifact.commit_at}`));
-        selected.lastChild.dateTime = currentArtifact.commit_at;
-        if (selected.lastChild.textContent) selected.lastChild.title = currentArtifact.commit_at;
-        head.append(selected);
+        const label = displayedKey === frameKey ? '' : 'requested · ';
+        const commitTime = node('time', `source revision committed ${currentArtifact.commit_at}`);
+        commitTime.dateTime = currentArtifact.commit_at;
+        commitTime.title = currentArtifact.commit_at;
+        stopDetail.replaceChildren(
+          node('strong', `${label}${currentArtifact.source.toUpperCase()} · ${currentArtifact.year}`),
+          node('span', currentArtifact.coverage_status.replaceAll('_', ' ')), commitTime);
       } else {
-        head.append(node('p', `No retained ${state.temporalSource.toUpperCase()} snapshot exists for ${state.temporalYear}. Step to a retained stop to continue.`, 'temporal-coverage-note'));
+        stopDetail.replaceChildren(node('span', `No retained ${state.temporalSource.toUpperCase()} snapshot exists for ${state.temporalYear}. Step to a retained stop to continue.`, 'temporal-coverage-note'));
       }
-      section.append(head, form, rail);
-      if (frameStops.some(item => item.coverage_status === 'partial_year_snapshot')) {
-        section.append(node('p', '2026 is a partial-year inventory. Its counts do not cover a complete calendar year.', 'temporal-coverage-note'));
-      }
-      return section;
+      partialNote.hidden = !frameStops.some(item => item.coverage_status === 'partial_year_snapshot');
     }
 
     function candidateSearch() {
@@ -439,44 +473,60 @@
       return section;
     }
 
-    function render() {
-      if (!active) return;
-      root.querySelector('.temporal-view-state')?.remove();
-      const surface = node('div', '', 'temporal-view-state');
-      root.append(surface);
-      root.setAttribute('aria-busy', String(frameLoading || (!timeline && !timelineError)));
+    function updateTransitionStatus() {
+      const requested = `${state.temporalSource.toUpperCase()} ${state.temporalYear}`;
+      const displayed = frame ? `${frame.source.toUpperCase()} ${frame.year}` : null;
+      transitionStatus.replaceChildren();
       if (!timeline) {
+        transitionStatus.dataset.state = timelineError ? 'error' : 'loading';
+        transitionStatus.append(node('span', timelineError
+          ? `The temporal inventory is unavailable: ${timelineError}`
+          : 'Loading retained inventory stops…'));
         if (timelineError) {
           const retry = node('button', 'retry temporal inventory', 'quiet-button');
           retry.type = 'button';
           retry.addEventListener('click', () => {
             timelineError = null;
             timelineRequest = 0;
-            loadTimeline();
+            render();
           });
-          surface.append(node('p', `The temporal inventory is unavailable: ${timelineError}`, 'error'), retry);
-        } else {
-          surface.append(node('p', 'Loading retained inventory stops…', 'loading'));
-          loadTimeline();
+          transitionStatus.append(retry);
         }
-        return;
-      }
-      loadFrame();
-      const controlPanel = controls();
-      if (frameLoading || (!frame && !frameError)) {
-        surface.append(controlPanel,
-          node('p', `${state.temporalSource.toUpperCase()} ${state.temporalYear} · loading the selected frame…`, 'loading temporal-loading'));
-        return;
-      }
-      if (frameError) {
+      } else if (frameError) {
+        transitionStatus.dataset.state = 'error';
+        transitionStatus.append(node('span', `Could not load ${requested}: ${frameError}`
+          + (displayed ? `. Showing ${displayed}.` : '.')));
         const retry = node('button', 'retry selected frame', 'quiet-button');
         retry.type = 'button';
-        retry.addEventListener('click', () => { frameError = null; frame = null; render(); });
-        surface.append(controlPanel, node('p', `This frame failed to load: ${frameError}`, 'error'), retry);
+        retry.addEventListener('click', () => { frameError = null; render(); });
+        transitionStatus.append(retry);
+      } else if (frameLoading || displayedKey !== frameKey) {
+        transitionStatus.dataset.state = displayed ? 'pending' : 'loading';
+        transitionStatus.append(node('span', `Loading ${requested}`
+          + (displayed ? ` · showing ${displayed} until the requested frame is ready.` : '…')));
+      } else {
+        transitionStatus.dataset.state = frame?.status === 'missing_snapshot' ? 'missing' : 'ready';
+        transitionStatus.append(node('span', frame?.status === 'missing_snapshot'
+          ? `${requested} has no retained source stop.` : `Showing ${requested}.`));
+      }
+    }
+
+    function renderFrameContent() {
+      if (!frame) {
+        renderedFrame = null;
+        limitationsNode?.remove();
+        limitationsNode = null;
+        frameContent.replaceChildren(node('p', frameError
+          ? 'No frame is displayed. Retry to load retained evidence.'
+          : 'Loading the selected frame…', 'temporal-loading'));
         return;
       }
+      if (renderedFrame === frame && frameContent.hasChildNodes()) return;
+      renderedFrame = frame;
+      limitationsNode?.remove();
+      limitationsNode = null;
       if (frame.status === 'missing_snapshot') {
-        surface.append(controlPanel, missingFrame());
+        frameContent.replaceChildren(missingFrame());
         return;
       }
       const graphConnections = frame.focus
@@ -494,13 +544,42 @@
       const sidebar = node('aside', '', 'temporal-sidebar');
       sidebar.append(candidateSearch(), changeLedger(), inspector());
       workspace.append(main, sidebar);
-      surface.append(workspace, controlPanel);
+      frameContent.replaceChildren(workspace);
       if (frame.limitations?.length) {
         const disclosure = node('details', '', 'temporal-limitations');
         disclosure.append(node('summary', 'Clock and interpretation limits'));
         frame.limitations.forEach(item => disclosure.append(node('p', item)));
         surface.append(disclosure);
+        limitationsNode = disclosure;
       }
+    }
+
+    function render() {
+      if (!active) return;
+      if (!surface) {
+        surface = node('div', '', 'temporal-view-state');
+        frameContent = node('div', '', 'temporal-frame-content');
+        transitionStatus = node('div', '', 'temporal-transition-status');
+        transitionStatus.setAttribute('role', 'status');
+        surface.append(frameContent, transitionStatus);
+      }
+      if (surface.parentNode !== root) root.append(surface);
+      if (!timeline) {
+        if (controlRefs) controlRefs.section.hidden = true;
+        if (!timelineError) loadTimeline();
+      } else {
+        loadFrame();
+        if (!controlRefs) {
+          controlRefs = controls();
+          surface.insertBefore(controlRefs.section, transitionStatus);
+        }
+        controlRefs.section.hidden = false;
+        syncControls();
+      }
+      updateTransitionStatus();
+      renderFrameContent();
+      root.setAttribute('aria-busy', String((!timeline && !timelineError)
+        || (frameLoading && !frame)));
     }
 
     function activate() {

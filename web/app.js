@@ -209,8 +209,14 @@ function writeUrl(replace = false) {
 }
 
 function commitState(changes, options = {}) {
+  const staysOnTemporalAtlas = options.updateTemporalView
+    && state.view === 'topology' && state.topologyLayer === 'temporal';
   Object.assign(state, changes);
-  render();
+  if (staysOnTemporalAtlas && state.view === 'topology' && state.topologyLayer === 'temporal') {
+    temporalTopologyView.activate();
+  } else {
+    render();
+  }
   writeUrl(Boolean(options.replace));
   if (options.top) root.scrollIntoView({ block: 'start' });
   if (options.focus) document.querySelector(options.focus)?.focus();
