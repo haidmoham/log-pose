@@ -1,6 +1,6 @@
 # retained-data catalog
 
-the static console reads `web/data/index.json`. all paths in this contract are relative to the served `web/` root. the catalog is compact JSON; partition files load when a user opens a record or source family. the fourteen discovery inventory partitions continue to use their existing contract.
+the retained-data console reads `web/data/index.json`. all paths in this contract are relative to the served `web/` root. the catalog is compact JSON; partition files load when a user opens a record or source family. the fourteen discovery inventory partitions continue to use their existing contract.
 
 | field | meaning |
 | --- | --- |
@@ -29,6 +29,8 @@ the static console reads `web/data/index.json`. all paths in this contract are r
 `topology.claims` retains the existing browser shape (`id`, endpoints, predicate, direction, scope, basis, interpretation, unknowns, dates, `sources`) and adds `database_id`, `created_at`, and `review`. `review` contains `id`, `reviewer`, `reviewed_at`, `rationale`, `decision`, and `date_precision`. `sources[].role` is `support` or `contradict`; every passage and hash stays visible. seed-compatible public IDs preserve existing URLs. actual database IDs remain authoritative. no accepted claims means an empty graph, even when the seed file still lists earlier claims.
 
 ## exploratory source overlaps
+
+`/api/market-field` is the browser read boundary for this layer. the [service contract](market-field-service.md) defines versioned summary, filter/neighborhood, and on-demand source-detail responses. the complete retained projection below is a build/detail input; the market view no longer downloads it or enumerates all candidate pairs.
 
 `data/topology-discovery.json` exposes all 1,240 eligible product/project candidate keys in the current queue frame, including candidates outside the 100-pair review worklist. its status is `unreviewed_inventory_overlap`. no database claim or review is created. the 26 other tagged candidate keys fail the existing queue requirements; the broader research catalog still exposes them and all 18,076 inventory rows.
 
