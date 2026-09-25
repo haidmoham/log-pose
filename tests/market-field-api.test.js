@@ -134,3 +134,158 @@ test('the pinned unfiltered responses stay below the one MiB read budget', () =>
   assert(Buffer.byteLength(JSON.stringify(summary.body)) < 1024 * 1024);
   assert(Buffer.byteLength(JSON.stringify(query.body)) < 1024 * 1024);
 });
+
+test('temporal timeline preserves year precision, pinned commit clocks, and partial coverage', () => {
+  const result = request('timeline');
+  assert.equal(result.status, 200);
+  assert.equal(result.body.frames.length, 14);
+  assert.equal(result.body.clocks.active, 'inventory_year');
+  assert.equal(result.body.clocks.precision, 'year');
+  assert.equal(result.body.clocks.source_publication, 'unknown');
+  assert.equal(handleMarketField(new URLSearchParams('mode=timeline&build_id=old')).status, 409);
+  const partial = result.body.frames.filter(frame => frame.coverage_status === 'partial_year_snapshot');
+  assert.deepEqual(partial.map(frame => [frame.source, frame.year]), [['cncf', 2026], ['lfai', 2026]]);
+  assert(partial.every(frame => frame.commit_at && frame.artifact_sha256 && frame.source_url));
+});
+
+test('snapshot and accumulated frames keep exact source-year-category overlap semantics', () => {
+  const snapshot = request('frame', { source: 'lfai', year: '2024', temporal_mode: 'snapshot',
+    candidate: '00a2fb1597f507022279' });
+  const accumulated = request('frame', { source: 'lfai', year: '2024', temporal_mode: 'accumulated',
+    candidate: '00a2fb1597f507022279' });
+  assert.equal(snapshot.status, 200);
+  assert.equal(snapshot.body.compare_year, 2023);
+  assert.equal(snapshot.body.active_clock, 'inventory_year');
+  assert(snapshot.body.edges.length > 0);
+  assert.equal(accumulated.body.compare_year, 2023);
+  assert(accumulated.body.edges.length >= snapshot.body.edges.length);
+  assert.match(accumulated.body.comparison_description, /previously observed only/);
+  for (const edge of accumulated.body.edges) {
+    const leftCandidate = projection.nodes.find(candidate => candidate.id === '00a2fb1597f507022279');
+    const rightCandidate = projection.nodes.find(candidate => candidate.id === edge.candidate_id);
+    for (const placement of edge.placements) {
+      assert.equal(placement[0], 'lfai');
+      assert(placement[1] <= 2024);
+      assert.equal(placement.length, 3);
+      const left = leftCandidate.observations.find(item => item.source === placement[0]
+        && item.year === placement[1] && item.source_category === placement[2]);
+      const right = rightCandidate.observations.find(item => item.source === placement[0]
+        && item.year === placement[1] && item.source_category === placement[2]);
+      assert(left && right);
+      assert.equal(left.artifact_sha256, right.artifact_sha256);
+    }
+  }
+  const repeat = request('frame', { source: 'lfai', year: '2024', temporal_mode: 'snapshot',
+    candidate: '00a2fb1597f507022279' });
+  assert.deepEqual(snapshot.body, repeat.body);
+});
+
+test('focus frame pages are bounded, stable, and included in the reproducible frame id', () => {
+  const focus = '00a2fb1597f507022279';
+  const first = request('frame', { source: 'lfai', year: '2024', temporal_mode: 'snapshot',
+    candidate: focus, limit: '5', offset: '0' });
+  const second = request('frame', { source: 'lfai', year: '2024', temporal_mode: 'snapshot',
+    candidate: focus, limit: '5', offset: '5' });
+  const repeated = request('frame', { source: 'lfai', year: '2024', temporal_mode: 'snapshot',
+    candidate: focus, limit: '5', offset: '5' });
+  assert.equal(first.status, 200);
+  assert.equal(second.status, 200);
+  assert.equal(first.body.changes.length, 5);
+  assert.equal(second.body.offset, 5);
+  assert.equal(second.body.frame_id, repeated.body.frame_id);
+  assert.notEqual(first.body.frame_id, second.body.frame_id);
+  assert.deepEqual(second.body, repeated.body);
+});
+
+test('temporal category coverage counts only rows in the exact selected category', () => {
+  const category = projection.nodes.flatMap(candidate => candidate.observations)
+    .find(observation => observation.source === 'lfai' && observation.year === 2024)?.source_category;
+  assert(category);
+  const expected = projection.nodes.reduce((count, candidate) => count
+    + candidate.observations.filter(observation => observation.source === 'lfai'
+      && observation.year === 2024 && observation.source_category === category)
+      .reduce((rows, observation) => rows + observation.rows.length, 0), 0);
+  const result = request('frame', { source: 'lfai', year: '2024', category });
+  assert.equal(result.status, 200);
+  assert.equal(result.body.coverage.selected_rows, expected);
+});
+
+test('a future-only candidate ID does not leak a future display name into an empty historical frame', () => {
+  const candidateId = '00d40d801bd8300d3c9b';
+  const currentBuildName = projection.nodes.find(candidate => candidate.id === candidateId).name;
+  const result = request('frame', { source: 'lfai', year: '2020', temporal_mode: 'snapshot',
+    candidate: candidateId, compare_year: 'none' });
+  assert.equal(result.status, 200);
+  assert.equal(result.body.detail, null);
+  assert.equal(result.body.nodes[0].name, `unobserved candidate ${candidateId.slice(0, 8)}`);
+  assert.notEqual(result.body.nodes[0].name, currentBuildName);
+});
+
+test('all retained temporal stops stay within the bounded frame response budget', () => {
+  const frames = request('timeline').body.frames;
+  for (const frame of frames) {
+    for (const temporalMode of ['snapshot', 'accumulated']) {
+      const result = request('frame', { source: frame.source, year: String(frame.year), temporal_mode: temporalMode });
+      assert.equal(result.status, 200);
+      assert(Buffer.byteLength(JSON.stringify(result.body)) < 1024 * 1024,
+        `${frame.source} ${frame.year} ${temporalMode} response exceeded one MiB`);
+    }
+  }
+});
+
+test('temporal edge detail resolves both exact retained rows and comparison reason', () => {
+  const frame = request('frame', { source: 'lfai', year: '2024', temporal_mode: 'snapshot',
+    candidate: '00a2fb1597f507022279' }).body;
+  const comparable = frame.changes.find(change => change.status === 'observed_in_both');
+  assert(comparable);
+  const result = request('frame', { source: 'lfai', year: '2024', temporal_mode: 'snapshot',
+    candidate: '00a2fb1597f507022279', neighbor: comparable.candidate_id });
+  assert.equal(result.status, 200);
+  assert.equal(result.body.detail.status, 'observed_in_both');
+  const shared = result.body.detail.selected_placements[0];
+  assert.equal(shared.source, 'lfai');
+  assert.equal(shared.year, 2024);
+  assert(shared.source_category);
+  assert.equal(shared.subject_rows.length, shared.subject_occurrence_ids.length);
+  assert.equal(shared.object_rows.length, shared.object_occurrence_ids.length);
+  assert.match(shared.artifact_sha256, /^[a-f0-9]{64}$/);
+  assert.match(shared.source_url, /^https:\/\//);
+});
+
+test('missing snapshots and unsupported clocks remain explicit', () => {
+  const sameFrameComparison = request('frame', { source: 'lfai', year: '2024', temporal_mode: 'snapshot',
+    compare_year: '2024' });
+  assert.equal(sameFrameComparison.status, 400); // a stop cannot compare with itself
+  const unavailable = request('frame', { source: 'lfai', year: '2020', temporal_mode: 'snapshot',
+    clock: 'event_validity' });
+  assert.equal(unavailable.status, 400);
+  const gap = request('frame', { source: 'lfai', year: '2019', temporal_mode: 'snapshot' });
+  assert.equal(gap.status, 200);
+  assert.equal(gap.body.status, 'missing_snapshot');
+  const omitted = handleMarketField(new URLSearchParams({ mode: 'frame', build_id: graph.build_id,
+    source: 'lfai', year: '2027', temporal_mode: 'snapshot' }));
+  assert.equal(omitted.status, 200);
+  assert.equal(omitted.body.status, 'missing_snapshot');
+});
+
+test('reviewed overlay and historical event clock cannot be requested as inventory frames', () => {
+  const reviewed = request('frame', { source: 'lfai', year: '2024', temporal_mode: 'reviewed' });
+  const eventClock = request('frame', { source: 'lfai', year: '2024', clock: 'event_validity' });
+  assert.equal(reviewed.status, 400);
+  assert.equal(eventClock.status, 400);
+});
+
+test('a retained neighbor with no support in either frame is not a disappearance', () => {
+  const focus = '00a2fb1597f507022279';
+  const frame = request('frame', { source: 'lfai', year: '2024', candidate: focus }).body;
+  const dragonfly = frame.nodes.find(node => node.name === 'Dragonfly');
+  const earlier = request('frame', { source: 'lfai', year: '2023', candidate: focus,
+    neighbor: dragonfly.id }).body;
+  assert.equal(earlier.detail.status, 'not_observed_in_either_frame');
+  assert.deepEqual(earlier.detail.selected_placements, []);
+  assert.deepEqual(earlier.detail.comparison_placements, []);
+  const noComparison = request('frame', { source: 'lfai', year: '2024', candidate: focus,
+    neighbor: dragonfly.id, compare_year: 'none' }).body;
+  assert.equal(noComparison.detail.status, 'observed_without_comparison');
+  assert(noComparison.changes.every(change => change.status === 'observed_without_comparison'));
+});

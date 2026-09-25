@@ -3,18 +3,17 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#172c2d" />
+    <meta name="theme-color" content="#18151d" />
     <title>Log Pose · research console</title>
     <meta
       name="description"
       content="Explore dated software market inventories from 2020 to 2026 and inspect sourced company research."
     />
     <link rel="icon" href="./favicon.svg" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400..800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="./style.css" />
     <link rel="stylesheet" href="./console.css" />
+    <link rel="stylesheet" href="./temporal-graph.css" />
+    <link rel="stylesheet" href="./graph-workspace.css" />
   </head>
   <body>
     <a class="skip-link" href="#view">skip to research view</a>
@@ -36,11 +35,11 @@
       </header>
 
       <nav class="tabs" aria-label="research views">
-        <button type="button" data-view="data" aria-current="page" disabled><span>01</span> research desk</button>
-        <button type="button" data-view="overview" disabled><span>02</span> companies</button>
-        <button type="button" data-view="compare" disabled><span>03</span> compare <output id="pin-count">0</output></button>
-        <button type="button" data-view="topology" disabled><span>04</span> market field</button>
-        <button type="button" data-view="explore" disabled><span>05</span> source audit</button>
+        <button type="button" data-view="topology" aria-current="page" disabled>atlas</button>
+        <button type="button" data-view="data" disabled>evidence</button>
+        <button type="button" data-view="overview" disabled>companies</button>
+        <button type="button" data-view="compare" disabled>compare <output id="pin-count">0</output></button>
+        <button type="button" data-view="explore" disabled>sources</button>
       </nav>
 
       <main id="view" aria-busy="true">
@@ -60,6 +59,9 @@
     <script src="./discovery-topology-view.js"></script>
     <script src="./topology-webgl.js"></script>
     <script src="./topology-view.js"></script>
+    <script src="./temporal-graph-webgl.js"></script>
+    <script src="./temporal-graph.js"></script>
+    <script src="./temporal-topology-view.js"></script>
     <script src="./app.js"></script>
   </body>
 </html>

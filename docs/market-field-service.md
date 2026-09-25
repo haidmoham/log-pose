@@ -26,6 +26,16 @@ query parameters preserve the URL's source, year, exact category, research tag, 
 
 the field is explicitly bounded at build time to 5,000 candidates and 250,000 pairs. exceeding either bound fails the build; it does not publish a silently truncated field. increasing those bounds requires new response-size and performance evidence or a different rendering/query contract.
 
+## temporal inventory frames
+
+`GET /api/market-field?mode=timeline` returns the 14 retained provider/year artifacts, their pinned commit timestamps and hashes, and coverage labels. The timeline uses `inventory_year` at year precision; `commit_at` is shown as source-revision metadata, not as the active clock. The UI includes only retained stops. A request for a year without an artifact returns `missing_snapshot` and does not treat the gap as an exit.
+
+`mode=frame` requires `build_id`, `source` (`cncf` or `lfai`), `year`, and may include `temporal_mode` (`snapshot` or `accumulated`), `compare_year`, `category`, `query`, `candidate`, `neighbor`, `offset`, and `limit`. Snapshot mode joins exact `(source, year, source_category)` placements in one artifact. Its default comparison is the previous retained artifact from the same provider. Accumulated mode unions exact placements observed at or before the selected inventory-year stop; the UI calls these “previously observed” and does not infer validity or persistence today. Category filtering remains exact, and search is a candidate lookup rather than a hidden change to a focused neighborhood.
+
+Candidate frames are bounded to 60 neighbors by default and 100 maximum; `offset` and `next_offset` page larger neighborhoods. The no-focus overview returns eligible candidate summaries and at most 2,500 exact peer connections, with total and truncation counts. Both graph and evidence views use stable positions from the current pinned build. Frame IDs include the build, query version, source, year, comparison, mode, filters, focus, and page so a deep link addresses a reproducible request.
+
+Selected edges resolve to both retained rows, occurrence IDs, exact placement keys, pinned artifact URL/hash, and a comparison explanation. Candidate names and identity keys are unreviewed leads. Reviewed-claim overlays are intentionally unsupported in this historical view because those claims do not have a compatible historical knowledge clock; the separate reviewed-claims view remains available on its own evidence and review filters. Requests for event, validity, ingestion, or review clocks are rejected rather than approximated.
+
 cache keys consist of the endpoint, operation, all filter/focus/page parameters, and build ID. summary responses have a short shared cache lifetime because they discover the current version. versioned reads have a longer shared cache lifetime; errors are not cached. a deployment publishes the graph and detail projection together. old versioned requests cannot silently read a new graph.
 
 ## local operation and rebuild

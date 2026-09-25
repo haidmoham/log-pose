@@ -55,7 +55,7 @@ jobs:
       - name: Check deterministic graph artifact
         run: |
           npm run build:market-field
-          git diff --exit-code -- api/data/market-field-graph.json
+          git diff --exit-code -- api/data/market-field-graph.json api/data/market-field-layout.json
       - name: Check disposable database encoding
         shell: bash
         run: |

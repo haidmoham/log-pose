@@ -50,7 +50,7 @@
 }
 
 * { box-sizing: border-box; }
-html { min-width: 0; scroll-behavior: smooth; }
+html { min-width: 0; scroll-behavior: auto; }
 body { margin: 0; min-width: 0; }
 button, input, select { font: inherit; }
 button { cursor: pointer; }

@@ -318,7 +318,8 @@
     const hasLegacyExploreState = ['company', 'pinned', 'inventory', 'inventoryQuery', 'q',
       'recordYear', 'source', 'type', 'us', 'category'].some(name => params.has(name));
     const view = VALID_VIEWS.has(requestedView) ? requestedView
-      : requestedView === null && hasLegacyExploreState ? 'explore' : 'data';
+      : requestedView === null && hasLegacyExploreState ? 'explore'
+        : requestedView === null ? 'topology' : 'data';
     const requestedYear = Number(params.get('year'));
     const year = years.includes(requestedYear) ? requestedYear : Math.max(...years);
     const company = validSlugs.has(params.get('company')) ? params.get('company') : null;
@@ -352,8 +353,11 @@
     const allowedMarketMeasures = new Set(['total_shares', 'total_trade_count', 'total_notional']);
     const dataMarketMeasure = allowedMarketMeasures.has(params.get('dataMarketMeasure'))
       ? params.get('dataMarketMeasure') : 'total_shares';
-    const topologyLayer = params.get('topologyLayer') === 'reviewed'
-      || (!params.has('topologyLayer') && params.has('selectedClaim')) ? 'reviewed' : 'field';
+    const hasFieldUrl = ['fieldQuery', 'fieldSource', 'fieldYear', 'fieldTag', 'fieldCategory',
+      'fieldIdentity', 'fieldCandidate', 'fieldNeighbor'].some(name => params.has(name));
+    const topologyLayer = ['temporal', 'field', 'reviewed'].includes(params.get('topologyLayer'))
+      ? params.get('topologyLayer')
+      : params.has('selectedClaim') ? 'reviewed' : hasFieldUrl ? 'field' : 'temporal';
     const fieldSource = ['all', 'cncf', 'lfai'].includes(params.get('fieldSource'))
       ? params.get('fieldSource') : 'all';
     const fieldYear = /^20(?:20|2[1-6])$/.test(params.get('fieldYear') || '')
@@ -366,6 +370,25 @@
     const requestedFieldCategory = params.get('fieldCategory') || 'all';
     const fieldCategory = requestedFieldCategory.length <= 120 && !/[\x00-\x1f]/.test(requestedFieldCategory)
       ? requestedFieldCategory : 'all';
+    const temporalYear = /^20\d{2}$/.test(params.get('temporalYear') || '')
+      ? params.get('temporalYear') : '2024';
+    const temporalCompareYear = params.get('temporalCompareYear') === 'none'
+      ? 'none' : /^20\d{2}$/.test(params.get('temporalCompareYear') || '')
+        ? params.get('temporalCompareYear') : 'auto';
+    const temporalMode = ['snapshot', 'accumulated'].includes(params.get('temporalMode'))
+      ? params.get('temporalMode') : 'accumulated';
+    const temporalSource = ['cncf', 'lfai'].includes(params.get('temporalSource'))
+      ? params.get('temporalSource') : 'cncf';
+    const requestedTemporalCategory = params.get('temporalCategory') || 'all';
+    const temporalCategory = requestedTemporalCategory.length <= 120
+      && !/[\x00-\x1f]/.test(requestedTemporalCategory) ? requestedTemporalCategory : 'all';
+    const temporalQuery = (params.get('temporalQuery') || '').slice(0, 200);
+    const temporalOffsetValue = Number(params.get('temporalOffset'));
+    const temporalOffset = Number.isSafeInteger(temporalOffsetValue) && temporalOffsetValue >= 0
+      ? Math.min(5000, temporalOffsetValue) : 0;
+    const temporalCandidate = safeDataRecord(params.get('temporalCandidate') || '') || null;
+    const temporalNeighbor = temporalCandidate
+      ? safeDataRecord(params.get('temporalNeighbor') || '') || null : null;
     const requestedTopologyYear = params.get('topologySourceYear') || 'all';
     const topologySourceYear = requestedTopologyYear === 'all'
       || /^20(?:20|2[1-6])$/.test(requestedTopologyYear) ? requestedTopologyYear : 'all';
@@ -382,6 +405,10 @@
       fieldSource, fieldYear, fieldTag, fieldCategory, fieldIdentity,
       fieldCandidate: safeDataRecord(params.get('fieldCandidate') || '') || null,
       fieldNeighbor: safeDataRecord(params.get('fieldNeighbor') || '') || null,
+      temporalSource, temporalYear, temporalCompareYear, temporalMode,
+      temporalCategory, temporalQuery,
+      temporalOffset,
+      temporalCandidate, temporalNeighbor,
       topologySourceYear, topologyCategory: choice('topologyCategory', allowedTopologyCategory),
       topologyStatus: choice('topologyStatus', allowedTopologyStatus),
       selectedClaim: safeDataRecord(params.get('selectedClaim') || '') || null };
@@ -389,10 +416,7 @@
 
   function toUrlParams(state) {
     const params = new URLSearchParams();
-    if (state.view !== 'data') params.set('view', state.view);
-    if (state.view === 'data' && (state.company || state.compareSlugs.length)) {
-      params.set('view', 'data');
-    }
+    params.set('view', state.view);
     if (state.view !== 'data' && state.view !== 'explore' && state.year) {
       params.set('year', String(state.year));
     }
@@ -436,7 +460,23 @@
           params.set('topologyStatus', state.topologyStatus);
         const selectedClaim = safeDataRecord(state.selectedClaim);
         if (selectedClaim) params.set('selectedClaim', selectedClaim);
+      } else if (state.topologyLayer === 'temporal') {
+        params.set('topologyLayer', 'temporal');
+        params.set('temporalSource', state.temporalSource || 'cncf');
+        params.set('temporalYear', state.temporalYear || '2024');
+        params.set('temporalMode', state.temporalMode || 'accumulated');
+        if (state.temporalCompareYear && state.temporalCompareYear !== 'auto')
+          params.set('temporalCompareYear', state.temporalCompareYear);
+        if (state.temporalCategory && state.temporalCategory !== 'all')
+          params.set('temporalCategory', state.temporalCategory);
+        if (state.temporalQuery) params.set('temporalQuery', state.temporalQuery.slice(0, 200));
+        if (state.temporalOffset > 0) params.set('temporalOffset', String(state.temporalOffset));
+        const candidate = safeDataRecord(state.temporalCandidate);
+        const neighbor = safeDataRecord(state.temporalNeighbor);
+        if (candidate) params.set('temporalCandidate', candidate);
+        if (candidate && neighbor) params.set('temporalNeighbor', neighbor);
       } else {
+        params.set('topologyLayer', 'field');
         if (state.fieldQuery) params.set('fieldQuery', state.fieldQuery.slice(0, 200));
         if (state.fieldSource !== 'all') params.set('fieldSource', state.fieldSource);
         if (state.fieldYear !== 'all') params.set('fieldYear', state.fieldYear);
