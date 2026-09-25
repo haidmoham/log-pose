@@ -51,6 +51,8 @@ def main():
         ["scripts/build_topology_review_queue.py"],
         ["scripts/build_data_catalog.py", "--web-root", str(args.web_root),
          "--page-text-limit", str(args.page_text_limit)],
+        ["scripts/build_market_field_graph.py", "--projection",
+         str(args.web_root / "data/topology-discovery.json")],
     ]
     for command in commands:
         subprocess.run([sys.executable, *command], check=True, cwd=root, env=environment)

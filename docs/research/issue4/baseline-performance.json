@@ -1,0 +1,712 @@
+{
+  "measuredAt": "2026-09-25T15:52:06.315Z",
+  "siteOrigin": "http://127.0.0.1:8134",
+  "environment": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/151.0.0.0 Safari/537.36",
+  "notes": "cold browser cache; local HTTP; 100ms polling includes observation delay; constrained profile is emulation, not physical-device evidence",
+  "measurements": [
+    {
+      "profile": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 1000,
+        "cpu": 1,
+        "latency": 0,
+        "bytesPerSecond": -1
+      },
+      "trial": 1,
+      "initial": {
+        "readyMs": 706.8999999761581,
+        "metrics": {
+          "calls": {
+            "prepare": 1,
+            "positions": 1,
+            "matchingCandidates": 1,
+            "matchingPairs": 1
+          },
+          "milliseconds": {
+            "prepare": 68.60000002384186,
+            "positions": 2.200000047683716,
+            "matchingCandidates": 4.400000095367432,
+            "matchingPairs": 8.099999904632568
+          },
+          "longTasks": [
+            116
+          ],
+          "errors": []
+        },
+        "resources": [
+          {
+            "path": "/css2?family=Manrope:wght@400..800&display=swap",
+            "transferredBytes": 896,
+            "decodedBytes": 2203
+          },
+          {
+            "path": "/style.css",
+            "transferredBytes": 16366,
+            "decodedBytes": 16066
+          },
+          {
+            "path": "/console.css",
+            "transferredBytes": 60120,
+            "decodedBytes": 59820
+          },
+          {
+            "path": "/research-model.js",
+            "transferredBytes": 24392,
+            "decodedBytes": 24092
+          },
+          {
+            "path": "/console-ui.js",
+            "transferredBytes": 4127,
+            "decodedBytes": 3827
+          },
+          {
+            "path": "/explore-view.js",
+            "transferredBytes": 36489,
+            "decodedBytes": 36189
+          },
+          {
+            "path": "/discovery-topology-model.js",
+            "transferredBytes": 6535,
+            "decodedBytes": 6235
+          },
+          {
+            "path": "/data-view.js",
+            "transferredBytes": 34396,
+            "decodedBytes": 34096
+          },
+          {
+            "path": "/discovery-topology-view.js",
+            "transferredBytes": 20116,
+            "decodedBytes": 19816
+          },
+          {
+            "path": "/topology-view.js",
+            "transferredBytes": 23774,
+            "decodedBytes": 23474
+          },
+          {
+            "path": "/app.js",
+            "transferredBytes": 31420,
+            "decodedBytes": 31120
+          },
+          {
+            "path": "/topology-webgl.js",
+            "transferredBytes": 13113,
+            "decodedBytes": 12813
+          },
+          {
+            "path": "/dashboard.json",
+            "transferredBytes": 218067,
+            "decodedBytes": 217767
+          },
+          {
+            "path": "/discovery.json",
+            "transferredBytes": 5646608,
+            "decodedBytes": 5646308
+          },
+          {
+            "path": "/data/index.json",
+            "transferredBytes": 228387,
+            "decodedBytes": 228087
+          },
+          {
+            "path": "/data/topology-discovery.json",
+            "transferredBytes": 4542298,
+            "decodedBytes": 4541998
+          }
+        ]
+      },
+      "filterMs": 112,
+      "focusMs": 78.79999995231628
+    },
+    {
+      "profile": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 1000,
+        "cpu": 1,
+        "latency": 0,
+        "bytesPerSecond": -1
+      },
+      "trial": 2,
+      "initial": {
+        "readyMs": 467.89999997615814,
+        "metrics": {
+          "calls": {
+            "prepare": 1,
+            "positions": 1,
+            "matchingCandidates": 1,
+            "matchingPairs": 1
+          },
+          "milliseconds": {
+            "prepare": 33.200000047683716,
+            "positions": 0.7999999523162842,
+            "matchingCandidates": 1.0999999046325684,
+            "matchingPairs": 14
+          },
+          "longTasks": [
+            63
+          ],
+          "errors": []
+        },
+        "resources": [
+          {
+            "path": "/css2?family=Manrope:wght@400..800&display=swap",
+            "transferredBytes": 896,
+            "decodedBytes": 2203
+          },
+          {
+            "path": "/research-model.js",
+            "transferredBytes": 24392,
+            "decodedBytes": 24092
+          },
+          {
+            "path": "/style.css",
+            "transferredBytes": 16366,
+            "decodedBytes": 16066
+          },
+          {
+            "path": "/console.css",
+            "transferredBytes": 60120,
+            "decodedBytes": 59820
+          },
+          {
+            "path": "/explore-view.js",
+            "transferredBytes": 36489,
+            "decodedBytes": 36189
+          },
+          {
+            "path": "/discovery-topology-view.js",
+            "transferredBytes": 20116,
+            "decodedBytes": 19816
+          },
+          {
+            "path": "/discovery-topology-model.js",
+            "transferredBytes": 6535,
+            "decodedBytes": 6235
+          },
+          {
+            "path": "/console-ui.js",
+            "transferredBytes": 4127,
+            "decodedBytes": 3827
+          },
+          {
+            "path": "/data-view.js",
+            "transferredBytes": 34396,
+            "decodedBytes": 34096
+          },
+          {
+            "path": "/topology-webgl.js",
+            "transferredBytes": 13113,
+            "decodedBytes": 12813
+          },
+          {
+            "path": "/app.js",
+            "transferredBytes": 31420,
+            "decodedBytes": 31120
+          },
+          {
+            "path": "/topology-view.js",
+            "transferredBytes": 23774,
+            "decodedBytes": 23474
+          },
+          {
+            "path": "/dashboard.json",
+            "transferredBytes": 218067,
+            "decodedBytes": 217767
+          },
+          {
+            "path": "/data/index.json",
+            "transferredBytes": 228387,
+            "decodedBytes": 228087
+          },
+          {
+            "path": "/discovery.json",
+            "transferredBytes": 5646608,
+            "decodedBytes": 5646308
+          },
+          {
+            "path": "/data/topology-discovery.json",
+            "transferredBytes": 4542298,
+            "decodedBytes": 4541998
+          }
+        ]
+      },
+      "filterMs": 76,
+      "focusMs": 61.699999928474426
+    },
+    {
+      "profile": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 1000,
+        "cpu": 1,
+        "latency": 0,
+        "bytesPerSecond": -1
+      },
+      "trial": 3,
+      "initial": {
+        "readyMs": 329.89999997615814,
+        "metrics": {
+          "calls": {
+            "prepare": 1,
+            "positions": 1,
+            "matchingCandidates": 1,
+            "matchingPairs": 1
+          },
+          "milliseconds": {
+            "prepare": 43.39999997615814,
+            "positions": 0.6000000238418579,
+            "matchingCandidates": 1.100000023841858,
+            "matchingPairs": 4.799999952316284
+          },
+          "longTasks": [
+            64
+          ],
+          "errors": []
+        },
+        "resources": [
+          {
+            "path": "/css2?family=Manrope:wght@400..800&display=swap",
+            "transferredBytes": 896,
+            "decodedBytes": 2203
+          },
+          {
+            "path": "/console.css",
+            "transferredBytes": 60120,
+            "decodedBytes": 59820
+          },
+          {
+            "path": "/style.css",
+            "transferredBytes": 16366,
+            "decodedBytes": 16066
+          },
+          {
+            "path": "/console-ui.js",
+            "transferredBytes": 4127,
+            "decodedBytes": 3827
+          },
+          {
+            "path": "/research-model.js",
+            "transferredBytes": 24392,
+            "decodedBytes": 24092
+          },
+          {
+            "path": "/explore-view.js",
+            "transferredBytes": 36489,
+            "decodedBytes": 36189
+          },
+          {
+            "path": "/data-view.js",
+            "transferredBytes": 34396,
+            "decodedBytes": 34096
+          },
+          {
+            "path": "/discovery-topology-model.js",
+            "transferredBytes": 6535,
+            "decodedBytes": 6235
+          },
+          {
+            "path": "/discovery-topology-view.js",
+            "transferredBytes": 20116,
+            "decodedBytes": 19816
+          },
+          {
+            "path": "/topology-webgl.js",
+            "transferredBytes": 13113,
+            "decodedBytes": 12813
+          },
+          {
+            "path": "/topology-view.js",
+            "transferredBytes": 23774,
+            "decodedBytes": 23474
+          },
+          {
+            "path": "/app.js",
+            "transferredBytes": 31420,
+            "decodedBytes": 31120
+          },
+          {
+            "path": "/dashboard.json",
+            "transferredBytes": 218067,
+            "decodedBytes": 217767
+          },
+          {
+            "path": "/discovery.json",
+            "transferredBytes": 5646608,
+            "decodedBytes": 5646308
+          },
+          {
+            "path": "/data/index.json",
+            "transferredBytes": 228387,
+            "decodedBytes": 228087
+          },
+          {
+            "path": "/data/topology-discovery.json",
+            "transferredBytes": 4542298,
+            "decodedBytes": 4541998
+          }
+        ]
+      },
+      "filterMs": 60.299999952316284,
+      "focusMs": 78.60000002384186
+    },
+    {
+      "profile": {
+        "name": "constrained-emulation",
+        "width": 390,
+        "height": 844,
+        "cpu": 4,
+        "latency": 80,
+        "bytesPerSecond": 1000000
+      },
+      "trial": 1,
+      "initial": {
+        "readyMs": 12744,
+        "metrics": {
+          "calls": {
+            "prepare": 1,
+            "positions": 1,
+            "matchingCandidates": 1,
+            "matchingPairs": 1
+          },
+          "milliseconds": {
+            "prepare": 270.7000000476837,
+            "positions": 5.799999952316284,
+            "matchingCandidates": 12.799999952316284,
+            "matchingPairs": 33.700000047683716
+          },
+          "longTasks": [
+            157,
+            291,
+            125,
+            520
+          ],
+          "errors": []
+        },
+        "resources": [
+          {
+            "path": "/css2?family=Manrope:wght@400..800&display=swap",
+            "transferredBytes": 896,
+            "decodedBytes": 2203
+          },
+          {
+            "path": "/style.css",
+            "transferredBytes": 16366,
+            "decodedBytes": 16066
+          },
+          {
+            "path": "/console-ui.js",
+            "transferredBytes": 4127,
+            "decodedBytes": 3827
+          },
+          {
+            "path": "/research-model.js",
+            "transferredBytes": 24392,
+            "decodedBytes": 24092
+          },
+          {
+            "path": "/console.css",
+            "transferredBytes": 60120,
+            "decodedBytes": 59820
+          },
+          {
+            "path": "/discovery-topology-model.js",
+            "transferredBytes": 6535,
+            "decodedBytes": 6235
+          },
+          {
+            "path": "/explore-view.js",
+            "transferredBytes": 36489,
+            "decodedBytes": 36189
+          },
+          {
+            "path": "/data-view.js",
+            "transferredBytes": 34396,
+            "decodedBytes": 34096
+          },
+          {
+            "path": "/discovery-topology-view.js",
+            "transferredBytes": 20116,
+            "decodedBytes": 19816
+          },
+          {
+            "path": "/topology-webgl.js",
+            "transferredBytes": 13113,
+            "decodedBytes": 12813
+          },
+          {
+            "path": "/topology-view.js",
+            "transferredBytes": 23774,
+            "decodedBytes": 23474
+          },
+          {
+            "path": "/app.js",
+            "transferredBytes": 31420,
+            "decodedBytes": 31120
+          },
+          {
+            "path": "/dashboard.json",
+            "transferredBytes": 218067,
+            "decodedBytes": 217767
+          },
+          {
+            "path": "/data/index.json",
+            "transferredBytes": 228387,
+            "decodedBytes": 228087
+          },
+          {
+            "path": "/discovery.json",
+            "transferredBytes": 5646608,
+            "decodedBytes": 5646308
+          },
+          {
+            "path": "/data/topology-discovery.json",
+            "transferredBytes": 4542298,
+            "decodedBytes": 4541998
+          }
+        ]
+      },
+      "filterMs": 312.40000009536743,
+      "focusMs": 143.80000007152557
+    },
+    {
+      "profile": {
+        "name": "constrained-emulation",
+        "width": 390,
+        "height": 844,
+        "cpu": 4,
+        "latency": 80,
+        "bytesPerSecond": 1000000
+      },
+      "trial": 2,
+      "initial": {
+        "readyMs": 12632.899999976158,
+        "metrics": {
+          "calls": {
+            "prepare": 1,
+            "positions": 1,
+            "matchingCandidates": 1,
+            "matchingPairs": 1
+          },
+          "milliseconds": {
+            "prepare": 259.1999999284744,
+            "positions": 5.200000047683716,
+            "matchingCandidates": 8.5,
+            "matchingPairs": 37.60000002384186
+          },
+          "longTasks": [
+            103,
+            242,
+            90,
+            506
+          ],
+          "errors": []
+        },
+        "resources": [
+          {
+            "path": "/css2?family=Manrope:wght@400..800&display=swap",
+            "transferredBytes": 896,
+            "decodedBytes": 2203
+          },
+          {
+            "path": "/style.css",
+            "transferredBytes": 16366,
+            "decodedBytes": 16066
+          },
+          {
+            "path": "/console.css",
+            "transferredBytes": 60120,
+            "decodedBytes": 59820
+          },
+          {
+            "path": "/research-model.js",
+            "transferredBytes": 24392,
+            "decodedBytes": 24092
+          },
+          {
+            "path": "/console-ui.js",
+            "transferredBytes": 4127,
+            "decodedBytes": 3827
+          },
+          {
+            "path": "/discovery-topology-model.js",
+            "transferredBytes": 6535,
+            "decodedBytes": 6235
+          },
+          {
+            "path": "/data-view.js",
+            "transferredBytes": 34396,
+            "decodedBytes": 34096
+          },
+          {
+            "path": "/discovery-topology-view.js",
+            "transferredBytes": 20116,
+            "decodedBytes": 19816
+          },
+          {
+            "path": "/explore-view.js",
+            "transferredBytes": 36489,
+            "decodedBytes": 36189
+          },
+          {
+            "path": "/topology-webgl.js",
+            "transferredBytes": 13113,
+            "decodedBytes": 12813
+          },
+          {
+            "path": "/topology-view.js",
+            "transferredBytes": 23774,
+            "decodedBytes": 23474
+          },
+          {
+            "path": "/app.js",
+            "transferredBytes": 31420,
+            "decodedBytes": 31120
+          },
+          {
+            "path": "/dashboard.json",
+            "transferredBytes": 218067,
+            "decodedBytes": 217767
+          },
+          {
+            "path": "/discovery.json",
+            "transferredBytes": 5646608,
+            "decodedBytes": 5646308
+          },
+          {
+            "path": "/data/index.json",
+            "transferredBytes": 228387,
+            "decodedBytes": 228087
+          },
+          {
+            "path": "/data/topology-discovery.json",
+            "transferredBytes": 4542298,
+            "decodedBytes": 4541998
+          }
+        ]
+      },
+      "filterMs": 275.60000002384186,
+      "focusMs": 178.5
+    },
+    {
+      "profile": {
+        "name": "constrained-emulation",
+        "width": 390,
+        "height": 844,
+        "cpu": 4,
+        "latency": 80,
+        "bytesPerSecond": 1000000
+      },
+      "trial": 3,
+      "initial": {
+        "readyMs": 12241.299999952316,
+        "metrics": {
+          "calls": {
+            "prepare": 1,
+            "positions": 1,
+            "matchingCandidates": 1,
+            "matchingPairs": 1
+          },
+          "milliseconds": {
+            "prepare": 250.79999995231628,
+            "positions": 4.5,
+            "matchingCandidates": 12.299999952316284,
+            "matchingPairs": 43.10000002384186
+          },
+          "longTasks": [
+            94,
+            109,
+            459
+          ],
+          "errors": []
+        },
+        "resources": [
+          {
+            "path": "/css2?family=Manrope:wght@400..800&display=swap",
+            "transferredBytes": 896,
+            "decodedBytes": 2203
+          },
+          {
+            "path": "/style.css",
+            "transferredBytes": 16366,
+            "decodedBytes": 16066
+          },
+          {
+            "path": "/console.css",
+            "transferredBytes": 60120,
+            "decodedBytes": 59820
+          },
+          {
+            "path": "/research-model.js",
+            "transferredBytes": 24392,
+            "decodedBytes": 24092
+          },
+          {
+            "path": "/console-ui.js",
+            "transferredBytes": 4127,
+            "decodedBytes": 3827
+          },
+          {
+            "path": "/discovery-topology-model.js",
+            "transferredBytes": 6535,
+            "decodedBytes": 6235
+          },
+          {
+            "path": "/data-view.js",
+            "transferredBytes": 34396,
+            "decodedBytes": 34096
+          },
+          {
+            "path": "/explore-view.js",
+            "transferredBytes": 36489,
+            "decodedBytes": 36189
+          },
+          {
+            "path": "/discovery-topology-view.js",
+            "transferredBytes": 20116,
+            "decodedBytes": 19816
+          },
+          {
+            "path": "/topology-webgl.js",
+            "transferredBytes": 13113,
+            "decodedBytes": 12813
+          },
+          {
+            "path": "/topology-view.js",
+            "transferredBytes": 23774,
+            "decodedBytes": 23474
+          },
+          {
+            "path": "/app.js",
+            "transferredBytes": 31420,
+            "decodedBytes": 31120
+          },
+          {
+            "path": "/dashboard.json",
+            "transferredBytes": 218067,
+            "decodedBytes": 217767
+          },
+          {
+            "path": "/data/index.json",
+            "transferredBytes": 228387,
+            "decodedBytes": 228087
+          },
+          {
+            "path": "/discovery.json",
+            "transferredBytes": 5646608,
+            "decodedBytes": 5646308
+          },
+          {
+            "path": "/data/topology-discovery.json",
+            "transferredBytes": 4542298,
+            "decodedBytes": 4541998
+          }
+        ]
+      },
+      "filterMs": 247.39999997615814,
+      "focusMs": 151.80000007152557
+    }
+  ]
+}
