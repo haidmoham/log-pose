@@ -7,7 +7,7 @@
     const canvas = document.createElement('canvas');
     canvas.className = 'constellation-gpu';
     canvas.setAttribute('aria-hidden', 'true');
-    const gl = canvas.getContext('webgl', { alpha: true, antialias: true, premultipliedAlpha: false });
+    const gl = canvas.getContext('webgl', { alpha: true, antialias: true, premultipliedAlpha: true });
     if (!gl) return null;
     function shader(type, code) {
       const result = gl.createShader(type); gl.shaderSource(result, code); gl.compileShader(result);
@@ -57,7 +57,7 @@
       const location = gl.getAttribLocation(program, name); gl.enableVertexAttribArray(location);
       gl.vertexAttribPointer(location, count, gl.FLOAT, false, 28, offset * 4);
     }
-    gl.enable(gl.BLEND); gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+    gl.enable(gl.BLEND); gl.blendFuncSeparate(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA, gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
     let scene = null;
     let map = null;
     let current = null;
