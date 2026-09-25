@@ -23,13 +23,16 @@
     let detailError = null;
     let detailLoading = false;
     let detailRequest = 0;
+    let mismatchRefreshAttempted = false;
+    let summaryRefreshToken = null;
 
     function endpoint(params) {
       return `./api/market-field?${new URLSearchParams(params).toString()}`;
     }
 
     async function requestJson(url) {
-      const response = await fetch(url, { headers: { accept: 'application/json' } });
+      const response = await fetch(url, { cache: 'no-store',
+        headers: { accept: 'application/json' } });
       let body;
       try { body = await response.json(); }
       catch { body = null; }
@@ -45,19 +48,31 @@
     function clearBuildData() {
       summary = null;
       summaryError = null;
+      summaryLoading = false;
       queryKey = null;
       queryResult = null;
       queryError = null;
+      queryLoading = false;
       loadedCandidates = [];
       detailKey = null;
       detailResult = null;
       detailError = null;
+      detailLoading = false;
       summaryRequest += 1;
       queryRequest += 1;
       detailRequest += 1;
     }
 
     function refreshAfterMismatch() {
+      if (mismatchRefreshAttempted) {
+        queryLoading = false;
+        detailLoading = false;
+        queryError = 'The market field changed again while loading. Retry the field query to continue.';
+        commitState({}, { replace: true });
+        return;
+      }
+      mismatchRefreshAttempted = true;
+      summaryRefreshToken = `${Date.now()}-${summaryRequest + 1}`;
       clearBuildData();
       commitState({}, { replace: true });
     }
@@ -66,7 +81,9 @@
       if (summary || summaryLoading) return;
       summaryLoading = true;
       const requestId = ++summaryRequest;
-      requestJson(endpoint({ mode: 'summary' })).then(result => {
+      const params = { mode: 'summary' };
+      if (summaryRefreshToken) params.refresh = summaryRefreshToken;
+      requestJson(endpoint(params)).then(result => {
         if (!model.isCurrentRequest(requestId, 'summary', summaryRequest, 'summary')) return;
         if (result.schema_version !== '1.0' || !result.build_id
             || !Array.isArray(result.candidates) || !result.counts || !result.facets) {
@@ -76,6 +93,7 @@
         layout = model.positions(summary.candidates);
         summaryError = null;
         summaryLoading = false;
+        summaryRefreshToken = null;
         commitState({}, { replace: true });
       }).catch(failure => {
         if (!model.isCurrentRequest(requestId, 'summary', summaryRequest, 'summary')) return;
@@ -97,13 +115,17 @@
         activeFilters.identity, state.fieldCandidate]);
     }
 
-    function queryParams(activeFilters, offset) {
+    function queryParams(activeFilters, offset, neighborOffset = 0) {
       const params = { mode: 'query', build_id: summary.build_id,
         source: activeFilters.source, year: activeFilters.year,
         category: activeFilters.category, tag: activeFilters.tag,
         identity: activeFilters.identity, query: activeFilters.query,
         offset: String(offset), limit: String(pageSize) };
-      if (state.fieldCandidate) params.candidate = state.fieldCandidate;
+      if (state.fieldCandidate) {
+        params.candidate = state.fieldCandidate;
+        params.neighbor_offset = String(neighborOffset);
+        params.neighbor_limit = '500';
+      }
       return params;
     }
 
@@ -143,6 +165,7 @@
         queryResult = result;
         queryError = null;
         queryLoading = false;
+        mismatchRefreshAttempted = false;
         commitState({}, { replace: true });
       }).catch(failure => {
         if (!model.isCurrentRequest(requestId, key, queryRequest, queryKey)) return;
@@ -183,9 +206,20 @@
             || !Array.isArray(result.shared_observations)) {
           throw new Error('market field detail is incomplete');
         }
+        const hasFilteredSharedPlacement = result.shared_observations.some(item =>
+          (state.fieldSource === 'all' || item.source === state.fieldSource)
+          && (state.fieldYear === 'all' || item.year === Number(state.fieldYear))
+          && (state.fieldCategory === 'all' || item.source_category === state.fieldCategory));
+        if (selectedNeighbor && (!result.neighbor || !hasFilteredSharedPlacement)) {
+          detailError = 'The selected candidate has no exact shared placement in the current filter.';
+          detailLoading = false;
+          commitState({}, { replace: true });
+          return;
+        }
         detailResult = result;
         detailLoading = false;
         detailError = null;
+        mismatchRefreshAttempted = false;
         commitState({}, { replace: true });
       }).catch(failure => {
         if (!model.isCurrentRequest(requestId, key, detailRequest, detailKey)) return;
@@ -329,6 +363,15 @@
           svg.append(svgNode('line', { x1: start.x, y1: start.y, x2: end.x, y2: end.y,
             class: `field-neighbor-line${selected ? ' is-selected' : ''}` }));
         }
+        const directNeighbor = detailResult?.neighbor;
+        if (directNeighbor && !neighborIds.has(directNeighbor.id)) {
+          const end = layout.nodes.get(directNeighbor.id);
+          if (end) {
+            neighborIds.add(directNeighbor.id);
+            svg.append(svgNode('line', { x1: start.x, y1: start.y, x2: end.x, y2: end.y,
+              class: 'field-neighbor-line is-selected' }));
+          }
+        }
       }
       for (const candidate of summary.candidates) {
         const position = layout.nodes.get(candidate.id);
@@ -444,7 +487,7 @@
           && (activeFilters.category === 'all' || item.source_category === activeFilters.category));
         panel.append(node('h4', `${candidate.name} / ${neighbor.name}`, 'section-title'),
           node('p', `${formatCount(sharedPlacements.length)} exact source-category-year placements overlap. ${detailResult.in_review_worklist
-            ? 'This pair is in the 100-item sampled review worklist.'
+            ? `This pair is in the ${formatCount(summary.counts.edges)}-item sampled review worklist.`
             : 'This pair is outside the sampled review worklist.'} No relationship claim follows from co-listing.`, 'caveat'));
         for (const shared of sharedPlacements) {
           const item = node('article', '', 'field-shared-placement');
@@ -491,6 +534,16 @@
         });
         section.append(more);
       }
+      if (focusCandidate && result.next_neighbor_offset !== null) {
+        const more = node('button', queryLoading ? 'loading more neighbors…' : 'show more neighbors',
+          'quiet-button field-show-more-neighbors');
+        more.type = 'button';
+        more.disabled = queryLoading;
+        more.addEventListener('click', () => {
+          if (!queryLoading) requestNextNeighbors();
+        });
+        section.append(more);
+      }
       return section;
     }
 
@@ -511,6 +564,39 @@
         loadedCandidates = loadedCandidates.concat(result.candidates);
         queryResult = result;
         queryLoading = false;
+        mismatchRefreshAttempted = false;
+        commitState({}, { replace: true });
+      }).catch(failure => {
+        if (!model.isCurrentRequest(requestId, key, queryRequest, queryKey)) return;
+        if (failure.status === 409) {
+          refreshAfterMismatch();
+          return;
+        }
+        queryLoading = false;
+        queryError = failure.message;
+        commitState({}, { replace: true });
+      });
+    }
+
+    function requestNextNeighbors() {
+      const activeFilters = filters();
+      if (queryLoading || !queryResult || queryResult.next_neighbor_offset === null) return;
+      const neighborOffset = queryResult.next_neighbor_offset;
+      const key = queryKey;
+      queryLoading = true;
+      const requestId = ++queryRequest;
+      root.setAttribute('aria-busy', 'true');
+      requestJson(endpoint(queryParams(activeFilters, 0, neighborOffset))).then(result => {
+        if (!model.isCurrentRequest(requestId, key, queryRequest, queryKey)) return;
+        if (!model.matchesBuild(summary.build_id, result.build_id)) {
+          refreshAfterMismatch();
+          return;
+        }
+        queryResult = { ...queryResult,
+          neighbors: queryResult.neighbors.concat(result.neighbors),
+          next_neighbor_offset: result.next_neighbor_offset };
+        queryLoading = false;
+        mismatchRefreshAttempted = false;
         commitState({}, { replace: true });
       }).catch(failure => {
         if (!model.isCurrentRequest(requestId, key, queryRequest, queryKey)) return;
@@ -535,6 +621,8 @@
           retry.type = 'button';
           retry.addEventListener('click', () => {
             summaryError = null;
+            mismatchRefreshAttempted = false;
+            summaryRefreshToken = `${Date.now()}-${summaryRequest + 1}`;
             loadSummary();
             commitState({}, { replace: true });
           });
@@ -554,6 +642,7 @@
         retry.type = 'button';
         retry.addEventListener('click', () => {
           queryError = null;
+          mismatchRefreshAttempted = false;
           queryKey = null;
           commitState({}, { replace: true });
         });
@@ -568,7 +657,9 @@
       const focusCandidate = queryResult.candidate_ids.includes(state.fieldCandidate)
         ? candidatesById.get(state.fieldCandidate) || null : null;
       const selectedNeighbor = queryResult.neighbors.find(item =>
-        item.candidate.id === state.fieldNeighbor)?.candidate || null;
+        item.candidate.id === state.fieldNeighbor)?.candidate
+        || (state.fieldNeighbor && queryResult.candidate_ids.includes(state.fieldNeighbor)
+          ? candidatesById.get(state.fieldNeighbor) : null) || null;
       if (focusCandidate) loadDetail(focusCandidate, selectedNeighbor);
       root.setAttribute('aria-busy', String(queryLoading || detailLoading));
       const map = fieldMap(queryResult, focusCandidate);
