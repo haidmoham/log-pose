@@ -21,6 +21,13 @@
 
 ## publishing
 
+- preserve platform health and evidence discipline through the required CI checks. do not bypass a failing or missing required check, weaken a validator, or rewrite retained evidence just to make a release pass.
+- distinguish operational availability, data integrity, derivation correctness, and the truth of a claim. a green check proves only its declared checks; it does not validate an author's interpretation or remove uncertainty.
+- preserve source IDs, hashes, time meanings, denominators, missing values, and reviewed versus unreviewed status. changes to claims need explicit supporting evidence and the appropriate review; automatic leads never become accepted facts through export or UI wording.
+- publish failures and unavailable checks honestly. an empty result, missing source, skipped reconciliation, or partial coverage must not be represented as zero, full coverage, or a verified claim. keep intentional omissions visible in the check report.
+- use pull requests and the required `app-and-data-health` and Vercel checks for `main`. Vercel's Git integration remains the deployment authority. post-deployment smoke checks verify the exact deployment and served data; they do not repair data or roll back production automatically.
+- see [reliability and evidence checks](docs/reliability.md) for gate scope, explicit gaps, and the failure response.
+
 - `https://github.com/haidmoham/log-pose` is the source repository. the Vercel `log-pose` project builds the static `web/` export from `main`, with routes in `vercel.json`.
 - a push to `main` is the production publish path. verify the matching Vercel deployment and `https://logpose.mhaider.dev/` before reporting a release. check that the served HTML and `dashboard.json` match the pushed commit.
 - Cloudflare owns `mhaider.dev` DNS. keep the `logpose` CNAME in DNS-only mode and use the target currently recommended by Vercel; verify authoritative DNS and TLS after any domain change.

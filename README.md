@@ -4,13 +4,19 @@ Log Pose stores dated primary-source evidence about software companies. Its broa
 
 This is an independent public experiment inspired by a conversation about investor research at Telescope Partners. It is not affiliated with Telescope and contains no internal Telescope material.
 
-The [public dashboard](https://logpose.mhaider.dev/) is a static, read-only export backed by `web/dashboard.json`. Vercel builds the repository's `web/` files from each push to `main`; `vercel.json` maps public URLs to those files. Cloudflare keeps the `logpose` CNAME in DNS-only mode and points it at the target shown in Vercel's domain settings. The local read API and Postgres database are not hosted with the dashboard.
+The [public dashboard](https://logpose.mhaider.dev/) serves retained exports and a versioned, read-only market-field API. Vercel builds the repository's `web/` files and graph-query function from `main`; `vercel.json` owns their routes. Cloudflare keeps the `logpose` CNAME in DNS-only mode. Public market-field reads need no database. Ingestion, review writes, and the optional local Postgres API remain separate.
 
 ## Export-backed research dashboard
 
 Run `npm run dashboard`, then open `http://127.0.0.1:8080/`. This serves the saved exports without starting Postgres or changing evidence. The research desk opens at `/`: search and filter retained records, inspect their content in place, then open company studies or scoped relationship claims. Run `npm run test:dashboard` for calculation, chart, URL-state, and export-contract checks. Record selections and deeper market and topology drill state are addressable in the URL.
 
 The dashboard and local development server serve the same research console. The retained-data catalog exposes all 89 snapshots with normalized text, 369 normalized SEC candidates, and 19,093 Cboe participant rows through lazy typed partitions; inventory search covers all 18,076 source rows. The research desk starts with the complete 18,542-record cross-source index. See the [data contract](docs/data-contract.md) for rebuild commands. Source audit loads full source/year inventory partitions on demand, including rows without a candidate tag. Market field starts with all 1,240 eligible product/project candidates and 47,288 exact source-category-year co-listings. Search and filters narrow that field; candidate and neighbor selection opens the exact retained source rows in the research desk. The separate reviewed layer maps the four accepted claims, with an optional 3D view. The [architecture and extension map](docs/architecture.md) documents their modules plus the database view grains, timestamps, provenance, and safe extension seams.
+
+## Checks and releases
+
+Pull requests run application tests, disposable PostgreSQL integration tests, retained-data integrity checks, and deterministic graph rebuild checks. Vercel remains the only deployment path; production smoke checks verify served assets and query behavior against the deployed commit. `main` requires passing checks before merge.
+
+The [reliability contract](docs/reliability.md) states what each check proves and what it does not evaluate. Missing evidence, partial coverage, unreviewed leads, and failed checks stay explicit. A green build is not a claim that every source or research conclusion is true.
 
 ## Experimental space
 
