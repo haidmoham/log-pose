@@ -3,8 +3,9 @@
   "private": true,
   "scripts": {
     "dev": "bash scripts/dev.sh",
-    "dashboard": "python3 -m http.server 8080 --bind 127.0.0.1 --directory web",
-    "test:dashboard": "node --test tests/research-model.test.js tests/discovery-topology-model.test.js tests/market-route.test.js tests/research-set-route.test.js"
+    "dashboard": "node scripts/market_field_dev.js",
+    "build:market-field": "PYTHONPATH=src python3 scripts/build_market_field_graph.py",
+    "test:dashboard": "node --test tests/research-model.test.js tests/discovery-topology-model.test.js tests/market-route.test.js tests/market-field-api.test.js tests/research-set-route.test.js"
   },
   "devDependencies": {
     "jsdom": "^26.1.0"
