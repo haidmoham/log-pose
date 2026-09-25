@@ -221,6 +221,15 @@ def test_reviewed_seed_import_preserves_source_passages_and_is_idempotent(db, mo
     assert all(claim["review"]["reviewed_at"].startswith(topology["reviewed_at"])
                for claim in exported["claims"])
     assert all("not a new source review" in claim["review"]["rationale"] for claim in exported["claims"])
+    # Review selection cannot bypass the ontology's hypothesis basis rule.
+    invalid_rows = reviewed_claims(db, limit=500)
+    invalid_hypothesis = next(row for row in invalid_rows
+                              if row["predicate"] == "shared_exposure_hypothesis")
+    invalid_hypothesis["proposed_basis"] = "source_statement"
+    with monkeypatch.context() as patch:
+        patch.setattr("log_pose.topology_export.reviewed_claims", lambda *args, **kwargs: invalid_rows)
+        with pytest.raises(ValueError, match="hypothesis status"):
+            export_topology(db, cohort)
     candidate_id = exported["claims"][0]["database_id"]
     record_review(db, candidate_id=candidate_id, decision="reject", reviewer="later review",
                   rationale="the earlier interpretation needs correction",
