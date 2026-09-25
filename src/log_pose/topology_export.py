@@ -7,13 +7,67 @@ from datetime import date, datetime, timezone
 
 from bs4 import BeautifulSoup
 
+from .topology import validate_topology
 from .topology_store import reviewed_claims
 
 
 def iso(value):
     if isinstance(value, datetime):
+        if value.tzinfo is None or value.utcoffset() is None:
+            raise ValueError("topology timestamps require an explicit timezone")
         return value.astimezone(timezone.utc).isoformat()
     return value.isoformat() if isinstance(value, date) else value
+
+
+def validate_projected_topology(projection: dict, cohort: list[dict]) -> None:
+    """Apply the ontology to the public projection after checking retained bytes.
+
+    Database acceptance records a review decision; it does not waive the public
+    claim contract. Source bodies have already been hashed and quote-checked by
+    export_topology, so the legacy validator receives metadata without a local
+    artifact-path requirement. The emitted source hashes remain unchanged.
+    """
+    validation_claims = []
+    for claim in projection["claims"]:
+        claim_id = claim["id"]
+        review = claim.get("review", {})
+        if review.get("decision") != "accept":
+            raise ValueError(f"topology projection needs an accepted review: {claim_id}")
+        for field in ("reviewer", "rationale"):
+            if not isinstance(review.get(field), str) or not review[field].strip():
+                raise ValueError(f"topology review lacks {field}: {claim_id}")
+        reviewed_at = review.get("reviewed_at")
+        try:
+            parsed_review = datetime.fromisoformat(reviewed_at)
+        except (TypeError, ValueError) as error:
+            raise ValueError(f"topology review needs an ISO timestamp: {claim_id}") from error
+        if parsed_review.tzinfo is None or parsed_review.utcoffset() is None:
+            raise ValueError(f"topology review needs an explicit timezone: {claim_id}")
+        if not isinstance(claim.get("temporal_basis"), str) or not claim["temporal_basis"].strip():
+            raise ValueError(f"topology claim lacks temporal basis: {claim_id}")
+        sources = claim.get("sources", [])
+        if not sources or sources[0].get("role") != "support":
+            raise ValueError(f"topology claim needs a primary supporting premise: {claim_id}")
+        for source in sources:
+            if source.get("role") not in {"support", "contradict"}:
+                raise ValueError(f"invalid topology evidence role: {claim_id}")
+        if claim["predicate"] == "shared_exposure_hypothesis":
+            supporting = [source for source in sources if source["role"] == "support"]
+            origins = {(source.get("source_url"), source.get("source_date")) for source in supporting}
+            retained_sources = {source.get("id") for source in supporting}
+            if len(origins) < 2 or len(retained_sources) < 2 or None in retained_sources:
+                raise ValueError(f"shared exposure needs two distinct supporting sources: {claim_id}")
+        validation_sources = [{key: value for key, value in source.items()
+                               if key not in {"artifact_path", "artifact_sha256"}}
+                              for source in sources]
+        validation_claims.append(dict(claim, sources=validation_sources))
+    if not validation_claims:
+        if projection["entities"]:
+            raise ValueError("empty topology must not include claim-bearing entities")
+        return
+    # Reuse the seed's reviewed-identity, predicate/basis, narrative, temporal,
+    # source-date, attribution, and hypothesis-uncertainty rules without drift.
+    validate_topology(dict(projection, claims=validation_claims), cohort)
 
 
 def export_topology(connection, cohort: list[dict]) -> dict:
@@ -37,6 +91,8 @@ def export_topology(connection, cohort: list[dict]) -> dict:
         cursor.execute("SELECT id FROM topology_candidates ORDER BY id")
         candidate_ids = [row["id"] for row in cursor.fetchall()]
     companies = {row["slug"]: row for row in cohort}
+    if len(companies) != len(cohort):
+        raise ValueError("pilot cohort contains duplicate slugs")
     claims = []
     used_entities = set()
     basis_status = {"source_statement": "documented", "reviewed_inference": "reviewed_inference",
@@ -68,6 +124,8 @@ def export_topology(connection, cohort: list[dict]) -> dict:
                 "period_end": iso(period_end)}
 
     for row in accepted:
+        if row["proposed_basis"] not in basis_status:
+            raise ValueError(f"invalid topology claim basis: {row['id']}")
         for endpoint in (row["subject_entity_id"], row["object_entity_id"]):
             entity = stored_entities[endpoint]
             if entity["identity_status"] != "reviewed":
@@ -111,7 +169,7 @@ def export_topology(connection, cohort: list[dict]) -> dict:
     latest = {}
     for review in history:
         latest[review["candidate_id"]] = review["decision"]
-    return {"schema_version": "1.0", "projection": "accepted_database_reviews",
+    projection = {"schema_version": "1.0", "projection": "accepted_database_reviews",
             "reviewed_at": max((claim["review"]["reviewed_at"][:10] for claim in claims), default=None),
             "entities": entities, "claims": claims, "review_history": history,
             "counts": {"entities": len(entities), "claims": len(claims), "reviews": len(history),
@@ -119,3 +177,5 @@ def export_topology(connection, cohort: list[dict]) -> dict:
                        "rejected": sum(value == "reject" for value in latest.values()),
                        "needs_evidence": sum(value == "needs_evidence" for value in latest.values()),
                        "unreviewed": sum(key not in latest for key in candidate_ids)}}
+    validate_projected_topology(projection, cohort)
+    return projection
