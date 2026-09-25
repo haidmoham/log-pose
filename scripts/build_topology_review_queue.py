@@ -1,6 +1,7 @@
 """Build a bounded relation-research queue from the pinned discovery frame."""
 
 import argparse
+import hashlib
 import json
 from pathlib import Path
 
@@ -16,6 +17,7 @@ def main() -> None:
     args = parser.parse_args()
     discovery = json.loads(args.discovery.read_text())
     queue = build_market_neighbor_queue(discovery, limit=args.limit, random_seed=args.seed)
+    queue["input_sha256"] = hashlib.sha256(args.discovery.read_bytes()).hexdigest()
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(queue, indent=2) + "\n")
     print(f"queued {len(queue['pairs'])} of {queue['possible_pair_count']} category-overlap pairs "

@@ -2,7 +2,7 @@
 
 import os
 import json
-from datetime import date, datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
 import psycopg
@@ -66,7 +66,8 @@ def test_immutable_sources_and_reviewed_temporal_projection(db):
     assert store_candidate(db, **candidate_args) == "duplicate"
     assert reviewed_claims(db) == []
 
-    accepted_at = datetime(2026, 9, 25, 12, tzinfo=timezone.utc)
+    # The knowledge cutoff must follow the candidate's actual insertion time.
+    accepted_at = datetime.now(timezone.utc) + timedelta(minutes=1)
     record_review(db, candidate_id="c1", decision="accept", reviewer="test",
                   rationale="Exact statement in retained artifact", reviewed_at=accepted_at)
     assert reviewed_claims(db, source_date_cutoff=date(2021, 12, 31)) == []
@@ -81,7 +82,7 @@ def test_immutable_sources_and_reviewed_temporal_projection(db):
     assert rows[0]["exact_quote"] == "Example and Other announced an integration."
     assert rows[0]["valid_from"] is None
 
-    rejected_at = datetime(2026, 9, 26, tzinfo=timezone.utc)
+    rejected_at = accepted_at + timedelta(days=1)
     record_review(db, candidate_id="c1", decision="needs_evidence", reviewer="test",
                   rationale="Duration is not established", reviewed_at=rejected_at)
     assert len(reviewed_claims(db, review_cutoff=accepted_at)) == 1
@@ -212,6 +213,24 @@ def test_reviewed_seed_import_preserves_source_passages_and_is_idempotent(db, mo
     changed["claims"][0]["interpretation"] = "A changed interpretation"
     with pytest.raises(ValueError, match="differs from reviewed store"):
         verify_topology_store(changed, db)
+
+    from log_pose.topology_export import export_topology
+    exported = export_topology(db, cohort)
+    assert len(exported["claims"]) == 4
+    assert all(claim["review"]["date_precision"] == "day" for claim in exported["claims"])
+    assert all(claim["review"]["reviewed_at"].startswith(topology["reviewed_at"])
+               for claim in exported["claims"])
+    assert all("not a new source review" in claim["review"]["rationale"] for claim in exported["claims"])
+    candidate_id = exported["claims"][0]["database_id"]
+    record_review(db, candidate_id=candidate_id, decision="reject", reviewer="later review",
+                  rationale="the earlier interpretation needs correction",
+                  reviewed_at=datetime(2026, 9, 26, tzinfo=timezone.utc))
+    counts = import_seed(topology, manifest, cohort, repository_root=root, reviewer="another importer")
+    assert counts["reviews_appended"] == 0
+    revised = export_topology(db, cohort)
+    assert len(revised["claims"]) == 3
+    assert revised["counts"]["rejected"] == 1
+    assert len(revised["review_history"]) == 5
 
 
 def test_discovery_extension_import_is_immutable_and_idempotent(db):

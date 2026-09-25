@@ -1,8 +1,9 @@
 import json
+import mimetypes
 from pathlib import Path
 from datetime import datetime
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
-from urllib.parse import parse_qs, urlparse
+from urllib.parse import parse_qs, unquote, urlparse
 
 import psycopg
 
@@ -10,26 +11,36 @@ from .storage import evidence, list_companies, overview
 
 
 WEB_ROOT = Path(__file__).parents[2] / "web"
-STATIC_FILES = {
-    "/": ("live-index.html", "text/html; charset=utf-8"),
-    "/app.js": ("live-app.js", "text/javascript; charset=utf-8"),
-    "/style.css": ("style.css", "text/css; charset=utf-8"),
-    "/favicon.svg": ("favicon.svg", "image/svg+xml"),
-    "/fonts/bricolage-grotesque-variable.woff2": ("fonts/bricolage-grotesque-variable.woff2", "font/woff2"),
-}
+STATIC_SUFFIXES = {".html", ".js", ".css", ".json", ".svg", ".woff2", ".txt", ".ico"}
+
+
+def static_asset(path, web_root=WEB_ROOT):
+    """Serve the same contained console as the static host, within its web root."""
+    decoded = unquote(path)
+    if "\x00" in decoded or decoded.startswith("/api/"):
+        return None
+    root = web_root.resolve()
+    asset = (root / ("index.html" if decoded == "/" else decoded.lstrip("/"))).resolve()
+    if not asset.is_relative_to(root) or asset.suffix not in STATIC_SUFFIXES or not asset.is_file():
+        return None
+    content_type = mimetypes.guess_type(asset.name)[0] or "application/octet-stream"
+    if asset.suffix in {".html", ".js", ".css", ".json", ".svg", ".txt"}:
+        content_type += "; charset=utf-8"
+    return asset, content_type
 
 
 def serve(port):
     class Handler(BaseHTTPRequestHandler):
         def do_GET(self):
             path = urlparse(self.path)
-            if path.path in STATIC_FILES:
-                filename, content_type = STATIC_FILES[path.path]
-                self.respond_bytes(200, (WEB_ROOT / filename).read_bytes(), content_type)
+            static = static_asset(path.path)
+            if static:
+                asset, content_type = static
+                self.respond_bytes(200, asset.read_bytes(), content_type)
                 return
             try:
                 self.handle_api(path)
-            except psycopg.OperationalError:
+            except (psycopg.OperationalError, KeyError):
                 self.respond(503, {"error": "local database unavailable"})
 
         def handle_api(self, path):

@@ -1761,29 +1761,34 @@
   ],
   "market_topology": {
     "schema_version": "1.0",
+    "projection": "accepted_database_reviews",
     "reviewed_at": "2026-09-24",
     "entities": [
       {
         "slug": "datadog",
         "name": "Datadog",
-        "category": "security_observability",
-        "identity_status": "reviewed_pilot_company"
-      },
-      {
-        "slug": "elastic",
-        "name": "Elastic",
+        "entity_kind": "company",
         "category": "security_observability",
         "identity_status": "reviewed_pilot_company"
       },
       {
         "slug": "dbt-labs",
         "name": "dbt Labs",
+        "entity_kind": "company",
         "category": "data_infrastructure",
+        "identity_status": "reviewed_pilot_company"
+      },
+      {
+        "slug": "elastic",
+        "name": "Elastic",
+        "entity_kind": "company",
+        "category": "security_observability",
         "identity_status": "reviewed_pilot_company"
       },
       {
         "slug": "snowflake",
         "name": "Snowflake",
+        "entity_kind": "company",
         "category": "data_infrastructure",
         "identity_status": "reviewed_pilot_company"
       }
@@ -1791,152 +1796,274 @@
     "claims": [
       {
         "id": "datadog-named-competitor-elastic-log-management-2024",
+        "database_id": "seed-claim:datadog-named-competitor-elastic-log-management-2024:929d80cd58d5",
         "subject_slug": "datadog",
         "object_slug": "elastic",
+        "claim_status": "documented",
+        "event_date": null,
+        "valid_from": null,
+        "valid_to": null,
+        "created_at": "2026-09-25T13:45:44.587040+00:00",
+        "sources": [
+          {
+            "id": "seed-source:datadog-2024-10k:711ee14f238f3e12597a03d889b7d8c29785eee865e1cecd8e20e0578a67facf",
+            "source_url": "https://www.sec.gov/Archives/edgar/data/1561550/000156155025000025/ddog-20241231.htm",
+            "publisher": "Datadog, Inc. / U.S. Securities and Exchange Commission",
+            "title": "Datadog 2024 Form 10-K",
+            "source_type": "SEC Form 10-K",
+            "source_date": "2025-02-20",
+            "retrieved_at": "2026-09-24T17:50:30+00:00",
+            "retrieved_on": "2026-09-24",
+            "captured_at": null,
+            "snapshot_id": null,
+            "artifact_sha256": "711ee14f238f3e12597a03d889b7d8c29785eee865e1cecd8e20e0578a67facf",
+            "evidence_locator": "Form 10-K, Item 1, Our Competition, printed page 11",
+            "evidence_kind": "summary",
+            "evidence_text": "In its competition section, Datadog says it competes with Elastic N.V. with respect to log management.",
+            "evidence_quote": "with respect to Log Management, we compete with Cisco Systems, Inc., and Elastic N.V.",
+            "role": "support",
+            "event_date": null,
+            "period_start": "2024-01-01",
+            "period_end": "2024-12-31"
+          }
+        ],
+        "review": {
+          "id": 1,
+          "reviewer": "imported prior Codex seed review",
+          "reviewed_at": "2026-09-24T00:00:00+00:00",
+          "rationale": "Imported prior curated seed review dated 2026-09-24; date precision is one day (stored at 00:00 UTC). This import is not a new source review. The prior review retained 1 source(s), beginning at Form 10-K, Item 1, Our Competition, printed page 11, with claim scope and explicit unknowns.",
+          "decision": "accept",
+          "date_precision": "day"
+        },
         "predicate": "named_competitor_of",
         "direction": "subject_to_object",
         "scope": "log management, as reported for Datadog's fiscal year ended 2024-12-31",
-        "claim_status": "documented",
+        "interpretation": "Datadog's 2024 Form 10-K names Elastic N.V. as a company it competes with in log management.",
+        "alternative_or_unknown": "This is Datadog's own named competitor for one product category. It does not establish market share, customer switching, competitive intensity, or competition across Elastic's full portfolio. The filing was published in 2025 and reports on fiscal 2024.",
         "temporal_form": "observed_state",
         "temporal_basis": "Datadog's SEC filing published 2025-02-20 describes its competitive landscape for the fiscal year ended 2024-12-31; it gives no relationship validity interval.",
-        "interpretation": "Datadog's 2024 Form 10-K names Elastic N.V. as a company it competes with in log management.",
-        "event_date": null,
-        "sources": [
-          {
-            "publisher": "Datadog, Inc. / U.S. Securities and Exchange Commission",
-            "source_date": "2025-02-20",
-            "period_start": "2024-01-01",
-            "period_end": "2024-12-31",
-            "evidence_locator": "Form 10-K, Item 1, Our Competition, printed page 11",
-            "event_date": null,
-            "source_url": "https://www.sec.gov/Archives/edgar/data/1561550/000156155025000025/ddog-20241231.htm",
-            "source_type": "SEC Form 10-K",
-            "evidence_text": "In its competition section, Datadog says it competes with Elastic N.V. with respect to log management.",
-            "retrieved_on": "2026-09-24",
-            "retrieved_at": "2026-09-24T17:50:30+00:00",
-            "evidence_kind": "summary",
-            "evidence_quote": "with respect to Log Management, we compete with Cisco Systems, Inc., and Elastic N.V.",
-            "artifact_path": "docs/research/source-artifacts/topology/datadog-2024-10k.html",
-            "artifact_sha256": "711ee14f238f3e12597a03d889b7d8c29785eee865e1cecd8e20e0578a67facf"
-          }
-        ],
-        "alternative_or_unknown": "This is Datadog's own named competitor for one product category. It does not establish market share, customer switching, competitive intensity, or competition across Elastic's full portfolio. The filing was published in 2025 and reports on fiscal 2024."
-      },
-      {
-        "id": "dbt-labs-announced-partnership-snowflake-2022",
-        "subject_slug": "dbt-labs",
-        "object_slug": "snowflake",
-        "predicate": "announced_partnership_with",
-        "direction": "symmetric",
-        "scope": "joint analytics-engineering workflows for customers using dbt with Snowflake products",
-        "claim_status": "documented",
-        "temporal_form": "event",
-        "temporal_basis": "The source publishes a partnership statement on 2022-02-24; it does not date the relationship's start or end.",
-        "interpretation": "The 2022 dbt Labs financing announcement describes the companies as deepening their partnership and serving joint customers.",
-        "event_date": "2022-02-24",
-        "sources": [
-          {
-            "publisher": "dbt Labs",
-            "source_date": "2022-02-24",
-            "period_end": null,
-            "event_date": "2022-02-24",
-            "evidence_locator": "Series D announcement, statement attributed to Snowflake's SVP of Product about deepening the partnership and serving joint customers",
-            "source_url": "https://www.getdbt.com/blog/dbt-labs-raises-222m-in-series-d-funding-at-4-2b-valuation-led-by-altimeter-with-participation-from-databricks-and-snowflake",
-            "source_type": "company announcement",
-            "evidence_text": "The announcement says Snowflake and dbt Labs were deepening their partnership, refers to joint customers, and lists existing integrations with Snowflake products.",
-            "retrieved_on": "2026-09-24",
-            "retrieved_at": "2026-09-24T17:50:30+00:00",
-            "evidence_kind": "summary",
-            "evidence_quote": "By deepening our partnership with dbt Labs, we offer joint customers",
-            "artifact_path": "docs/research/source-artifacts/topology/dbt-series-d-2022.html",
-            "artifact_sha256": "64694c906f3c8be8b3fd90d88725fe3598a896533adf3123a24dc684610ffece"
-          }
-        ],
-        "alternative_or_unknown": "The announcement establishes a dated partnership statement, not the partnership's start, current status, exclusivity, commercial terms, or contribution to either company's results."
-      },
-      {
-        "id": "snowflake-invested-in-dbt-labs-series-d-2022",
-        "subject_slug": "snowflake",
-        "object_slug": "dbt-labs",
-        "predicate": "invested_in",
-        "direction": "subject_to_object",
-        "scope": "dbt Labs Series D financing announced 2022-02-24",
-        "claim_status": "documented",
-        "temporal_form": "event",
-        "temporal_basis": "The source announces dbt Labs' Series D financing on 2022-02-24; it does not establish later ownership.",
-        "interpretation": "dbt Labs names Snowflake as a strategic investor participating in its Series D financing.",
-        "event_date": "2022-02-24",
-        "sources": [
-          {
-            "publisher": "dbt Labs",
-            "source_date": "2022-02-24",
-            "period_end": null,
-            "event_date": "2022-02-24",
-            "evidence_locator": "Series D announcement, financing paragraph naming Snowflake among the strategic investors",
-            "source_url": "https://www.getdbt.com/blog/dbt-labs-raises-222m-in-series-d-funding-at-4-2b-valuation-led-by-altimeter-with-participation-from-databricks-and-snowflake",
-            "source_type": "company announcement",
-            "evidence_text": "dbt Labs says Snowflake participated in the Series D as one of three strategic investors.",
-            "retrieved_on": "2026-09-24",
-            "retrieved_at": "2026-09-24T17:50:30+00:00",
-            "evidence_kind": "summary",
-            "evidence_quote": "Databricks, Salesforce Ventures, and Snowflake \u2013 also participated.",
-            "artifact_path": "docs/research/source-artifacts/topology/dbt-series-d-2022.html",
-            "artifact_sha256": "64694c906f3c8be8b3fd90d88725fe3598a896533adf3123a24dc684610ffece"
-          }
-        ],
-        "alternative_or_unknown": "The announcement establishes participation in this financing, not ownership percentage, later holdings, governance rights, or a continuing strategic relationship."
+        "generator": "curated_seed",
+        "generator_version": "1.0"
       },
       {
         "id": "datadog-snowflake-shared-customer-workload-exposure-hypothesis-2024",
+        "database_id": "seed-claim:datadog-snowflake-shared-customer-workload-exposure-hypothesis-2024:929d80cd58d5",
         "subject_slug": "datadog",
         "object_slug": "snowflake",
+        "claim_status": "hypothesis",
+        "event_date": null,
+        "valid_from": null,
+        "valid_to": null,
+        "created_at": "2026-09-25T13:45:44.594360+00:00",
+        "sources": [
+          {
+            "id": "seed-source:datadog-2024-10k:711ee14f238f3e12597a03d889b7d8c29785eee865e1cecd8e20e0578a67facf",
+            "source_url": "https://www.sec.gov/Archives/edgar/data/1561550/000156155025000025/ddog-20241231.htm",
+            "publisher": "Datadog, Inc. / U.S. Securities and Exchange Commission",
+            "title": "Datadog 2024 Form 10-K",
+            "source_type": "SEC Form 10-K",
+            "source_date": "2025-02-20",
+            "retrieved_at": "2026-09-24T17:50:30+00:00",
+            "retrieved_on": "2026-09-24",
+            "captured_at": null,
+            "snapshot_id": null,
+            "artifact_sha256": "711ee14f238f3e12597a03d889b7d8c29785eee865e1cecd8e20e0578a67facf",
+            "evidence_locator": "Form 10-K, Item 7, Overview and Revenue; printed pages 44 and 47",
+            "evidence_kind": "summary",
+            "evidence_text": "Datadog says customers expand usage as they expand public- and private-cloud workloads, describes host- and data-volume-based usage pricing, and warns that businesses may slow IT spending during economic uncertainty.",
+            "evidence_quote": "We grow with our customers as they expand their workloads",
+            "role": "support",
+            "event_date": null,
+            "period_start": "2024-01-01",
+            "period_end": "2024-12-31"
+          },
+          {
+            "id": "seed-source:snowflake-fy2024-10k:6c1f7dc96b0e484160a38025fcf2895a016a02a5f918ad5fb2250476e191a5a6",
+            "source_url": "https://www.sec.gov/Archives/edgar/data/1640147/000164014724000101/snow-20240131.htm",
+            "publisher": "Snowflake Inc. / U.S. Securities and Exchange Commission",
+            "title": "Snowflake fiscal 2024 Form 10-K",
+            "source_type": "SEC Form 10-K",
+            "source_date": "2024-03-26",
+            "retrieved_at": "2026-09-24T17:50:30+00:00",
+            "retrieved_on": "2026-09-24",
+            "captured_at": null,
+            "snapshot_id": null,
+            "artifact_sha256": "6c1f7dc96b0e484160a38025fcf2895a016a02a5f918ad5fb2250476e191a5a6",
+            "evidence_locator": "Form 10-K, Item 7, revenue model and customer consumption/macroeconomic risk discussion",
+            "evidence_kind": "summary",
+            "evidence_text": "Snowflake says most revenue comes from customer consumption of compute, storage, and data transfer, and warns that customers may rationalize budgets and optimize consumption amid macroeconomic uncertainty.",
+            "evidence_quote": "customers may continue to optimize consumption, rationalize budgets",
+            "role": "support",
+            "event_date": null,
+            "period_start": "2023-02-01",
+            "period_end": "2024-01-31"
+          }
+        ],
+        "review": {
+          "id": 4,
+          "reviewer": "imported prior Codex seed review",
+          "reviewed_at": "2026-09-24T00:00:00+00:00",
+          "rationale": "Imported prior curated seed review dated 2026-09-24; date precision is one day (stored at 00:00 UTC). This import is not a new source review. The prior review retained 2 source(s), beginning at Form 10-K, Item 7, Overview and Revenue; printed pages 44 and 47, with claim scope and explicit unknowns.",
+          "decision": "accept",
+          "date_precision": "day"
+        },
         "predicate": "shared_exposure_hypothesis",
         "direction": "symmetric",
         "scope": "operating-performance exposure to customer cloud/data workload usage and technology-spending optimization",
-        "claim_status": "hypothesis",
+        "interpretation": "Both companies' disclosures support a testable hypothesis that customer workload and technology-spending changes can affect operating performance: Datadog says customer usage expands with cloud workloads and warns that IT spending changes may affect its business; Snowflake reports consumption-based product revenue and says customers may optimize consumption in response to macroeconomic uncertainty. This establishes a common possible driver, not shared customers or observed co-movement.",
+        "alternative_or_unknown": "Revenue sensitivity may differ because Datadog's revenue is largely subscription-based while Snowflake recognizes most product revenue on consumption. No shared-customer evidence has been established. Revenue and stock-return co-movement remain untested, as do causal effects and effect size.",
         "temporal_form": "observed_state",
         "temporal_basis": "The hypothesis combines operating-model disclosures in two separate annual filings; each source has its own reporting period and neither describes a relationship interval.",
-        "interpretation": "Both companies' disclosures support a testable hypothesis that customer workload and technology-spending changes can affect operating performance: Datadog says customer usage expands with cloud workloads and warns that IT spending changes may affect its business; Snowflake reports consumption-based product revenue and says customers may optimize consumption in response to macroeconomic uncertainty. This establishes a common possible driver, not shared customers or observed co-movement.",
-        "event_date": null,
+        "generator": "curated_seed",
+        "generator_version": "1.0"
+      },
+      {
+        "id": "dbt-labs-announced-partnership-snowflake-2022",
+        "database_id": "seed-claim:dbt-labs-announced-partnership-snowflake-2022:14301c1bd839",
+        "subject_slug": "dbt-labs",
+        "object_slug": "snowflake",
+        "claim_status": "documented",
+        "event_date": "2022-02-24",
+        "valid_from": null,
+        "valid_to": null,
+        "created_at": "2026-09-25T13:45:44.592832+00:00",
         "sources": [
           {
-            "publisher": "Datadog, Inc. / U.S. Securities and Exchange Commission",
-            "source_date": "2025-02-20",
-            "period_start": "2024-01-01",
-            "period_end": "2024-12-31",
-            "evidence_locator": "Form 10-K, Item 7, Overview and Revenue; printed pages 44 and 47",
-            "event_date": null,
-            "source_url": "https://www.sec.gov/Archives/edgar/data/1561550/000156155025000025/ddog-20241231.htm",
-            "source_type": "SEC Form 10-K",
-            "evidence_text": "Datadog says customers expand usage as they expand public- and private-cloud workloads, describes host- and data-volume-based usage pricing, and warns that businesses may slow IT spending during economic uncertainty.",
-            "retrieved_on": "2026-09-24",
+            "id": "seed-source:dbt-series-d-2022:64694c906f3c8be8b3fd90d88725fe3598a896533adf3123a24dc684610ffece",
+            "source_url": "https://www.getdbt.com/blog/dbt-labs-raises-222m-in-series-d-funding-at-4-2b-valuation-led-by-altimeter-with-participation-from-databricks-and-snowflake",
+            "publisher": "dbt Labs",
+            "title": "dbt Labs raises $222M in Series D funding",
+            "source_type": "company announcement",
+            "source_date": "2022-02-24",
             "retrieved_at": "2026-09-24T17:50:30+00:00",
-            "evidence_kind": "summary",
-            "evidence_quote": "We grow with our customers as they expand their workloads",
-            "artifact_path": "docs/research/source-artifacts/topology/datadog-2024-10k.html",
-            "artifact_sha256": "711ee14f238f3e12597a03d889b7d8c29785eee865e1cecd8e20e0578a67facf"
-          },
-          {
-            "publisher": "Snowflake Inc. / U.S. Securities and Exchange Commission",
-            "source_date": "2024-03-26",
-            "period_start": "2023-02-01",
-            "period_end": "2024-01-31",
-            "evidence_locator": "Form 10-K, Item 7, revenue model and customer consumption/macroeconomic risk discussion",
-            "event_date": null,
-            "source_url": "https://www.sec.gov/Archives/edgar/data/1640147/000164014724000101/snow-20240131.htm",
-            "source_type": "SEC Form 10-K",
-            "evidence_text": "Snowflake says most revenue comes from customer consumption of compute, storage, and data transfer, and warns that customers may rationalize budgets and optimize consumption amid macroeconomic uncertainty.",
             "retrieved_on": "2026-09-24",
-            "retrieved_at": "2026-09-24T17:50:30+00:00",
+            "captured_at": null,
+            "snapshot_id": null,
+            "artifact_sha256": "64694c906f3c8be8b3fd90d88725fe3598a896533adf3123a24dc684610ffece",
+            "evidence_locator": "Series D announcement, statement attributed to Snowflake's SVP of Product about deepening the partnership and serving joint customers",
             "evidence_kind": "summary",
-            "evidence_quote": "customers may continue to optimize consumption, rationalize budgets",
-            "artifact_path": "docs/research/source-artifacts/topology/snowflake-fy2024-10k.html",
-            "artifact_sha256": "6c1f7dc96b0e484160a38025fcf2895a016a02a5f918ad5fb2250476e191a5a6"
+            "evidence_text": "The announcement says Snowflake and dbt Labs were deepening their partnership, refers to joint customers, and lists existing integrations with Snowflake products.",
+            "evidence_quote": "By deepening our partnership with dbt Labs, we offer joint customers",
+            "role": "support",
+            "event_date": "2022-02-24",
+            "period_start": null,
+            "period_end": null
           }
         ],
-        "alternative_or_unknown": "Revenue sensitivity may differ because Datadog's revenue is largely subscription-based while Snowflake recognizes most product revenue on consumption. No shared-customer evidence has been established. Revenue and stock-return co-movement remain untested, as do causal effects and effect size."
+        "review": {
+          "id": 2,
+          "reviewer": "imported prior Codex seed review",
+          "reviewed_at": "2026-09-24T00:00:00+00:00",
+          "rationale": "Imported prior curated seed review dated 2026-09-24; date precision is one day (stored at 00:00 UTC). This import is not a new source review. The prior review retained 1 source(s), beginning at Series D announcement, statement attributed to Snowflake's SVP of Product about deepening the partnership and serving joint customers, with claim scope and explicit unknowns.",
+          "decision": "accept",
+          "date_precision": "day"
+        },
+        "predicate": "announced_partnership_with",
+        "direction": "symmetric",
+        "scope": "joint analytics-engineering workflows for customers using dbt with Snowflake products",
+        "interpretation": "The 2022 dbt Labs financing announcement describes the companies as deepening their partnership and serving joint customers.",
+        "alternative_or_unknown": "The announcement establishes a dated partnership statement, not the partnership's start, current status, exclusivity, commercial terms, or contribution to either company's results.",
+        "temporal_form": "event",
+        "temporal_basis": "The source publishes a partnership statement on 2022-02-24; it does not date the relationship's start or end.",
+        "generator": "curated_seed",
+        "generator_version": "1.0"
+      },
+      {
+        "id": "snowflake-invested-in-dbt-labs-series-d-2022",
+        "database_id": "seed-claim:snowflake-invested-in-dbt-labs-series-d-2022:14301c1bd839",
+        "subject_slug": "snowflake",
+        "object_slug": "dbt-labs",
+        "claim_status": "documented",
+        "event_date": "2022-02-24",
+        "valid_from": null,
+        "valid_to": null,
+        "created_at": "2026-09-25T13:45:44.593652+00:00",
+        "sources": [
+          {
+            "id": "seed-source:dbt-series-d-2022:64694c906f3c8be8b3fd90d88725fe3598a896533adf3123a24dc684610ffece",
+            "source_url": "https://www.getdbt.com/blog/dbt-labs-raises-222m-in-series-d-funding-at-4-2b-valuation-led-by-altimeter-with-participation-from-databricks-and-snowflake",
+            "publisher": "dbt Labs",
+            "title": "dbt Labs raises $222M in Series D funding",
+            "source_type": "company announcement",
+            "source_date": "2022-02-24",
+            "retrieved_at": "2026-09-24T17:50:30+00:00",
+            "retrieved_on": "2026-09-24",
+            "captured_at": null,
+            "snapshot_id": null,
+            "artifact_sha256": "64694c906f3c8be8b3fd90d88725fe3598a896533adf3123a24dc684610ffece",
+            "evidence_locator": "Series D announcement, financing paragraph naming Snowflake among the strategic investors",
+            "evidence_kind": "summary",
+            "evidence_text": "dbt Labs says Snowflake participated in the Series D as one of three strategic investors.",
+            "evidence_quote": "Databricks, Salesforce Ventures, and Snowflake \u2013 also participated.",
+            "role": "support",
+            "event_date": "2022-02-24",
+            "period_start": null,
+            "period_end": null
+          }
+        ],
+        "review": {
+          "id": 3,
+          "reviewer": "imported prior Codex seed review",
+          "reviewed_at": "2026-09-24T00:00:00+00:00",
+          "rationale": "Imported prior curated seed review dated 2026-09-24; date precision is one day (stored at 00:00 UTC). This import is not a new source review. The prior review retained 1 source(s), beginning at Series D announcement, financing paragraph naming Snowflake among the strategic investors, with claim scope and explicit unknowns.",
+          "decision": "accept",
+          "date_precision": "day"
+        },
+        "predicate": "invested_in",
+        "direction": "subject_to_object",
+        "scope": "dbt Labs Series D financing announced 2022-02-24",
+        "interpretation": "dbt Labs names Snowflake as a strategic investor participating in its Series D financing.",
+        "alternative_or_unknown": "The announcement establishes participation in this financing, not ownership percentage, later holdings, governance rights, or a continuing strategic relationship.",
+        "temporal_form": "event",
+        "temporal_basis": "The source announces dbt Labs' Series D financing on 2022-02-24; it does not establish later ownership.",
+        "generator": "curated_seed",
+        "generator_version": "1.0"
       }
-    ]
+    ],
+    "review_history": [
+      {
+        "id": 1,
+        "candidate_id": "seed-claim:datadog-named-competitor-elastic-log-management-2024:929d80cd58d5",
+        "decision": "accept",
+        "reviewer": "imported prior Codex seed review",
+        "reviewed_at": "2026-09-24T00:00:00+00:00",
+        "rationale": "Imported prior curated seed review dated 2026-09-24; date precision is one day (stored at 00:00 UTC). This import is not a new source review. The prior review retained 1 source(s), beginning at Form 10-K, Item 1, Our Competition, printed page 11, with claim scope and explicit unknowns."
+      },
+      {
+        "id": 2,
+        "candidate_id": "seed-claim:dbt-labs-announced-partnership-snowflake-2022:14301c1bd839",
+        "decision": "accept",
+        "reviewer": "imported prior Codex seed review",
+        "reviewed_at": "2026-09-24T00:00:00+00:00",
+        "rationale": "Imported prior curated seed review dated 2026-09-24; date precision is one day (stored at 00:00 UTC). This import is not a new source review. The prior review retained 1 source(s), beginning at Series D announcement, statement attributed to Snowflake's SVP of Product about deepening the partnership and serving joint customers, with claim scope and explicit unknowns."
+      },
+      {
+        "id": 3,
+        "candidate_id": "seed-claim:snowflake-invested-in-dbt-labs-series-d-2022:14301c1bd839",
+        "decision": "accept",
+        "reviewer": "imported prior Codex seed review",
+        "reviewed_at": "2026-09-24T00:00:00+00:00",
+        "rationale": "Imported prior curated seed review dated 2026-09-24; date precision is one day (stored at 00:00 UTC). This import is not a new source review. The prior review retained 1 source(s), beginning at Series D announcement, financing paragraph naming Snowflake among the strategic investors, with claim scope and explicit unknowns."
+      },
+      {
+        "id": 4,
+        "candidate_id": "seed-claim:datadog-snowflake-shared-customer-workload-exposure-hypothesis-2024:929d80cd58d5",
+        "decision": "accept",
+        "reviewer": "imported prior Codex seed review",
+        "reviewed_at": "2026-09-24T00:00:00+00:00",
+        "rationale": "Imported prior curated seed review dated 2026-09-24; date precision is one day (stored at 00:00 UTC). This import is not a new source review. The prior review retained 2 source(s), beginning at Form 10-K, Item 7, Overview and Revenue; printed pages 44 and 47, with claim scope and explicit unknowns."
+      }
+    ],
+    "counts": {
+      "entities": 4,
+      "claims": 4,
+      "reviews": 4,
+      "sources": 3,
+      "candidates": 4,
+      "rejected": 0,
+      "needs_evidence": 0,
+      "unreviewed": 0
+    }
   },
   "financials": {
     "as_of": "2025-04-01",
@@ -1952,6 +2079,7 @@
         "status": "selected",
         "candidate_count": 3,
         "selected": {
+          "fact_id": 1,
           "value": "387864000",
           "unit": "USD",
           "start_date": "2021-01-01",
@@ -1970,6 +2098,7 @@
         "status": "selected",
         "candidate_count": 3,
         "selected": {
+          "fact_id": 12,
           "value": "-342801000",
           "unit": "USD",
           "start_date": "2021-01-01",
@@ -1988,6 +2117,7 @@
         "status": "selected",
         "candidate_count": 2,
         "selected": {
+          "fact_id": 23,
           "value": "2342729000",
           "unit": "USD",
           "start_date": null,
@@ -2006,6 +2136,7 @@
         "status": "selected",
         "candidate_count": 3,
         "selected": {
+          "fact_id": 4,
           "value": "585944000",
           "unit": "USD",
           "start_date": "2022-01-01",
@@ -2024,6 +2155,7 @@
         "status": "selected",
         "candidate_count": 3,
         "selected": {
+          "fact_id": 15,
           "value": "-452551000",
           "unit": "USD",
           "start_date": "2022-01-01",
@@ -2042,6 +2174,7 @@
         "status": "selected",
         "candidate_count": 2,
         "selected": {
+          "fact_id": 25,
           "value": "2344849000",
           "unit": "USD",
           "start_date": null,
@@ -2060,6 +2193,7 @@
         "status": "selected",
         "candidate_count": 3,
         "selected": {
+          "fact_id": 7,
           "value": "776952000",
           "unit": "USD",
           "start_date": "2023-01-01",
@@ -2078,6 +2212,7 @@
         "status": "selected",
         "candidate_count": 3,
         "selected": {
+          "fact_id": 18,
           "value": "-442746000",
           "unit": "USD",
           "start_date": "2023-01-01",
@@ -2096,6 +2231,7 @@
         "status": "selected",
         "candidate_count": 2,
         "selected": {
+          "fact_id": 27,
           "value": "2460809000",
           "unit": "USD",
           "start_date": null,
@@ -2114,6 +2250,7 @@
         "status": "selected",
         "candidate_count": 2,
         "selected": {
+          "fact_id": 10,
           "value": "963642000",
           "unit": "USD",
           "start_date": "2024-01-01",
@@ -2132,6 +2269,7 @@
         "status": "selected",
         "candidate_count": 2,
         "selected": {
+          "fact_id": 21,
           "value": "-345065000",
           "unit": "USD",
           "start_date": "2024-01-01",
@@ -2150,6 +2288,7 @@
         "status": "selected",
         "candidate_count": 2,
         "selected": {
+          "fact_id": 29,
           "value": "2694911000",
           "unit": "USD",
           "start_date": null,
@@ -2168,6 +2307,7 @@
         "status": "selected",
         "candidate_count": 3,
         "selected": {
+          "fact_id": 31,
           "value": "592049000",
           "unit": "USD",
           "start_date": "2020-02-01",
@@ -2186,6 +2326,7 @@
         "status": "selected",
         "candidate_count": 4,
         "selected": {
+          "fact_id": 43,
           "value": "-539102000",
           "unit": "USD",
           "start_date": "2020-02-01",
@@ -2204,6 +2345,7 @@
         "status": "selected",
         "candidate_count": 2,
         "selected": {
+          "fact_id": 64,
           "value": "5921739000",
           "unit": "USD",
           "start_date": null,
@@ -2222,6 +2364,7 @@
         "status": "selected",
         "candidate_count": 3,
         "selected": {
+          "fact_id": 34,
           "value": "1219327000",
           "unit": "USD",
           "start_date": "2021-02-01",
@@ -2240,6 +2383,7 @@
         "status": "selected",
         "candidate_count": 5,
         "selected": {
+          "fact_id": 46,
           "value": "-679948000",
           "unit": "USD",
           "start_date": "2021-02-01",
@@ -2258,6 +2402,7 @@
         "status": "selected",
         "candidate_count": 2,
         "selected": {
+          "fact_id": 66,
           "value": "6649698000",
           "unit": "USD",
           "start_date": null,
@@ -2276,6 +2421,7 @@
         "status": "selected",
         "candidate_count": 3,
         "selected": {
+          "fact_id": 37,
           "value": "2065659000",
           "unit": "USD",
           "start_date": "2022-02-01",
@@ -2294,6 +2440,7 @@
         "status": "selected",
         "candidate_count": 6,
         "selected": {
+          "fact_id": 49,
           "value": "-796705000",
           "unit": "USD",
           "start_date": "2022-02-01",
@@ -2312,6 +2459,7 @@
         "status": "selected",
         "candidate_count": 2,
         "selected": {
+          "fact_id": 68,
           "value": "7722322000",
           "unit": "USD",
           "start_date": null,
@@ -2330,6 +2478,7 @@
         "status": "selected",
         "candidate_count": 3,
         "selected": {
+          "fact_id": 40,
           "value": "2806489000",
           "unit": "USD",
           "start_date": "2023-02-01",
@@ -2348,6 +2497,7 @@
         "status": "selected",
         "candidate_count": 6,
         "selected": {
+          "fact_id": 52,
           "value": "-836097000",
           "unit": "USD",
           "start_date": "2023-02-01",
@@ -2366,6 +2516,7 @@
         "status": "selected",
         "candidate_count": 2,
         "selected": {
+          "fact_id": 70,
           "value": "8223383000",
           "unit": "USD",
           "start_date": null,
@@ -2384,6 +2535,7 @@
         "status": "selected",
         "candidate_count": 3,
         "selected": {
+          "fact_id": 72,
           "value": "590380000",
           "unit": "USD",
           "start_date": "2020-02-01",
@@ -2402,6 +2554,7 @@
         "status": "selected",
         "candidate_count": 3,
         "selected": {
+          "fact_id": 84,
           "value": "-266944000",
           "unit": "USD",
           "start_date": "2020-02-01",
@@ -2420,6 +2573,7 @@
         "status": "selected",
         "candidate_count": 2,
         "selected": {
+          "fact_id": 96,
           "value": "1407495000",
           "unit": "USD",
           "start_date": null,
@@ -2438,6 +2592,7 @@
         "status": "selected",
         "candidate_count": 3,
         "selected": {
+          "fact_id": 75,
           "value": "873782000",
           "unit": "USD",
           "start_date": "2021-02-01",
@@ -2456,6 +2611,7 @@
         "status": "selected",
         "candidate_count": 3,
         "selected": {
+          "fact_id": 87,
           "value": "-306866000",
           "unit": "USD",
           "start_date": "2021-02-01",
@@ -2474,6 +2630,7 @@
         "status": "selected",
         "candidate_count": 2,
         "selected": {
+          "fact_id": 98,
           "value": "2449588000",
           "unit": "USD",
           "start_date": null,
@@ -2492,6 +2649,7 @@
         "status": "selected",
         "candidate_count": 3,
         "selected": {
+          "fact_id": 78,
           "value": "1284040000",
           "unit": "USD",
           "start_date": "2022-02-01",
@@ -2510,6 +2668,7 @@
         "status": "selected",
         "candidate_count": 3,
         "selected": {
+          "fact_id": 90,
           "value": "-345398000",
           "unit": "USD",
           "start_date": "2022-02-01",
@@ -2528,6 +2687,7 @@
         "status": "selected",
         "candidate_count": 2,
         "selected": {
+          "fact_id": 100,
           "value": "2588893000",
           "unit": "USD",
           "start_date": null,
@@ -2546,6 +2706,7 @@
         "status": "selected",
         "candidate_count": 3,
         "selected": {
+          "fact_id": 81,
           "value": "1683011000",
           "unit": "USD",
           "start_date": "2023-02-01",
@@ -2564,6 +2725,7 @@
         "status": "selected",
         "candidate_count": 3,
         "selected": {
+          "fact_id": 93,
           "value": "-176600000",
           "unit": "USD",
           "start_date": "2023-02-01",
@@ -2582,6 +2744,7 @@
         "status": "selected",
         "candidate_count": 2,
         "selected": {
+          "fact_id": 102,
           "value": "2869642000",
           "unit": "USD",
           "start_date": null,
@@ -2600,6 +2763,7 @@
         "status": "selected",
         "candidate_count": 2,
         "selected": {
+          "fact_id": 104,
           "value": "152176000",
           "unit": "USD",
           "start_date": "2020-02-01",
@@ -2618,6 +2782,7 @@
         "status": "selected",
         "candidate_count": 4,
         "selected": {
+          "fact_id": 115,
           "value": "-192194000",
           "unit": "USD",
           "start_date": "2020-02-01",
@@ -2636,6 +2801,7 @@
         "status": "selected",
         "candidate_count": 1,
         "selected": {
+          "fact_id": 137,
           "value": "362566000",
           "unit": "USD",
           "start_date": null,
@@ -2654,6 +2820,7 @@
         "status": "selected",
         "candidate_count": 3,
         "selected": {
+          "fact_id": 106,
           "value": "252653000",
           "unit": "USD",
           "start_date": "2021-02-01",
@@ -2672,6 +2839,7 @@
         "status": "selected",
         "candidate_count": 6,
         "selected": {
+          "fact_id": 117,
           "value": "-155138000",
           "unit": "USD",
           "start_date": "2021-02-01",
@@ -2690,6 +2858,7 @@
         "status": "selected",
         "candidate_count": 2,
         "selected": {
+          "fact_id": 138,
           "value": "1091438000",
           "unit": "USD",
           "start_date": null,
@@ -2708,6 +2877,7 @@
         "status": "selected",
         "candidate_count": 3,
         "selected": {
+          "fact_id": 109,
           "value": "424336000",
           "unit": "USD",
           "start_date": "2022-02-01",
@@ -2726,6 +2896,7 @@
         "status": "selected",
         "candidate_count": 6,
         "selected": {
+          "fact_id": 120,
           "value": "-172311000",
           "unit": "USD",
           "start_date": "2022-02-01",
@@ -2744,6 +2915,7 @@
         "status": "selected",
         "candidate_count": 2,
         "selected": {
+          "fact_id": 140,
           "value": "1169200000",
           "unit": "USD",
           "start_date": null,
@@ -2762,6 +2934,7 @@
         "status": "selected",
         "candidate_count": 3,
         "selected": {
+          "fact_id": 112,
           "value": "579906000",
           "unit": "USD",
           "start_date": "2023-02-01",
@@ -2780,6 +2953,7 @@
         "status": "selected",
         "candidate_count": 6,
         "selected": {
+          "fact_id": 123,
           "value": "-424174000",
           "unit": "USD",
           "start_date": "2023-02-01",
@@ -2798,6 +2972,7 @@
         "status": "selected",
         "candidate_count": 2,
         "selected": {
+          "fact_id": 142,
           "value": "1317861000",
           "unit": "USD",
           "start_date": null,
@@ -2816,6 +2991,7 @@
         "status": "selected",
         "candidate_count": 3,
         "selected": {
+          "fact_id": 144,
           "value": "2089132000",
           "unit": "USD",
           "start_date": "2020-07-01",
@@ -2834,6 +3010,7 @@
         "status": "selected",
         "candidate_count": 1,
         "selected": {
+          "fact_id": 156,
           "value": "-578979000",
           "unit": "USD",
           "start_date": "2020-07-01",
@@ -2852,6 +3029,7 @@
         "status": "selected",
         "candidate_count": 2,
         "selected": {
+          "fact_id": 170,
           "value": "2945344000",
           "unit": "USD",
           "start_date": null,
@@ -2870,6 +3048,7 @@
         "status": "selected",
         "candidate_count": 3,
         "selected": {
+          "fact_id": 145,
           "value": "2802882000",
           "unit": "USD",
           "start_date": "2021-07-01",
@@ -2888,6 +3067,7 @@
         "status": "selected",
         "candidate_count": 2,
         "selected": {
+          "fact_id": 157,
           "value": "-519510000",
           "unit": "USD",
           "start_date": "2021-07-01",
@@ -2906,6 +3086,7 @@
         "status": "selected",
         "candidate_count": 2,
         "selected": {
+          "fact_id": 172,
           "value": "3361206000",
           "unit": "USD",
           "start_date": null,
@@ -2924,6 +3105,7 @@
         "status": "selected",
         "candidate_count": 3,
         "selected": {
+          "fact_id": 147,
           "value": "3534647000",
           "unit": "USD",
           "start_date": "2022-07-01",
@@ -2942,6 +3124,7 @@
         "status": "selected",
         "candidate_count": 3,
         "selected": {
+          "fact_id": 159,
           "value": "-486761000",
           "unit": "USD",
           "start_date": "2022-07-01",
@@ -2960,6 +3143,7 @@
         "status": "selected",
         "candidate_count": 2,
         "selected": {
+          "fact_id": 166,
           "value": "4106779000",
           "unit": "USD",
           "start_date": null,
@@ -2978,6 +3162,7 @@
         "status": "selected",
         "candidate_count": 3,
         "selected": {
+          "fact_id": 150,
           "value": "4358603000",
           "unit": "USD",
           "start_date": "2023-07-01",
@@ -2996,6 +3181,7 @@
         "status": "selected",
         "candidate_count": 3,
         "selected": {
+          "fact_id": 162,
           "value": "-300519000",
           "unit": "USD",
           "start_date": "2023-07-01",
@@ -3014,6 +3200,7 @@
         "status": "selected",
         "candidate_count": 2,
         "selected": {
+          "fact_id": 168,
           "value": "5212133000",
           "unit": "USD",
           "start_date": null,
@@ -3032,6 +3219,7 @@
         "status": "selected",
         "candidate_count": 3,
         "selected": {
+          "fact_id": 173,
           "value": "1028784000",
           "unit": "USD",
           "start_date": "2021-01-01",
@@ -3050,6 +3238,7 @@
         "status": "selected",
         "candidate_count": 6,
         "selected": {
+          "fact_id": 184,
           "value": "-20745000",
           "unit": "USD",
           "start_date": "2021-01-01",
@@ -3068,6 +3257,7 @@
         "status": "selected",
         "candidate_count": 2,
         "selected": {
+          "fact_id": 206,
           "value": "2380794000",
           "unit": "USD",
           "start_date": null,
@@ -3086,6 +3276,7 @@
         "status": "selected",
         "candidate_count": 3,
         "selected": {
+          "fact_id": 176,
           "value": "1675100000",
           "unit": "USD",
           "start_date": "2022-01-01",
@@ -3104,6 +3295,7 @@
         "status": "selected",
         "candidate_count": 6,
         "selected": {
+          "fact_id": 187,
           "value": "-50160000",
           "unit": "USD",
           "start_date": "2022-01-01",
@@ -3122,6 +3314,7 @@
         "status": "selected",
         "candidate_count": 2,
         "selected": {
+          "fact_id": 208,
           "value": "3004852000",
           "unit": "USD",
           "start_date": null,
@@ -3140,6 +3333,7 @@
         "status": "selected",
         "candidate_count": 3,
         "selected": {
+          "fact_id": 179,
           "value": "2128359000",
           "unit": "USD",
           "start_date": "2023-01-01",
@@ -3158,6 +3352,7 @@
         "status": "selected",
         "candidate_count": 6,
         "selected": {
+          "fact_id": 190,
           "value": "48568000",
           "unit": "USD",
           "start_date": "2023-01-01",
@@ -3176,6 +3371,7 @@
         "status": "selected",
         "candidate_count": 2,
         "selected": {
+          "fact_id": 210,
           "value": "3936072000",
           "unit": "USD",
           "start_date": null,
@@ -3194,6 +3390,7 @@
         "status": "selected",
         "candidate_count": 2,
         "selected": {
+          "fact_id": 182,
           "value": "2684275000",
           "unit": "USD",
           "start_date": "2024-01-01",
@@ -3212,6 +3409,7 @@
         "status": "selected",
         "candidate_count": 4,
         "selected": {
+          "fact_id": 193,
           "value": "183746000",
           "unit": "USD",
           "start_date": "2024-01-01",
@@ -3230,6 +3428,7 @@
         "status": "selected",
         "candidate_count": 2,
         "selected": {
+          "fact_id": 212,
           "value": "5785339000",
           "unit": "USD",
           "start_date": null,
@@ -3248,6 +3447,7 @@
         "status": "selected",
         "candidate_count": 3,
         "selected": {
+          "fact_id": 214,
           "value": "874438000",
           "unit": "USD",
           "start_date": "2020-02-01",
@@ -3266,6 +3466,7 @@
         "status": "selected",
         "candidate_count": 5,
         "selected": {
+          "fact_id": 226,
           "value": "-92629000",
           "unit": "USD",
           "start_date": "2020-02-01",
@@ -3284,6 +3485,7 @@
         "status": "selected",
         "candidate_count": 2,
         "selected": {
+          "fact_id": 249,
           "value": "2732533000",
           "unit": "USD",
           "start_date": null,
@@ -3302,6 +3504,7 @@
         "status": "selected",
         "candidate_count": 3,
         "selected": {
+          "fact_id": 217,
           "value": "1451594000",
           "unit": "USD",
           "start_date": "2021-02-01",
@@ -3320,6 +3523,7 @@
         "status": "selected",
         "candidate_count": 6,
         "selected": {
+          "fact_id": 228,
           "value": "-234802000",
           "unit": "USD",
           "start_date": "2021-02-01",
@@ -3338,6 +3542,7 @@
         "status": "selected",
         "candidate_count": 2,
         "selected": {
+          "fact_id": 251,
           "value": "3618381000",
           "unit": "USD",
           "start_date": null,
@@ -3356,6 +3561,7 @@
         "status": "selected",
         "candidate_count": 3,
         "selected": {
+          "fact_id": 220,
           "value": "2241236000",
           "unit": "USD",
           "start_date": "2022-02-01",
@@ -3374,6 +3580,7 @@
         "status": "selected",
         "candidate_count": 6,
         "selected": {
+          "fact_id": 231,
           "value": "-183245000",
           "unit": "USD",
           "start_date": "2022-02-01",
@@ -3392,6 +3599,7 @@
         "status": "selected",
         "candidate_count": 2,
         "selected": {
+          "fact_id": 253,
           "value": "5026540000",
           "unit": "USD",
           "start_date": null,
@@ -3410,6 +3618,7 @@
         "status": "selected",
         "candidate_count": 3,
         "selected": {
+          "fact_id": 223,
           "value": "3055555000",
           "unit": "USD",
           "start_date": "2023-02-01",
@@ -3428,6 +3637,7 @@
         "status": "selected",
         "candidate_count": 6,
         "selected": {
+          "fact_id": 234,
           "value": "89327000",
           "unit": "USD",
           "start_date": "2023-02-01",
@@ -3446,6 +3656,7 @@
         "status": "selected",
         "candidate_count": 2,
         "selected": {
+          "fact_id": 255,
           "value": "6646520000",
           "unit": "USD",
           "start_date": null,
@@ -3464,6 +3675,7 @@
         "status": "selected",
         "candidate_count": 3,
         "selected": {
+          "fact_id": 257,
           "value": "608489000",
           "unit": "USD",
           "start_date": "2020-05-01",
@@ -3482,6 +3694,7 @@
         "status": "selected",
         "candidate_count": 6,
         "selected": {
+          "fact_id": 269,
           "value": "-129434000",
           "unit": "USD",
           "start_date": "2020-05-01",
@@ -3500,6 +3713,7 @@
         "status": "selected",
         "candidate_count": 2,
         "selected": {
+          "fact_id": 293,
           "value": "973172000",
           "unit": "USD",
           "start_date": null,
@@ -3518,6 +3732,7 @@
         "status": "selected",
         "candidate_count": 3,
         "selected": {
+          "fact_id": 260,
           "value": "862374000",
           "unit": "USD",
           "start_date": "2021-05-01",
@@ -3536,6 +3751,7 @@
         "status": "selected",
         "candidate_count": 6,
         "selected": {
+          "fact_id": 272,
           "value": "-203848000",
           "unit": "USD",
           "start_date": "2021-05-01",
@@ -3554,6 +3770,7 @@
         "status": "selected",
         "candidate_count": 2,
         "selected": {
+          "fact_id": 295,
           "value": "1642931000",
           "unit": "USD",
           "start_date": null,
@@ -3572,6 +3789,7 @@
         "status": "selected",
         "candidate_count": 3,
         "selected": {
+          "fact_id": 263,
           "value": "1068989000",
           "unit": "USD",
           "start_date": "2022-05-01",
@@ -3590,6 +3808,7 @@
         "status": "selected",
         "candidate_count": 6,
         "selected": {
+          "fact_id": 275,
           "value": "-236161000",
           "unit": "USD",
           "start_date": "2022-05-01",
@@ -3608,6 +3827,7 @@
         "status": "selected",
         "candidate_count": 2,
         "selected": {
+          "fact_id": 297,
           "value": "1743482000",
           "unit": "USD",
           "start_date": null,
@@ -3626,6 +3846,7 @@
         "status": "selected",
         "candidate_count": 3,
         "selected": {
+          "fact_id": 266,
           "value": "1267321000",
           "unit": "USD",
           "start_date": "2023-05-01",
@@ -3644,6 +3865,7 @@
         "status": "selected",
         "candidate_count": 6,
         "selected": {
+          "fact_id": 278,
           "value": "61720000",
           "unit": "USD",
           "start_date": "2023-05-01",
@@ -3662,6 +3884,7 @@
         "status": "selected",
         "candidate_count": 2,
         "selected": {
+          "fact_id": 299,
           "value": "2242566000",
           "unit": "USD",
           "start_date": null,
@@ -3680,6 +3903,7 @@
         "status": "selected",
         "candidate_count": 2,
         "selected": {
+          "fact_id": 301,
           "value": "607643000",
           "unit": "USD",
           "start_date": "2020-02-01",
@@ -3698,6 +3922,7 @@
         "status": "selected",
         "candidate_count": 2,
         "selected": {
+          "fact_id": 312,
           "value": "-92393000",
           "unit": "USD",
           "start_date": "2020-02-01",
@@ -3716,6 +3941,7 @@
         "status": "selected",
         "candidate_count": 1,
         "selected": {
+          "fact_id": 323,
           "value": "866461000",
           "unit": "USD",
           "start_date": null,
@@ -3734,6 +3960,7 @@
         "status": "selected",
         "candidate_count": 3,
         "selected": {
+          "fact_id": 303,
           "value": "892252000",
           "unit": "USD",
           "start_date": "2021-02-01",
@@ -3752,6 +3979,7 @@
         "status": "selected",
         "candidate_count": 3,
         "selected": {
+          "fact_id": 314,
           "value": "-525586000",
           "unit": "USD",
           "start_date": "2021-02-01",
@@ -3770,6 +3998,7 @@
         "status": "selected",
         "candidate_count": 2,
         "selected": {
+          "fact_id": 324,
           "value": "2572450000",
           "unit": "USD",
           "start_date": null,
@@ -3788,6 +4017,7 @@
         "status": "selected",
         "candidate_count": 3,
         "selected": {
+          "fact_id": 306,
           "value": "1058581000",
           "unit": "USD",
           "start_date": "2022-02-01",
@@ -3806,6 +4036,7 @@
         "status": "selected",
         "candidate_count": 3,
         "selected": {
+          "fact_id": 317,
           "value": "-328352000",
           "unit": "USD",
           "start_date": "2022-02-01",
@@ -3824,6 +4055,7 @@
         "status": "selected",
         "candidate_count": 2,
         "selected": {
+          "fact_id": 326,
           "value": "2735206000",
           "unit": "USD",
           "start_date": null,
@@ -3842,6 +4074,7 @@
         "status": "selected",
         "candidate_count": 3,
         "selected": {
+          "fact_id": 309,
           "value": "1308072000",
           "unit": "USD",
           "start_date": "2023-02-01",
@@ -3860,6 +4093,7 @@
         "status": "selected",
         "candidate_count": 3,
         "selected": {
+          "fact_id": 320,
           "value": "-89883000",
           "unit": "USD",
           "start_date": "2023-02-01",
@@ -3878,6 +4112,7 @@
         "status": "selected",
         "candidate_count": 2,
         "selected": {
+          "fact_id": 328,
           "value": "2954758000",
           "unit": "USD",
           "start_date": null,
@@ -3896,6 +4131,7 @@
         "status": "selected",
         "candidate_count": 3,
         "selected": {
+          "fact_id": 330,
           "value": "1541889000",
           "unit": "USD",
           "start_date": "2021-01-01",
@@ -3914,6 +4150,7 @@
         "status": "selected",
         "candidate_count": 5,
         "selected": {
+          "fact_id": 341,
           "value": "-520379000",
           "unit": "USD",
           "start_date": "2021-01-01",
@@ -3932,6 +4169,7 @@
         "status": "selected",
         "candidate_count": 2,
         "selected": {
+          "fact_id": 362,
           "value": "3247450000",
           "unit": "USD",
           "start_date": null,
@@ -3950,6 +4188,7 @@
         "status": "selected",
         "candidate_count": 3,
         "selected": {
+          "fact_id": 333,
           "value": "1905871000",
           "unit": "USD",
           "start_date": "2022-01-01",
@@ -3968,6 +4207,7 @@
         "status": "selected",
         "candidate_count": 6,
         "selected": {
+          "fact_id": 344,
           "value": "-373705000",
           "unit": "USD",
           "start_date": "2022-01-01",
@@ -3986,6 +4226,7 @@
         "status": "selected",
         "candidate_count": 2,
         "selected": {
+          "fact_id": 364,
           "value": "3461239000",
           "unit": "USD",
           "start_date": null,
@@ -4004,6 +4245,7 @@
         "status": "selected",
         "candidate_count": 3,
         "selected": {
+          "fact_id": 336,
           "value": "2225012000",
           "unit": "USD",
           "start_date": "2023-01-01",
@@ -4022,6 +4264,7 @@
         "status": "selected",
         "candidate_count": 6,
         "selected": {
+          "fact_id": 347,
           "value": "209825000",
           "unit": "USD",
           "start_date": "2023-01-01",
@@ -4040,6 +4283,7 @@
         "status": "selected",
         "candidate_count": 2,
         "selected": {
+          "fact_id": 366,
           "value": "4522425000",
           "unit": "USD",
           "start_date": null,
@@ -4058,6 +4302,7 @@
         "status": "selected",
         "candidate_count": 2,
         "selected": {
+          "fact_id": 339,
           "value": "2865507000",
           "unit": "USD",
           "start_date": "2024-01-01",
@@ -4076,6 +4321,7 @@
         "status": "selected",
         "candidate_count": 4,
         "selected": {
+          "fact_id": 350,
           "value": "462190000",
           "unit": "USD",
           "start_date": "2024-01-01",
@@ -4094,6 +4340,7 @@
         "status": "selected",
         "candidate_count": 2,
         "selected": {
+          "fact_id": 368,
           "value": "6340884000",
           "unit": "USD",
           "start_date": null,
