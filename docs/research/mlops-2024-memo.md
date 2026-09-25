@@ -1,0 +1,34 @@
+# ML operations: fixed eight-lead study
+
+**Information cutoff:** 2024-12-31. **Decision:** zero unconditional diligence priorities. The saved [research set](mlops-2024-study.json) and its [browser export](../../web/data/research-set-mlops-2024.json) contain all eight leads, 23 retained passages, gate notes, and comparison fields. Four of eight lead identities have a reviewed provider or direct company record; this is an identity count, not an eligibility count. Roles overlap and cannot be summed as companies.
+
+The question is which selected U.S.-based private ML operations vendors had a distinct commercial product and credible evidence of an expanding market foothold by the cutoff. I used Telescope Partners' [public partnerships](https://www.telescopepartners.com/partnerships) and [approach](https://www.telescopepartners.com/approach) pages as a research lens for product maturity, market foothold, competition, business model, go-to-market, pace, and useful operating metrics. This is independent analysis, not a statement about its private rubric.
+
+## Comparison and decision
+
+| Lead | Role and buyer | Commercial distinction | Dated distribution or customer signal | Outcome and blocking evidence |
+| --- | --- | --- | --- | --- |
+| Databricks / MLflow | Development and serving; enterprise ML teams | Reviewed managed-service relation; independent terms not reviewed | 2024 project inventory only | Comparator. Do not count MLflow as a separate Databricks company or as customer adoption. |
+| DataRobot | Broad development, deployment, monitoring and governance; enterprise AI leaders | Archived enterprise platform | ITOCHU announced a pharmaceutical research partnership in 2022 | Unresolved. Boston headquarters is explicit; 2024 ownership/control and partner economics are not. |
+| Weights & Biases | Development, evaluation and governance; AI developer teams | Experiment tooling expanded into LLM tooling | 2023 company-reported usage, contributed NAIRR pilot licenses in 2024 | Unresolved. A December 2024 release states San Francisco headquarters; 2024 private/control status and paid conversion are not proven. |
+| Iterative / DVC | Development and experiment management; data scientists | DVC Studio described as first commercial product in 2021 | 2024 directory listing is not adoption | Unresolved. 2021 San Francisco base and product evidence lack 2024 continuity and customer foothold. |
+| BentoML | Deployment and serving; inference teams | Open framework versus presumed BentoCloud commercial layer | TomTom describes one technical experiment in a page last updated in 2024 | Unresolved. Paid contract, independent provider identity and U.S. base are not established. |
+| Seldon | Serving and monitoring; ML platform teams | Paid layer not verified | 2024 inventory listing only | Unresolved. A federal notice lists Seldon Technologies Limited in London, but this does not rule out a U.S. operation. |
+| ZenML | Development and deployment; ML platform builders | 2023 announcement says managed Cloud was forthcoming | 2024 inventory listing only | Unresolved. Munich registered office and 2024 terms do not establish U.S. operating base or launched paid product. |
+| whylogs | Monitoring and evaluation; ML monitoring teams | Project/provider commercial link unreviewed | 2024 inventory listing only | Unresolved. A federal notice lists WhyLabs Inc. in Seattle, not a reviewed link to whylogs or a paid offer. |
+
+## Conditional diligence hypotheses
+
+**Weights & Biases.** The company's 2021 archived page positions experiment management; a 2023 release announces W&B Prompts, and a 2024 archived page emphasizes AI applications. This could support expansion from developer reach into enterprise LLM workflows. The strongest alternative is free developer reach without durable paid conversion. The NAIRR item describes *contributed* licenses, not federal revenue. The 2022 archived homepage gives both 300,000+ and 500,000+ practitioner counts on one page; it cannot support a clean growth series. A dated control record and 2024 paid-account cohorts, retention, expansion and LLM product attach would change the judgment. **Next question:** what fraction of 2024 active organizations paid, retained and expanded? Evidence: `wandb-page-2021`, `wandb-round-2023`, `wandb-page-2024`, `wandb-nairr-2024`, `wandb-page-2022`, `wandb-page-2022-lower`, `wandb-aws-2024`.
+
+**DataRobot.** The archived enterprise platform and ITOCHU partnership suggest a partner-led distribution hypothesis. The strongest alternative is that platform breadth, an acquisition and financing mask weak organic growth or services-heavy delivery. The 2021 Series G amount and company-reported valuation are neither revenue nor a ranking score. A 2024 control record, recurring-revenue cohorts, retention, services mix and partner rollout outcomes would change the judgment. **Next question:** how much partner-sourced recurring revenue persisted after initial deployment? Evidence: `datarobot-page-2024`, `datarobot-series-g-2021`, `datarobot-itochu-2022`.
+
+The third slot is open. Iterative has a clearer 2021 commercial-product statement than most project leads, but no retained customer account or recent foothold observation. More research should resolve that gap before naming it a priority.
+
+## Method and limits
+
+The cohort was frozen before evidence review. The bounded pull retained ten new dated primary URLs and logged one failed Databricks forum retrieval (HTTP 403), below the 24-document ceiling and no more than three per lead; the federal page informs two leads. The pre-existing `identity-review-16` remains visible with its cited URL, but the failed source capture limits direct verification from retained bytes. Existing Common Crawl pages and pinned 2024 CNCF/LF AI inventory occurrences were reused. Evidence entries separate the displayed document date or inventory commit from retrieval and record exact source hashes. New HTML and PDF bytes were retrieved in 2026, so a dated live body is weaker than a contemporaneous archived capture. BentoML and ZenML terms show a *last updated* date, not a verified original publication date. The federal PDF contains adjacent notices; the Seldon and WhyLabs passage belongs to the AI Infrastructure Alliance notice **2022-10216** on printed page 29180.
+
+The study cannot establish market share, complete financing history, revenue quality, investment returns or an investment recommendation. Missing evidence does not prove absence. No post-2024 acquisition fact is used to infer 2024 private status.
+
+Rebuild with `python3 scripts/build_mlops_research_set.py`; run `python3 -m unittest tests.test_mlops_research_set`. The generator validates cohort identity, fixed denominator, evidence links, source hashes, date cutoff and all priority gates. Its output is copied to the static browser export; neither build mutates the database.
