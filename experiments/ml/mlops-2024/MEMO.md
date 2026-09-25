@@ -31,4 +31,4 @@ The cohort was frozen before evidence review. The bounded pull retained ten new 
 
 The study cannot establish market share, complete financing history, revenue quality, investment returns or an investment recommendation. Missing evidence does not prove absence. No post-2024 acquisition fact is used to infer 2024 private status.
 
-Rebuild with `python3 scripts/build_mlops_research_set.py`; run `python3 -m unittest tests.test_mlops_research_set`. The generator validates cohort identity, fixed denominator, evidence links, source hashes, date cutoff and all priority gates. Its output is copied to the static browser export; neither build mutates the database.
+Rebuild with `python3 experiments/ml/mlops-2024/build.py`; run `python3 -m pytest -q experiments/ml/mlops-2024/tests`. The generator validates cohort identity, fixed denominator, evidence links, source hashes, date cutoff and all priority gates. Its output is copied to the static browser export; neither build mutates the database.

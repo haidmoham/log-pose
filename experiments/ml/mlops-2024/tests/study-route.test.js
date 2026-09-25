@@ -31,7 +31,11 @@ const researchSet = { schema_version: '1.0', id: 'mlops-2024', title: 'MLOps eig
 class LocalResources extends ResourceLoader {
   fetch(url) {
     if (!url.startsWith('https://logpose.test/')) return null;
-    return fs.readFile(path.join(web, new URL(url).pathname));
+    const pathname = new URL(url).pathname;
+    if (pathname.endsWith('.js') && !pathname.startsWith('/experimental/mlops-2024/')) {
+      throw new Error('experimental study requested a core application script');
+    }
+    return fs.readFile(path.join(web, pathname));
   }
 }
 
