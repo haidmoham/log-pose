@@ -54,7 +54,7 @@
     svg.append(svgTitle);
     const field = svgElement('g', { class: 'constellation-camera' });
     svg.append(field);
-    const positions = new Map(frame.nodes.map(node => [node.id, position(node.id)]));
+    const positions = new Map(frame.nodes.map(node => [node.id, node.position || position(node.id)]));
     const changes = new Map((frame.changes || []).map(change => [change.candidate_id, change]));
     const current = new Set(frame.edges.map(edge => edge.candidate_id));
     const labelNodes = [];
