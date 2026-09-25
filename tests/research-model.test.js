@@ -109,6 +109,33 @@ test('a pinned comparison does not turn a data-desk URL into a legacy explore ro
   assert.equal(model.parseUrlState('?' + url, slugs, [2021, 2024], [], slugs).view, 'data');
 });
 
+test('relationship claim, status, category, and source year survive a URL round trip', () => {
+  const slugs = new Set(['datadog', 'elastic']);
+  const parsed = model.parseUrlState(
+    '?view=topology&company=datadog&topologySourceYear=2025&topologyCategory=competition&topologyStatus=documented&selectedClaim=claim:seed-1',
+    slugs, [2021, 2022, 2023, 2024]);
+  assert.equal(parsed.selectedClaim, 'claim:seed-1');
+  assert.equal(parsed.topologySourceYear, '2025');
+  const serialized = model.toUrlParams({ ...parsed, compareSlugs: [] });
+  assert.deepEqual(model.parseUrlState('?' + serialized, slugs, [2021, 2022, 2023, 2024]), parsed);
+
+  const invalid = model.parseUrlState(
+    '?view=topology&topologySourceYear=2030&topologyCategory=merger&topologyStatus=accepted&selectedClaim=../../bad',
+    slugs, [2021, 2022, 2023, 2024]);
+  assert.deepEqual([invalid.topologySourceYear, invalid.topologyCategory,
+    invalid.topologyStatus, invalid.selectedClaim], ['all', 'all', 'all', null]);
+});
+
+test('market file, date, measure, and participant survive a URL round trip', () => {
+  const route = '?dataFamily=market&dataRecord=market-file:4&dataMarketDay=2024-01-03'
+    + '&dataMarketMeasure=total_notional&dataMarketParticipant=market-row:4:19';
+  const parsed = model.parseUrlState(route, new Set(), [2024]);
+  assert.deepEqual([parsed.dataRecord, parsed.dataMarketDay, parsed.dataMarketMeasure,
+    parsed.dataMarketParticipant], ['market-file:4', '2024-01-03', 'total_notional', 'market-row:4:19']);
+  const serialized = model.toUrlParams({ ...parsed, compareSlugs: [] });
+  assert.deepEqual(model.parseUrlState('?' + serialized, new Set(), [2024]), parsed);
+});
+
 test('market route keeps inventory controls separate from the SEC period', () => {
   const artifacts = ['cncf-2026', 'cncf-2020', 'lfai-2020'];
   const parsed = model.parseUrlState(

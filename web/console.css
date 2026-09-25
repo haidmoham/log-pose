@@ -809,6 +809,7 @@ footer { display: flex; justify-content: space-between; gap: 20px; padding: 18px
 
 @media (max-width: 1050px) {
   .data-coverage { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .data-coverage-card:last-child { grid-column: span 2; }
   .data-controls { grid-template-columns: 1fr; }
   .data-workspace { grid-template-columns: minmax(0, 1fr) minmax(300px, .8fr); }
   .data-result { grid-template-columns: 90px minmax(0, 1fr); }

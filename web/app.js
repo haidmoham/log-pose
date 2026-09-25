@@ -6,6 +6,7 @@ const { node, append, link, title, metric, table } = window.LogPoseUI;
 const seriesChart = (...args) => window.LogPoseUI.seriesChart(model, ...args);
 const state = { view: 'data', year: 2024, category: 'all', query: '', company: null,
   dataFamily: 'all', dataQuery: '', dataCompany: 'all', dataYear: 'all', dataRecord: null,
+  dataMarketDay: null, dataMarketMeasure: 'total_shares', dataMarketParticipant: null,
   searchYear: 'all', searchSource: 'all', searchType: 'all', searchUs: 'all',
   inventoryArtifact: 'cncf-2026', inventoryQuery: '',
   selectedCandidate: null, selectedProvider: null, searchLimit: 30, compareSlugs: [],
@@ -530,10 +531,12 @@ Promise.all(['./dashboard.json', './discovery.json', './data/index.json'].map(ur
     topologyView = window.LogPoseTopology.create({ root, state, data, model, commitState });
     dataView = window.LogPoseDataView.create({
       root, state, index: dataIndex, discovery, commitState,
+      persistDetail: changes => { Object.assign(state, changes); writeUrl(true); },
       openCompany: slug => commitState({ view: 'explore', company: slug, query: '',
         searchYear: 'all', searchType: 'pilot', category: 'all' }, { top: true, focus: '#company-detail' }),
       openTopology: claimId => commitState({ view: 'topology', selectedClaim: claimId,
-        company: null }, { top: true, focus: '#topology-inspector' })
+        company: null, topologySourceYear: 'all', topologyCategory: 'all',
+        topologyStatus: 'all' }, { top: true, focus: '#topology-inspector' })
     });
     const fromUrl = routeState();
     Object.assign(state, {

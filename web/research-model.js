@@ -336,6 +336,9 @@
     const allowedCategory = new Set(['all', 'data_infrastructure', 'developer_tools',
       'security_observability', 'ai_automation']);
     const allowedDataFamily = new Set(['all', 'inventory', 'pages', 'sec', 'market', 'topology']);
+    const allowedTopologyCategory = new Set(['all', 'competition', 'collaboration',
+      'investment', 'performance_exposure']);
+    const allowedTopologyStatus = new Set(['all', ...TOPOLOGY_STATUSES]);
     const choice = (name, allowed) => allowed.has(params.get(name)) ? params.get(name) : 'all';
     const requestedDataYear = params.get('dataYear') || 'all';
     const dataYear = requestedDataYear === 'all'
@@ -344,6 +347,14 @@
     const dataCompany = requestedDataCompany === 'all' || pilotSlugs.has(requestedDataCompany)
       ? requestedDataCompany : 'all';
     const dataRecord = safeDataRecord(params.get('dataRecord') || '');
+    const dataMarketDay = /^20\d{2}-\d{2}-\d{2}$/.test(params.get('dataMarketDay') || '')
+      ? params.get('dataMarketDay') : null;
+    const allowedMarketMeasures = new Set(['total_shares', 'total_trade_count', 'total_notional']);
+    const dataMarketMeasure = allowedMarketMeasures.has(params.get('dataMarketMeasure'))
+      ? params.get('dataMarketMeasure') : 'total_shares';
+    const requestedTopologyYear = params.get('topologySourceYear') || 'all';
+    const topologySourceYear = requestedTopologyYear === 'all'
+      || /^20(?:20|2[1-6])$/.test(requestedTopologyYear) ? requestedTopologyYear : 'all';
     return { view, year, company, pinned, inventoryArtifact,
       inventoryQuery: (params.get('inventoryQuery') || '').slice(0, 200),
       query: (params.get('q') || '').slice(0, 200), searchYear,
@@ -351,7 +362,11 @@
       searchUs: choice('us', allowedUs), category: choice('category', allowedCategory),
       dataFamily: choice('dataFamily', allowedDataFamily),
       dataQuery: (params.get('dataQuery') || '').slice(0, 200), dataCompany,
-      dataYear, dataRecord };
+      dataYear, dataRecord, dataMarketDay, dataMarketMeasure,
+      dataMarketParticipant: safeDataRecord(params.get('dataMarketParticipant') || '') || null,
+      topologySourceYear, topologyCategory: choice('topologyCategory', allowedTopologyCategory),
+      topologyStatus: choice('topologyStatus', allowedTopologyStatus),
+      selectedClaim: safeDataRecord(params.get('selectedClaim') || '') || null };
   }
 
   function toUrlParams(state) {
@@ -384,6 +399,23 @@
       if (state.dataYear && state.dataYear !== 'all') params.set('dataYear', state.dataYear);
       const dataRecord = safeDataRecord(state.dataRecord);
       if (dataRecord) params.set('dataRecord', dataRecord);
+      if (state.dataFamily === 'market' && dataRecord?.startsWith('market-file:')) {
+        if (state.dataMarketDay) params.set('dataMarketDay', state.dataMarketDay);
+        if (state.dataMarketMeasure && state.dataMarketMeasure !== 'total_shares')
+          params.set('dataMarketMeasure', state.dataMarketMeasure);
+        const participant = safeDataRecord(state.dataMarketParticipant);
+        if (participant) params.set('dataMarketParticipant', participant);
+      }
+    }
+    if (state.view === 'topology') {
+      if (state.topologySourceYear && state.topologySourceYear !== 'all')
+        params.set('topologySourceYear', state.topologySourceYear);
+      if (state.topologyCategory && state.topologyCategory !== 'all')
+        params.set('topologyCategory', state.topologyCategory);
+      if (state.topologyStatus && state.topologyStatus !== 'all')
+        params.set('topologyStatus', state.topologyStatus);
+      const selectedClaim = safeDataRecord(state.selectedClaim);
+      if (selectedClaim) params.set('selectedClaim', selectedClaim);
     }
     return params.toString();
   }

@@ -113,6 +113,15 @@ test('research desk drills from untagged inventory and SEC candidates into retai
   assert.match(inventoryDocument.querySelector('.data-inspector').textContent, /No candidate tag or reviewed company link/);
   inventory.window.close();
 
+  const navigation = await page('/?dataFamily=inventory&dataQuery=ClickHouse');
+  const navigationDocument = navigation.window.document;
+  await waitFor(() => !navigationDocument.querySelector('.data-results-head')?.textContent.includes('loading full inventory'));
+  navigationDocument.querySelector('.data-result').click();
+  await waitFor(() => navigationDocument.querySelector('.data-inspector-body')?.textContent.includes('identity status'));
+  assert.match(navigationDocument.querySelector('.data-inspector').textContent, /Navigation match.*unreviewed.*navigation_match_unreviewed/i);
+  assert.doesNotMatch(navigationDocument.querySelector('.data-inspector').textContent, /Reviewed relationship to ClickHouse/);
+  navigation.window.close();
+
   const sec = await page('/?dataFamily=sec&dataCompany=palantir&dataYear=2021');
   const secDocument = sec.window.document;
   assert.match(secDocument.querySelector('.data-results-head').textContent, /matching records/);
@@ -124,21 +133,51 @@ test('research desk drills from untagged inventory and SEC candidates into retai
 });
 
 test('research desk market point opens participant detail and topology shows review history', async () => {
-  const market = await page('/?dataFamily=market');
+  const market = await page('/?dataFamily=market&dataQuery=FINRA');
   const marketDocument = market.window.document;
+  assert.match(marketDocument.querySelector('.data-results-head').textContent, /4 matching records/);
   marketDocument.querySelector('.data-result').click();
   await waitFor(() => marketDocument.querySelector('.data-market-chart svg'));
   assert.match(marketDocument.querySelector('.data-market-day').textContent, /participant/i);
   marketDocument.querySelector('.data-participant-button').click();
   assert.match(marketDocument.querySelector('.data-participant-breakdown').textContent, /tape a shares/i);
+  const marketRoute = market.window.location.pathname + market.window.location.search;
+  const reopenedMarket = await page(marketRoute);
+  await waitFor(() => reopenedMarket.window.document.querySelector('.data-participant-breakdown'));
+  assert.match(reopenedMarket.window.document.querySelector('.data-participant-breakdown').textContent,
+    /tape a shares/i);
   market.window.close();
+  reopenedMarket.window.close();
 
   const topology = await page('/?dataFamily=topology');
   const topologyDocument = topology.window.document;
   topologyDocument.querySelector('.data-result').click();
   assert.match(topologyDocument.querySelector('.data-inspector').textContent, /review history/i);
   assert.match(topologyDocument.querySelector('.data-inspector').textContent, /source/i);
+  assert.match(topologyDocument.querySelector('.data-inspector').textContent, /reviewed_at|reviewer|review history/i);
   topology.window.close();
+});
+
+test('opening a claim map clears filters that would hide the selected claim', async () => {
+  const dom = await page('/?view=topology');
+  const { document, Event } = dom.window;
+  const status = document.querySelector('[aria-label="Filter claim status"]');
+  status.value = 'documented';
+  status.dispatchEvent(new Event('change', { bubbles: true }));
+  document.querySelector('[data-view="data"]').click();
+  document.querySelector('[aria-label="Record family"]').value = 'topology';
+  document.querySelector('[aria-label="Record family"]').dispatchEvent(new Event('change', { bubbles: true }));
+  const hypothesis = [...document.querySelectorAll('.data-result')].find(button =>
+    button.textContent.includes('hypothesis'));
+  hypothesis.click();
+  document.querySelector('.data-inspector button.text-button:last-child').click();
+  assert.equal(document.querySelector('[aria-label="Filter claim status"]').value, 'all');
+  assert.match(document.querySelector('.topology-claim-detail').textContent, /shared business driver/i);
+  const reopened = await page(dom.window.location.pathname + dom.window.location.search);
+  assert.match(reopened.window.document.querySelector('.topology-claim-detail').textContent,
+    /shared business driver/i);
+  reopened.window.close();
+  dom.window.close();
 });
 
 test('source inventory route exposes 2020–2026 raw rows and keeps company years separate', async () => {

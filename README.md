@@ -8,9 +8,9 @@ The [public dashboard](https://logpose.mhaider.dev/) is a static, read-only expo
 
 ## Export-backed research dashboard
 
-Run `npm run dashboard`, then open `http://127.0.0.1:8080/`. This serves the saved dashboard and discovery exports without starting Postgres or changing evidence. Run `npm run test:dashboard` for the pure calculation, missing-data, chart-scale, URL-state, and export-contract checks. Overview, compare, and explore state is encoded in the URL for reloads and browser navigation.
+Run `npm run dashboard`, then open `http://127.0.0.1:8080/`. This serves the saved exports without starting Postgres or changing evidence. The research desk opens at `/`: search and filter retained records, inspect their content in place, then open company studies or scoped relationship claims. Run `npm run test:dashboard` for calculation, chart, URL-state, and export-contract checks. Record selections and deeper market and topology drill state are addressable in the URL.
 
-The dashboard and local development server now serve the same research console. The retained-data catalog adds all 89 snapshots, 369 normalized SEC candidates, and 19,093 Cboe participant rows through lazy typed partitions; its compact inventory search covers all 18,076 source rows. See the [data contract](docs/data-contract.md) for rebuild and local full-text commands. Explore loads the full source/year inventory partitions on demand, including rows without a candidate tag. The topology view offers an interactive 3D WebGL map of reviewed claims, a flat fallback, and the same source inspector and claim index. The [architecture and extension map](docs/architecture.md) documents their modules plus the database view grains, timestamps, provenance, and safe extension seams.
+The dashboard and local development server serve the same research console. The retained-data catalog exposes all 89 snapshots with normalized text, 369 normalized SEC candidates, and 19,093 Cboe participant rows through lazy typed partitions; inventory search covers all 18,076 source rows. See the [data contract](docs/data-contract.md) for rebuild commands. Source audit loads full source/year inventory partitions on demand, including rows without a candidate tag. The topology view opens on a flat map of accepted claims and offers an optional 3D mode, a source inspector, and a claim index. The [architecture and extension map](docs/architecture.md) documents their modules plus the database view grains, timestamps, provenance, and safe extension seams.
 
 ## Market topology research
 
@@ -39,7 +39,7 @@ The import verifies source hashes and restores the prior dated seed review with 
 
 Run `npm run dev` from the repository root, then open `http://127.0.0.1:8000/`. The command prepares the Python environment and serves the same research console as the static deployment. It reads saved exports and does not start Postgres, migrate tables, or fetch sources. Stop it with Ctrl-C.
 
-Set `DATABASE_URL` to enable the existing read-only `/api/companies`, `/api/overview`, and `/api/companies/{slug}?cutoff=...` routes. Database setup, evidence acquisition, and rebuilding exports are explicit commands. The [data contract](docs/data-contract.md) gives the full retained-data rebuild and an optional local console with complete normalized page text.
+Set `DATABASE_URL` to enable the existing read-only `/api/companies`, `/api/overview`, and `/api/companies/{slug}?cutoff=...` routes. Database setup, evidence acquisition, and rebuilding exports are explicit commands. The [data contract](docs/data-contract.md) gives the full retained-data rebuild.
 
 ## Run locally
 
@@ -58,13 +58,12 @@ log-pose inspect weights-and-biases --year 2021
 log-pose serve --port 8000
 ```
 
-The read endpoint is `GET http://127.0.0.1:8000/api/companies/weights-and-biases?cutoff=2021-12-31T23:59:59Z`. Any timezone-aware ISO 8601 cutoff works. The older `log-pose export` command still writes `web/evidence.json`. To rebuild the pilot dashboard, apply all additive migrations first, including the read-only `warehouse` observation views, then run:
+The read endpoint is `GET http://127.0.0.1:8000/api/companies/weights-and-biases?cutoff=2021-12-31T23:59:59Z`. Any timezone-aware ISO 8601 cutoff works. The older `log-pose export` command still writes `web/evidence.json`. To rebuild the saved research console from a prepared evidence database, apply all additive migrations first, including the read-only `warehouse` observation views, then run:
 
 ```bash
 export DATABASE_URL=postgresql://127.0.0.1:55434/logpose_pilot
 log-pose migrate
-PYTHONPATH=src .venv/bin/python scripts/build_dashboard.py
-PYTHONPATH=src .venv/bin/python scripts/build_discovery_index.py
+PYTHONPATH=src:. .venv/bin/python scripts/rebuild_data.py
 python -m http.server 8080 --directory web
 ```
 
@@ -86,7 +85,7 @@ The integration test clears its target database. Never point it at a database yo
 
 `sources.json` is a small, reviewed list of original URLs and verified capture identifiers. `acquire.py` fetches raw Wayback HTML and rejects off-source redirects, captures after the requested cutoff, non-HTML responses, oversized bodies, and empty visible text. `core.py` normalizes visible page text. `storage.py` persists the original response body, both hashes, archive URL, source URL, `captured_at`, and independent `ingested_at` in Postgres. Each attempt is recorded separately, including failure and duplicate outcomes. Run ingestion again to retry failures; existing captures cannot be silently overwritten.
 
-The legacy API cutoff query selects the latest stored capture for each curated source with `captured_at <= cutoff`. It does not select by ingestion date and does not fetch a current page when a capture is absent. A missing cell says only that this system lacks eligible evidence. The response includes the raw content hash; the legacy `evidence.json` export includes a 320-character preview. The retained-data catalog includes up to 6,000 plain-text characters per snapshot with explicit truncation fields; the local API and optional local catalog retain complete normalized text. Raw HTML remains in Postgres.
+The legacy API cutoff query selects the latest stored capture for each curated source with `captured_at <= cutoff`. It does not select by ingestion date and does not fetch a current page when a capture is absent. A missing cell says only that this system lacks eligible evidence. The response includes the raw content hash; the legacy `evidence.json` export includes a 320-character preview. The retained-data catalog includes complete normalized plain text for each snapshot. Raw HTML remains in Postgres.
 
 The schema separates `companies`, `sources`, `snapshots`, and `ingestion_attempts`. Interpretations will be a separate layer referencing immutable snapshot IDs. It is intentionally a manually curated batch process, not a crawler platform.
 

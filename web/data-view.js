@@ -11,7 +11,8 @@
   const FAMILY_ORDER = Object.keys(FAMILY_LABELS);
   const formatCount = value => Number(value || 0).toLocaleString();
 
-  function create({ root, state, index, discovery, commitState, openCompany, openTopology }) {
+  function create({ root, state, index, discovery, commitState, persistDetail,
+    openCompany, openTopology }) {
     const { node, append, link, title, svgNode } = globalScope.LogPoseUI;
     const cache = new Map();
     let inventoryRecords = null;
@@ -20,7 +21,14 @@
     let resultLimit = 60;
     let activeRequest = 0;
     const candidateById = new Map(discovery.candidates.map(item => [item.id, item]));
+    const identityReviewById = new Map(discovery.identity_reviews.map(item => [item.id, item]));
     let cachedRecords = null;
+
+    function reviewedCompanySlug(candidate) {
+      if (!candidate?.identity_review_id) return null;
+      const review = identityReviewById.get(candidate.identity_review_id);
+      return review?.candidate_ids.includes(candidate.id) ? review.pilot_slug : null;
+    }
 
     function readJson(path) {
       if (!cache.has(path)) {
@@ -82,19 +90,22 @@
       if (record.family === 'topology') return [record.subject_slug, record.object_slug];
       if (record.family === 'inventory') {
         const candidate = candidateById.get(record.candidate_id);
-        return candidate?.pilot_match?.slug ? [candidate.pilot_match.slug] : [];
+        const slug = reviewedCompanySlug(candidate);
+        return slug ? [slug] : [];
       }
       return record.company_slug ? [record.company_slug] : [];
     }
 
     function recordText(record) {
       if (record.family === 'topology') {
-        return [record.predicate, record.scope, record.interpretation,
-          record.subject_slug, record.object_slug].join(' ');
+        return [recordTitle(record), recordMeta(record), record.predicate, record.scope,
+          record.interpretation, record.subject_slug, record.object_slug].join(' ');
       }
-      return [record.name, record.description, record.company_name, record.company_slug,
+      return [FAMILY_LABELS[record.family], recordTitle(record), recordMeta(record),
+        record.name, record.description, record.company_name, record.company_slug,
         record.concept_group, record.source_category, record.source_subcategory,
-        record.text_status, record.excerpt, record.year, record.id].join(' ');
+        record.text_status, record.excerpt, record.attribution,
+        ...(record.participants || []), record.year, record.id].join(' ');
     }
 
     function matchingRecords() {
@@ -153,7 +164,12 @@
     }
 
     function recordMeta(record) {
-      if (record.family === 'inventory') return `${record.source?.toUpperCase()} ${record.year} · ${record.source_category}`;
+      if (record.family === 'inventory') {
+        const candidate = candidateById.get(record.candidate_id);
+        const identity = reviewedCompanySlug(candidate) ? 'reviewed company relation'
+          : candidate?.pilot_match ? 'unreviewed navigation lead' : 'source row';
+        return `${record.source?.toUpperCase()} ${record.year} · ${record.source_category} · ${identity}`;
+      }
       if (record.family === 'pages') return `${record.text_status} · ${formatCount(record.text_characters)} characters`;
       if (record.family === 'sec') return `${record.end_date} · filed ${record.filed_date} · ${record.selected ? 'selected' : 'candidate'}`;
       if (record.family === 'market') return `${formatCount(record.rows)} participant rows · ${formatCount(record.trading_days)} trade dates`;
@@ -161,7 +177,10 @@
     }
 
     function chooseRecord(record) {
-      commitState({ dataFamily: record.family, dataRecord: record.id },
+      const marketReset = record.family === 'market' && state.dataRecord !== record.id
+        ? { dataMarketDay: null, dataMarketMeasure: 'total_shares', dataMarketParticipant: null }
+        : {};
+      commitState({ dataFamily: record.family, dataRecord: record.id, ...marketReset },
         { focus: '#data-inspector' });
     }
 
@@ -287,10 +306,14 @@
       const claims = (index.topology.claims || []).filter(item =>
         item.subject_slug === company.slug || item.object_slug === company.slug);
       const linkedCandidates = discovery.candidates.filter(item =>
-        item.pilot_match?.slug === company.slug);
+        reviewedCompanySlug(item) === company.slug);
+      const navigationLeads = discovery.candidates.filter(item =>
+        item.pilot_match?.slug === company.slug && !reviewedCompanySlug(item));
       const row = node('div', '', 'data-company-counts');
       [['captures', pages.length], ['SEC candidates', facts.length],
-        ['inventory links', linkedCandidates.length], ['claims', claims.length]].forEach(
+        ['reviewed inventory relations', linkedCandidates.length],
+        ['unreviewed navigation leads', navigationLeads.length],
+        ['claims', claims.length]].forEach(
         ([label, count]) => row.append(append(node('span'),
           node('strong', formatCount(count)), node('small', label))));
       section.append(row);
@@ -319,10 +342,13 @@
           fact('candidate tags', row.candidate_tags.join(', ') || 'none')));
       const candidate = candidateById.get(record.candidate_id);
       if (candidate) {
-        body.append(node('h4', 'identity review'), node('p', candidate.pilot_match
-          ? `Reviewed link to ${candidate.pilot_match.slug}. The listing itself does not establish company eligibility.`
-          : 'This candidate has no reviewed pilot company link.', 'muted'));
-        if (candidate.pilot_match) body.append(companyAction(candidate.pilot_match.slug));
+        const reviewedSlug = reviewedCompanySlug(candidate);
+        body.append(node('h4', 'identity status'), node('p', reviewedSlug
+          ? `Reviewed relationship to ${reviewedSlug}. The listing itself does not establish independent company eligibility.`
+          : candidate.pilot_match
+            ? `Navigation match to ${candidate.pilot_match.slug} is unreviewed (${candidate.pilot_match.status}). Name or homepage similarity does not establish a company relationship.`
+            : 'This candidate has no reviewed pilot company relationship.', 'muted'));
+        if (reviewedSlug) body.append(companyAction(reviewedSlug));
       } else body.append(node('p', 'No candidate tag or reviewed company link is attached to this row.', 'muted'));
       const links = node('div', '', 'data-provenance-links');
       links.append(link('pinned source ↗', row.source_url));
@@ -379,11 +405,13 @@
       const day = node('select');
       day.setAttribute('aria-label', 'Trade date');
       daily.forEach(item => day.add(new Option(item.trade_date, item.trade_date)));
+      if (daily.some(item => item.trade_date === state.dataMarketDay)) day.value = state.dataMarketDay;
       const measure = node('select');
       measure.setAttribute('aria-label', 'Market activity measure');
       [['total_shares', 'shares'], ['total_trade_count', 'trades'],
         ['total_notional', 'notional USD']].forEach(([key, label]) =>
         measure.add(new Option(label, key)));
+      measure.value = state.dataMarketMeasure || 'total_shares';
       const chart = node('div', '', 'data-market-chart');
       const output = node('div', '', 'data-market-day');
       function drawChart() {
@@ -413,6 +441,7 @@
           const index = Math.max(0, Math.min(daily.length - 1,
             Math.round((fraction * width - 12) / (width - 24) * (daily.length - 1))));
           day.value = daily[index].trade_date;
+          persistDetail({ dataMarketDay: day.value, dataMarketParticipant: null });
           showDay();
         });
         svg.append(hit);
@@ -432,21 +461,25 @@
         table.append(append(node('thead'), append(node('tr'),
           node('th', 'participant'), node('th', 'shares'), node('th', 'trades'), node('th', 'notional USD'))));
         const tbody = node('tbody');
+        function showParticipant(item) {
+          const breakdown = node('div', '', 'data-participant-breakdown');
+          breakdown.append(node('h4', `${item.market_participant} · ${item.trade_date}`),
+            append(node('dl', '', 'data-facts'),
+              ...['a', 'b', 'c'].flatMap(tape => [
+                fact(`tape ${tape} shares`, formatCount(item[`tape_${tape}_shares`])),
+                fact(`tape ${tape} trades`, formatCount(item[`tape_${tape}_trade_count`])),
+                fact(`tape ${tape} notional USD`, formatCount(item[`tape_${tape}_notional`]))
+              ])));
+          const prior = output.querySelector('.data-participant-breakdown');
+          if (prior) prior.replaceWith(breakdown);
+          else output.append(breakdown);
+        }
         rows.forEach(item => {
           const detail = node('button', item.market_participant, 'data-participant-button');
           detail.type = 'button';
           detail.addEventListener('click', () => {
-            const breakdown = node('div', '', 'data-participant-breakdown');
-            breakdown.append(node('h4', `${item.market_participant} · ${item.trade_date}`),
-              append(node('dl', '', 'data-facts'),
-                ...['a', 'b', 'c'].flatMap(tape => [
-                  fact(`tape ${tape} shares`, formatCount(item[`tape_${tape}_shares`])),
-                  fact(`tape ${tape} trades`, formatCount(item[`tape_${tape}_trade_count`])),
-                  fact(`tape ${tape} notional USD`, formatCount(item[`tape_${tape}_notional`]))
-                ])));
-            const prior = output.querySelector('.data-participant-breakdown');
-            if (prior) prior.replaceWith(breakdown);
-            else output.append(breakdown);
+            persistDetail({ dataMarketParticipant: item.id });
+            showParticipant(item);
           });
           tbody.append(append(node('tr'), node('td', '', ''),
             node('td', formatCount(item.total_shares)),
@@ -456,10 +489,18 @@
         });
         table.append(tbody);
         output.append(append(node('div', '', 'table-wrap'), table));
+        const selectedParticipant = rows.find(item => item.id === state.dataMarketParticipant);
+        if (selectedParticipant) showParticipant(selectedParticipant);
         drawChart();
       }
-      day.addEventListener('change', showDay);
-      measure.addEventListener('change', drawChart);
+      day.addEventListener('change', () => {
+        persistDetail({ dataMarketDay: day.value, dataMarketParticipant: null });
+        showDay();
+      });
+      measure.addEventListener('change', () => {
+        persistDetail({ dataMarketMeasure: measure.value });
+        drawChart();
+      });
       body.append(append(node('div', '', 'data-market-controls'), measure, day), chart, output);
       showDay();
       if (payload.source?.source_url) body.append(link('source file ↗', payload.source.source_url));
@@ -568,7 +609,7 @@
         + (!inventoryRecords && (state.dataFamily === 'all' || state.dataFamily === 'inventory')
           ? ' · loading full inventory index' : ''), 'eyebrow'),
         node('p', openingSet
-          ? 'Recent and reviewed entry points across the five record families. Search or choose a lens to work through the full retained set.'
+          ? 'Entry points across the five record families. Inventory navigation leads are unreviewed unless a separate identity review is attached.'
           : 'Filters use record metadata. Open a result to read the retained detail.', 'muted'));
       resultList.append(header);
       const selected = hits.find(item => item.id === state.dataRecord);

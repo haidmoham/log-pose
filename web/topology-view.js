@@ -72,20 +72,23 @@
       const panel = node('div', '', 'topology-controls');
       const sourceYear = makeSelect('Filter by latest source publication year',
         [['all', 'All source dates'], ...sourceYears.map(year => [String(year), `Sources through ${year}`])],
-        state.topologySourceYear, value => commitState({ topologySourceYear: value },
+        state.topologySourceYear, value => commitState({ topologySourceYear: value,
+          selectedClaim: null },
           { focus: '#topology-source-year' }));
       sourceYear.id = 'topology-source-year';
       const category = makeSelect('Filter relationship category',
         [['all', 'All relationship types'], ['competition', 'Competition'],
           ['collaboration', 'Integration and partnership'], ['investment', 'Investment'],
           ['performance_exposure', 'Shared business drivers']],
-        state.topologyCategory, value => commitState({ topologyCategory: value },
+        state.topologyCategory, value => commitState({ topologyCategory: value,
+          selectedClaim: null },
           { focus: '#topology-category' }));
       category.id = 'topology-category';
       const status = makeSelect('Filter claim status',
         [['all', 'All claim statuses'], ['documented', 'Documented'],
           ['reviewed_inference', 'Reviewed inference'], ['hypothesis', 'Hypothesis']],
-        state.topologyStatus, value => commitState({ topologyStatus: value },
+        state.topologyStatus, value => commitState({ topologyStatus: value,
+          selectedClaim: null },
           { focus: '#topology-status' }));
       status.id = 'topology-status';
       const company = makeSelect('Focus a mapped company',
@@ -217,7 +220,7 @@
       const sourceList = node('div', '', 'topology-source-list');
       claim.sources.forEach(source => {
         const sourceCard = node('article', '', 'topology-source');
-        sourceCard.append(node('p', `${source.publisher} · published ${source.source_date}`
+        sourceCard.append(node('p', `${source.role || 'support'} · ${source.publisher} · published ${source.source_date}`
           + (source.event_date ? ` · event ${source.event_date}` : '')
           + (source.period_end ? ` · reporting period ended ${source.period_end}` : ''), 'eyebrow'),
         node('p', 'Evidence summary', 'topology-evidence-label'),
@@ -235,8 +238,18 @@
           + (source.artifact_path ? ` · ${source.artifact_path}` : ''), 'topology-artifact'));
         sourceList.append(sourceCard);
       });
-      panel.append(node('h4', `Sources · ${claim.sources.length}`, 'section-title'), sourceList,
-        node('p', `Reviewed ${topology.reviewed_at || 'date unavailable'}. Source and event dates describe evidence; they do not establish an ongoing relationship.`, 'caveat'));
+      panel.append(node('h4', `Sources · ${claim.sources.length}`, 'section-title'), sourceList);
+      if (claim.review) panel.append(append(node('div', '', 'topology-fact'),
+        node('strong', 'Review'), node('span', `${claim.review.decision} · ${claim.review.reviewer} · ${claim.review.reviewed_at} · ${claim.review.rationale}`)));
+      const history = (topology.review_history || []).filter(item =>
+        item.candidate_id === claim.database_id);
+      if (history.length) {
+        const list = node('div', '', 'topology-source-list');
+        history.forEach(item => list.append(node('p',
+          `${item.decision} · ${item.reviewer} · ${item.reviewed_at}: ${item.rationale}`, 'topology-evidence-summary')));
+        panel.append(node('h4', 'Review history', 'section-title'), list);
+      }
+      panel.append(node('p', 'Source and event dates describe evidence; they do not establish an ongoing relationship.', 'caveat'));
       return panel;
     }
 
