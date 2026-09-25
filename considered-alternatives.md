@@ -25,7 +25,7 @@ snapshot means rows in one retained provider/year slice. accumulated evidence me
 
 [Obsidian's graph](https://obsidian.md/help/plugins/graph) informs overview-to-neighborhood navigation, fine connections, zoom, label disclosure, and local focus. it does not supply our relationship semantics, node-size metric, or time clock.
 
-[mhaider.dev](https://mhaider.dev/) informs the warm editorial surround, generous typography, fine rules, and a dark interactive field. its separation of stable subject and expressive light becomes a small local selection halo around actual graph nodes. there are no invented background nodes and no glow-as-confidence encoding.
+[mhaider.dev](https://mhaider.dev/) informs generous typography, fine rules, and the contrast between an editorial surround and an interactive field. the final surround returns to dark plum at the user’s request. its separation of stable subject and expressive light becomes a small local selection halo around actual graph nodes. there are no invented background nodes and no glow-as-confidence encoding.
 
 [Red Blob's interaction notes](https://www.redblobgames.com/making-of/little-things/) inform continuity, enlarged hit areas and linked emphasis. [Tangle](https://worrydream.com/Tangle/) informs immediate local controls. label density and thread visibility change presentation only. all implementation is project-specific; no private design-library content or third-party assets are copied into this public note.
 

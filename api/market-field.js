@@ -268,7 +268,7 @@ function temporalFrame(params) {
       || !artifactsBySourceYear.has(`${source}:${Number(compareYear)}`)
       || Number(compareYear) >= year)) throw new Error('invalid compare_year');
   const comparison = compareYear ? artifactsBySourceYear.get(`${source}:${Number(compareYear)}`) : null;
-  const frameId = temporalFrameId({ build_id: graph.build_id, source, year, mode,
+  const frameId = temporalFrameId({ build_id: graph.build_id, layout_version: layout.layout_version, source, year, mode,
     compare_year: comparison?.year ?? null, category, query: queryText,
     candidate: candidateId || null, neighbor: neighborId || null, offset,
     limit: numberParameter(params, 'limit', 60, 100) });

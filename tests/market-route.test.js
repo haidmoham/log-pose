@@ -813,3 +813,18 @@ test('candidate and neighbor lists request bounded follow-up pages', async () =>
   focused.window.close();
   dom.window.close();
 });
+
+test('reduced motion advances one retained stop without starting playback', async () => {
+  const temporal = async params => marketFieldApi.handleMarketField(new URLSearchParams(params));
+  const dom = await page('/?view=topology&topologyLayer=temporal&temporalSource=lfai&temporalYear=2024',
+    null, false, { temporal });
+  await waitFor(() => dom.window.document.querySelector('.temporal-play'));
+  let playbackTimers = 0;
+  dom.window.matchMedia = () => ({ matches: true });
+  dom.window.setInterval = () => { playbackTimers += 1; return 1; };
+  dom.window.document.querySelector('.temporal-play').click();
+  await waitFor(() => dom.window.document.querySelector('.constellation-eyebrow')?.textContent.includes('2025'));
+  assert.equal(playbackTimers, 0);
+  assert.equal(new URL(dom.window.location.href).searchParams.get('temporalYear'), '2025');
+  dom.window.close();
+});

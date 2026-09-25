@@ -1,0 +1,344 @@
+{
+  "measuredAt": "2026-09-25T16:57:18.786Z",
+  "origin": "http://127.0.0.1:8156",
+  "boundary": "local Node endpoint; no compression; response body bytes exclude HTTP headers; wall time includes query and local transfer; not production latency or browser frame rate",
+  "buildId": "0c15e1ce1a92738173af8d94f7f89a2175d5c267f93e87f35a2b3ec01756d338",
+  "timelineBytes": 6664,
+  "observations": [
+    {
+      "source": "cncf",
+      "year": 2020,
+      "mode": "snapshot",
+      "frameId": "589a2df2e3175a8068fef1f7c5dbc48e67f80385b3faf52435a2c47b96306490",
+      "responseBodyBytes": 235841,
+      "elapsedMs": 20.005624999999995,
+      "nodes": 368,
+      "drawnConnections": 2500,
+      "totalConnections": 7103
+    },
+    {
+      "source": "cncf",
+      "year": 2020,
+      "mode": "accumulated",
+      "frameId": "34e7d9fd68cb5bb129df5d0e6f5410f1216fe8f4823cf3e9e561aba167256d45",
+      "responseBodyBytes": 235954,
+      "elapsedMs": 8.79270799999999,
+      "nodes": 368,
+      "drawnConnections": 2500,
+      "totalConnections": 7103
+    },
+    {
+      "source": "cncf",
+      "year": 2021,
+      "mode": "snapshot",
+      "frameId": "103c6572f4e4ea153abac4fff325ff537e1d6185b20caf4807f26ef9f7414d07",
+      "responseBodyBytes": 248819,
+      "elapsedMs": 8.847875000000002,
+      "nodes": 432,
+      "drawnConnections": 2500,
+      "totalConnections": 10088
+    },
+    {
+      "source": "cncf",
+      "year": 2021,
+      "mode": "accumulated",
+      "frameId": "27f34a1e2c2b2b4ded895486fba64af82cb2cb279b6712c45a96d26193241366",
+      "responseBodyBytes": 258842,
+      "elapsedMs": 9.457791,
+      "nodes": 473,
+      "drawnConnections": 2500,
+      "totalConnections": 11529
+    },
+    {
+      "source": "cncf",
+      "year": 2022,
+      "mode": "snapshot",
+      "frameId": "2fdd77dc1ff40c4b8519b1ee36293e1627dd33ee8b20b5814e56bba706abbb4c",
+      "responseBodyBytes": 265744,
+      "elapsedMs": 6.430790999999999,
+      "nodes": 516,
+      "drawnConnections": 2500,
+      "totalConnections": 14482
+    },
+    {
+      "source": "cncf",
+      "year": 2022,
+      "mode": "accumulated",
+      "frameId": "ca0177eaa1a781cc38cef51917cb6700f99e11cd1c4ba0503cb853c7d70cda99",
+      "responseBodyBytes": 285411,
+      "elapsedMs": 8.129542,
+      "nodes": 595,
+      "drawnConnections": 2500,
+      "totalConnections": 17842
+    },
+    {
+      "source": "cncf",
+      "year": 2023,
+      "mode": "snapshot",
+      "frameId": "58a19b0f466ad25a17ad516236edb9ac8ff1dc89b7b1d807085127df5686d06f",
+      "responseBodyBytes": 282052,
+      "elapsedMs": 7.401834000000008,
+      "nodes": 596,
+      "drawnConnections": 2500,
+      "totalConnections": 19132
+    },
+    {
+      "source": "cncf",
+      "year": 2023,
+      "mode": "accumulated",
+      "frameId": "40c29c1ab514432548b5f9051fb6e73b0fd9544d52b69a01d931cc3bb5669ead",
+      "responseBodyBytes": 308375,
+      "elapsedMs": 9.065624999999983,
+      "nodes": 695,
+      "drawnConnections": 2500,
+      "totalConnections": 23641
+    },
+    {
+      "source": "cncf",
+      "year": 2024,
+      "mode": "snapshot",
+      "frameId": "6ca78dc41198d5e125fb38bf013ad5725b507a968b7b5a3354ab12bbab874624",
+      "responseBodyBytes": 306295,
+      "elapsedMs": 8.344750000000005,
+      "nodes": 715,
+      "drawnConnections": 2500,
+      "totalConnections": 28667
+    },
+    {
+      "source": "cncf",
+      "year": 2024,
+      "mode": "accumulated",
+      "frameId": "4d07e013bc747d5850d07bd45142d909eadb631cf5b28a4ed7899917ebdc2d43",
+      "responseBodyBytes": 343208,
+      "elapsedMs": 10.171667000000014,
+      "nodes": 852,
+      "drawnConnections": 2500,
+      "totalConnections": 35870
+    },
+    {
+      "source": "cncf",
+      "year": 2025,
+      "mode": "snapshot",
+      "frameId": "98b9b4574ba8db280177d92524b14777f1cc18aa01edc7c11dd2d69603948e86",
+      "responseBodyBytes": 310513,
+      "elapsedMs": 8.836292000000014,
+      "nodes": 736,
+      "drawnConnections": 2500,
+      "totalConnections": 30419
+    },
+    {
+      "source": "cncf",
+      "year": 2025,
+      "mode": "accumulated",
+      "frameId": "45d7bce68ed26f63fb2665fc534d913c9a789e8f2b5cb20be281a8c8b547fd8d",
+      "responseBodyBytes": 356539,
+      "elapsedMs": 13.765082999999976,
+      "nodes": 901,
+      "drawnConnections": 2500,
+      "totalConnections": 39793
+    },
+    {
+      "source": "cncf",
+      "year": 2026,
+      "mode": "snapshot",
+      "frameId": "4f413b137b1bd7afbfda139df7521fdff1a88ac79c8a6537803d770f980936bc",
+      "responseBodyBytes": 304020,
+      "elapsedMs": 9.446541999999994,
+      "nodes": 706,
+      "drawnConnections": 2500,
+      "totalConnections": 34433
+    },
+    {
+      "source": "cncf",
+      "year": 2026,
+      "mode": "accumulated",
+      "frameId": "9940baefa7f0ed519e7b42e8a67e756a6da02ac80df85de0ab75b4acf60fc331",
+      "responseBodyBytes": 369649,
+      "elapsedMs": 12.254750000000001,
+      "nodes": 950,
+      "drawnConnections": 2500,
+      "totalConnections": 45097
+    },
+    {
+      "source": "lfai",
+      "year": 2020,
+      "mode": "snapshot",
+      "frameId": "cca5b4ff0b3927eea492aafcdc88ec8c147d0905730093febc41159efe14cc6b",
+      "responseBodyBytes": 109328,
+      "elapsedMs": 2.996249999999975,
+      "nodes": 209,
+      "drawnConnections": 1003,
+      "totalConnections": 1003
+    },
+    {
+      "source": "lfai",
+      "year": 2020,
+      "mode": "accumulated",
+      "frameId": "0cb65db57adaabdbd542230ac05f6ac2fc556cdb11fe68d0fd76a83fcb076d63",
+      "responseBodyBytes": 109441,
+      "elapsedMs": 2.8458750000000066,
+      "nodes": 209,
+      "drawnConnections": 1003,
+      "totalConnections": 1003
+    },
+    {
+      "source": "lfai",
+      "year": 2021,
+      "mode": "snapshot",
+      "frameId": "89709c84afca556f1acfb3e8349702e912593c26703cf17b961e995dae6a180c",
+      "responseBodyBytes": 137928,
+      "elapsedMs": 3.0522499999999866,
+      "nodes": 247,
+      "drawnConnections": 1335,
+      "totalConnections": 1335
+    },
+    {
+      "source": "lfai",
+      "year": 2021,
+      "mode": "accumulated",
+      "frameId": "839fa2ccea865262a2725d3e3a6f7cc40246ab6505d7f847cab1d77a69ab2c45",
+      "responseBodyBytes": 147084,
+      "elapsedMs": 2.6921250000000043,
+      "nodes": 257,
+      "drawnConnections": 1431,
+      "totalConnections": 1431
+    },
+    {
+      "source": "lfai",
+      "year": 2022,
+      "mode": "snapshot",
+      "frameId": "c99ac596d837d762fee4b011b6242b434421e0b2ee274d558c88fadf1f488e65",
+      "responseBodyBytes": 149940,
+      "elapsedMs": 2.653583999999995,
+      "nodes": 262,
+      "drawnConnections": 1478,
+      "totalConnections": 1478
+    },
+    {
+      "source": "lfai",
+      "year": 2022,
+      "mode": "accumulated",
+      "frameId": "d6fa201961976ae47d8c629150f4b8aebb8cffe7b103bd62eeac5c0cd350611e",
+      "responseBodyBytes": 174332,
+      "elapsedMs": 3.7317090000000235,
+      "nodes": 287,
+      "drawnConnections": 1749,
+      "totalConnections": 1749
+    },
+    {
+      "source": "lfai",
+      "year": 2023,
+      "mode": "snapshot",
+      "frameId": "66031da3991935302fc8fc9bbb86e7cc59d7fc3bc39e58e3ac7b45a7c1b47aaa",
+      "responseBodyBytes": 169201,
+      "elapsedMs": 4.5963330000000155,
+      "nodes": 284,
+      "drawnConnections": 1713,
+      "totalConnections": 1713
+    },
+    {
+      "source": "lfai",
+      "year": 2023,
+      "mode": "accumulated",
+      "frameId": "963b53ceb9817bc22eb644b342c0be3fa136b7c62c7aa878094bff1eedd54f74",
+      "responseBodyBytes": 194904,
+      "elapsedMs": 3.5506249999999966,
+      "nodes": 309,
+      "drawnConnections": 1984,
+      "totalConnections": 1984
+    },
+    {
+      "source": "lfai",
+      "year": 2024,
+      "mode": "snapshot",
+      "frameId": "961a064e16844aea5072d6e31f471f960f4c4ae625a50ae199d2c7afa1c7f3da",
+      "responseBodyBytes": 174704,
+      "elapsedMs": 3.140749999999997,
+      "nodes": 291,
+      "drawnConnections": 1777,
+      "totalConnections": 1777
+    },
+    {
+      "source": "lfai",
+      "year": 2024,
+      "mode": "accumulated",
+      "frameId": "70340c45a1174ff89a326d1b5f2c5fd33043cd9429da2cbe4bbf5173228261a4",
+      "responseBodyBytes": 205062,
+      "elapsedMs": 3.574832999999984,
+      "nodes": 318,
+      "drawnConnections": 2093,
+      "totalConnections": 2093
+    },
+    {
+      "source": "lfai",
+      "year": 2025,
+      "mode": "snapshot",
+      "frameId": "571033fc1fcc532c62ef09547d3f1390026ff446fa68c3667a626cdf337e0304",
+      "responseBodyBytes": 177931,
+      "elapsedMs": 5.386625000000009,
+      "nodes": 292,
+      "drawnConnections": 1825,
+      "totalConnections": 1825
+    },
+    {
+      "source": "lfai",
+      "year": 2025,
+      "mode": "accumulated",
+      "frameId": "9f34bb7c1fa25e209b8bc84ff4efeb8a2eee4d11332cc201b2e4bb39ae0b6f52",
+      "responseBodyBytes": 211775,
+      "elapsedMs": 3.350708999999995,
+      "nodes": 323,
+      "drawnConnections": 2161,
+      "totalConnections": 2161
+    },
+    {
+      "source": "lfai",
+      "year": 2026,
+      "mode": "snapshot",
+      "frameId": "cf43201459b92f79fac2b75438988ac1cab08228b1f1ebc765b7fa2918c423f9",
+      "responseBodyBytes": 176655,
+      "elapsedMs": 2.811250000000001,
+      "nodes": 289,
+      "drawnConnections": 1815,
+      "totalConnections": 1815
+    },
+    {
+      "source": "lfai",
+      "year": 2026,
+      "mode": "accumulated",
+      "frameId": "c9e087044ebc0aadc21bebf7d99c9c7e372b4cde50ef75ad44bf5640c221b66c",
+      "responseBodyBytes": 217393,
+      "elapsedMs": 3.12829099999999,
+      "nodes": 326,
+      "drawnConnections": 2218,
+      "totalConnections": 2218
+    }
+  ],
+  "neighborhoodTrials": [
+    {
+      "elapsedMs": 2.613582999999977,
+      "responseBodyBytes": 52088,
+      "frameId": "335b82f2cb9073b8fc449776b8e8d138c69d3419cc9cc399be08f1f6a649b522"
+    },
+    {
+      "elapsedMs": 2.0505419999999788,
+      "responseBodyBytes": 52088,
+      "frameId": "335b82f2cb9073b8fc449776b8e8d138c69d3419cc9cc399be08f1f6a649b522"
+    },
+    {
+      "elapsedMs": 2.174125000000032,
+      "responseBodyBytes": 52088,
+      "frameId": "335b82f2cb9073b8fc449776b8e8d138c69d3419cc9cc399be08f1f6a649b522"
+    },
+    {
+      "elapsedMs": 1.6832079999999792,
+      "responseBodyBytes": 52088,
+      "frameId": "335b82f2cb9073b8fc449776b8e8d138c69d3419cc9cc399be08f1f6a649b522"
+    },
+    {
+      "elapsedMs": 1.4137079999999855,
+      "responseBodyBytes": 52088,
+      "frameId": "335b82f2cb9073b8fc449776b8e8d138c69d3419cc9cc399be08f1f6a649b522"
+    }
+  ]
+}
