@@ -6,34 +6,82 @@
     const model = globalScope.LogPoseDiscoveryTopologyModel;
     const manifest = index.exploratory_topology;
     const formatCount = value => Number(value || 0).toLocaleString();
-    let prepared = null;
+    const pageSize = 80;
+    let summary = null;
+    let summaryError = null;
+    let summaryLoading = false;
+    let summaryRequest = 0;
     let layout = null;
-    let loading = false;
-    let error = null;
-    let listLimit = 80;
-    const queuedPairs = new Map();
+    let queryKey = null;
+    let queryResult = null;
+    let queryError = null;
+    let queryLoading = false;
+    let queryRequest = 0;
+    let loadedCandidates = [];
+    let detailKey = null;
+    let detailResult = null;
+    let detailError = null;
+    let detailLoading = false;
+    let detailRequest = 0;
 
-    function load() {
-      if (!manifest || prepared || loading) return;
-      loading = true;
-      fetch(`./${manifest.partition_path}`).then(response => {
-        if (!response.ok) throw new Error(`source field HTTP ${response.status}`);
-        return response.json();
-      }).then(payload => {
-        prepared = model.prepare(payload);
-        layout = model.positions(prepared);
-        queuedPairs.clear();
-        for (const edge of payload.edges) {
-          queuedPairs.set([edge.subject_candidate_id, edge.object_candidate_id].sort().join(':'), edge);
+    function endpoint(params) {
+      return `./api/market-field?${new URLSearchParams(params).toString()}`;
+    }
+
+    async function requestJson(url) {
+      const response = await fetch(url, { headers: { accept: 'application/json' } });
+      let body;
+      try { body = await response.json(); }
+      catch { body = null; }
+      if (!response.ok) {
+        const failure = new Error(body?.error || `market field HTTP ${response.status}`);
+        failure.status = response.status;
+        failure.body = body;
+        throw failure;
+      }
+      return body;
+    }
+
+    function clearBuildData() {
+      summary = null;
+      summaryError = null;
+      queryKey = null;
+      queryResult = null;
+      queryError = null;
+      loadedCandidates = [];
+      detailKey = null;
+      detailResult = null;
+      detailError = null;
+      summaryRequest += 1;
+      queryRequest += 1;
+      detailRequest += 1;
+    }
+
+    function refreshAfterMismatch() {
+      clearBuildData();
+      commitState({}, { replace: true });
+    }
+
+    function loadSummary() {
+      if (summary || summaryLoading) return;
+      summaryLoading = true;
+      const requestId = ++summaryRequest;
+      requestJson(endpoint({ mode: 'summary' })).then(result => {
+        if (!model.isCurrentRequest(requestId, 'summary', summaryRequest, 'summary')) return;
+        if (result.schema_version !== '1.0' || !result.build_id
+            || !Array.isArray(result.candidates) || !result.counts || !result.facets) {
+          throw new Error('market field summary is incomplete');
         }
-        loading = false;
-        if (state.view === 'topology' && state.topologyLayer === 'field')
-          commitState({}, { replace: true });
+        summary = result;
+        layout = model.positions(summary.candidates);
+        summaryError = null;
+        summaryLoading = false;
+        commitState({}, { replace: true });
       }).catch(failure => {
-        error = failure.message;
-        loading = false;
-        if (state.view === 'topology' && state.topologyLayer === 'field')
-          commitState({}, { replace: true });
+        if (!model.isCurrentRequest(requestId, 'summary', summaryRequest, 'summary')) return;
+        summaryLoading = false;
+        summaryError = failure.message;
+        commitState({}, { replace: true });
       });
     }
 
@@ -43,19 +91,115 @@
         category: state.fieldCategory, identity: state.fieldIdentity };
     }
 
-    function observationMatches(observation, activeFilters) {
-      return (activeFilters.source === 'all' || observation.source === activeFilters.source)
-        && (activeFilters.year === 'all' || observation.year === Number(activeFilters.year))
-        && (activeFilters.category === 'all' || observation.source_category === activeFilters.category);
+    function currentQueryKey(activeFilters) {
+      return JSON.stringify([summary?.build_id, activeFilters.query, activeFilters.source,
+        activeFilters.year, activeFilters.tag, activeFilters.category,
+        activeFilters.identity, state.fieldCandidate]);
     }
 
-    function filteredObservationCount(candidates, activeFilters) {
-      return candidates.reduce((count, candidate) => count + candidate.observations.filter(
-        observation => observationMatches(observation, activeFilters)).length, 0);
+    function queryParams(activeFilters, offset) {
+      const params = { mode: 'query', build_id: summary.build_id,
+        source: activeFilters.source, year: activeFilters.year,
+        category: activeFilters.category, tag: activeFilters.tag,
+        identity: activeFilters.identity, query: activeFilters.query,
+        offset: String(offset), limit: String(pageSize) };
+      if (state.fieldCandidate) params.candidate = state.fieldCandidate;
+      return params;
+    }
+
+    function loadQuery(activeFilters) {
+      if (!summary) return;
+      const key = currentQueryKey(activeFilters);
+      if (queryKey !== key) {
+        queryKey = key;
+        queryResult = null;
+        queryError = null;
+        loadedCandidates = [];
+        queryLoading = false;
+        queryRequest += 1;
+        detailKey = null;
+        detailResult = null;
+        detailError = null;
+        detailRequest += 1;
+      }
+      if (queryLoading || queryError || queryResult) return;
+      const offset = loadedCandidates.length;
+      if (queryResult && queryResult.next_offset !== offset) return;
+      queryLoading = true;
+      root.setAttribute('aria-busy', 'true');
+      const requestId = ++queryRequest;
+      requestJson(endpoint(queryParams(activeFilters, offset))).then(result => {
+        if (!model.isCurrentRequest(requestId, key, queryRequest, queryKey)) return;
+        if (!model.matchesBuild(summary.build_id, result.build_id)) {
+          refreshAfterMismatch();
+          return;
+        }
+        if (!Array.isArray(result.candidate_ids) || !Array.isArray(result.candidates)
+            || !Array.isArray(result.neighbors) || !Array.isArray(result.tag_flows)) {
+          throw new Error('market field query is incomplete');
+        }
+        loadedCandidates = offset === 0 ? result.candidates
+          : loadedCandidates.concat(result.candidates);
+        queryResult = result;
+        queryError = null;
+        queryLoading = false;
+        commitState({}, { replace: true });
+      }).catch(failure => {
+        if (!model.isCurrentRequest(requestId, key, queryRequest, queryKey)) return;
+        if (failure.status === 409) {
+          refreshAfterMismatch();
+          return;
+        }
+        queryLoading = false;
+        queryError = failure.message;
+        commitState({}, { replace: true });
+      });
+    }
+
+    function loadDetail(focusCandidate, selectedNeighbor) {
+      if (!summary || !focusCandidate) return;
+      const key = JSON.stringify([summary.build_id, focusCandidate.id,
+        selectedNeighbor?.id || '']);
+      if (detailKey !== key) {
+        detailKey = key;
+        detailResult = null;
+        detailError = null;
+        detailLoading = false;
+        detailRequest += 1;
+      }
+      if (detailLoading || detailResult || detailError) return;
+      detailLoading = true;
+      const requestId = ++detailRequest;
+      const params = { mode: 'detail', build_id: summary.build_id,
+        candidate: focusCandidate.id };
+      if (selectedNeighbor) params.neighbor = selectedNeighbor.id;
+      requestJson(endpoint(params)).then(result => {
+        if (!model.isCurrentRequest(requestId, key, detailRequest, detailKey)) return;
+        if (!model.matchesBuild(summary.build_id, result.build_id)) {
+          refreshAfterMismatch();
+          return;
+        }
+        if (!result.candidate || !Array.isArray(result.candidate.observations)
+            || !Array.isArray(result.shared_observations)) {
+          throw new Error('market field detail is incomplete');
+        }
+        detailResult = result;
+        detailLoading = false;
+        detailError = null;
+        commitState({}, { replace: true });
+      }).catch(failure => {
+        if (!model.isCurrentRequest(requestId, key, detailRequest, detailKey)) return;
+        if (failure.status === 409) {
+          refreshAfterMismatch();
+          return;
+        }
+        detailLoading = false;
+        detailError = failure.message;
+        commitState({}, { replace: true });
+      });
     }
 
     function changeFilter(changes, focus) {
-      listLimit = 80;
       commitState({ ...changes, fieldCandidate: null, fieldNeighbor: null },
         { replace: true, focus });
     }
@@ -65,7 +209,7 @@
       const search = node('input');
       search.id = 'field-search';
       search.type = 'search';
-      search.placeholder = 'search 1,240 candidates, descriptions, categories…';
+      search.placeholder = `search ${formatCount(summary.counts.nodes)} candidates, descriptions, categories…`;
       search.setAttribute('aria-label', 'Search discovery candidates');
       search.value = state.fieldQuery;
       search.addEventListener('input', () => changeFilter({ fieldQuery: search.value.slice(0, 200) },
@@ -81,10 +225,9 @@
         control.addEventListener('change', () => changeFilter({ [key]: control.value }, `#${id}`));
         return control;
       }
-      const sources = [...new Set(prepared.payload.artifacts.map(item => item.source))].sort();
-      const years = [...new Set(prepared.payload.artifacts.map(item => item.year))].sort();
-      const categories = [...new Set(prepared.payload.nodes.flatMap(item =>
-        item.observations.map(observation => observation.source_category)))].sort();
+      const sources = [...summary.facets.sources].sort();
+      const years = [...summary.facets.years].sort((left, right) => Number(left) - Number(right));
+      const categories = [...summary.facets.categories].sort();
       selects.append(
         select('Inventory source', 'field-source', [['all', 'all sources'],
           ...sources.map(source => [source, source.toUpperCase()])], state.fieldSource, 'fieldSource'),
@@ -101,14 +244,13 @@
       return frame;
     }
 
-    function coverage(candidates, pairs, observationCount) {
+    function coverage(result) {
       const section = node('section', '', 'field-coverage');
-      const counts = prepared.payload.counts;
       const cards = [
-        [candidates.length, counts.nodes, 'product / project candidates'],
-        [observationCount, counts.observations, 'dated source placements'],
-        [pairs.length, counts.possible_pairs, 'same-category-year pairs'],
-        [counts.edges, counts.edges, 'sampled review leads']
+        [result.total_candidates, summary.counts.nodes, 'product / project candidates'],
+        [result.observation_count, summary.counts.observations, 'dated source placements'],
+        [result.pair_count, summary.counts.possible_pairs, 'same-category-year pairs'],
+        [summary.counts.edges, summary.counts.edges, 'sampled review leads']
       ];
       for (const [shown, total, label] of cards) {
         const card = node('div', '', 'field-coverage-card');
@@ -133,7 +275,7 @@
       commitState({ fieldNeighbor: candidateId }, { focus: '#field-inspector' });
     }
 
-    function fieldMap(candidates, pairs, activeFilters, focusCandidate) {
+    function fieldMap(result, focusCandidate) {
       const section = node('section', '', 'field-map');
       section.append(append(node('div', '', 'field-map-head'),
         node('p', 'SOURCE FIELD / EXACT CO-LISTINGS', 'eyebrow'),
@@ -142,19 +284,17 @@
           : 'All matching candidates are placed in the field. Select one to reveal its exact co-listings.',
         'muted')));
       const svg = svgNode('svg', { viewBox: '0 0 1000 720', class: 'field-graph',
-        role: 'img', 'aria-label': `${formatCount(candidates.length)} candidate dots in four research groups. Select a candidate from the list below to inspect exact co-listings.` });
-      const activeIds = new Set(candidates.map(item => item.id));
-      const tagPairs = new Map();
-      for (const pair of pairs) {
-        const left = layout.nodes.get(pair.left).tag;
-        const right = layout.nodes.get(pair.right).tag;
-        const key = [left, right].sort().join(':');
-        tagPairs.set(key, (tagPairs.get(key) || 0) + 1);
-      }
+        role: 'img', 'aria-label': `${formatCount(result.total_candidates)} candidate dots in four research groups. Select a candidate from the list below to inspect exact co-listings.` });
+      const activeIds = new Set(result.candidate_ids);
       const centers = {
         ai_automation: [265, 198], data_infrastructure: [735, 198],
         developer_tools: [265, 522], security_observability: [735, 522]
       };
+      const tagPairs = new Map();
+      for (const flow of result.tag_flows) {
+        const key = [flow.left, flow.right].sort().join(':');
+        tagPairs.set(key, flow.count);
+      }
       const maximumFlow = Math.max(1, ...tagPairs.values());
       if (!focusCandidate) {
         for (const [key, count] of tagPairs) {
@@ -179,9 +319,7 @@
         label.textContent = `${model.TAG_LABELS[tag]} · ${formatCount(count)}`;
         svg.append(label);
       }
-      const neighbors = focusCandidate
-        ? model.matchingNeighbors(prepared, focusCandidate.id, candidates.map(item => item.id), activeFilters)
-        : [];
+      const neighbors = focusCandidate ? result.neighbors : [];
       const neighborIds = new Set(neighbors.map(item => item.candidate.id));
       if (focusCandidate) {
         const start = layout.nodes.get(focusCandidate.id);
@@ -192,7 +330,7 @@
             class: `field-neighbor-line${selected ? ' is-selected' : ''}` }));
         }
       }
-      for (const candidate of prepared.nodes.values()) {
+      for (const candidate of summary.candidates) {
         const position = layout.nodes.get(candidate.id);
         const active = activeIds.has(candidate.id);
         const focused = focusCandidate?.id === candidate.id;
@@ -215,57 +353,80 @@
       }
       section.append(append(node('div', '', 'field-graph-frame'), svg),
         node('p', focusCandidate
-          ? `${formatCount(neighbors.length)} exact co-listings for ${focusCandidate.name} in this filter. Select a dot or a row to compare retained source placements.`
-          : `${formatCount(candidates.length)} candidates and ${formatCount(pairs.length)} derivable overlaps are in this filter. The lines group co-listings by research category; they do not describe business relationships.`,
+          ? `${formatCount(result.neighbor_count)} exact co-listings for ${focusCandidate.name} in this filter. Select a dot or a row to compare retained source placements.`
+          : `${formatCount(result.total_candidates)} candidates and ${formatCount(result.pair_count)} derivable overlaps are in this filter. The lines group co-listings by research category; they do not describe business relationships.`,
         'field-map-caption'));
       return { section, neighbors };
     }
 
-    function rowButton(observation, row, label) {
+    function rowButton(row, label) {
       const button = node('button', label, 'field-row-button');
       button.type = 'button';
       button.addEventListener('click', () => openRecord(row.id));
       return button;
     }
 
+    function observations(candidate, activeFilters) {
+      return candidate.observations.filter(item =>
+        (activeFilters.source === 'all' || item.source === activeFilters.source)
+        && (activeFilters.year === 'all' || item.year === Number(activeFilters.year))
+        && (activeFilters.category === 'all' || item.source_category === activeFilters.category));
+    }
+
     function observationList(candidate, activeFilters) {
       const list = node('div', '', 'field-observations');
-      const observations = candidate.observations.filter(item =>
-        observationMatches(item, activeFilters));
-      for (const observation of observations) {
+      for (const observation of observations(candidate, activeFilters)) {
         const item = node('article', '', 'field-observation');
         item.append(node('strong', `${observation.source.toUpperCase()} ${observation.year} · ${observation.source_category}`),
           node('small', `artifact ${observation.artifact_sha256.slice(0, 12)} · ${observation.occurrence_ids.length} row${observation.occurrence_ids.length === 1 ? '' : 's'}`));
-        for (const row of observation.rows) item.append(rowButton(observation, row,
+        for (const row of observation.rows) item.append(rowButton(row,
           `inspect ${row.name} source row →`));
         list.append(item);
       }
       return list;
     }
 
-    function inspector(focusCandidate, selectedNeighbor, neighbors, activeFilters) {
+    function inspector(focusCandidate, selectedNeighbor, result, activeFilters) {
       const panel = node('aside', '', 'field-inspector');
       panel.id = 'field-inspector';
       panel.tabIndex = -1;
       panel.append(node('p', 'INSPECT THE SOURCE FIELD', 'eyebrow'));
       if (!focusCandidate) {
-        panel.append(node('h3', 'A field of 1,240 leads'),
+        panel.append(node('h3', `A field of ${formatCount(summary.counts.nodes)} leads`),
           node('p', 'Each dot is a retained product or project candidate. Source-category co-listing can nominate research, but it does not establish company identity, competition, partnership, or shared customers.', 'muted'),
           node('p', 'Use the filters, search, or candidate index. Then select a dot to inspect its dated source rows and exact co-listings.', 'caveat'));
         return panel;
       }
-      panel.append(node('h3', focusCandidate.name),
-        node('p', focusCandidate.description || 'No retained description.', 'field-description'));
+      if (!detailResult) {
+        panel.append(node('h3', focusCandidate.name),
+          node('p', detailError ? `Source detail failed: ${detailError}`
+            : detailLoading ? 'Loading retained source detail…' : 'Loading retained source detail…',
+          detailError ? 'error' : 'loading'));
+        if (detailError) {
+          const retry = node('button', 'retry source detail', 'quiet-button');
+          retry.type = 'button';
+          retry.addEventListener('click', () => {
+            detailError = null;
+            detailKey = null;
+            commitState({}, { replace: true });
+          });
+          panel.append(retry);
+        }
+        return panel;
+      }
+      const candidate = detailResult.candidate;
+      panel.append(node('h3', candidate.name),
+        node('p', candidate.description || 'No retained description.', 'field-description'));
       const clear = node('button', 'clear focus ×', 'quiet-button');
       clear.type = 'button';
       clear.addEventListener('click', () => commitState({ fieldCandidate: null,
         fieldNeighbor: null }, { focus: '#field-search' }));
       panel.append(clear);
-      const identity = focusCandidate.identity_review;
+      const identity = candidate.identity_review;
       panel.append(node('p', identity
         ? `Reviewed identity relation: ${identity.provider_name} · ${identity.provider_relation}. Eligibility and every proposed market relationship remain separate.`
-        : focusCandidate.navigation_match
-          ? `Unreviewed navigation match: ${focusCandidate.navigation_match.slug}. This is a name or homepage lead, not an identity review.`
+        : candidate.navigation_match
+          ? `Unreviewed navigation match: ${candidate.navigation_match.slug}. This is a name or homepage lead, not an identity review.`
           : 'Company identity and U.S. eligibility are unreviewed.', 'caveat'));
       if (identity?.pilot_slug) {
         const company = node('button', `open ${identity.provider_name} pilot study →`, 'text-button');
@@ -273,41 +434,41 @@
         company.addEventListener('click', () => openCompany(identity.pilot_slug));
         panel.append(company);
       }
-      panel.append(node('h4', `${formatCount(focusCandidate.observations.length)} dated source placements`, 'section-title'),
-        observationList(focusCandidate, activeFilters));
-      if (selectedNeighbor) {
-        const match = neighbors.find(item => item.candidate.id === selectedNeighbor.id);
-        if (match) {
-          const queueId = [focusCandidate.id, selectedNeighbor.id].sort().join(':');
-          const queue = queuedPairs.get(queueId);
-          panel.append(node('h4', `${focusCandidate.name} / ${selectedNeighbor.name}`, 'section-title'),
-            node('p', `${match.keys.length} exact source-category-year placements overlap. ${queue
-              ? 'This pair is in the 100-item sampled review worklist.'
-              : 'This pair is outside the sampled review worklist.'} No relationship claim follows from co-listing.`, 'caveat'));
-          for (const key of match.keys) {
-            const left = prepared.observationsByNode.get(focusCandidate.id).get(key);
-            const right = prepared.observationsByNode.get(selectedNeighbor.id).get(key);
-            const observation = left[0];
-            const item = node('article', '', 'field-shared-placement');
-            item.append(node('strong', `${observation.source.toUpperCase()} ${observation.year} · ${observation.source_category}`),
-              node('p', 'Both candidate rows appear in this pinned category and year. Inspect either retained row here.', 'muted'));
-            for (const source of left) for (const row of source.rows)
-              item.append(rowButton(source, row, `${focusCandidate.name}: ${row.name} →`));
-            for (const source of right) for (const row of source.rows)
-              item.append(rowButton(source, row, `${selectedNeighbor.name}: ${row.name} →`));
-            panel.append(item);
-          }
+      panel.append(node('h4', `${formatCount(observations(candidate, activeFilters).length)} dated source placements`, 'section-title'),
+        observationList(candidate, activeFilters));
+      if (selectedNeighbor && detailResult.neighbor) {
+        const neighbor = detailResult.neighbor;
+        const sharedPlacements = detailResult.shared_observations.filter(item =>
+          (activeFilters.source === 'all' || item.source === activeFilters.source)
+          && (activeFilters.year === 'all' || item.year === Number(activeFilters.year))
+          && (activeFilters.category === 'all' || item.source_category === activeFilters.category));
+        panel.append(node('h4', `${candidate.name} / ${neighbor.name}`, 'section-title'),
+          node('p', `${formatCount(sharedPlacements.length)} exact source-category-year placements overlap. ${detailResult.in_review_worklist
+            ? 'This pair is in the 100-item sampled review worklist.'
+            : 'This pair is outside the sampled review worklist.'} No relationship claim follows from co-listing.`, 'caveat'));
+        for (const shared of sharedPlacements) {
+          const item = node('article', '', 'field-shared-placement');
+          item.append(node('strong', `${shared.source.toUpperCase()} ${shared.year} · ${shared.source_category}`),
+            node('p', `shared artifact ${shared.artifact_sha256.slice(0, 12)}. Both candidates appear in this pinned category and year.`, 'muted'));
+          for (const row of shared.subject_rows) item.append(rowButton(row,
+            `${candidate.name}: ${row.name} →`));
+          for (const row of shared.object_rows) item.append(rowButton(row,
+            `${neighbor.name}: ${row.name} →`));
+          panel.append(item);
         }
-      } else panel.append(node('p', `${formatCount(neighbors.length)} candidates share at least one exact source category and year with this candidate in the current filter. Select a connected dot or candidate row to inspect the shared placements.`, 'muted'));
+      } else if (selectedNeighbor) {
+        panel.append(node('p', detailError ? `Shared source detail failed: ${detailError}`
+          : 'Loading exact shared source rows…', detailError ? 'error' : 'loading'));
+      } else panel.append(node('p', `${formatCount(result.neighbor_count)} candidates share at least one exact source category and year with this candidate in the current filter. Select a connected dot or candidate row to inspect the shared placements.`, 'muted'));
       return panel;
     }
 
-    function candidateIndex(candidates, neighbors, focusCandidate) {
+    function candidateIndex(result, focusCandidate) {
       const section = node('section', '', 'field-index');
-      const entries = focusCandidate ? neighbors.map(item => item.candidate) : candidates;
+      const entries = focusCandidate ? result.neighbors.map(item => item.candidate) : loadedCandidates;
       section.append(node('p', focusCandidate ? 'EXACT CO-LISTINGS' : 'CANDIDATE INDEX', 'eyebrow'),
-        node('h3', `${formatCount(entries.length)} ${focusCandidate ? 'neighbors' : 'candidates'}`));
-      for (const candidate of entries.slice(0, listLimit)) {
+        node('h3', `${formatCount(focusCandidate ? result.neighbor_count : result.total_candidates)} ${focusCandidate ? 'neighbors' : 'candidates'}`));
+      for (const candidate of entries) {
         const button = node('button', '', 'field-index-row');
         button.type = 'button';
         button.append(node('strong', candidate.name),
@@ -319,17 +480,48 @@
         });
         section.append(button);
       }
-      if (entries.length > listLimit) {
-        const more = node('button', `show ${Math.min(80, entries.length - listLimit)} more`,
+      if (!focusCandidate && result.next_offset !== null) {
+        const more = node('button', queryLoading ? 'loading more candidates…' : 'show 80 more',
           'quiet-button field-show-more');
         more.type = 'button';
+        more.disabled = queryLoading;
         more.addEventListener('click', () => {
-          listLimit += 80;
-          commitState({}, { focus: '.field-show-more' });
+          if (queryLoading) return;
+          requestNextPage();
         });
         section.append(more);
       }
       return section;
+    }
+
+    function requestNextPage() {
+      const activeFilters = filters();
+      if (queryLoading || !queryResult || queryResult.next_offset === null) return;
+      const offset = queryResult.next_offset;
+      const key = queryKey;
+      queryLoading = true;
+      const requestId = ++queryRequest;
+      root.setAttribute('aria-busy', 'true');
+      requestJson(endpoint(queryParams(activeFilters, offset))).then(result => {
+        if (!model.isCurrentRequest(requestId, key, queryRequest, queryKey)) return;
+        if (!model.matchesBuild(summary.build_id, result.build_id)) {
+          refreshAfterMismatch();
+          return;
+        }
+        loadedCandidates = loadedCandidates.concat(result.candidates);
+        queryResult = result;
+        queryLoading = false;
+        commitState({}, { replace: true });
+      }).catch(failure => {
+        if (!model.isCurrentRequest(requestId, key, queryRequest, queryKey)) return;
+        if (failure.status === 409) {
+          refreshAfterMismatch();
+          return;
+        }
+        queryLoading = false;
+        queryError = failure.message;
+        commitState({}, { replace: true });
+      });
     }
 
     function render() {
@@ -337,35 +529,60 @@
         root.append(node('p', 'This export has no discovery topology partition.', 'empty-state'));
         return;
       }
-      if (error) {
-        const retry = node('button', 'retry source field', 'quiet-button');
-        retry.type = 'button';
-        retry.addEventListener('click', () => {
-          error = null;
-          load();
-          commitState({}, { replace: true });
-        });
-        root.append(node('p', error, 'error'), retry);
-        return;
-      }
-      if (!prepared) {
-        root.append(node('p', 'loading the full retained candidate field…', 'loading'));
-        load();
+      if (!summary) {
+        if (summaryError) {
+          const retry = node('button', 'retry market field', 'quiet-button');
+          retry.type = 'button';
+          retry.addEventListener('click', () => {
+            summaryError = null;
+            loadSummary();
+            commitState({}, { replace: true });
+          });
+          root.append(node('p', `The market field is unavailable: ${summaryError}`, 'error'), retry);
+        } else {
+          root.setAttribute('aria-busy', 'true');
+          root.append(node('p', 'Loading candidate summary from the versioned market field…', 'loading'));
+          loadSummary();
+        }
         return;
       }
       const activeFilters = filters();
-      const candidates = model.matchingCandidates(prepared, activeFilters);
-      const pairs = model.matchingPairs(prepared, candidates.map(item => item.id), activeFilters);
-      const focusCandidate = candidates.find(item => item.id === state.fieldCandidate) || null;
-      const selectedNeighbor = candidates.find(item => item.id === state.fieldNeighbor) || null;
-      const map = fieldMap(candidates, pairs, activeFilters, focusCandidate);
-      root.append(coverage(candidates, pairs, filteredObservationCount(candidates, activeFilters)),
+      loadQuery(activeFilters);
+      root.setAttribute('aria-busy', String(queryLoading || detailLoading));
+      if (queryError) {
+        const retry = node('button', 'retry market field query', 'quiet-button');
+        retry.type = 'button';
+        retry.addEventListener('click', () => {
+          queryError = null;
+          queryKey = null;
+          commitState({}, { replace: true });
+        });
+        root.append(controls(), node('p', `The market field query failed: ${queryError}`, 'error'), retry);
+        return;
+      }
+      if (!queryResult) {
+        root.append(controls(), node('p', 'Loading the filtered candidate field…', 'loading'));
+        return;
+      }
+      const candidatesById = new Map(summary.candidates.map(candidate => [candidate.id, candidate]));
+      const focusCandidate = queryResult.candidate_ids.includes(state.fieldCandidate)
+        ? candidatesById.get(state.fieldCandidate) || null : null;
+      const selectedNeighbor = queryResult.neighbors.find(item =>
+        item.candidate.id === state.fieldNeighbor)?.candidate || null;
+      if (focusCandidate) loadDetail(focusCandidate, selectedNeighbor);
+      root.setAttribute('aria-busy', String(queryLoading || detailLoading));
+      const map = fieldMap(queryResult, focusCandidate);
+      root.append(coverage(queryResult),
         node('p', 'A co-listing means two product or project rows appeared in the same named source category and inventory year. It is a research lead, not a company relationship. Accepted claims have their own review layer.', 'field-warning'),
         controls());
+      if (queryResult.total_candidates === 0) {
+        root.append(node('p', 'No candidates match these filters.', 'empty-state'));
+        return;
+      }
       const workspace = node('div', '', 'field-workspace');
       workspace.append(map.section, inspector(focusCandidate, selectedNeighbor,
-        map.neighbors, activeFilters));
-      root.append(workspace, candidateIndex(candidates, map.neighbors, focusCandidate));
+        queryResult, activeFilters));
+      root.append(workspace, candidateIndex(queryResult, focusCandidate));
     }
 
     return { render };
