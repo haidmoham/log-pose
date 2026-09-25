@@ -27,7 +27,7 @@
         vec2 map = (position - vec2(500.0, 340.0)) * camera.z + vec2(500.0, 340.0) + camera.xy;
         vec2 pixel = (map - vec2(500.0, 340.0)) * scale + viewport * 0.5;
         gl_Position = vec4(pixel.x / viewport.x * 2.0 - 1.0, 1.0 - pixel.y / viewport.y * 2.0, 0.0, 1.0);
-        gl_PointSize = size * scale * camera.z * pixelRatio;
+        gl_PointSize = size * scale * pixelRatio;
         tint = color;
       }
     `);

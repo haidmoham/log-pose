@@ -274,3 +274,18 @@ test('reviewed overlay and historical event clock cannot be requested as invento
   assert.equal(reviewed.status, 400);
   assert.equal(eventClock.status, 400);
 });
+
+test('a retained neighbor with no support in either frame is not a disappearance', () => {
+  const focus = '00a2fb1597f507022279';
+  const frame = request('frame', { source: 'lfai', year: '2024', candidate: focus }).body;
+  const dragonfly = frame.nodes.find(node => node.name === 'Dragonfly');
+  const earlier = request('frame', { source: 'lfai', year: '2023', candidate: focus,
+    neighbor: dragonfly.id }).body;
+  assert.equal(earlier.detail.status, 'not_observed_in_either_frame');
+  assert.deepEqual(earlier.detail.selected_placements, []);
+  assert.deepEqual(earlier.detail.comparison_placements, []);
+  const noComparison = request('frame', { source: 'lfai', year: '2024', candidate: focus,
+    neighbor: dragonfly.id, compare_year: 'none' }).body;
+  assert.equal(noComparison.detail.status, 'observed_without_comparison');
+  assert(noComparison.changes.every(change => change.status === 'observed_without_comparison'));
+});

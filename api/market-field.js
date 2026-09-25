@@ -302,7 +302,7 @@ function temporalFrame(params) {
   if (!artifact) return response(200, { schema_version: graph.schema_version,
     build_id: graph.build_id, status: 'missing_snapshot', source, year, temporal_mode: mode,
     frame_id: frameId, active_clock: 'inventory_year', precision: 'year',
-    compare_year: comparison?.year ?? null, active_clock: 'inventory_year', precision: 'year',
+    compare_year: comparison?.year ?? null,
     nodes: [], edges: [], changes: [], candidate_count: 0, edge_count: 0,
     coverage: { status: 'missing', source, year, source_rows: 0,
       explanation: 'No retained source snapshot exists for this provider and year.' },
@@ -400,7 +400,7 @@ function temporalFrame(params) {
     const status = currentFiltered ? 'filtered_out_current'
       : previousFiltered ? 'filtered_out_previous'
         : current.length && previous.length ? 'observed_in_both'
-          : current.length ? 'newly_observed_in_selected_frame' : 'absent_from_selected_frame';
+          : current.length ? (comparisonYears.length ? 'newly_observed_in_selected_frame' : 'observed_without_comparison') : 'absent_from_selected_frame';
     return { candidate_id: id, status, current_placements: current,
       comparison_placements: previous, current_unfiltered_placements: currentUnfiltered,
       comparison_unfiltered_placements: previousUnfiltered };
@@ -414,7 +414,8 @@ function temporalFrame(params) {
     .map(change => ({ candidate_id: change.candidate_id,
       placements: change.current_placements,
       status: change.status === 'observed_in_both' ? 'previously_observed'
-        : 'first_observed_in_selected_evidence' }));
+        : change.status === 'newly_observed_in_selected_frame' ? 'first_observed_in_selected_evidence'
+          : 'observed_in_selected_evidence' }));
   const visibleIndexById = new Map([...visibleIds].map(id => [id, candidateIndex.get(id)]));
   const contextEdges = [];
   let totalContextEdges = 0;
@@ -458,7 +459,7 @@ function temporalFrame(params) {
         subject_rows: leftObservation.rows, object_rows: rightObservation.rows };
     }).filter(Boolean);
     detail = { focus: focusDescriptor, neighbor: neighborDescriptor,
-      status: currentChange?.status || 'absent_from_selected_frame',
+      status: currentChange?.status || 'not_observed_in_either_frame',
       selected_placements: placementDetails(currentChange?.current_unfiltered_placements || []),
       comparison_placements: placementDetails(currentChange?.comparison_unfiltered_placements || []),
       current_filtered_placements: currentChange?.current_placements || [],

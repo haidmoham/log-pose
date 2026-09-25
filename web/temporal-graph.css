@@ -30,7 +30,7 @@
 .constellation-selection { fill: none; stroke: #e4b86c; stroke-width: .7; opacity: .8; }
 .constellation-node.is-hovered .constellation-core, .constellation-node:focus .constellation-core, .constellation-node.is-selected .constellation-core { fill: #fae4b6; stroke: #fff2d1; }
 .constellation-node.is-hovered .constellation-aura, .constellation-node:focus .constellation-aura, .constellation-node.is-selected .constellation-aura { fill: #eec887; opacity: .12; }
-.constellation-label { fill: #bcb0c8; font: 11px/1 var(--sans); paint-order: stroke; stroke: #19161e; stroke-width: 4px; stroke-linejoin: round; opacity: 0; pointer-events: none; }
+.constellation-label { fill: #bcb0c8; font: 13px/1 var(--sans); paint-order: stroke; stroke: #19161e; stroke-width: 4px; stroke-linejoin: round; opacity: 0; pointer-events: none; }
 .constellation-node.has-label .constellation-label { opacity: .9; }
 .constellation-node.is-focus .constellation-label, .constellation-node.is-selected .constellation-label,
 .constellation-node.is-hovered .constellation-label, .constellation-node:focus .constellation-label { fill: #f0d7a5; opacity: 1; }
@@ -66,3 +66,5 @@
 .has-webgl .constellation-context, .has-webgl .constellation-threads { visibility: hidden; }
 .has-webgl .constellation-node:not(.is-absent) .constellation-core,
 .has-webgl .constellation-aura { visibility: hidden; }
+
+.constellation-edge-hit { stroke: transparent; stroke-width: 12; vector-effect: non-scaling-stroke; pointer-events: stroke; cursor: pointer; }

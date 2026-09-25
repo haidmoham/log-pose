@@ -55,7 +55,30 @@ for (let index = 0; index < count; index += 1) {
     y: Number((110 + (coordinates[index].y - minimumY) / (maximumY - minimumY) * 460).toFixed(3))
   };
 }
-const artifact = { build_id: graph.build_id, layout_version: 'fixed-force-map-v1',
+// Resolve display collisions once at build time, across all candidates. Temporal
+// filtering never reruns this pass, so retained node addresses remain unchanged.
+const anchors = Object.values(positions);
+const minimumSpacing = 16;
+for (let pass = 0; pass < 200; pass += 1) {
+  for (let left = 0; left < anchors.length; left += 1) {
+    for (let right = left + 1; right < anchors.length; right += 1) {
+      const a = anchors[left]; const b = anchors[right];
+      const dx = b.x - a.x; const dy = b.y - a.y;
+      const distance = Math.hypot(dx, dy);
+      if (distance >= minimumSpacing) continue;
+      const directionX = distance > 0 ? dx / distance : 1;
+      const directionY = distance > 0 ? dy / distance : 0;
+      const displacement = (minimumSpacing - distance) * .5;
+      a.x -= directionX * displacement; a.y -= directionY * displacement;
+      b.x += directionX * displacement; b.y += directionY * displacement;
+    }
+  }
+}
+for (const anchor of anchors) {
+  anchor.x = Number(anchor.x.toFixed(3));
+  anchor.y = Number(anchor.y.toFixed(3));
+}
+const artifact = { build_id: graph.build_id, layout_version: 'fixed-force-map-v2',
   meaning: 'fixed present-day build layout for navigation; distance is not relationship strength or historical knowledge',
   iterations, positions };
 const destination = path.resolve(__dirname, '../api/data/market-field-layout.json');

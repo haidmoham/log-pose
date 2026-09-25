@@ -3,6 +3,7 @@
   'use strict';
   const SVG_NS = 'http://www.w3.org/2000/svg';
   const camera = { x: 0, y: 0, zoom: 1 };
+  let cameraScope = null;
   const appearance = { labels: 40, threads: 45 };
 
   function hash(text) {
@@ -55,6 +56,23 @@
     const field = svgElement('g', { class: 'constellation-camera' });
     svg.append(field);
     const positions = new Map(frame.nodes.map(node => [node.id, node.position || position(node.id)]));
+    function fitView() {
+      const points = [...positions.values()];
+      if (!points.length || !frame.focus) {
+        camera.x = 0; camera.y = 0; camera.zoom = 1;
+        return;
+      }
+      const left = Math.min(...points.map(point => point.x));
+      const right = Math.max(...points.map(point => point.x));
+      const top = Math.min(...points.map(point => point.y));
+      const bottom = Math.max(...points.map(point => point.y));
+      camera.zoom = Math.max(.65, Math.min(8, 680 / Math.max(80, right - left), 440 / Math.max(80, bottom - top)));
+      camera.x = (500 - (left + right) / 2) * camera.zoom;
+      camera.y = (340 - (top + bottom) / 2) * camera.zoom + 30;
+    }
+    // Fit only when entering a different neighborhood, never when its year changes.
+    const scope = `${frame.build_id || ''}:${frame.source || ''}:${frame.focus || ''}`;
+    if (scope !== cameraScope) { cameraScope = scope; fitView(); }
     const changes = new Map((frame.changes || []).map(change => [change.candidate_id, change]));
     const current = new Set(frame.edges.map(edge => edge.candidate_id));
     const labelNodes = [];
@@ -83,6 +101,16 @@
       }
     }
     field.append(threads);
+    const hitThreads = svgElement('g', { class: 'constellation-edge-hits', 'aria-hidden': 'true' });
+    for (const [id, thread] of threadElements) {
+      const hit = thread.cloneNode(false);
+      hit.setAttribute('class', 'constellation-edge-hit');
+      hit.addEventListener('click', () => inspect(id));
+      hit.addEventListener('pointerenter', () => emphasize(id));
+      hit.addEventListener('pointerleave', () => emphasize(''));
+      hitThreads.append(hit);
+    }
+    field.append(hitThreads);
 
     function emphasize(id) {
       hovered = id;
@@ -146,7 +174,7 @@
     }
     controls.append(action('−', 'zoom out graph', () => zoomTo(camera.zoom / 1.25)), zoomText,
       action('+', 'zoom in graph', () => zoomTo(camera.zoom * 1.25)),
-      action('↺', 'reset graph view', () => { camera.x = 0; camera.y = 0; camera.zoom = 1; updateCamera(); }));
+      action('↺', 'reset graph view', () => { fitView(); updateCamera(); }));
     footer.append(controls); scene.append(footer);
     scene.append(element('p', 'constellation-note', (frame.context_edges_truncated ? `${(frame.context_edges || []).length.toLocaleString()} of ${(frame.total_context_edges || 0).toLocaleString()} context connections drawn. ` : '') + 'positions stay fixed through time. spacing, light and line length carry no measure of strength.'));
 
@@ -174,7 +202,7 @@
       const occupied = [];
       const order = [...labelNodes].sort((a, b) => Number(b.priority) - Number(a.priority) || a.id.localeCompare(b.id));
       for (const record of order) {
-        const width = Math.min(record.name.length, 30) * 7 / camera.zoom;
+        const width = Math.min(record.name.length, 30) * 8.5 / camera.zoom;
         const box = { x: record.point.x + 12 / camera.zoom, y: record.point.y - 9 / camera.zoom, width, height: 17 / camera.zoom };
         const overlaps = occupied.some(other => box.x < other.x + other.width && box.x + box.width > other.x
           && box.y < other.y + other.height && box.y + box.height > other.y);
@@ -187,13 +215,16 @@
     }
     function updateCamera() {
       field.setAttribute('transform', `translate(${500 + camera.x} ${340 + camera.y}) scale(${camera.zoom}) translate(-500 -340)`);
+      for (const record of labelNodes) {
+        for (const child of record.group.children) child.setAttribute('transform', `scale(${1 / camera.zoom})`);
+      }
       zoomText.textContent = `${Math.round(camera.zoom * 100)}%`;
       updateAppearance();
     }
-    function zoomTo(value) { camera.zoom = Math.max(0.65, Math.min(3.5, value)); updateCamera(); }
+    function zoomTo(value) { camera.zoom = Math.max(0.65, Math.min(12, value)); updateCamera(); }
     let drag = null;
     svg.addEventListener('pointerdown', event => {
-      if (event.target.closest('.constellation-node') || event.button !== 0) return;
+      if (event.target.closest('.constellation-node, .constellation-edge-hit') || event.button !== 0) return;
       drag = { x: event.clientX, y: event.clientY, cameraX: camera.x, cameraY: camera.y };
       svg.setPointerCapture?.(event.pointerId); svg.classList.add('is-dragging');
     });
@@ -213,7 +244,7 @@
       if (steps[event.key]) { event.preventDefault(); camera.x += steps[event.key][0]; camera.y += steps[event.key][1]; updateCamera(); }
       if (event.key === '+' || event.key === '=') { event.preventDefault(); zoomTo(camera.zoom * 1.25); }
       if (event.key === '-') { event.preventDefault(); zoomTo(camera.zoom / 1.25); }
-      if (event.key === '0') { camera.x = 0; camera.y = 0; zoomTo(1); }
+      if (event.key === '0') { fitView(); updateCamera(); }
     });
     updateCamera();
     return scene;

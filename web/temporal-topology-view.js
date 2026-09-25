@@ -279,7 +279,9 @@
     }
 
     function statusLabel(status) {
-      return ({ newly_observed_in_selected_frame: 'first observed in this slice',
+      return ({ newly_observed_in_selected_frame: 'new vs comparison',
+        not_observed_in_either_frame: 'not observed in either frame',
+        observed_without_comparison: 'observed · no comparison',
         absent_from_selected_frame: 'absent from this slice', observed_in_both: 'observed in both frames',
         filtered_out_current: 'filtered out of selected frame', filtered_out_previous: 'filtered out of comparison' })[status]
         || status.replaceAll('_', ' ');
@@ -369,17 +371,18 @@
         return panel;
       }
       const detail = frame.detail;
-      const change = frame.changes.find(item => item.candidate_id === state.temporalNeighbor);
+      const explanations = {
+        newly_observed_in_selected_frame: 'This exact pair appears in the selected evidence and has no matching placement in the comparison. This marks an observation difference, not a project start.',
+        absent_from_selected_frame: 'The comparison contains a matching placement, but the selected source slice does not. This does not show that a project or relationship ended.',
+        observed_in_both: 'Both selected and comparison evidence include an exact placement for this pair.',
+        observed_without_comparison: 'The selected evidence contains this pair. No comparison is selected, so this view does not classify an addition or an absence.',
+        not_observed_in_either_frame: 'The retained selection has no matching placement in either frame. Its identifier stays selected so you can continue through time; there is no edge to draw here.',
+        filtered_out_current: 'A matching placement exists in the selected evidence, but the active category filter hides it. Retained support is shown below; this is not an observed removal.',
+        filtered_out_previous: 'A matching placement exists in the comparison evidence, but the active category filter hides it. Retained support is shown below; this is not an observed addition.'
+      };
       panel.append(node('h3', `${detail.focus.name} · ${detail.neighbor.name}`),
         node('p', statusLabel(detail.status), 'temporal-status-label'),
-        node('p', detail.status === 'newly_observed_in_selected_frame'
-          ? `This exact pair appears in ${state.temporalSource.toUpperCase()} ${state.temporalYear}; the comparison snapshot does not contain the same placement.`
-          : detail.status === 'absent_from_selected_frame'
-            ? `The comparison contains a matching placement, but the selected source slice does not. This does not show that a project or relationship ended.`
-            : 'Both selected and comparison evidence include an exact placement for this pair.', 'muted'));
-      if (change?.current_unfiltered_placements?.length && !detail.selected_placements.length) {
-        panel.append(node('p', 'A matching placement exists here but the active category filter hides it.', 'temporal-coverage-note'));
-      }
+        node('p', explanations[detail.status] || 'Inspect the retained placements below.', 'muted'));
       panel.append(node('h4', `Selected evidence · ${detail.selected_placements.length}`, 'section-title'));
       detail.selected_placements.forEach(placement => panel.append(
         placementCard(placement, detail.focus.name, detail.neighbor.name)));
@@ -387,7 +390,7 @@
         panel.append(node('h4', `Comparison evidence · ${detail.comparison_placements.length}`, 'section-title'));
         detail.comparison_placements.forEach(placement => panel.append(
           placementCard(placement, detail.focus.name, detail.neighbor.name)));
-      } else panel.append(node('p', 'No exact matching placement appears in the comparison snapshot.', 'muted'));
+      } else panel.append(node('p', 'No exact matching placement appears in the comparison evidence.', 'muted'));
       panel.append(node('p', 'Inventory year is the active clock. Source commit time is shown separately. Source publication, event time, ingestion time, and review time are unavailable here. Names and candidate groupings remain unresolved leads.', 'caveat'));
       return panel;
     }
