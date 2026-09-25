@@ -39,3 +39,30 @@ button:focus-visible, select:focus-visible, summary:focus-visible, input:focus-v
   body[data-layer="temporal"] .temporal-constellation .constellation-map { min-height: 380px; }
   .shell > footer { padding: 16px 18px; }
 }
+/* Portfolio-derived editorial paper around the dark observation field. */
+:root {
+  --ink: #242922; --ink-soft: #53584f; --muted: #686b60; --muted-strong: #50574a;
+  --paper: #f2efe6; --paper-deep: #e9e5da; --surface: #f7f4ec; --surface-cool: #eae6dd;
+  --rule: #d3cfc2; --rule-strong: #a5a796; --white: #faf7ef;
+  --accent: #6f576d; --accent-deep: #60445d; --accent-soft: #e6dbe3;
+  --teal: #675363; --teal-deep: #67495f; --cyan: #6b5267; --cyan-soft: #ece1e8;
+  --link: #67495f; --link-hover: #392a35; --focus: #856232;
+  --surface-raised: #f9f6ee; --surface-alt: #e8e4da; --surface-hover: #e1ddd3;
+  --warning-soft: #eee3ce; --warning: #75552c; --shadow: 0 10px 30px rgb(44 35 32 / 5%);
+}
+body, .shell, .site-header { background: #f2efe6; color: #242922; }
+.site-header { padding-top: 18px; padding-bottom: 18px; }
+.identity-name { font-family: Manrope, var(--sans); font-weight: 720; letter-spacing: -.07em; }
+.identity-note, .source-link, .desk-status { color: #646659; }
+.site-header .identity h1 { color: #242922; }
+.desk-status div { border-color: #d8d3c6; }
+.tabs { border-bottom-color: #cecbbf; }
+.tabs button { color: #67695f; }
+.tabs button:hover, .tabs button[aria-current="page"] { color: #262d25; }
+.tabs button[aria-current="page"] { border-bottom-color: #656e5b; }
+.tabs #pin-count { color: #f2efe6; background: #68715e; }
+.topology-layer-button { border-color: #ccc7ba; color: #60594f; }
+.topology-layer-button[aria-current="page"] { color: #3b343a; border-color: #b9a6b4; background: #e9e0e5; }
+.shell > footer { border-top-color: #d3cfc2; color: #767366; }
+.temporal-constellation { --focus: #e4c790; color: #e8e0ed; }
+.temporal-constellation h3 { color: #eee6ef; }

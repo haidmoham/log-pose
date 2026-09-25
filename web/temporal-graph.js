@@ -58,6 +58,8 @@
     const changes = new Map((frame.changes || []).map(change => [change.candidate_id, change]));
     const current = new Set(frame.edges.map(edge => edge.candidate_id));
     const labelNodes = [];
+    let hovered = '';
+    let gpu = null;
     const peers = svgElement('g', { class: 'constellation-context', 'aria-hidden': 'true' });
     for (const edge of frame.context_edges || []) {
       const left = positions.get(edge.left);
@@ -83,8 +85,10 @@
     field.append(threads);
 
     function emphasize(id) {
+      hovered = id;
       for (const [key, thread] of threadElements) thread.classList.toggle('is-hovered', key === id);
       for (const record of labelNodes) record.group.classList.toggle('is-hovered', record.id === id);
+      updateGPU();
     }
     function inspect(id) {
       if (!frame.focus) options.onSelectCandidate?.(id);
@@ -123,6 +127,7 @@
       field.append(group);
     }
     scene.append(svg);
+    gpu = root.LogPoseTemporalGPU?.attach(scene, svg) || null;
 
     const footer = element('div', 'constellation-footer');
     const legend = element('div', 'constellation-legend');
@@ -161,6 +166,9 @@
     tuning.append(slider('label density', 'labels', '%'), slider('thread visibility', 'threads', '%'));
     scene.append(tuning);
 
+    function updateGPU() {
+      gpu?.update({ frame, positions, camera, selected, hover: hovered, threads: appearance.threads });
+    }
     function updateAppearance() {
       scene.style.setProperty('--thread-opacity', String(0.06 + appearance.threads / 100 * 0.32));
       const occupied = [];
@@ -175,6 +183,7 @@
         record.group.classList.toggle('has-label', visible);
         if (visible) occupied.push(box);
       }
+      updateGPU();
     }
     function updateCamera() {
       field.setAttribute('transform', `translate(${500 + camera.x} ${340 + camera.y}) scale(${camera.zoom}) translate(-500 -340)`);

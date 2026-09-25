@@ -61,3 +61,8 @@
   .constellation-note, .constellation-tuning { padding-inline: 16px; }
 }
 @media (prefers-reduced-motion: reduce) { .constellation-thread { transition: none; } }
+.constellation-gpu { position: absolute; top: 0; left: 0; pointer-events: none; }
+.constellation-map { position: relative; }
+.has-webgl .constellation-context, .has-webgl .constellation-threads { visibility: hidden; }
+.has-webgl .constellation-node:not(.is-absent) .constellation-core,
+.has-webgl .constellation-aura { visibility: hidden; }
