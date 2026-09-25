@@ -1,3 +1,4 @@
+import hashlib
 import json
 from datetime import date
 from decimal import Decimal
@@ -65,6 +66,12 @@ def test_catalog_reconciles_retained_database_and_partitions():
         assert index["counts"]["pages"] == expected_pages
         assert index["counts"]["sec"] == expected_sec
         assert index["counts"]["market_rows"] == expected_market
+        exploratory = index["exploratory_topology"]
+        payload = partitions[exploratory["partition_path"]]
+        assert len(payload["nodes"]) == exploratory["node_count"] == 1240
+        assert len(payload["edges"]) == exploratory["edge_count"] == 100
+        assert exploratory["possible_pair_count"] == 47288
+        assert index["partitions"][exploratory["partition_path"]]["sha256"] == hashlib.sha256(encode(payload)).hexdigest()
         all_ids = [row["id"] for key in ("pages", "sec", "market") for row in index[key]]
         assert len(all_ids) == len(set(all_ids))
         assert sum(len(payload["records"]) for path, payload in partitions.items()

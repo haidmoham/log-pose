@@ -13,6 +13,7 @@ the static console reads `web/data/index.json`. all paths in this contract are r
 | `sec` | one metadata entry per retained normalized SEC candidate, with selected/alternative state |
 | `market` | one metadata entry per retained Cboe source file, with participant names and date/row counts |
 | `topology` | accepted database claims, reviewed endpoints, exact passages, per-claim review, and complete review history |
+| `exploratory_topology` | lazy source-overlap partition path, unreviewed status, full candidate count, worklist edge count, and possible overlap-pair count |
 | `discovery.search_path` | compact metadata search index covering every source row, including untagged rows |
 | `partitions` | exact SHA-256 and byte length of each newly generated typed partition |
 | `provenance` | applied migrations, selected SEC policy/cutoff, discovery input hash, and text limit |
@@ -26,6 +27,19 @@ the static console reads `web/data/index.json`. all paths in this contract are r
 - `data/inventory-search.json`: `{schema_version, records}`. each row has the existing inventory ID, name, full source description, source/year/category, mapping status, candidate key where the tagged occurrence has one, and the full partition path. a candidate key is not a reviewed company relationship.
 
 `topology.claims` retains the existing browser shape (`id`, endpoints, predicate, direction, scope, basis, interpretation, unknowns, dates, `sources`) and adds `database_id`, `created_at`, and `review`. `review` contains `id`, `reviewer`, `reviewed_at`, `rationale`, `decision`, and `date_precision`. `sources[].role` is `support` or `contradict`; every passage and hash stays visible. seed-compatible public IDs preserve existing URLs. actual database IDs remain authoritative. no accepted claims means an empty graph, even when the seed file still lists earlier claims.
+
+## exploratory source overlaps
+
+`data/topology-discovery.json` exposes all 1,240 eligible product/project candidate keys in the current queue frame, including candidates outside the 100-pair review worklist. its status is `unreviewed_inventory_overlap`. no database claim or review is created. the 26 other tagged candidate keys fail the existing queue requirements; the broader research catalog still exposes them and all 18,076 inventory rows.
+
+- `nodes`: one stable discovery candidate key (`id` and `candidate_id`), name, description, tags, source/year coverage, homepage/repository, occurrence IDs, explicit unreviewed company eligibility and relationship status. `identity_review` retains an existing provider review when present; `navigation_match` retains an automatic unreviewed pilot link separately. neither establishes an overlap relationship.
+- `nodes[].observations`: one exact `(source, year, source_category)` placement. category includes its subcategory with ` / `. each observation retains artifact SHA-256, a web-root-relative full inventory `partition_path`, sorted `occurrence_ids`, and exact source `rows` with names, descriptions, URLs, and source paths. these 5,964 placements cover every occurrence for every included candidate.
+- `artifacts`: shared metadata keyed by `raw_sha256`, with pinned repository commit, commit time, URL, coverage status, observation basis, retained artifact path, and public inventory partition path. inventory year and repository commit time describe source observation; neither is a company relationship date.
+- `edges`: the existing 100 sampled/prioritized worklist pairs. endpoints are candidate IDs. each retains its queue ID, selection method, unreviewed status, `claim: null`, and every exact shared observation with both endpoints' source rows. these edges do not enumerate the full overlap network.
+- `counts.possible_pairs`: 47,288 distinct unordered pairs derivable from the complete node observations. two candidates are neighbors only if they share an exact source/year/category key; independent overlap in year and category is insufficient. derive neighbors on demand instead of treating the 100 worklist edges as coverage.
+- `provenance` and `build_id`: exact discovery and queue file hashes, queue parameters, mapping version, selection counts, and deterministic projection hash. the catalog manifest separately records partition bytes and SHA-256.
+
+the exporter reconstructs the queue and rejects a stale fingerprint or changed pair/status. the UI must keep this layer separate from accepted company claims. graph degree measures directory placement within this curated frame, not market importance. the queue favors broad overlaps; it is not a representative sample. the full source-overlap network currently has 24 components, a largest component of 981 candidates, and one isolated candidate. a focused neighborhood provides a more inspectable view than drawing all possible pairs at once.
 
 ## reproducible local build
 

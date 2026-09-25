@@ -12,6 +12,7 @@ from decimal import Decimal
 from pathlib import Path
 
 from .topology_export import export_topology
+from .topology_discovery import export_topology_discovery
 
 
 def json_default(value):
@@ -170,6 +171,16 @@ def build_data_export(connection, *, repository_root: Path, page_text_limit: int
         raise ValueError("inventory database count differs from its exported partitions")
     partitions["data/inventory-search.json"] = {"schema_version": "1.0", "records": inventory}
     topology = export_topology(connection, cohort)
+    discovery_sha256 = hashlib.sha256((root / "web/discovery.json").read_bytes()).hexdigest()
+    queue_path = root / "docs/research/topology-review-queue.json"
+    exploratory = export_topology_discovery(discovery, json.loads(queue_path.read_text()),
+        discovery_sha256=discovery_sha256, queue_sha256=hashlib.sha256(queue_path.read_bytes()).hexdigest())
+    exploratory_path = "data/topology-discovery.json"
+    partitions[exploratory_path] = exploratory
+    exploratory_summary = {"partition_path": exploratory_path, "status": exploratory["status"],
+        "node_count": exploratory["counts"]["nodes"], "edge_count": exploratory["counts"]["edges"],
+        "candidate_frame_count": exploratory["counts"]["candidate_frame"],
+        "possible_pair_count": exploratory["counts"]["possible_pairs"]}
     counts = {"companies": len(companies), "inventory_rows": len(inventory),
               "inventory_artifacts": len(discovery["artifacts"]), "tagged_occurrences": len(discovery["occurrences"]),
               "candidate_keys": len(discovery["candidates"]), "identity_reviews": len(discovery["identity_reviews"]),
@@ -178,6 +189,8 @@ def build_data_export(connection, *, repository_root: Path, page_text_limit: int
               "market_daily_totals": len(daily_rows), "market_participant_rows": len(participant_rows),
               "topology_claims": len(topology["claims"]), "topology_reviews": len(topology["review_history"])}
     counts.update(pages=len(pages), sec=len(sec), market_rows=len(participant_rows))
+    counts.update(topology_discovery_nodes=exploratory["counts"]["nodes"],
+                  topology_discovery_edges=exploratory["counts"]["edges"])
     datasets = [
         {"id": "inventory", "label": "software inventories", "grain": "one row in one dated directory snapshot",
          "count": len(inventory), "partition_paths": [row["partition_path"] for row in inventory_partitions]},
@@ -191,11 +204,12 @@ def build_data_export(connection, *, repository_root: Path, page_text_limit: int
          "count": len(topology["claims"]), "partition_paths": []}]
     index = {"schema_version": "1.0", "counts": counts, "companies": list(companies.values()),
              "datasets": datasets, "pages": pages, "sec": sec, "market": market, "topology": topology,
+             "exploratory_topology": exploratory_summary,
              "discovery": {"index_path": "discovery.json", "search_path": "data/inventory-search.json",
                            "inventory_partitions": inventory_partitions},
              "provenance": {"migrations": migrations, "sec_policy_version": analysis["policy_version"],
                             "sec_as_of": analysis["as_of"], "page_text_limit": page_text_limit,
-                            "discovery_sha256": hashlib.sha256((root / "web/discovery.json").read_bytes()).hexdigest()},
+                            "discovery_sha256": discovery_sha256},
              "research": {key: dashboard[key] for key in ("reviewed_quotes", "financing_announcements", "us_location_reviews")}}
     manifest = {path: {"sha256": hashlib.sha256(encode(payload)).hexdigest(), "bytes": len(encode(payload))}
                 for path, payload in sorted(partitions.items())}
