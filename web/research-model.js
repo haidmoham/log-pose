@@ -1,7 +1,7 @@
 (function exposeResearchModel(globalScope) {
   'use strict';
 
-  const VALID_VIEWS = new Set(['data', 'overview', 'compare', 'explore', 'topology', 'research-set']);
+  const VALID_VIEWS = new Set(['data', 'overview', 'compare', 'explore', 'topology']);
   const MAX_PINNED = 4;
   const TOPOLOGY_PREDICATES = new Set([
     'possible_substitute_for', 'named_competitor_of', 'integrates_with',
@@ -369,11 +369,6 @@
     const requestedTopologyYear = params.get('topologySourceYear') || 'all';
     const topologySourceYear = requestedTopologyYear === 'all'
       || /^20(?:20|2[1-6])$/.test(requestedTopologyYear) ? requestedTopologyYear : 'all';
-    const safeResearchValue = (name, maxLength = 120) => {
-      const value = params.get(name) || '';
-      return /[\x00-\x1f]/.test(value) ? '' : value.slice(0, maxLength);
-    };
-    const researchDisposition = safeResearchValue('disposition');
     return { view, year, company, pinned, inventoryArtifact,
       inventoryQuery: (params.get('inventoryQuery') || '').slice(0, 200),
       query: (params.get('q') || '').slice(0, 200), searchYear,
@@ -389,12 +384,7 @@
       fieldNeighbor: safeDataRecord(params.get('fieldNeighbor') || '') || null,
       topologySourceYear, topologyCategory: choice('topologyCategory', allowedTopologyCategory),
       topologyStatus: choice('topologyStatus', allowedTopologyStatus),
-      selectedClaim: safeDataRecord(params.get('selectedClaim') || '') || null,
-      researchMember: /^[A-Za-z0-9][A-Za-z0-9._:-]{0,119}$/.test(safeResearchValue('member'))
-        ? safeResearchValue('member') : null,
-      researchRole: safeResearchValue('role') || 'all',
-      researchDisposition: researchDisposition || 'all',
-      researchQuery: safeResearchValue('researchQuery', 200).slice(0, 200) };
+      selectedClaim: safeDataRecord(params.get('selectedClaim') || '') || null };
   }
 
   function toUrlParams(state) {
@@ -403,7 +393,7 @@
     if (state.view === 'data' && (state.company || state.compareSlugs.length)) {
       params.set('view', 'data');
     }
-    if (state.view !== 'data' && state.view !== 'explore' && state.view !== 'research-set' && state.year) {
+    if (state.view !== 'data' && state.view !== 'explore' && state.year) {
       params.set('year', String(state.year));
     }
     if (state.company) params.set('company', state.company);
@@ -459,14 +449,19 @@
         if (fieldNeighbor) params.set('fieldNeighbor', fieldNeighbor);
       }
     }
-    if (state.view === 'research-set') {
-      if (state.researchMember) params.set('member', state.researchMember);
-      if (state.researchRole && state.researchRole !== 'all') params.set('role', state.researchRole);
-      if (state.researchDisposition && state.researchDisposition !== 'all')
-        params.set('disposition', state.researchDisposition);
-      if (state.researchQuery) params.set('researchQuery', state.researchQuery.slice(0, 200));
-    }
     return params.toString();
+  }
+
+  // Keep existing bookmarks usable after the study moved to its own application.
+  function legacyResearchSetTarget(search) {
+    const previous = new URLSearchParams(search);
+    if (previous.get('view') !== 'research-set') return null;
+    const study = new URLSearchParams();
+    for (const name of ['member', 'role', 'disposition', 'researchQuery']) {
+      if (previous.has(name)) study.set(name, previous.get(name));
+    }
+    const query = study.toString();
+    return './experimental/mlops-2024/index.html' + (query ? '?' + query : '');
   }
 
   function togglePinned(pinned, slug) {
@@ -476,6 +471,7 @@
   }
 
   const model = {
+    legacyResearchSetTarget,
     MAX_PINNED,
     VALID_VIEWS,
     finiteNumber,

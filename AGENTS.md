@@ -13,6 +13,12 @@
 - document each shared dataset with its row grain, key, timestamps, and provenance. identity candidates remain leads until a reviewed company relationship says otherwise.
 - when missing data blocks a task, make a bounded attempt to source the needed data. record sources checked, access or rights limits, failed retrievals, and the remaining gap. keep the attempt within the task's declared acquisition budget; ask before expanding that budget.
 
+## experimental work
+
+- keep experimental ML and provisional industry studies under `experiments/ml/`, with browser assets under `web/experimental/`. label each entry experimental and document its evidence limits and explicit run commands.
+- keep experiment imports, dependencies, tests, and generated results out of the normal application startup and default checks. experimental code may read shared retained evidence; it must not silently promote judgments or rewrite canonical evidence. verify the normal console works without experimental assets.
+- preserve source hashes and record IDs when relocating experimental artifacts. retain historical receipts and write new runs to separate outputs. promotion into the core application requires explicit review and meaningful integration checks.
+
 ## publishing
 
 - `https://github.com/haidmoham/log-pose` is the source repository. the Vercel `log-pose` project builds the static `web/` export from `main`, with routes in `vercel.json`.

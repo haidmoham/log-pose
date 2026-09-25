@@ -1,7 +1,7 @@
 (function exposeResearchSetView(globalScope) {
   'use strict';
 
-  const DATA_PATH = './data/research-set-mlops-2024.json';
+  const DATA_PATH = './study.json';
   const GATE_LABELS = [['product', 'product'], ['private', 'private-company status'],
     ['us_base', 'U.S. base']];
 
@@ -335,7 +335,7 @@
       const unreviewed = members.length - reviewed;
       const visible = members.filter(memberMatches);
       const heading = node('header', '', 'research-set-heading');
-      heading.append(node('p', `SAVED COHORT / ${payload.as_of}`, 'eyebrow'),
+      heading.append(node('p', `EXPERIMENTAL STUDY / ${payload.as_of}`, 'eyebrow'),
         node('h2', payload.title || 'MLOps research set'),
         node('p', 'A fixed eight-lead comparison. Evidence describes dated publisher statements and review decisions; it does not establish adoption, revenue, customer outcomes, or company performance.', 'view-note'));
       const identityMetric = append(node('div', '', 'research-set-identity-count'),
