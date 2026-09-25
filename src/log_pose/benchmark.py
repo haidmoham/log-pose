@@ -332,7 +332,7 @@ def _run_control(case: dict[str, Any], root: Path, control: str, label: dict[str
         "objective_status": label.get("objective_status", "unresolved"),
         "evaluation_note": label.get("note"),
         "semantic_correctness": None,
-        "cost": {"model_calls": 0, "tokens": 0, "latency_ms": 0},
+        "cost": {"model_calls": 0, "tokens": 0, "latency_ms": None},
     }
 
 
@@ -371,7 +371,7 @@ def run_benchmark(root: Path, output_dir: Path) -> dict[str, Any]:
                 "observed_artifact_ids": sorted({item["artifact_id"] for row in rows for item in row["evidence"]}),
                 "action_trace": [{"case_id": row["case_id"], "action": row["status"], "artifact_ids": [item["artifact_id"] for item in row["evidence"]]} for row in rows],
                 "predictions_or_answers": [{"case_id": row["case_id"], "status": row["status"], "spans": [item["span"] for item in row["evidence"]]} for row in rows],
-                "cost_and_latency": {"model_calls": 0, "tokens": 0, "latency_ms": 0},
+                "cost_and_latency": {"model_calls": 0, "tokens": 0, "latency_ms": None},
                 "grader_version": "mechanical-temporal-and-provenance-v1",
                 "violations": [row["case_id"] for row in rows if row["temporal_violations"]],
             },
@@ -381,7 +381,7 @@ def run_benchmark(root: Path, output_dir: Path) -> dict[str, Any]:
             "coverage": answer_count / len(rows) if rows else None,
             "temporal_violations": violation_count,
             "semantic_scores": "not_scored_independent_review_unavailable",
-            "cost": {"model_calls": 0, "tokens": 0, "latency_ms": 0},
+            "cost": {"model_calls": 0, "tokens": 0, "latency_ms": None},
             "cases": rows,
         }
     report = {
@@ -413,7 +413,10 @@ def run_benchmark(root: Path, output_dir: Path) -> dict[str, Any]:
 def _git_commit(root: Path) -> str | None:
     import subprocess
 
-    result = subprocess.run(["git", "rev-parse", "HEAD"], cwd=root, text=True, capture_output=True, check=False)
+    result = subprocess.run(
+        ["git", "log", "-1", "--format=%H", "--", "src/log_pose/benchmark.py", "scripts/run_benchmark.py"],
+        cwd=root, text=True, capture_output=True, check=False,
+    )
     return result.stdout.strip() if result.returncode == 0 else None
 
 
@@ -434,7 +437,8 @@ def render_markdown(report: dict[str, Any]) -> str:
     ]
     for name, summary in report["controls"].items():
         cost = summary["cost"]
-        lines.append(f"| `{name}` | {summary['answered']} | {summary['abstained']} | {summary['coverage']:.3f} | {summary['temporal_violations']} | {cost['model_calls']} / {cost['tokens']} / {cost['latency_ms']} | not scored |")
+        latency = cost["latency_ms"] if cost["latency_ms"] is not None else "not measured"
+        lines.append(f"| `{name}` | {summary['answered']} | {summary['abstained']} | {summary['coverage']:.3f} | {summary['temporal_violations']} | {cost['model_calls']} / {cost['tokens']} / {latency} | not scored |")
     for name, summary in report["controls"].items():
         lines.extend(["", f"## Case receipts: `{name}`", "", "| Case | Run status | Evidence | Temporal violations | Evaluator status | Semantic label |", "| --- | --- | --- | --- | --- | --- |"])
         for row in summary["cases"]:

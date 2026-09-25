@@ -16,7 +16,7 @@ The case manifest is frozen before a candidate run. Keep every selected case in 
 
 Report these layers as separate score vectors. There is no universal `analytic_quality` scalar. No forecast, policy, or return result is part of P0.
 
-## cases, labels, and review
+## p0 case labels
 
 The manifest has exactly twenty versioned cases from retained local artifacts. Selection includes ordinary source and arithmetic tasks plus post-cutoff filings, mutable pages with old printed dates, duplicate or unresolved identities, a company's marketing claim, unsupported graph interpretation, contradictory sources, missing evidence, and valid abstention. A case can use more than one artifact. Its grouping keys identify shared company and source families so a later split does not put near duplicates on opposite sides.
 

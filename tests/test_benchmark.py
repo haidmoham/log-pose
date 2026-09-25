@@ -150,6 +150,7 @@ def test_offline_controls_are_deterministic_and_case_receipts_retain_blocks(tmp_
     assert first["controls"]["capture_aware_exact_span"]["temporal_violations"] == 0
     assert first["controls"]["publication_date_only"]["temporal_violations"] > 0
     assert first["controls"]["supplied_prediction_fixture"]["case_count"] == 20
+    assert first["controls"]["capture_aware_exact_span"]["cost"]["latency_ms"] is None
     assert first["controls"]["capture_aware_exact_span"]["cases"][17]["case_id"] == "case-18"
     assert first["controls"]["capture_aware_exact_span"]["cases"][17]["status"] == "abstained"
     fixture = first["synthetic_score_rule_fixture"]
