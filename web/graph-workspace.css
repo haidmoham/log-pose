@@ -173,3 +173,15 @@ body[data-layer=temporal] .temporal-constellation .constellation-map { min-heigh
   .temporal-sidebar { max-height: none; }
   body[data-layer=temporal] .temporal-constellation .constellation-map { height: 390px; min-height: 390px; }
 }
+/* Monospace marks literal provenance, not generic small UI copy. */
+:root { --source-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace; }
+.temporal-stop-detail time,
+.temporal-evidence-card small,
+.temporal-row-link,
+.temporal-frame-id,
+.source-foot code,
+.source-foot small,
+code, pre, .source-token {
+  font-family: var(--source-mono);
+  font-variant-numeric: tabular-nums;
+}
