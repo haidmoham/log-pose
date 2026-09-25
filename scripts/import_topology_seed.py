@@ -5,7 +5,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-from datetime import date, datetime, timezone
+from datetime import date, datetime, time, timezone
 from pathlib import Path
 
 from log_pose.topology import validate_topology
@@ -152,14 +152,14 @@ def import_seed(topology: dict, manifest: list[dict], cohort: list[dict], *,
                 stored_evidence += result == "stored"
 
             rationale = (
-                f"Accepted after review of {len(sources)} retained source(s), beginning at "
-                f"{primary['evidence_locator']}. The claim scope and alternative/unknown statement "
-                "are retained with the source assertion."
+                f"Imported prior curated seed review dated {topology['reviewed_at']}; "
+                "date precision is one day (stored at 00:00 UTC). This import is not a new source review. "
+                f"The prior review retained {len(sources)} source(s), beginning at "
+                f"{primary['evidence_locator']}, with claim scope and explicit unknowns."
             )
             with connection.cursor() as cursor:
                 cursor.execute("""SELECT 1 FROM topology_reviews
-                    WHERE candidate_id=%s AND decision='accept' AND reviewer=%s AND rationale=%s LIMIT 1""",
-                    (candidate_id, reviewer, rationale))
+                    WHERE candidate_id=%s LIMIT 1""", (candidate_id,))
                 already_reviewed = cursor.fetchone() is not None
             if not already_reviewed:
                 record_review(
@@ -168,7 +168,8 @@ def import_seed(topology: dict, manifest: list[dict], cohort: list[dict], *,
                     decision="accept",
                     reviewer=reviewer,
                     rationale=rationale,
-                    reviewed_at=datetime.now(timezone.utc),
+                    reviewed_at=datetime.combine(date.fromisoformat(topology["reviewed_at"]),
+                                                 time.min, tzinfo=timezone.utc),
                 )
                 accepted_reviews += 1
 
@@ -186,7 +187,7 @@ def main() -> None:
     parser.add_argument("--topology", type=Path, default=Path("docs/research/market-topology.json"))
     parser.add_argument("--manifest", type=Path, default=Path("docs/research/topology-source-manifest.json"))
     parser.add_argument("--cohort", type=Path, default=Path("docs/research/pilot-cohort.json"))
-    parser.add_argument("--reviewer", default="Codex source review")
+    parser.add_argument("--reviewer", default="imported prior Codex seed review")
     args = parser.parse_args()
     repository_root = Path(".")
     counts = import_seed(

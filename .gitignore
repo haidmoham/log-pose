@@ -1,10 +1,10 @@
 .env
-.venv/
+.venv
 __pycache__/
 .pytest_cache/
 *.egg-info/
 .vercel/
-data/
+/data/
 .codex/
 site/
 .env.local

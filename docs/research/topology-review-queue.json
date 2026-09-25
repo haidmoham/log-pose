@@ -3,8 +3,8 @@
   "generated_from": "web/discovery.json",
   "source_mapping_version": "landscape-category-candidates-v1",
   "universe_status": "discovery_leads_unreviewed_for_us_company_eligibility",
-  "candidate_entity_count": 1091,
-  "possible_pair_count": 36630,
+  "candidate_entity_count": 1240,
+  "possible_pair_count": 47288,
   "queue_limit": 100,
   "random_seed": 20260924,
   "priority_selection_count": 50,
@@ -24,24 +24,32 @@
         "Observability and Analysis / Observability"
       ],
       "shared_inventory_years": [
+        2020,
         2021,
         2022,
         2023,
-        2024
+        2024,
+        2025,
+        2026
       ],
       "shared_inventory_sources": [
         "cncf",
         "lfai"
       ],
       "source_year_strata": [
+        "cncf:2020",
         "cncf:2021",
         "cncf:2022",
         "cncf:2023",
         "cncf:2024",
+        "cncf:2025",
+        "cncf:2026",
         "lfai:2021",
         "lfai:2022",
         "lfai:2023",
-        "lfai:2024"
+        "lfai:2024",
+        "lfai:2025",
+        "lfai:2026"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
@@ -59,19 +67,25 @@
         "Observability and Analysis / Observability"
       ],
       "shared_inventory_years": [
+        2020,
         2021,
         2022,
         2023,
-        2024
+        2024,
+        2025,
+        2026
       ],
       "shared_inventory_sources": [
         "cncf"
       ],
       "source_year_strata": [
+        "cncf:2020",
         "cncf:2021",
         "cncf:2022",
         "cncf:2023",
-        "cncf:2024"
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
@@ -89,19 +103,25 @@
         "Observability and Analysis / Observability"
       ],
       "shared_inventory_years": [
+        2020,
         2021,
         2022,
         2023,
-        2024
+        2024,
+        2025,
+        2026
       ],
       "shared_inventory_sources": [
         "cncf"
       ],
       "source_year_strata": [
+        "cncf:2020",
         "cncf:2021",
         "cncf:2022",
         "cncf:2023",
-        "cncf:2024"
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
@@ -119,19 +139,25 @@
         "Observability and Analysis / Observability"
       ],
       "shared_inventory_years": [
+        2020,
         2021,
         2022,
         2023,
-        2024
+        2024,
+        2025,
+        2026
       ],
       "shared_inventory_sources": [
         "cncf"
       ],
       "source_year_strata": [
+        "cncf:2020",
         "cncf:2021",
         "cncf:2022",
         "cncf:2023",
-        "cncf:2024"
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
@@ -149,19 +175,25 @@
         "Observability and Analysis / Observability"
       ],
       "shared_inventory_years": [
+        2020,
         2021,
         2022,
         2023,
-        2024
+        2024,
+        2025,
+        2026
       ],
       "shared_inventory_sources": [
         "cncf"
       ],
       "source_year_strata": [
+        "cncf:2020",
         "cncf:2021",
         "cncf:2022",
         "cncf:2023",
-        "cncf:2024"
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
@@ -179,19 +211,25 @@
         "Observability and Analysis / Observability"
       ],
       "shared_inventory_years": [
+        2020,
         2021,
         2022,
         2023,
-        2024
+        2024,
+        2025,
+        2026
       ],
       "shared_inventory_sources": [
         "cncf"
       ],
       "source_year_strata": [
+        "cncf:2020",
         "cncf:2021",
         "cncf:2022",
         "cncf:2023",
-        "cncf:2024"
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
@@ -209,19 +247,25 @@
         "Observability and Analysis / Observability"
       ],
       "shared_inventory_years": [
+        2020,
         2021,
         2022,
         2023,
-        2024
+        2024,
+        2025,
+        2026
       ],
       "shared_inventory_sources": [
         "cncf"
       ],
       "source_year_strata": [
+        "cncf:2020",
         "cncf:2021",
         "cncf:2022",
         "cncf:2023",
-        "cncf:2024"
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
@@ -239,19 +283,25 @@
         "Observability and Analysis / Observability"
       ],
       "shared_inventory_years": [
+        2020,
         2021,
         2022,
         2023,
-        2024
+        2024,
+        2025,
+        2026
       ],
       "shared_inventory_sources": [
         "cncf"
       ],
       "source_year_strata": [
+        "cncf:2020",
         "cncf:2021",
         "cncf:2022",
         "cncf:2023",
-        "cncf:2024"
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
@@ -269,19 +319,25 @@
         "Observability and Analysis / Observability"
       ],
       "shared_inventory_years": [
+        2020,
         2021,
         2022,
         2023,
-        2024
+        2024,
+        2025,
+        2026
       ],
       "shared_inventory_sources": [
         "cncf"
       ],
       "source_year_strata": [
+        "cncf:2020",
         "cncf:2021",
         "cncf:2022",
         "cncf:2023",
-        "cncf:2024"
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
@@ -299,109 +355,25 @@
         "Observability and Analysis / Observability"
       ],
       "shared_inventory_years": [
+        2020,
         2021,
         2022,
         2023,
-        2024
+        2024,
+        2025,
+        2026
       ],
       "shared_inventory_sources": [
         "cncf"
       ],
       "source_year_strata": [
+        "cncf:2020",
         "cncf:2021",
         "cncf:2022",
         "cncf:2023",
-        "cncf:2024"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "highest_shared_category_and_year_overlap"
-    },
-    {
-      "id": "inventory-overlap-008f15fb016e197095c7-363c4f264240b01e398a",
-      "subject_candidate_id": "008f15fb016e197095c7",
-      "object_candidate_id": "363c4f264240b01e398a",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "Observability and Analysis / Monitoring",
-        "Observability and Analysis / Observability"
-      ],
-      "shared_inventory_years": [
-        2021,
-        2022,
-        2023,
-        2024
-      ],
-      "shared_inventory_sources": [
-        "cncf"
-      ],
-      "source_year_strata": [
-        "cncf:2021",
-        "cncf:2022",
-        "cncf:2023",
-        "cncf:2024"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "highest_shared_category_and_year_overlap"
-    },
-    {
-      "id": "inventory-overlap-008f15fb016e197095c7-3edca07e71545726ac41",
-      "subject_candidate_id": "008f15fb016e197095c7",
-      "object_candidate_id": "3edca07e71545726ac41",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "Observability and Analysis / Monitoring",
-        "Observability and Analysis / Observability"
-      ],
-      "shared_inventory_years": [
-        2021,
-        2022,
-        2023,
-        2024
-      ],
-      "shared_inventory_sources": [
-        "cncf"
-      ],
-      "source_year_strata": [
-        "cncf:2021",
-        "cncf:2022",
-        "cncf:2023",
-        "cncf:2024"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "highest_shared_category_and_year_overlap"
-    },
-    {
-      "id": "inventory-overlap-008f15fb016e197095c7-432956d9dad853830758",
-      "subject_candidate_id": "008f15fb016e197095c7",
-      "object_candidate_id": "432956d9dad853830758",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "Observability and Analysis / Monitoring",
-        "Observability and Analysis / Observability"
-      ],
-      "shared_inventory_years": [
-        2021,
-        2022,
-        2023,
-        2024
-      ],
-      "shared_inventory_sources": [
-        "cncf"
-      ],
-      "source_year_strata": [
-        "cncf:2021",
-        "cncf:2022",
-        "cncf:2023",
-        "cncf:2024"
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
@@ -419,19 +391,25 @@
         "Observability and Analysis / Observability"
       ],
       "shared_inventory_years": [
+        2020,
         2021,
         2022,
         2023,
-        2024
+        2024,
+        2025,
+        2026
       ],
       "shared_inventory_sources": [
         "cncf"
       ],
       "source_year_strata": [
+        "cncf:2020",
         "cncf:2021",
         "cncf:2022",
         "cncf:2023",
-        "cncf:2024"
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
@@ -449,19 +427,25 @@
         "Observability and Analysis / Observability"
       ],
       "shared_inventory_years": [
+        2020,
         2021,
         2022,
         2023,
-        2024
+        2024,
+        2025,
+        2026
       ],
       "shared_inventory_sources": [
         "cncf"
       ],
       "source_year_strata": [
+        "cncf:2020",
         "cncf:2021",
         "cncf:2022",
         "cncf:2023",
-        "cncf:2024"
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
@@ -479,19 +463,25 @@
         "Observability and Analysis / Observability"
       ],
       "shared_inventory_years": [
+        2020,
         2021,
         2022,
         2023,
-        2024
+        2024,
+        2025,
+        2026
       ],
       "shared_inventory_sources": [
         "cncf"
       ],
       "source_year_strata": [
+        "cncf:2020",
         "cncf:2021",
         "cncf:2022",
         "cncf:2023",
-        "cncf:2024"
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
@@ -509,19 +499,25 @@
         "Observability and Analysis / Observability"
       ],
       "shared_inventory_years": [
+        2020,
         2021,
         2022,
         2023,
-        2024
+        2024,
+        2025,
+        2026
       ],
       "shared_inventory_sources": [
         "cncf"
       ],
       "source_year_strata": [
+        "cncf:2020",
         "cncf:2021",
         "cncf:2022",
         "cncf:2023",
-        "cncf:2024"
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
@@ -539,19 +535,25 @@
         "Observability and Analysis / Observability"
       ],
       "shared_inventory_years": [
+        2020,
         2021,
         2022,
         2023,
-        2024
+        2024,
+        2025,
+        2026
       ],
       "shared_inventory_sources": [
         "cncf"
       ],
       "source_year_strata": [
+        "cncf:2020",
         "cncf:2021",
         "cncf:2022",
         "cncf:2023",
-        "cncf:2024"
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
@@ -569,19 +571,25 @@
         "Observability and Analysis / Observability"
       ],
       "shared_inventory_years": [
+        2020,
         2021,
         2022,
         2023,
-        2024
+        2024,
+        2025,
+        2026
       ],
       "shared_inventory_sources": [
         "cncf"
       ],
       "source_year_strata": [
+        "cncf:2020",
         "cncf:2021",
         "cncf:2022",
         "cncf:2023",
-        "cncf:2024"
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
@@ -599,19 +607,25 @@
         "Observability and Analysis / Observability"
       ],
       "shared_inventory_years": [
+        2020,
         2021,
         2022,
         2023,
-        2024
+        2024,
+        2025,
+        2026
       ],
       "shared_inventory_sources": [
         "cncf"
       ],
       "source_year_strata": [
+        "cncf:2020",
         "cncf:2021",
         "cncf:2022",
         "cncf:2023",
-        "cncf:2024"
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
@@ -629,19 +643,25 @@
         "Observability and Analysis / Observability"
       ],
       "shared_inventory_years": [
+        2020,
         2021,
         2022,
         2023,
-        2024
+        2024,
+        2025,
+        2026
       ],
       "shared_inventory_sources": [
         "cncf"
       ],
       "source_year_strata": [
+        "cncf:2020",
         "cncf:2021",
         "cncf:2022",
         "cncf:2023",
-        "cncf:2024"
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
@@ -659,19 +679,25 @@
         "Observability and Analysis / Observability"
       ],
       "shared_inventory_years": [
+        2020,
         2021,
         2022,
         2023,
-        2024
+        2024,
+        2025,
+        2026
       ],
       "shared_inventory_sources": [
         "cncf"
       ],
       "source_year_strata": [
+        "cncf:2020",
         "cncf:2021",
         "cncf:2022",
         "cncf:2023",
-        "cncf:2024"
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
@@ -689,19 +715,25 @@
         "Observability and Analysis / Observability"
       ],
       "shared_inventory_years": [
+        2020,
         2021,
         2022,
         2023,
-        2024
+        2024,
+        2025,
+        2026
       ],
       "shared_inventory_sources": [
         "cncf"
       ],
       "source_year_strata": [
+        "cncf:2020",
         "cncf:2021",
         "cncf:2022",
         "cncf:2023",
-        "cncf:2024"
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
@@ -719,19 +751,25 @@
         "Observability and Analysis / Observability"
       ],
       "shared_inventory_years": [
+        2020,
         2021,
         2022,
         2023,
-        2024
+        2024,
+        2025,
+        2026
       ],
       "shared_inventory_sources": [
         "cncf"
       ],
       "source_year_strata": [
+        "cncf:2020",
         "cncf:2021",
         "cncf:2022",
         "cncf:2023",
-        "cncf:2024"
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
@@ -749,19 +787,25 @@
         "Observability and Analysis / Observability"
       ],
       "shared_inventory_years": [
+        2020,
         2021,
         2022,
         2023,
-        2024
+        2024,
+        2025,
+        2026
       ],
       "shared_inventory_sources": [
         "cncf"
       ],
       "source_year_strata": [
+        "cncf:2020",
         "cncf:2021",
         "cncf:2022",
         "cncf:2023",
-        "cncf:2024"
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
@@ -779,19 +823,25 @@
         "Observability and Analysis / Observability"
       ],
       "shared_inventory_years": [
+        2020,
         2021,
         2022,
         2023,
-        2024
+        2024,
+        2025,
+        2026
       ],
       "shared_inventory_sources": [
         "cncf"
       ],
       "source_year_strata": [
+        "cncf:2020",
         "cncf:2021",
         "cncf:2022",
         "cncf:2023",
-        "cncf:2024"
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
@@ -809,19 +859,25 @@
         "Observability and Analysis / Observability"
       ],
       "shared_inventory_years": [
+        2020,
         2021,
         2022,
         2023,
-        2024
+        2024,
+        2025,
+        2026
       ],
       "shared_inventory_sources": [
         "cncf"
       ],
       "source_year_strata": [
+        "cncf:2020",
         "cncf:2021",
         "cncf:2022",
         "cncf:2023",
-        "cncf:2024"
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
@@ -839,19 +895,25 @@
         "Observability and Analysis / Observability"
       ],
       "shared_inventory_years": [
+        2020,
         2021,
         2022,
         2023,
-        2024
+        2024,
+        2025,
+        2026
       ],
       "shared_inventory_sources": [
         "cncf"
       ],
       "source_year_strata": [
+        "cncf:2020",
         "cncf:2021",
         "cncf:2022",
         "cncf:2023",
-        "cncf:2024"
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
@@ -869,19 +931,25 @@
         "Observability and Analysis / Observability"
       ],
       "shared_inventory_years": [
+        2020,
         2021,
         2022,
         2023,
-        2024
+        2024,
+        2025,
+        2026
       ],
       "shared_inventory_sources": [
         "cncf"
       ],
       "source_year_strata": [
+        "cncf:2020",
         "cncf:2021",
         "cncf:2022",
         "cncf:2023",
-        "cncf:2024"
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
@@ -899,19 +967,25 @@
         "Observability and Analysis / Observability"
       ],
       "shared_inventory_years": [
+        2020,
         2021,
         2022,
         2023,
-        2024
+        2024,
+        2025,
+        2026
       ],
       "shared_inventory_sources": [
         "cncf"
       ],
       "source_year_strata": [
+        "cncf:2020",
         "cncf:2021",
         "cncf:2022",
         "cncf:2023",
-        "cncf:2024"
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
@@ -929,19 +1003,25 @@
         "Observability and Analysis / Observability"
       ],
       "shared_inventory_years": [
+        2020,
         2021,
         2022,
         2023,
-        2024
+        2024,
+        2025,
+        2026
       ],
       "shared_inventory_sources": [
         "cncf"
       ],
       "source_year_strata": [
+        "cncf:2020",
         "cncf:2021",
         "cncf:2022",
         "cncf:2023",
-        "cncf:2024"
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
@@ -959,19 +1039,25 @@
         "Observability and Analysis / Observability"
       ],
       "shared_inventory_years": [
+        2020,
         2021,
         2022,
         2023,
-        2024
+        2024,
+        2025,
+        2026
       ],
       "shared_inventory_sources": [
         "cncf"
       ],
       "source_year_strata": [
+        "cncf:2020",
         "cncf:2021",
         "cncf:2022",
         "cncf:2023",
-        "cncf:2024"
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
@@ -989,49 +1075,25 @@
         "Observability and Analysis / Observability"
       ],
       "shared_inventory_years": [
+        2020,
         2021,
         2022,
         2023,
-        2024
+        2024,
+        2025,
+        2026
       ],
       "shared_inventory_sources": [
         "cncf"
       ],
       "source_year_strata": [
+        "cncf:2020",
         "cncf:2021",
         "cncf:2022",
         "cncf:2023",
-        "cncf:2024"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "highest_shared_category_and_year_overlap"
-    },
-    {
-      "id": "inventory-overlap-008f15fb016e197095c7-ae8b7407ab4fa39d8f70",
-      "subject_candidate_id": "008f15fb016e197095c7",
-      "object_candidate_id": "ae8b7407ab4fa39d8f70",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "Observability and Analysis / Monitoring",
-        "Observability and Analysis / Observability"
-      ],
-      "shared_inventory_years": [
-        2021,
-        2022,
-        2023,
-        2024
-      ],
-      "shared_inventory_sources": [
-        "cncf"
-      ],
-      "source_year_strata": [
-        "cncf:2021",
-        "cncf:2022",
-        "cncf:2023",
-        "cncf:2024"
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
@@ -1049,19 +1111,25 @@
         "Observability and Analysis / Observability"
       ],
       "shared_inventory_years": [
+        2020,
         2021,
         2022,
         2023,
-        2024
+        2024,
+        2025,
+        2026
       ],
       "shared_inventory_sources": [
         "cncf"
       ],
       "source_year_strata": [
+        "cncf:2020",
         "cncf:2021",
         "cncf:2022",
         "cncf:2023",
-        "cncf:2024"
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
@@ -1079,19 +1147,25 @@
         "Observability and Analysis / Observability"
       ],
       "shared_inventory_years": [
+        2020,
         2021,
         2022,
         2023,
-        2024
+        2024,
+        2025,
+        2026
       ],
       "shared_inventory_sources": [
         "cncf"
       ],
       "source_year_strata": [
+        "cncf:2020",
         "cncf:2021",
         "cncf:2022",
         "cncf:2023",
-        "cncf:2024"
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
@@ -1109,19 +1183,25 @@
         "Observability and Analysis / Observability"
       ],
       "shared_inventory_years": [
+        2020,
         2021,
         2022,
         2023,
-        2024
+        2024,
+        2025,
+        2026
       ],
       "shared_inventory_sources": [
         "cncf"
       ],
       "source_year_strata": [
+        "cncf:2020",
         "cncf:2021",
         "cncf:2022",
         "cncf:2023",
-        "cncf:2024"
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
@@ -1139,19 +1219,25 @@
         "Observability and Analysis / Observability"
       ],
       "shared_inventory_years": [
+        2020,
         2021,
         2022,
         2023,
-        2024
+        2024,
+        2025,
+        2026
       ],
       "shared_inventory_sources": [
         "cncf"
       ],
       "source_year_strata": [
+        "cncf:2020",
         "cncf:2021",
         "cncf:2022",
         "cncf:2023",
-        "cncf:2024"
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
@@ -1169,19 +1255,25 @@
         "Observability and Analysis / Observability"
       ],
       "shared_inventory_years": [
+        2020,
         2021,
         2022,
         2023,
-        2024
+        2024,
+        2025,
+        2026
       ],
       "shared_inventory_sources": [
         "cncf"
       ],
       "source_year_strata": [
+        "cncf:2020",
         "cncf:2021",
         "cncf:2022",
         "cncf:2023",
-        "cncf:2024"
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
@@ -1199,49 +1291,25 @@
         "Observability and Analysis / Observability"
       ],
       "shared_inventory_years": [
+        2020,
         2021,
         2022,
         2023,
-        2024
+        2024,
+        2025,
+        2026
       ],
       "shared_inventory_sources": [
         "cncf"
       ],
       "source_year_strata": [
+        "cncf:2020",
         "cncf:2021",
         "cncf:2022",
         "cncf:2023",
-        "cncf:2024"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "highest_shared_category_and_year_overlap"
-    },
-    {
-      "id": "inventory-overlap-008f15fb016e197095c7-cbb603e7222c82cb99e8",
-      "subject_candidate_id": "008f15fb016e197095c7",
-      "object_candidate_id": "cbb603e7222c82cb99e8",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "Observability and Analysis / Monitoring",
-        "Observability and Analysis / Observability"
-      ],
-      "shared_inventory_years": [
-        2021,
-        2022,
-        2023,
-        2024
-      ],
-      "shared_inventory_sources": [
-        "cncf"
-      ],
-      "source_year_strata": [
-        "cncf:2021",
-        "cncf:2022",
-        "cncf:2023",
-        "cncf:2024"
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
@@ -1259,19 +1327,25 @@
         "Observability and Analysis / Observability"
       ],
       "shared_inventory_years": [
+        2020,
         2021,
         2022,
         2023,
-        2024
+        2024,
+        2025,
+        2026
       ],
       "shared_inventory_sources": [
         "cncf"
       ],
       "source_year_strata": [
+        "cncf:2020",
         "cncf:2021",
         "cncf:2022",
         "cncf:2023",
-        "cncf:2024"
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
@@ -1289,19 +1363,25 @@
         "Observability and Analysis / Observability"
       ],
       "shared_inventory_years": [
+        2020,
         2021,
         2022,
         2023,
-        2024
+        2024,
+        2025,
+        2026
       ],
       "shared_inventory_sources": [
         "cncf"
       ],
       "source_year_strata": [
+        "cncf:2020",
         "cncf:2021",
         "cncf:2022",
         "cncf:2023",
-        "cncf:2024"
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
@@ -1319,19 +1399,25 @@
         "Observability and Analysis / Observability"
       ],
       "shared_inventory_years": [
+        2020,
         2021,
         2022,
         2023,
-        2024
+        2024,
+        2025,
+        2026
       ],
       "shared_inventory_sources": [
         "cncf"
       ],
       "source_year_strata": [
+        "cncf:2020",
         "cncf:2021",
         "cncf:2022",
         "cncf:2023",
-        "cncf:2024"
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
@@ -1349,19 +1435,25 @@
         "Observability and Analysis / Observability"
       ],
       "shared_inventory_years": [
+        2020,
         2021,
         2022,
         2023,
-        2024
+        2024,
+        2025,
+        2026
       ],
       "shared_inventory_sources": [
         "cncf"
       ],
       "source_year_strata": [
+        "cncf:2020",
         "cncf:2021",
         "cncf:2022",
         "cncf:2023",
-        "cncf:2024"
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
@@ -1379,19 +1471,25 @@
         "Observability and Analysis / Observability"
       ],
       "shared_inventory_years": [
+        2020,
         2021,
         2022,
         2023,
-        2024
+        2024,
+        2025,
+        2026
       ],
       "shared_inventory_sources": [
         "cncf"
       ],
       "source_year_strata": [
+        "cncf:2020",
         "cncf:2021",
         "cncf:2022",
         "cncf:2023",
-        "cncf:2024"
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
@@ -1409,49 +1507,25 @@
         "Observability and Analysis / Observability"
       ],
       "shared_inventory_years": [
+        2020,
         2021,
         2022,
         2023,
-        2024
+        2024,
+        2025,
+        2026
       ],
       "shared_inventory_sources": [
         "cncf"
       ],
       "source_year_strata": [
+        "cncf:2020",
         "cncf:2021",
         "cncf:2022",
         "cncf:2023",
-        "cncf:2024"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "highest_shared_category_and_year_overlap"
-    },
-    {
-      "id": "inventory-overlap-008f15fb016e197095c7-e7680d6ac021cd79e4d7",
-      "subject_candidate_id": "008f15fb016e197095c7",
-      "object_candidate_id": "e7680d6ac021cd79e4d7",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "Observability and Analysis / Monitoring",
-        "Observability and Analysis / Observability"
-      ],
-      "shared_inventory_years": [
-        2021,
-        2022,
-        2023,
-        2024
-      ],
-      "shared_inventory_sources": [
-        "cncf"
-      ],
-      "source_year_strata": [
-        "cncf:2021",
-        "cncf:2022",
-        "cncf:2023",
-        "cncf:2024"
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
@@ -1469,19 +1543,25 @@
         "Observability and Analysis / Observability"
       ],
       "shared_inventory_years": [
+        2020,
         2021,
         2022,
         2023,
-        2024
+        2024,
+        2025,
+        2026
       ],
       "shared_inventory_sources": [
         "cncf"
       ],
       "source_year_strata": [
+        "cncf:2020",
         "cncf:2021",
         "cncf:2022",
         "cncf:2023",
-        "cncf:2024"
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
@@ -1499,19 +1579,25 @@
         "Observability and Analysis / Observability"
       ],
       "shared_inventory_years": [
+        2020,
         2021,
         2022,
         2023,
-        2024
+        2024,
+        2025,
+        2026
       ],
       "shared_inventory_sources": [
         "cncf"
       ],
       "source_year_strata": [
+        "cncf:2020",
         "cncf:2021",
         "cncf:2022",
         "cncf:2023",
-        "cncf:2024"
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
@@ -1519,88 +1605,9 @@
       "selection_method": "highest_shared_category_and_year_overlap"
     },
     {
-      "id": "inventory-overlap-70814356f1f68f7bbb3b-f4f57a0a917225f66b57",
-      "subject_candidate_id": "70814356f1f68f7bbb3b",
-      "object_candidate_id": "f4f57a0a917225f66b57",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "Provisioning / Security & Compliance"
-      ],
-      "shared_inventory_years": [
-        2021
-      ],
-      "shared_inventory_sources": [
-        "cncf"
-      ],
-      "source_year_strata": [
-        "cncf:2021"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "source_year_stratified_sample"
-    },
-    {
-      "id": "inventory-overlap-af67823de1a549a292d5-dbeb1d7d507f307cb5a9",
-      "subject_candidate_id": "af67823de1a549a292d5",
-      "object_candidate_id": "dbeb1d7d507f307cb5a9",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "App Definition and Development / Database"
-      ],
-      "shared_inventory_years": [
-        2021,
-        2022,
-        2023,
-        2024
-      ],
-      "shared_inventory_sources": [
-        "cncf"
-      ],
-      "source_year_strata": [
-        "cncf:2021",
-        "cncf:2022",
-        "cncf:2023",
-        "cncf:2024"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "source_year_stratified_sample"
-    },
-    {
-      "id": "inventory-overlap-74f8c095536f02de679a-c5f73a888ab9062b18fa",
-      "subject_candidate_id": "74f8c095536f02de679a",
-      "object_candidate_id": "c5f73a888ab9062b18fa",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "App Definition and Development / Streaming & Messaging"
-      ],
-      "shared_inventory_years": [
-        2022,
-        2023,
-        2024
-      ],
-      "shared_inventory_sources": [
-        "cncf"
-      ],
-      "source_year_strata": [
-        "cncf:2022",
-        "cncf:2023",
-        "cncf:2024"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "source_year_stratified_sample"
-    },
-    {
-      "id": "inventory-overlap-2df15fe8eb4541b17ad2-456cdfb6cc39f6591ac6",
-      "subject_candidate_id": "2df15fe8eb4541b17ad2",
-      "object_candidate_id": "456cdfb6cc39f6591ac6",
+      "id": "inventory-overlap-008f15fb016e197095c7-efe031af6a9da18c01e1",
+      "subject_candidate_id": "008f15fb016e197095c7",
+      "object_candidate_id": "efe031af6a9da18c01e1",
       "candidate_kind": "inventory_category_overlap",
       "status": "needs_company_identity_and_relation_evidence",
       "shared_source_categories": [
@@ -1608,19 +1615,240 @@
         "Observability and Analysis / Observability"
       ],
       "shared_inventory_years": [
+        2020,
         2021,
         2022,
         2023,
-        2024
+        2024,
+        2025,
+        2026
       ],
       "shared_inventory_sources": [
         "cncf"
       ],
       "source_year_strata": [
+        "cncf:2020",
         "cncf:2021",
         "cncf:2022",
         "cncf:2023",
-        "cncf:2024"
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "highest_shared_category_and_year_overlap"
+    },
+    {
+      "id": "inventory-overlap-02470587408eb0035486-08778cfad808511a1026",
+      "subject_candidate_id": "02470587408eb0035486",
+      "object_candidate_id": "08778cfad808511a1026",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "Observability and Analysis / Monitoring",
+        "Observability and Analysis / Observability"
+      ],
+      "shared_inventory_years": [
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025,
+        2026
+      ],
+      "shared_inventory_sources": [
+        "cncf"
+      ],
+      "source_year_strata": [
+        "cncf:2020",
+        "cncf:2021",
+        "cncf:2022",
+        "cncf:2023",
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "highest_shared_category_and_year_overlap"
+    },
+    {
+      "id": "inventory-overlap-02470587408eb0035486-0e1db5ad5998da10ee5d",
+      "subject_candidate_id": "02470587408eb0035486",
+      "object_candidate_id": "0e1db5ad5998da10ee5d",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "Observability and Analysis / Monitoring",
+        "Observability and Analysis / Observability"
+      ],
+      "shared_inventory_years": [
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025,
+        2026
+      ],
+      "shared_inventory_sources": [
+        "cncf"
+      ],
+      "source_year_strata": [
+        "cncf:2020",
+        "cncf:2021",
+        "cncf:2022",
+        "cncf:2023",
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "highest_shared_category_and_year_overlap"
+    },
+    {
+      "id": "inventory-overlap-02470587408eb0035486-1a61e31f01488b55a780",
+      "subject_candidate_id": "02470587408eb0035486",
+      "object_candidate_id": "1a61e31f01488b55a780",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "Observability and Analysis / Monitoring",
+        "Observability and Analysis / Observability"
+      ],
+      "shared_inventory_years": [
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025,
+        2026
+      ],
+      "shared_inventory_sources": [
+        "cncf"
+      ],
+      "source_year_strata": [
+        "cncf:2020",
+        "cncf:2021",
+        "cncf:2022",
+        "cncf:2023",
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "highest_shared_category_and_year_overlap"
+    },
+    {
+      "id": "inventory-overlap-02470587408eb0035486-22db55918230c794d1ac",
+      "subject_candidate_id": "02470587408eb0035486",
+      "object_candidate_id": "22db55918230c794d1ac",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "Observability and Analysis / Monitoring",
+        "Observability and Analysis / Observability"
+      ],
+      "shared_inventory_years": [
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025,
+        2026
+      ],
+      "shared_inventory_sources": [
+        "cncf"
+      ],
+      "source_year_strata": [
+        "cncf:2020",
+        "cncf:2021",
+        "cncf:2022",
+        "cncf:2023",
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "highest_shared_category_and_year_overlap"
+    },
+    {
+      "id": "inventory-overlap-02470587408eb0035486-28e4acdba01939f1b3a1",
+      "subject_candidate_id": "02470587408eb0035486",
+      "object_candidate_id": "28e4acdba01939f1b3a1",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "Observability and Analysis / Monitoring",
+        "Observability and Analysis / Observability"
+      ],
+      "shared_inventory_years": [
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025,
+        2026
+      ],
+      "shared_inventory_sources": [
+        "cncf"
+      ],
+      "source_year_strata": [
+        "cncf:2020",
+        "cncf:2021",
+        "cncf:2022",
+        "cncf:2023",
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "highest_shared_category_and_year_overlap"
+    },
+    {
+      "id": "inventory-overlap-41b347f10e77a11013f0-a89c826f8d69bd7310b0",
+      "subject_candidate_id": "41b347f10e77a11013f0",
+      "object_candidate_id": "a89c826f8d69bd7310b0",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "App Definition and Development / Continuous Integration & Delivery"
+      ],
+      "shared_inventory_years": [
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025,
+        2026
+      ],
+      "shared_inventory_sources": [
+        "cncf"
+      ],
+      "source_year_strata": [
+        "cncf:2020",
+        "cncf:2021",
+        "cncf:2022",
+        "cncf:2023",
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
@@ -1628,19 +1856,220 @@
       "selection_method": "source_year_stratified_sample"
     },
     {
-      "id": "inventory-overlap-565690d11ec9083316ca-5d3b0ba92cf71300a4c7",
-      "subject_candidate_id": "565690d11ec9083316ca",
-      "object_candidate_id": "5d3b0ba92cf71300a4c7",
+      "id": "inventory-overlap-22db55918230c794d1ac-d363d277795a85d4241c",
+      "subject_candidate_id": "22db55918230c794d1ac",
+      "object_candidate_id": "d363d277795a85d4241c",
       "candidate_kind": "inventory_category_overlap",
       "status": "needs_company_identity_and_relation_evidence",
       "shared_source_categories": [
-        "Model / Workflow"
+        "Observability and Analysis / Monitoring",
+        "Observability and Analysis / Observability"
+      ],
+      "shared_inventory_years": [
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025,
+        2026
+      ],
+      "shared_inventory_sources": [
+        "cncf"
+      ],
+      "source_year_strata": [
+        "cncf:2020",
+        "cncf:2021",
+        "cncf:2022",
+        "cncf:2023",
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "source_year_stratified_sample"
+    },
+    {
+      "id": "inventory-overlap-755ca74ab75477a070dd-b06766fb679a2d08f636",
+      "subject_candidate_id": "755ca74ab75477a070dd",
+      "object_candidate_id": "b06766fb679a2d08f636",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "Observability and Analysis / Monitoring"
+      ],
+      "shared_inventory_years": [
+        2021,
+        2022,
+        2023
+      ],
+      "shared_inventory_sources": [
+        "cncf"
+      ],
+      "source_year_strata": [
+        "cncf:2021",
+        "cncf:2022",
+        "cncf:2023"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "source_year_stratified_sample"
+    },
+    {
+      "id": "inventory-overlap-47726f9eccb1317b163a-60cf7bff317239823cee",
+      "subject_candidate_id": "47726f9eccb1317b163a",
+      "object_candidate_id": "60cf7bff317239823cee",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "Observability and Analysis / Monitoring",
+        "Observability and Analysis / Observability"
+      ],
+      "shared_inventory_years": [
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025,
+        2026
+      ],
+      "shared_inventory_sources": [
+        "cncf"
+      ],
+      "source_year_strata": [
+        "cncf:2020",
+        "cncf:2021",
+        "cncf:2022",
+        "cncf:2023",
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "source_year_stratified_sample"
+    },
+    {
+      "id": "inventory-overlap-b62254b3c536c855910f-f3515442040aa259d7a0",
+      "subject_candidate_id": "b62254b3c536c855910f",
+      "object_candidate_id": "f3515442040aa259d7a0",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "CNAI / Data Architecture"
+      ],
+      "shared_inventory_years": [
+        2024,
+        2025
+      ],
+      "shared_inventory_sources": [
+        "cncf"
+      ],
+      "source_year_strata": [
+        "cncf:2024",
+        "cncf:2025"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "source_year_stratified_sample"
+    },
+    {
+      "id": "inventory-overlap-98a8594ecbae715bdd18-ee90402c929c690e796a",
+      "subject_candidate_id": "98a8594ecbae715bdd18",
+      "object_candidate_id": "ee90402c929c690e796a",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "Observability and Analysis / Observability"
+      ],
+      "shared_inventory_years": [
+        2024,
+        2025,
+        2026
+      ],
+      "shared_inventory_sources": [
+        "cncf"
+      ],
+      "source_year_strata": [
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "source_year_stratified_sample"
+    },
+    {
+      "id": "inventory-overlap-53616566110ff948bd95-69eb9a831414601980b2",
+      "subject_candidate_id": "53616566110ff948bd95",
+      "object_candidate_id": "69eb9a831414601980b2",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "Observability and Analysis / Observability"
+      ],
+      "shared_inventory_years": [
+        2026
+      ],
+      "shared_inventory_sources": [
+        "cncf"
+      ],
+      "source_year_strata": [
+        "cncf:2026"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "source_year_stratified_sample"
+    },
+    {
+      "id": "inventory-overlap-474d5692ad7259db34cb-96964c90b83731d53cb2",
+      "subject_candidate_id": "474d5692ad7259db34cb",
+      "object_candidate_id": "96964c90b83731d53cb2",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "Natural Language Processing / Natural Language Processing"
+      ],
+      "shared_inventory_years": [
+        2020,
+        2021
+      ],
+      "shared_inventory_sources": [
+        "lfai"
+      ],
+      "source_year_strata": [
+        "lfai:2020",
+        "lfai:2021"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "source_year_stratified_sample"
+    },
+    {
+      "id": "inventory-overlap-469cf45dde2133373984-752ae5f3231651c1284e",
+      "subject_candidate_id": "469cf45dde2133373984",
+      "object_candidate_id": "752ae5f3231651c1284e",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "Machine Learning / Library"
       ],
       "shared_inventory_years": [
         2021,
         2022,
         2023,
-        2024
+        2024,
+        2025,
+        2026
       ],
       "shared_inventory_sources": [
         "lfai"
@@ -1649,7 +2078,9 @@
         "lfai:2021",
         "lfai:2022",
         "lfai:2023",
-        "lfai:2024"
+        "lfai:2024",
+        "lfai:2025",
+        "lfai:2026"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
@@ -1657,8 +2088,8 @@
       "selection_method": "source_year_stratified_sample"
     },
     {
-      "id": "inventory-overlap-41a42b426805699b10a2-6342360ccdbec1eafc34",
-      "subject_candidate_id": "41a42b426805699b10a2",
+      "id": "inventory-overlap-206b6a4f11bdd32223c4-6342360ccdbec1eafc34",
+      "subject_candidate_id": "206b6a4f11bdd32223c4",
       "object_candidate_id": "6342360ccdbec1eafc34",
       "candidate_kind": "inventory_category_overlap",
       "status": "needs_company_identity_and_relation_evidence",
@@ -1669,7 +2100,9 @@
         2021,
         2022,
         2023,
-        2024
+        2024,
+        2025,
+        2026
       ],
       "shared_inventory_sources": [
         "lfai"
@@ -1678,7 +2111,9 @@
         "lfai:2021",
         "lfai:2022",
         "lfai:2023",
-        "lfai:2024"
+        "lfai:2024",
+        "lfai:2025",
+        "lfai:2026"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
@@ -1686,19 +2121,21 @@
       "selection_method": "source_year_stratified_sample"
     },
     {
-      "id": "inventory-overlap-51c2fa82df65085ddab7-fd394545b0983a74e6e2",
-      "subject_candidate_id": "51c2fa82df65085ddab7",
-      "object_candidate_id": "fd394545b0983a74e6e2",
+      "id": "inventory-overlap-2d0e0129c439f75d6b52-4857c1eefa749967c407",
+      "subject_candidate_id": "2d0e0129c439f75d6b52",
+      "object_candidate_id": "4857c1eefa749967c407",
       "candidate_kind": "inventory_category_overlap",
       "status": "needs_company_identity_and_relation_evidence",
       "shared_source_categories": [
-        "Data / Feature Engineering"
+        "Deep Learning / Library"
       ],
       "shared_inventory_years": [
         2021,
         2022,
         2023,
-        2024
+        2024,
+        2025,
+        2026
       ],
       "shared_inventory_sources": [
         "lfai"
@@ -1707,7 +2144,9 @@
         "lfai:2021",
         "lfai:2022",
         "lfai:2023",
-        "lfai:2024"
+        "lfai:2024",
+        "lfai:2025",
+        "lfai:2026"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
@@ -1715,198 +2154,86 @@
       "selection_method": "source_year_stratified_sample"
     },
     {
-      "id": "inventory-overlap-730e778c8205b5784682-b1316cc01aec7b0fab9d",
-      "subject_candidate_id": "730e778c8205b5784682",
-      "object_candidate_id": "b1316cc01aec7b0fab9d",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "Natural Language Processing / Natural Language Processing"
-      ],
-      "shared_inventory_years": [
-        2021,
-        2022,
-        2023,
-        2024
-      ],
-      "shared_inventory_sources": [
-        "lfai"
-      ],
-      "source_year_strata": [
-        "lfai:2021",
-        "lfai:2022",
-        "lfai:2023",
-        "lfai:2024"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "source_year_stratified_sample"
-    },
-    {
-      "id": "inventory-overlap-633eb48dd6ce5a709a87-f4e204d64cab102800ee",
-      "subject_candidate_id": "633eb48dd6ce5a709a87",
-      "object_candidate_id": "f4e204d64cab102800ee",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "Provisioning / Security & Compliance"
-      ],
-      "shared_inventory_years": [
-        2021,
-        2022,
-        2023,
-        2024
-      ],
-      "shared_inventory_sources": [
-        "cncf"
-      ],
-      "source_year_strata": [
-        "cncf:2021",
-        "cncf:2022",
-        "cncf:2023",
-        "cncf:2024"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "source_year_stratified_sample"
-    },
-    {
-      "id": "inventory-overlap-3dc442fc475e4311a525-c20958fae904691baf6f",
-      "subject_candidate_id": "3dc442fc475e4311a525",
-      "object_candidate_id": "c20958fae904691baf6f",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "Observability and Analysis / Observability",
-        "Observability and Analysis / Tracing"
-      ],
-      "shared_inventory_years": [
-        2021,
-        2022,
-        2023,
-        2024
-      ],
-      "shared_inventory_sources": [
-        "cncf"
-      ],
-      "source_year_strata": [
-        "cncf:2021",
-        "cncf:2022",
-        "cncf:2023",
-        "cncf:2024"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "source_year_stratified_sample"
-    },
-    {
-      "id": "inventory-overlap-60cf7bff317239823cee-b014fa3634f7a85de445",
-      "subject_candidate_id": "60cf7bff317239823cee",
-      "object_candidate_id": "b014fa3634f7a85de445",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "Observability and Analysis / Monitoring",
-        "Observability and Analysis / Observability"
-      ],
-      "shared_inventory_years": [
-        2021,
-        2022,
-        2023,
-        2024
-      ],
-      "shared_inventory_sources": [
-        "cncf"
-      ],
-      "source_year_strata": [
-        "cncf:2021",
-        "cncf:2022",
-        "cncf:2023",
-        "cncf:2024"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "source_year_stratified_sample"
-    },
-    {
-      "id": "inventory-overlap-8020cda364c2d6d1e53e-866c851860c664d1cb6b",
-      "subject_candidate_id": "8020cda364c2d6d1e53e",
-      "object_candidate_id": "866c851860c664d1cb6b",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "CNAI / Model/LLM Observability"
-      ],
-      "shared_inventory_years": [
-        2024
-      ],
-      "shared_inventory_sources": [
-        "cncf"
-      ],
-      "source_year_strata": [
-        "cncf:2024"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "source_year_stratified_sample"
-    },
-    {
-      "id": "inventory-overlap-19b24baff0e7829dc899-71992bc3bedc003b0f8d",
-      "subject_candidate_id": "19b24baff0e7829dc899",
-      "object_candidate_id": "71992bc3bedc003b0f8d",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "Model / Workflow"
-      ],
-      "shared_inventory_years": [
-        2021,
-        2022,
-        2023,
-        2024
-      ],
-      "shared_inventory_sources": [
-        "lfai"
-      ],
-      "source_year_strata": [
-        "lfai:2021",
-        "lfai:2022",
-        "lfai:2023",
-        "lfai:2024"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "source_year_stratified_sample"
-    },
-    {
-      "id": "inventory-overlap-4f41f68387145a22bbe7-effde5e270335beafc34",
-      "subject_candidate_id": "4f41f68387145a22bbe7",
-      "object_candidate_id": "effde5e270335beafc34",
+      "id": "inventory-overlap-47196a62b41ee1976421-7dff23fb106aa9ee6d25",
+      "subject_candidate_id": "47196a62b41ee1976421",
+      "object_candidate_id": "7dff23fb106aa9ee6d25",
       "candidate_kind": "inventory_category_overlap",
       "status": "needs_company_identity_and_relation_evidence",
       "shared_source_categories": [
         "Data / Store & Format"
       ],
       "shared_inventory_years": [
-        2021,
-        2022,
-        2023,
-        2024
+        2024,
+        2025,
+        2026
       ],
       "shared_inventory_sources": [
         "lfai"
       ],
       "source_year_strata": [
+        "lfai:2024",
+        "lfai:2025",
+        "lfai:2026"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "source_year_stratified_sample"
+    },
+    {
+      "id": "inventory-overlap-cbaa3644e669672bb38d-fcb9d3740605c3045857",
+      "subject_candidate_id": "cbaa3644e669672bb38d",
+      "object_candidate_id": "fcb9d3740605c3045857",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "Data / Store & Format"
+      ],
+      "shared_inventory_years": [
+        2025,
+        2026
+      ],
+      "shared_inventory_sources": [
+        "lfai"
+      ],
+      "source_year_strata": [
+        "lfai:2025",
+        "lfai:2026"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "source_year_stratified_sample"
+    },
+    {
+      "id": "inventory-overlap-2bf78bda6f2d986b829e-622afd213a0dc338e6aa",
+      "subject_candidate_id": "2bf78bda6f2d986b829e",
+      "object_candidate_id": "622afd213a0dc338e6aa",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "Data / Stream Processing"
+      ],
+      "shared_inventory_years": [
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025,
+        2026
+      ],
+      "shared_inventory_sources": [
+        "lfai"
+      ],
+      "source_year_strata": [
+        "lfai:2020",
         "lfai:2021",
         "lfai:2022",
         "lfai:2023",
-        "lfai:2024"
+        "lfai:2024",
+        "lfai:2025",
+        "lfai:2026"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
@@ -1914,636 +2241,384 @@
       "selection_method": "source_year_stratified_sample"
     },
     {
-      "id": "inventory-overlap-3dd5b2ca30b8da3c1590-fe63b698ba312b209c1e",
-      "subject_candidate_id": "3dd5b2ca30b8da3c1590",
-      "object_candidate_id": "fe63b698ba312b209c1e",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "Machine Learning / Library"
-      ],
-      "shared_inventory_years": [
-        2023,
-        2024
-      ],
-      "shared_inventory_sources": [
-        "lfai"
-      ],
-      "source_year_strata": [
-        "lfai:2023",
-        "lfai:2024"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "source_year_stratified_sample"
-    },
-    {
-      "id": "inventory-overlap-067da58dfc2529bcf64b-fe94868553f59949b2f0",
-      "subject_candidate_id": "067da58dfc2529bcf64b",
-      "object_candidate_id": "fe94868553f59949b2f0",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "Model / Workflow"
-      ],
-      "shared_inventory_years": [
-        2021,
-        2022,
-        2023,
-        2024
-      ],
-      "shared_inventory_sources": [
-        "lfai"
-      ],
-      "source_year_strata": [
-        "lfai:2021",
-        "lfai:2022",
-        "lfai:2023",
-        "lfai:2024"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "source_year_stratified_sample"
-    },
-    {
-      "id": "inventory-overlap-78c036ed5586008be32f-e31f2e67a6113365a794",
-      "subject_candidate_id": "78c036ed5586008be32f",
-      "object_candidate_id": "e31f2e67a6113365a794",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "Observability and Analysis / Monitoring"
-      ],
-      "shared_inventory_years": [
-        2021
-      ],
-      "shared_inventory_sources": [
-        "cncf"
-      ],
-      "source_year_strata": [
-        "cncf:2021"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "source_year_stratified_sample"
-    },
-    {
-      "id": "inventory-overlap-86a7dfe3599600974f45-91d035d27c63d9b309a0",
-      "subject_candidate_id": "86a7dfe3599600974f45",
-      "object_candidate_id": "91d035d27c63d9b309a0",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "App Definition and Development / Streaming & Messaging"
-      ],
-      "shared_inventory_years": [
-        2021,
-        2022,
-        2023,
-        2024
-      ],
-      "shared_inventory_sources": [
-        "cncf"
-      ],
-      "source_year_strata": [
-        "cncf:2021",
-        "cncf:2022",
-        "cncf:2023",
-        "cncf:2024"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "source_year_stratified_sample"
-    },
-    {
-      "id": "inventory-overlap-1a61e31f01488b55a780-86c78ded3269e73f7b35",
-      "subject_candidate_id": "1a61e31f01488b55a780",
-      "object_candidate_id": "86c78ded3269e73f7b35",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "Observability and Analysis / Monitoring",
-        "Observability and Analysis / Observability"
-      ],
-      "shared_inventory_years": [
-        2021,
-        2022,
-        2023,
-        2024
-      ],
-      "shared_inventory_sources": [
-        "cncf"
-      ],
-      "source_year_strata": [
-        "cncf:2021",
-        "cncf:2022",
-        "cncf:2023",
-        "cncf:2024"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "source_year_stratified_sample"
-    },
-    {
-      "id": "inventory-overlap-1c4c5e95dd263d21e3a9-ce280db87d8b60a865ea",
-      "subject_candidate_id": "1c4c5e95dd263d21e3a9",
-      "object_candidate_id": "ce280db87d8b60a865ea",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "Runtime / Cloud Native Storage"
-      ],
-      "shared_inventory_years": [
-        2021,
-        2022,
-        2023,
-        2024
-      ],
-      "shared_inventory_sources": [
-        "cncf"
-      ],
-      "source_year_strata": [
-        "cncf:2021",
-        "cncf:2022",
-        "cncf:2023",
-        "cncf:2024"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "source_year_stratified_sample"
-    },
-    {
-      "id": "inventory-overlap-9db52d7e64aef8bcc0e1-dcd070cc31d0fc66b13c",
-      "subject_candidate_id": "9db52d7e64aef8bcc0e1",
-      "object_candidate_id": "dcd070cc31d0fc66b13c",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "Natural Language Processing / Natural Language Processing"
-      ],
-      "shared_inventory_years": [
-        2021,
-        2022,
-        2023,
-        2024
-      ],
-      "shared_inventory_sources": [
-        "lfai"
-      ],
-      "source_year_strata": [
-        "lfai:2021",
-        "lfai:2022",
-        "lfai:2023",
-        "lfai:2024"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "source_year_stratified_sample"
-    },
-    {
-      "id": "inventory-overlap-b8848196d61f5c814143-bd9f1e229e93cfd3bb11",
-      "subject_candidate_id": "b8848196d61f5c814143",
-      "object_candidate_id": "bd9f1e229e93cfd3bb11",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "Natural Language Processing / Natural Language Processing"
-      ],
-      "shared_inventory_years": [
-        2022,
-        2023,
-        2024
-      ],
-      "shared_inventory_sources": [
-        "lfai"
-      ],
-      "source_year_strata": [
-        "lfai:2022",
-        "lfai:2023",
-        "lfai:2024"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "source_year_stratified_sample"
-    },
-    {
-      "id": "inventory-overlap-1bc7109603adaf270e12-b8848196d61f5c814143",
-      "subject_candidate_id": "1bc7109603adaf270e12",
-      "object_candidate_id": "b8848196d61f5c814143",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "Natural Language Processing / Natural Language Processing"
-      ],
-      "shared_inventory_years": [
-        2021,
-        2022,
-        2023,
-        2024
-      ],
-      "shared_inventory_sources": [
-        "lfai"
-      ],
-      "source_year_strata": [
-        "lfai:2021",
-        "lfai:2022",
-        "lfai:2023",
-        "lfai:2024"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "source_year_stratified_sample"
-    },
-    {
-      "id": "inventory-overlap-560d798046e64e58edd1-e4a87e19b5f729b4204c",
-      "subject_candidate_id": "560d798046e64e58edd1",
-      "object_candidate_id": "e4a87e19b5f729b4204c",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "Model / Tool"
-      ],
-      "shared_inventory_years": [
-        2022,
-        2023,
-        2024
-      ],
-      "shared_inventory_sources": [
-        "lfai"
-      ],
-      "source_year_strata": [
-        "lfai:2022",
-        "lfai:2023",
-        "lfai:2024"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "source_year_stratified_sample"
-    },
-    {
-      "id": "inventory-overlap-3dae93a613cddfa579b7-41d5ea6ca49a15636270",
-      "subject_candidate_id": "3dae93a613cddfa579b7",
-      "object_candidate_id": "41d5ea6ca49a15636270",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "Provisioning / Security & Compliance"
-      ],
-      "shared_inventory_years": [
-        2021,
-        2022,
-        2023,
-        2024
-      ],
-      "shared_inventory_sources": [
-        "cncf"
-      ],
-      "source_year_strata": [
-        "cncf:2021",
-        "cncf:2022",
-        "cncf:2023",
-        "cncf:2024"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "source_year_stratified_sample"
-    },
-    {
-      "id": "inventory-overlap-1958a51a425f8b6047ac-57927fb0e7a8b03c8082",
-      "subject_candidate_id": "1958a51a425f8b6047ac",
-      "object_candidate_id": "57927fb0e7a8b03c8082",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "Provisioning / Security & Compliance"
-      ],
-      "shared_inventory_years": [
-        2022,
-        2023,
-        2024
-      ],
-      "shared_inventory_sources": [
-        "cncf"
-      ],
-      "source_year_strata": [
-        "cncf:2022",
-        "cncf:2023",
-        "cncf:2024"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "deterministic_random_sample"
-    },
-    {
-      "id": "inventory-overlap-297a460e9dc19db3e230-b92d0b675873d704e3d1",
-      "subject_candidate_id": "297a460e9dc19db3e230",
-      "object_candidate_id": "b92d0b675873d704e3d1",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "Provisioning / Security & Compliance"
-      ],
-      "shared_inventory_years": [
-        2022,
-        2023,
-        2024
-      ],
-      "shared_inventory_sources": [
-        "cncf"
-      ],
-      "source_year_strata": [
-        "cncf:2022",
-        "cncf:2023",
-        "cncf:2024"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "deterministic_random_sample"
-    },
-    {
-      "id": "inventory-overlap-2eed231857bf8706e604-78f71dc81aca97d93ebe",
-      "subject_candidate_id": "2eed231857bf8706e604",
-      "object_candidate_id": "78f71dc81aca97d93ebe",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "Runtime / Cloud Native Storage"
-      ],
-      "shared_inventory_years": [
-        2024
-      ],
-      "shared_inventory_sources": [
-        "cncf"
-      ],
-      "source_year_strata": [
-        "cncf:2024"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "deterministic_random_sample"
-    },
-    {
-      "id": "inventory-overlap-4ea33d173d51af084252-9a74d332af617c4e44cf",
-      "subject_candidate_id": "4ea33d173d51af084252",
-      "object_candidate_id": "9a74d332af617c4e44cf",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "App Definition and Development / Application Definition & Image Build"
-      ],
-      "shared_inventory_years": [
-        2023,
-        2024
-      ],
-      "shared_inventory_sources": [
-        "cncf"
-      ],
-      "source_year_strata": [
-        "cncf:2023",
-        "cncf:2024"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "deterministic_random_sample"
-    },
-    {
-      "id": "inventory-overlap-05bc495b4cb59fcb0ff0-e531c9be13eb984c2362",
-      "subject_candidate_id": "05bc495b4cb59fcb0ff0",
-      "object_candidate_id": "e531c9be13eb984c2362",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "App Definition and Development / Application Definition & Image Build"
-      ],
-      "shared_inventory_years": [
-        2021,
-        2022,
-        2023,
-        2024
-      ],
-      "shared_inventory_sources": [
-        "cncf"
-      ],
-      "source_year_strata": [
-        "cncf:2021",
-        "cncf:2022",
-        "cncf:2023",
-        "cncf:2024"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "deterministic_random_sample"
-    },
-    {
-      "id": "inventory-overlap-3e51782902e054fbd263-b94c86dd8e305b97de32",
-      "subject_candidate_id": "3e51782902e054fbd263",
-      "object_candidate_id": "b94c86dd8e305b97de32",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "Observability and Analysis / Monitoring",
-        "Observability and Analysis / Observability"
-      ],
-      "shared_inventory_years": [
-        2023,
-        2024
-      ],
-      "shared_inventory_sources": [
-        "cncf"
-      ],
-      "source_year_strata": [
-        "cncf:2023",
-        "cncf:2024"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "deterministic_random_sample"
-    },
-    {
-      "id": "inventory-overlap-03b5903305bb4069347b-b7033dea6774b50414e3",
-      "subject_candidate_id": "03b5903305bb4069347b",
-      "object_candidate_id": "b7033dea6774b50414e3",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "App Definition and Development / Application Definition & Image Build"
-      ],
-      "shared_inventory_years": [
-        2023,
-        2024
-      ],
-      "shared_inventory_sources": [
-        "cncf"
-      ],
-      "source_year_strata": [
-        "cncf:2023",
-        "cncf:2024"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "deterministic_random_sample"
-    },
-    {
-      "id": "inventory-overlap-61723ea4fd1e037896d6-ca2244c2b90266532f57",
-      "subject_candidate_id": "61723ea4fd1e037896d6",
-      "object_candidate_id": "ca2244c2b90266532f57",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "Provisioning / Security & Compliance"
-      ],
-      "shared_inventory_years": [
-        2023,
-        2024
-      ],
-      "shared_inventory_sources": [
-        "cncf"
-      ],
-      "source_year_strata": [
-        "cncf:2023",
-        "cncf:2024"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "deterministic_random_sample"
-    },
-    {
-      "id": "inventory-overlap-2cccbd71f491df5ba90e-97e33facc32bc8b2a161",
-      "subject_candidate_id": "2cccbd71f491df5ba90e",
-      "object_candidate_id": "97e33facc32bc8b2a161",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "Provisioning / Security & Compliance"
-      ],
-      "shared_inventory_years": [
-        2024
-      ],
-      "shared_inventory_sources": [
-        "cncf"
-      ],
-      "source_year_strata": [
-        "cncf:2024"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "deterministic_random_sample"
-    },
-    {
-      "id": "inventory-overlap-a4b58963fa3d3abf31d5-afc12acec52518ed901f",
-      "subject_candidate_id": "a4b58963fa3d3abf31d5",
-      "object_candidate_id": "afc12acec52518ed901f",
+      "id": "inventory-overlap-0bca673476554caa072c-6623828b07713e050f88",
+      "subject_candidate_id": "0bca673476554caa072c",
+      "object_candidate_id": "6623828b07713e050f88",
       "candidate_kind": "inventory_category_overlap",
       "status": "needs_company_identity_and_relation_evidence",
       "shared_source_categories": [
         "App Definition and Development / Database"
       ],
       "shared_inventory_years": [
-        2024
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025,
+        2026
       ],
       "shared_inventory_sources": [
         "cncf"
       ],
       "source_year_strata": [
-        "cncf:2024"
+        "cncf:2020",
+        "cncf:2021",
+        "cncf:2022",
+        "cncf:2023",
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
       "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "deterministic_random_sample"
+      "selection_method": "source_year_stratified_sample"
     },
     {
-      "id": "inventory-overlap-5fe518a122a0e16c69d3-981b914689e279029595",
-      "subject_candidate_id": "5fe518a122a0e16c69d3",
-      "object_candidate_id": "981b914689e279029595",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "Observability and Analysis / Observability"
-      ],
-      "shared_inventory_years": [
-        2024
-      ],
-      "shared_inventory_sources": [
-        "cncf"
-      ],
-      "source_year_strata": [
-        "cncf:2024"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "deterministic_random_sample"
-    },
-    {
-      "id": "inventory-overlap-109cef81e5886e92bd40-351acd74fe261b6b3235",
-      "subject_candidate_id": "109cef81e5886e92bd40",
-      "object_candidate_id": "351acd74fe261b6b3235",
+      "id": "inventory-overlap-4ece3934ed91e83de0ae-db7244f000eedc7a99c9",
+      "subject_candidate_id": "4ece3934ed91e83de0ae",
+      "object_candidate_id": "db7244f000eedc7a99c9",
       "candidate_kind": "inventory_category_overlap",
       "status": "needs_company_identity_and_relation_evidence",
       "shared_source_categories": [
         "App Definition and Development / Continuous Integration & Delivery"
       ],
       "shared_inventory_years": [
+        2021,
         2022,
         2023,
-        2024
+        2024,
+        2025,
+        2026
       ],
       "shared_inventory_sources": [
         "cncf"
       ],
       "source_year_strata": [
+        "cncf:2021",
         "cncf:2022",
         "cncf:2023",
-        "cncf:2024"
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
       "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "deterministic_random_sample"
+      "selection_method": "source_year_stratified_sample"
     },
     {
-      "id": "inventory-overlap-38602cce458a7fa46b9d-cc28c31b994283b3375b",
-      "subject_candidate_id": "38602cce458a7fa46b9d",
-      "object_candidate_id": "cc28c31b994283b3375b",
+      "id": "inventory-overlap-b014fa3634f7a85de445-d8cc9b6338edc0196c22",
+      "subject_candidate_id": "b014fa3634f7a85de445",
+      "object_candidate_id": "d8cc9b6338edc0196c22",
       "candidate_kind": "inventory_category_overlap",
       "status": "needs_company_identity_and_relation_evidence",
       "shared_source_categories": [
-        "Observability and Analysis / Observability",
-        "Observability and Analysis / Tracing"
+        "Observability and Analysis / Monitoring",
+        "Observability and Analysis / Observability"
+      ],
+      "shared_inventory_years": [
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025,
+        2026
+      ],
+      "shared_inventory_sources": [
+        "cncf"
+      ],
+      "source_year_strata": [
+        "cncf:2020",
+        "cncf:2021",
+        "cncf:2022",
+        "cncf:2023",
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "source_year_stratified_sample"
+    },
+    {
+      "id": "inventory-overlap-755ca74ab75477a070dd-a54c7cf649bef4a4cc7b",
+      "subject_candidate_id": "755ca74ab75477a070dd",
+      "object_candidate_id": "a54c7cf649bef4a4cc7b",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "Observability and Analysis / Monitoring",
+        "Observability and Analysis / Observability"
+      ],
+      "shared_inventory_years": [
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025,
+        2026
+      ],
+      "shared_inventory_sources": [
+        "cncf"
+      ],
+      "source_year_strata": [
+        "cncf:2020",
+        "cncf:2021",
+        "cncf:2022",
+        "cncf:2023",
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "source_year_stratified_sample"
+    },
+    {
+      "id": "inventory-overlap-84f5cf9ac62376be783e-8fc03f6cbcf5ebf43c86",
+      "subject_candidate_id": "84f5cf9ac62376be783e",
+      "object_candidate_id": "8fc03f6cbcf5ebf43c86",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "Provisioning / Security & Compliance"
+      ],
+      "shared_inventory_years": [
+        2023,
+        2024,
+        2025,
+        2026
+      ],
+      "shared_inventory_sources": [
+        "cncf"
+      ],
+      "source_year_strata": [
+        "cncf:2023",
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "source_year_stratified_sample"
+    },
+    {
+      "id": "inventory-overlap-ae8b7407ab4fa39d8f70-eebad0abd4652d01e300",
+      "subject_candidate_id": "ae8b7407ab4fa39d8f70",
+      "object_candidate_id": "eebad0abd4652d01e300",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "Observability and Analysis / Monitoring",
+        "Observability and Analysis / Observability"
+      ],
+      "shared_inventory_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025,
+        2026
+      ],
+      "shared_inventory_sources": [
+        "cncf"
+      ],
+      "source_year_strata": [
+        "cncf:2021",
+        "cncf:2022",
+        "cncf:2023",
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "source_year_stratified_sample"
+    },
+    {
+      "id": "inventory-overlap-b673ca0cf32eba61778f-c458a6a6ae2b1ba0ff6a",
+      "subject_candidate_id": "b673ca0cf32eba61778f",
+      "object_candidate_id": "c458a6a6ae2b1ba0ff6a",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "Observability and Analysis / Observability"
+      ],
+      "shared_inventory_years": [
+        2026
+      ],
+      "shared_inventory_sources": [
+        "cncf"
+      ],
+      "source_year_strata": [
+        "cncf:2026"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "source_year_stratified_sample"
+    },
+    {
+      "id": "inventory-overlap-65190e68490367101777-6b1649aa15e0d9e08a0d",
+      "subject_candidate_id": "65190e68490367101777",
+      "object_candidate_id": "6b1649aa15e0d9e08a0d",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "Notebook Environment / Notebook Environment"
+      ],
+      "shared_inventory_years": [
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025,
+        2026
+      ],
+      "shared_inventory_sources": [
+        "lfai"
+      ],
+      "source_year_strata": [
+        "lfai:2020",
+        "lfai:2021",
+        "lfai:2022",
+        "lfai:2023",
+        "lfai:2024",
+        "lfai:2025",
+        "lfai:2026"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "source_year_stratified_sample"
+    },
+    {
+      "id": "inventory-overlap-6b1649aa15e0d9e08a0d-81d02ebebee399b06ab0",
+      "subject_candidate_id": "6b1649aa15e0d9e08a0d",
+      "object_candidate_id": "81d02ebebee399b06ab0",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "Notebook Environment / Notebook Environment"
+      ],
+      "shared_inventory_years": [
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025,
+        2026
+      ],
+      "shared_inventory_sources": [
+        "lfai"
+      ],
+      "source_year_strata": [
+        "lfai:2020",
+        "lfai:2021",
+        "lfai:2022",
+        "lfai:2023",
+        "lfai:2024",
+        "lfai:2025",
+        "lfai:2026"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "source_year_stratified_sample"
+    },
+    {
+      "id": "inventory-overlap-333342b4cc958c41193f-58dede10b192e48000a4",
+      "subject_candidate_id": "333342b4cc958c41193f",
+      "object_candidate_id": "58dede10b192e48000a4",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "Reinforcement Learning / Reinforcement Learning"
       ],
       "shared_inventory_years": [
         2022,
         2023,
-        2024
+        2024,
+        2025,
+        2026
+      ],
+      "shared_inventory_sources": [
+        "lfai"
+      ],
+      "source_year_strata": [
+        "lfai:2022",
+        "lfai:2023",
+        "lfai:2024",
+        "lfai:2025",
+        "lfai:2026"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "source_year_stratified_sample"
+    },
+    {
+      "id": "inventory-overlap-05f2126d0c8e34e6ba11-f006b9a70e77b69fa7ba",
+      "subject_candidate_id": "05f2126d0c8e34e6ba11",
+      "object_candidate_id": "f006b9a70e77b69fa7ba",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "Natural Language Processing / Natural Language Processing"
+      ],
+      "shared_inventory_years": [
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025,
+        2026
+      ],
+      "shared_inventory_sources": [
+        "lfai"
+      ],
+      "source_year_strata": [
+        "lfai:2020",
+        "lfai:2021",
+        "lfai:2022",
+        "lfai:2023",
+        "lfai:2024",
+        "lfai:2025",
+        "lfai:2026"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "source_year_stratified_sample"
+    },
+    {
+      "id": "inventory-overlap-96ec38adccdcabec358a-a5910cb19d5c24375499",
+      "subject_candidate_id": "96ec38adccdcabec358a",
+      "object_candidate_id": "a5910cb19d5c24375499",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "Observability and Analysis / Monitoring"
+      ],
+      "shared_inventory_years": [
+        2020
       ],
       "shared_inventory_sources": [
         "cncf"
       ],
       "source_year_strata": [
-        "cncf:2022",
-        "cncf:2023",
-        "cncf:2024"
+        "cncf:2020"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
@@ -2551,22 +2626,74 @@
       "selection_method": "deterministic_random_sample"
     },
     {
-      "id": "inventory-overlap-3f3407d3bfd0a963b40c-9a74d332af617c4e44cf",
-      "subject_candidate_id": "3f3407d3bfd0a963b40c",
-      "object_candidate_id": "9a74d332af617c4e44cf",
+      "id": "inventory-overlap-52ecc028343c100129ac-ad685ff06b386e832a75",
+      "subject_candidate_id": "52ecc028343c100129ac",
+      "object_candidate_id": "ad685ff06b386e832a75",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "CNAI / Data Architecture"
+      ],
+      "shared_inventory_years": [
+        2024,
+        2025
+      ],
+      "shared_inventory_sources": [
+        "cncf"
+      ],
+      "source_year_strata": [
+        "cncf:2024",
+        "cncf:2025"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "deterministic_random_sample"
+    },
+    {
+      "id": "inventory-overlap-b3c3e7bfdec9014bfc16-ecc271676a8713c56d62",
+      "subject_candidate_id": "b3c3e7bfdec9014bfc16",
+      "object_candidate_id": "ecc271676a8713c56d62",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "Provisioning / Security & Compliance"
+      ],
+      "shared_inventory_years": [
+        2022,
+        2023
+      ],
+      "shared_inventory_sources": [
+        "cncf"
+      ],
+      "source_year_strata": [
+        "cncf:2022",
+        "cncf:2023"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "deterministic_random_sample"
+    },
+    {
+      "id": "inventory-overlap-927420ad907e7b75483c-a0f8ad31563315758ed5",
+      "subject_candidate_id": "927420ad907e7b75483c",
+      "object_candidate_id": "a0f8ad31563315758ed5",
       "candidate_kind": "inventory_category_overlap",
       "status": "needs_company_identity_and_relation_evidence",
       "shared_source_categories": [
         "App Definition and Development / Application Definition & Image Build"
       ],
       "shared_inventory_years": [
-        2024
+        2025,
+        2026
       ],
       "shared_inventory_sources": [
         "cncf"
       ],
       "source_year_strata": [
-        "cncf:2024"
+        "cncf:2025",
+        "cncf:2026"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
@@ -2574,9 +2701,126 @@
       "selection_method": "deterministic_random_sample"
     },
     {
-      "id": "inventory-overlap-6af3ff48a352aba9cc61-98a8594ecbae715bdd18",
-      "subject_candidate_id": "6af3ff48a352aba9cc61",
-      "object_candidate_id": "98a8594ecbae715bdd18",
+      "id": "inventory-overlap-0daece52e0ae83d894f9-fcb9d3740605c3045857",
+      "subject_candidate_id": "0daece52e0ae83d894f9",
+      "object_candidate_id": "fcb9d3740605c3045857",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "Data / Store & Format"
+      ],
+      "shared_inventory_years": [
+        2023,
+        2024,
+        2025,
+        2026
+      ],
+      "shared_inventory_sources": [
+        "lfai"
+      ],
+      "source_year_strata": [
+        "lfai:2023",
+        "lfai:2024",
+        "lfai:2025",
+        "lfai:2026"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "deterministic_random_sample"
+    },
+    {
+      "id": "inventory-overlap-0e1db5ad5998da10ee5d-cde58c0f84decd1a3aae",
+      "subject_candidate_id": "0e1db5ad5998da10ee5d",
+      "object_candidate_id": "cde58c0f84decd1a3aae",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "Observability and Analysis / Monitoring"
+      ],
+      "shared_inventory_years": [
+        2020,
+        2021,
+        2022,
+        2023
+      ],
+      "shared_inventory_sources": [
+        "cncf"
+      ],
+      "source_year_strata": [
+        "cncf:2020",
+        "cncf:2021",
+        "cncf:2022",
+        "cncf:2023"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "deterministic_random_sample"
+    },
+    {
+      "id": "inventory-overlap-1a61e31f01488b55a780-432956d9dad853830758",
+      "subject_candidate_id": "1a61e31f01488b55a780",
+      "object_candidate_id": "432956d9dad853830758",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "Observability and Analysis / Monitoring",
+        "Observability and Analysis / Observability"
+      ],
+      "shared_inventory_years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025,
+        2026
+      ],
+      "shared_inventory_sources": [
+        "cncf"
+      ],
+      "source_year_strata": [
+        "cncf:2021",
+        "cncf:2022",
+        "cncf:2023",
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "deterministic_random_sample"
+    },
+    {
+      "id": "inventory-overlap-47726f9eccb1317b163a-765be3078832f211e037",
+      "subject_candidate_id": "47726f9eccb1317b163a",
+      "object_candidate_id": "765be3078832f211e037",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "Observability and Analysis / Monitoring"
+      ],
+      "shared_inventory_years": [
+        2021,
+        2022
+      ],
+      "shared_inventory_sources": [
+        "cncf"
+      ],
+      "source_year_strata": [
+        "cncf:2021",
+        "cncf:2022"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "deterministic_random_sample"
+    },
+    {
+      "id": "inventory-overlap-19a4f362a39ac5dcdb6f-e295aed4af81148f62f5",
+      "subject_candidate_id": "19a4f362a39ac5dcdb6f",
+      "object_candidate_id": "e295aed4af81148f62f5",
       "candidate_kind": "inventory_category_overlap",
       "status": "needs_company_identity_and_relation_evidence",
       "shared_source_categories": [
@@ -2586,7 +2830,9 @@
       "shared_inventory_years": [
         2022,
         2023,
-        2024
+        2024,
+        2025,
+        2026
       ],
       "shared_inventory_sources": [
         "cncf"
@@ -2594,7 +2840,9 @@
       "source_year_strata": [
         "cncf:2022",
         "cncf:2023",
-        "cncf:2024"
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
@@ -2602,58 +2850,8 @@
       "selection_method": "deterministic_random_sample"
     },
     {
-      "id": "inventory-overlap-7b9933b07f4ce3f76726-d1083c2c7dee76c6848d",
-      "subject_candidate_id": "7b9933b07f4ce3f76726",
-      "object_candidate_id": "d1083c2c7dee76c6848d",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "Runtime / Cloud Native Storage"
-      ],
-      "shared_inventory_years": [
-        2021,
-        2022,
-        2023
-      ],
-      "shared_inventory_sources": [
-        "cncf"
-      ],
-      "source_year_strata": [
-        "cncf:2021",
-        "cncf:2022",
-        "cncf:2023"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "deterministic_random_sample"
-    },
-    {
-      "id": "inventory-overlap-29085b3d5049742abd4e-9f8e9732d3a909f0a8ca",
-      "subject_candidate_id": "29085b3d5049742abd4e",
-      "object_candidate_id": "9f8e9732d3a909f0a8ca",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "Observability and Analysis / Observability"
-      ],
-      "shared_inventory_years": [
-        2024
-      ],
-      "shared_inventory_sources": [
-        "cncf"
-      ],
-      "source_year_strata": [
-        "cncf:2024"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "deterministic_random_sample"
-    },
-    {
-      "id": "inventory-overlap-4f7d358cd697bb4919b0-c20958fae904691baf6f",
-      "subject_candidate_id": "4f7d358cd697bb4919b0",
+      "id": "inventory-overlap-818ad29b419c9af47dd5-c20958fae904691baf6f",
+      "subject_candidate_id": "818ad29b419c9af47dd5",
       "object_candidate_id": "c20958fae904691baf6f",
       "candidate_kind": "inventory_category_overlap",
       "status": "needs_company_identity_and_relation_evidence",
@@ -2661,13 +2859,17 @@
         "Observability and Analysis / Observability"
       ],
       "shared_inventory_years": [
-        2024
+        2024,
+        2025,
+        2026
       ],
       "shared_inventory_sources": [
         "cncf"
       ],
       "source_year_strata": [
-        "cncf:2024"
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
@@ -2675,9 +2877,94 @@
       "selection_method": "deterministic_random_sample"
     },
     {
-      "id": "inventory-overlap-48ca7d40732830adc0f1-99ce61b69f9202382521",
-      "subject_candidate_id": "48ca7d40732830adc0f1",
-      "object_candidate_id": "99ce61b69f9202382521",
+      "id": "inventory-overlap-297a460e9dc19db3e230-da5ec84b0cb829bec60c",
+      "subject_candidate_id": "297a460e9dc19db3e230",
+      "object_candidate_id": "da5ec84b0cb829bec60c",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "Provisioning / Security & Compliance"
+      ],
+      "shared_inventory_years": [
+        2024,
+        2025,
+        2026
+      ],
+      "shared_inventory_sources": [
+        "cncf"
+      ],
+      "source_year_strata": [
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "deterministic_random_sample"
+    },
+    {
+      "id": "inventory-overlap-45f5fb9883640bdd94fa-670c468c7183fcc9bae7",
+      "subject_candidate_id": "45f5fb9883640bdd94fa",
+      "object_candidate_id": "670c468c7183fcc9bae7",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "Orchestration & Management / API Gateway"
+      ],
+      "shared_inventory_years": [
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025,
+        2026
+      ],
+      "shared_inventory_sources": [
+        "cncf"
+      ],
+      "source_year_strata": [
+        "cncf:2020",
+        "cncf:2021",
+        "cncf:2022",
+        "cncf:2023",
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "deterministic_random_sample"
+    },
+    {
+      "id": "inventory-overlap-87fea82a56de36998cf1-fa7331f6567cee42cdeb",
+      "subject_candidate_id": "87fea82a56de36998cf1",
+      "object_candidate_id": "fa7331f6567cee42cdeb",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "App Definition and Development / Application Definition & Image Build"
+      ],
+      "shared_inventory_years": [
+        2020
+      ],
+      "shared_inventory_sources": [
+        "cncf"
+      ],
+      "source_year_strata": [
+        "cncf:2020"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "deterministic_random_sample"
+    },
+    {
+      "id": "inventory-overlap-123961ca8eb0cdf4981e-3bdb0bd00d515fb4c53d",
+      "subject_candidate_id": "123961ca8eb0cdf4981e",
+      "object_candidate_id": "3bdb0bd00d515fb4c53d",
       "candidate_kind": "inventory_category_overlap",
       "status": "needs_company_identity_and_relation_evidence",
       "shared_source_categories": [
@@ -2698,28 +2985,31 @@
       "selection_method": "deterministic_random_sample"
     },
     {
-      "id": "inventory-overlap-0735ccb08be6af7d8fa7-af67823de1a549a292d5",
-      "subject_candidate_id": "0735ccb08be6af7d8fa7",
-      "object_candidate_id": "af67823de1a549a292d5",
+      "id": "inventory-overlap-71dd3b8d4c60f85abb68-a1f119eb967e14cdca95",
+      "subject_candidate_id": "71dd3b8d4c60f85abb68",
+      "object_candidate_id": "a1f119eb967e14cdca95",
       "candidate_kind": "inventory_category_overlap",
       "status": "needs_company_identity_and_relation_evidence",
       "shared_source_categories": [
-        "App Definition and Development / Database"
+        "Observability and Analysis / Observability",
+        "Observability and Analysis / Tracing"
       ],
       "shared_inventory_years": [
-        2021,
         2022,
         2023,
-        2024
+        2024,
+        2025,
+        2026
       ],
       "shared_inventory_sources": [
         "cncf"
       ],
       "source_year_strata": [
-        "cncf:2021",
         "cncf:2022",
         "cncf:2023",
-        "cncf:2024"
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
@@ -2727,16 +3017,46 @@
       "selection_method": "deterministic_random_sample"
     },
     {
-      "id": "inventory-overlap-86c78ded3269e73f7b35-a7111a9721bf1132c0dd",
-      "subject_candidate_id": "86c78ded3269e73f7b35",
-      "object_candidate_id": "a7111a9721bf1132c0dd",
+      "id": "inventory-overlap-46c3e1329153b28e5ab7-af25c51288e2305c7fbe",
+      "subject_candidate_id": "46c3e1329153b28e5ab7",
+      "object_candidate_id": "af25c51288e2305c7fbe",
       "candidate_kind": "inventory_category_overlap",
       "status": "needs_company_identity_and_relation_evidence",
       "shared_source_categories": [
-        "Observability and Analysis / Monitoring"
+        "Provisioning / Security & Compliance"
       ],
       "shared_inventory_years": [
-        2021,
+        2022,
+        2023,
+        2024,
+        2025,
+        2026
+      ],
+      "shared_inventory_sources": [
+        "cncf"
+      ],
+      "source_year_strata": [
+        "cncf:2022",
+        "cncf:2023",
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "deterministic_random_sample"
+    },
+    {
+      "id": "inventory-overlap-9bb0127e90ec33ada2ae-cb80c0ca79d452684536",
+      "subject_candidate_id": "9bb0127e90ec33ada2ae",
+      "object_candidate_id": "cb80c0ca79d452684536",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "Provisioning / Security & Compliance"
+      ],
+      "shared_inventory_years": [
         2022,
         2023
       ],
@@ -2744,7 +3064,6 @@
         "cncf"
       ],
       "source_year_strata": [
-        "cncf:2021",
         "cncf:2022",
         "cncf:2023"
       ],
@@ -2754,26 +3073,24 @@
       "selection_method": "deterministic_random_sample"
     },
     {
-      "id": "inventory-overlap-7a2f8d5cacc444b06b03-e9dd606d7efdc6f400af",
-      "subject_candidate_id": "7a2f8d5cacc444b06b03",
-      "object_candidate_id": "e9dd606d7efdc6f400af",
+      "id": "inventory-overlap-8b8828404b6d7aea0bc6-9c3c24409b0881b261de",
+      "subject_candidate_id": "8b8828404b6d7aea0bc6",
+      "object_candidate_id": "9c3c24409b0881b261de",
       "candidate_kind": "inventory_category_overlap",
       "status": "needs_company_identity_and_relation_evidence",
       "shared_source_categories": [
         "Provisioning / Security & Compliance"
       ],
       "shared_inventory_years": [
-        2022,
-        2023,
-        2024
+        2020,
+        2021
       ],
       "shared_inventory_sources": [
         "cncf"
       ],
       "source_year_strata": [
-        "cncf:2022",
-        "cncf:2023",
-        "cncf:2024"
+        "cncf:2020",
+        "cncf:2021"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
@@ -2781,56 +3098,22 @@
       "selection_method": "deterministic_random_sample"
     },
     {
-      "id": "inventory-overlap-1a61e31f01488b55a780-8f73a1524bec7c5c9ccd",
-      "subject_candidate_id": "1a61e31f01488b55a780",
-      "object_candidate_id": "8f73a1524bec7c5c9ccd",
-      "candidate_kind": "inventory_category_overlap",
-      "status": "needs_company_identity_and_relation_evidence",
-      "shared_source_categories": [
-        "Observability and Analysis / Monitoring",
-        "Observability and Analysis / Observability"
-      ],
-      "shared_inventory_years": [
-        2021,
-        2022,
-        2023,
-        2024
-      ],
-      "shared_inventory_sources": [
-        "cncf"
-      ],
-      "source_year_strata": [
-        "cncf:2021",
-        "cncf:2022",
-        "cncf:2023",
-        "cncf:2024"
-      ],
-      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
-      "claim": null,
-      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
-      "selection_method": "deterministic_random_sample"
-    },
-    {
-      "id": "inventory-overlap-2b11db5c2c764c150517-526f389f1a7e41c63d66",
-      "subject_candidate_id": "2b11db5c2c764c150517",
-      "object_candidate_id": "526f389f1a7e41c63d66",
+      "id": "inventory-overlap-30de1410311ff28403b2-e08766dea936642245e0",
+      "subject_candidate_id": "30de1410311ff28403b2",
+      "object_candidate_id": "e08766dea936642245e0",
       "candidate_kind": "inventory_category_overlap",
       "status": "needs_company_identity_and_relation_evidence",
       "shared_source_categories": [
         "Runtime / Cloud Native Storage"
       ],
       "shared_inventory_years": [
-        2022,
-        2023,
-        2024
+        2020
       ],
       "shared_inventory_sources": [
         "cncf"
       ],
       "source_year_strata": [
-        "cncf:2022",
-        "cncf:2023",
-        "cncf:2024"
+        "cncf:2020"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
@@ -2838,22 +3121,163 @@
       "selection_method": "deterministic_random_sample"
     },
     {
-      "id": "inventory-overlap-5e339b9338e34a5429f8-876038538a6e5afa44fa",
-      "subject_candidate_id": "5e339b9338e34a5429f8",
-      "object_candidate_id": "876038538a6e5afa44fa",
+      "id": "inventory-overlap-3f2467757f740e6bd3c7-b3ac8844eeda6e5f77e2",
+      "subject_candidate_id": "3f2467757f740e6bd3c7",
+      "object_candidate_id": "b3ac8844eeda6e5f77e2",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "Observability and Analysis / Observability"
+      ],
+      "shared_inventory_years": [
+        2024,
+        2025,
+        2026
+      ],
+      "shared_inventory_sources": [
+        "cncf"
+      ],
+      "source_year_strata": [
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "deterministic_random_sample"
+    },
+    {
+      "id": "inventory-overlap-9492869ea1a42e334a11-a04d0cc4de2af8112dcb",
+      "subject_candidate_id": "9492869ea1a42e334a11",
+      "object_candidate_id": "a04d0cc4de2af8112dcb",
       "candidate_kind": "inventory_category_overlap",
       "status": "needs_company_identity_and_relation_evidence",
       "shared_source_categories": [
         "Provisioning / Security & Compliance"
       ],
       "shared_inventory_years": [
-        2024
+        2022,
+        2023,
+        2024,
+        2025,
+        2026
       ],
       "shared_inventory_sources": [
         "cncf"
       ],
       "source_year_strata": [
-        "cncf:2024"
+        "cncf:2022",
+        "cncf:2023",
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "deterministic_random_sample"
+    },
+    {
+      "id": "inventory-overlap-9467a8d3b100f62c7a3f-9c4c2d3dbbed9e5853dc",
+      "subject_candidate_id": "9467a8d3b100f62c7a3f",
+      "object_candidate_id": "9c4c2d3dbbed9e5853dc",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "Provisioning / Security & Compliance"
+      ],
+      "shared_inventory_years": [
+        2021,
+        2022
+      ],
+      "shared_inventory_sources": [
+        "cncf"
+      ],
+      "source_year_strata": [
+        "cncf:2021",
+        "cncf:2022"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "deterministic_random_sample"
+    },
+    {
+      "id": "inventory-overlap-25f0cdb284e7865eed2a-f19aa4c50eb56643d0ba",
+      "subject_candidate_id": "25f0cdb284e7865eed2a",
+      "object_candidate_id": "f19aa4c50eb56643d0ba",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "Provisioning / Security & Compliance"
+      ],
+      "shared_inventory_years": [
+        2022,
+        2023,
+        2024,
+        2025,
+        2026
+      ],
+      "shared_inventory_sources": [
+        "cncf"
+      ],
+      "source_year_strata": [
+        "cncf:2022",
+        "cncf:2023",
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "deterministic_random_sample"
+    },
+    {
+      "id": "inventory-overlap-cc2e924827753970622c-f19aa4c50eb56643d0ba",
+      "subject_candidate_id": "cc2e924827753970622c",
+      "object_candidate_id": "f19aa4c50eb56643d0ba",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "Provisioning / Security & Compliance"
+      ],
+      "shared_inventory_years": [
+        2024,
+        2025,
+        2026
+      ],
+      "shared_inventory_sources": [
+        "cncf"
+      ],
+      "source_year_strata": [
+        "cncf:2024",
+        "cncf:2025",
+        "cncf:2026"
+      ],
+      "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
+      "claim": null,
+      "research_next_step": "Resolve both product/project candidates to dated company identities, then seek a primary source that supports a scoped relationship claim.",
+      "selection_method": "deterministic_random_sample"
+    },
+    {
+      "id": "inventory-overlap-59b7a28643c6b85cdcdf-a7f49767b2bfbb251881",
+      "subject_candidate_id": "59b7a28643c6b85cdcdf",
+      "object_candidate_id": "a7f49767b2bfbb251881",
+      "candidate_kind": "inventory_category_overlap",
+      "status": "needs_company_identity_and_relation_evidence",
+      "shared_source_categories": [
+        "Provisioning / Security & Compliance"
+      ],
+      "shared_inventory_years": [
+        2026
+      ],
+      "shared_inventory_sources": [
+        "cncf"
+      ],
+      "source_year_strata": [
+        "cncf:2026"
       ],
       "source_basis": "Both rows appeared in the same named source category in at least one pinned inventory year.",
       "claim": null,
@@ -2866,5 +3290,6 @@
     "Category co-occurrence is only a research prioritization signal; it is not evidence of competition, partnership, integration, or shared performance exposure.",
     "These inventories do not establish U.S. location or company eligibility in any year.",
     "The bounded queue is not a representative sample of the U.S. software universe."
-  ]
+  ],
+  "input_sha256": "6f858649a7f17741653dc9a80c5dd93b5b7f87d4d683156dbb3c1d9cd3c7b5f6"
 }

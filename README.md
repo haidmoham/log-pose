@@ -10,7 +10,7 @@ The [public dashboard](https://logpose.mhaider.dev/) is a static, read-only expo
 
 Run `npm run dashboard`, then open `http://127.0.0.1:8080/`. This serves the saved dashboard and discovery exports without starting Postgres or changing evidence. Run `npm run test:dashboard` for the pure calculation, missing-data, chart-scale, URL-state, and export-contract checks. Overview, compare, and explore state is encoded in the URL for reloads and browser navigation.
 
-The dashboard and local live inventory have separate browser entrypoints and styles. Explore loads the full source/year inventory partitions on demand, including rows without a candidate tag. The topology view offers an interactive 3D WebGL map of reviewed claims, a flat fallback, and the same source inspector and claim index. The [architecture and extension map](docs/architecture.md) documents their modules plus the database view grains, timestamps, provenance, and safe extension seams.
+The dashboard and local development server now serve the same research console. The retained-data catalog adds all 89 snapshots, 369 normalized SEC candidates, and 19,093 Cboe participant rows through lazy typed partitions; its compact inventory search covers all 18,076 source rows. See the [data contract](docs/data-contract.md) for rebuild and local full-text commands. Explore loads the full source/year inventory partitions on demand, including rows without a candidate tag. The topology view offers an interactive 3D WebGL map of reviewed claims, a flat fallback, and the same source inspector and claim index. The [architecture and extension map](docs/architecture.md) documents their modules plus the database view grains, timestamps, provenance, and safe extension seams.
 
 ## Market topology research
 
@@ -33,15 +33,13 @@ PYTHONPATH=src .venv/bin/python scripts/import_topology_seed.py
 PYTHONPATH=src .venv/bin/python scripts/build_dashboard.py
 ```
 
-The import verifies source hashes and appends review decisions; it does not fetch missing artifacts. The capture command reports failures rather than converting a URL or directory overlap into a claim.
+The import verifies source hashes and restores the prior dated seed review with an explicit import rationale; it performs no new source review, fetches no missing artifacts, and cannot supersede an existing review decision. The capture command reports failures rather than converting a URL or directory overlap into a claim.
 
 ## Local live preview
 
-Run `npm run dev` from the repository root, then open `http://127.0.0.1:8000/`. The command creates a Python virtual environment, starts a project-local PostgreSQL 18 database on port 55432 when Homebrew's `postgresql@18` is installed, applies the schema, fetches missing curated Wayback captures, and serves the browser UI and read API from one origin. Node/npm and Python 3.11+ are required. Network access to the Internet Archive is needed to load missing captures. The database files stay under ignored `data/postgres/`; later runs reuse stored captures.
+Run `npm run dev` from the repository root, then open `http://127.0.0.1:8000/`. The command prepares the Python environment and serves the same research console as the static deployment. It reads saved exports and does not start Postgres, migrate tables, or fetch sources. Stop it with Ctrl-C.
 
-If Docker Compose is available instead, the same command starts the `db` service on port 5432. You can also set `DATABASE_URL` to an existing local Postgres database; in that case the command leaves database startup to you. The local UI (`web/live-index.html` and `web/live-app.js`) reads from Postgres through `/api/companies` and `/api/companies/{slug}?cutoff=...`. The standalone `web/index.html` and `web/app.js` use the saved `web/dashboard.json` export. Stop the preview with Ctrl-C. The project-local Postgres server remains running for quick restarts; stop it with `$(brew --prefix postgresql@18)/bin/pg_ctl -D data/postgres stop` if needed.
-
-The live preview reads `/api/overview`. Its counts are database inventory: companies, curated source URLs, stored captures, and cumulative failed ingestion attempts. Each year cell reports how many sources have an eligible stored capture at that cutoff and the latest actual capture date. A 2021 capture can still be the latest eligible record for 2024; the cell does not claim a new 2024 observation. Select a cell to open the source text and archive link. The URL keeps the company and year for reloads and sharing. Ingestion failures remain in `ingestion_attempts`; an archive outage does not hide already stored evidence. Run `npm run dev` again to retry missing curated captures.
+Set `DATABASE_URL` to enable the existing read-only `/api/companies`, `/api/overview`, and `/api/companies/{slug}?cutoff=...` routes. Database setup, evidence acquisition, and rebuilding exports are explicit commands. The [data contract](docs/data-contract.md) gives the full retained-data rebuild and an optional local console with complete normalized page text.
 
 ## Run locally
 
@@ -88,7 +86,7 @@ The integration test clears its target database. Never point it at a database yo
 
 `sources.json` is a small, reviewed list of original URLs and verified capture identifiers. `acquire.py` fetches raw Wayback HTML and rejects off-source redirects, captures after the requested cutoff, non-HTML responses, oversized bodies, and empty visible text. `core.py` normalizes visible page text. `storage.py` persists the original response body, both hashes, archive URL, source URL, `captured_at`, and independent `ingested_at` in Postgres. Each attempt is recorded separately, including failure and duplicate outcomes. Run ingestion again to retry failures; existing captures cannot be silently overwritten.
 
-The cutoff query selects the latest stored capture for each curated source with `captured_at <= cutoff`. It does not select by ingestion date and does not fetch a current page when a capture is absent. A missing cell says only that this system lacks eligible evidence. The response includes the raw content hash; the public export includes only a 320-character text preview, while the local API returns normalized text. Raw HTML remains in Postgres.
+The legacy API cutoff query selects the latest stored capture for each curated source with `captured_at <= cutoff`. It does not select by ingestion date and does not fetch a current page when a capture is absent. A missing cell says only that this system lacks eligible evidence. The response includes the raw content hash; the legacy `evidence.json` export includes a 320-character preview. The retained-data catalog includes up to 6,000 plain-text characters per snapshot with explicit truncation fields; the local API and optional local catalog retain complete normalized text. Raw HTML remains in Postgres.
 
 The schema separates `companies`, `sources`, `snapshots`, and `ingestion_attempts`. Interpretations will be a separate layer referencing immutable snapshot IDs. It is intentionally a manually curated batch process, not a crawler platform.
 
