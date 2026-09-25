@@ -131,7 +131,7 @@ def build(cohort, ingestion, financials, announcements, location_reviews,
     with connection.cursor() as cursor:
         cursor.execute("""SELECT observation_id AS id, normalized_text, archive_url,
                 provider_record_id, raw_sha256, captured_at, text_status, provider
-            FROM warehouse.page_observations WHERE observation_id = ANY(%s)""", (selected_ids,))
+            FROM silver.page_observations WHERE observation_id = ANY(%s)""", (selected_ids,))
         snapshots = {row["id"]: row for row in cursor.fetchall()}
         cursor.execute("""SELECT file.id, file.study_year, file.source_url, file.raw_sha256,
                 file.retrieved_at,
@@ -141,19 +141,19 @@ def build(cohort, ingestion, financials, announcements, location_reviews,
                 sum(daily.total_notional) AS notional,
                 sum(daily.total_trade_count) AS trades,
                 sum(daily.trf_shares) AS trf_shares
-            FROM market_files AS file
-            JOIN warehouse.market_daily_totals AS daily ON daily.file_id=file.id
+            FROM raw.market_files AS file
+            JOIN gold.market_daily_totals AS daily ON daily.file_id=file.id
             WHERE file.provider='cboe'
             GROUP BY file.id ORDER BY file.study_year, file.retrieved_at""")
         market_rows = cursor.fetchall()
-        cursor.execute("""SELECT artifact_version FROM sec_artifacts ORDER BY observed_at""")
+        cursor.execute("""SELECT artifact_version FROM raw.sec_artifacts ORDER BY observed_at""")
         artifact_versions = [row["artifact_version"].strip() for row in cursor.fetchall()]
-        cursor.execute("SELECT count(*) AS facts FROM sec_financial_facts")
+        cursor.execute("SELECT count(*) AS facts FROM bronze.sec_financial_facts")
         stored_fact_count = cursor.fetchone()["facts"]
         cursor.execute("""SELECT fact_id AS id, value, unit, start_date,
                 end_date, filed_date, tag, accession_number,
                 raw_sha256, artifact_version
-            FROM warehouse.sec_fact_observations""")
+            FROM silver.sec_fact_observations""")
         stored_facts = {row["id"]: row for row in cursor.fetchall()}
 
     if len(snapshots) != len(set(selected_ids)):

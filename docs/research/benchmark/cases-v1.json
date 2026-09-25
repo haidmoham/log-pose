@@ -1,0 +1,572 @@
+{
+  "schema_version": "1.0",
+  "version": "benchmark-cases-v1",
+  "frozen_from_commit": "3c5390e",
+  "selection_rule": "purposive smoke/regression coverage across existing retained pages, SEC candidates, topology source bytes, and dated inventory snapshots; not a representative company sample",
+  "case_count": 20,
+  "cases": [
+    {
+      "id": "case-01",
+      "version": 1,
+      "task_kind": "page_claim_attribution",
+      "entity_ids": [
+        "datadog"
+      ],
+      "question": "Does this archived Datadog homepage establish that Datadog was the market leader by the cutoff, or only that the page made a marketing statement?",
+      "cutoff": "2024-12-31",
+      "replay_mode": "public_availability",
+      "universe_manifest_ref": "web/data/index.json#build_id",
+      "resolution_rule_ref": "docs/research/benchmark-protocol.md#p0-case-labels",
+      "horizon_if_applicable": null,
+      "rubric_version": "evidence-claim-v1",
+      "split": "smoke_regression",
+      "grouping_keys": [
+        "datadog"
+      ],
+      "query_terms": [
+        "leader"
+      ],
+      "semantic_label_status": "provisional",
+      "selection_rationale": "Homepage text can support only an attributed statement, never economic leadership.",
+      "allowed_artifact_ids": [
+        "page:28"
+      ]
+    },
+    {
+      "id": "case-02",
+      "version": 1,
+      "task_kind": "page_claim_extraction",
+      "entity_ids": [
+        "gitlab"
+      ],
+      "question": "What product capability does the archived GitLab homepage describe, and what does this page alone leave unverified?",
+      "cutoff": "2024-12-31",
+      "replay_mode": "public_availability",
+      "universe_manifest_ref": "web/data/index.json#build_id",
+      "resolution_rule_ref": "docs/research/benchmark-protocol.md#p0-case-labels",
+      "horizon_if_applicable": null,
+      "rubric_version": "evidence-claim-v1",
+      "split": "smoke_regression",
+      "grouping_keys": [
+        "gitlab"
+      ],
+      "query_terms": [
+        "software",
+        "security"
+      ],
+      "semantic_label_status": "provisional",
+      "selection_rationale": "Archived page capture supports a historical source observation; ingestion occurred later.",
+      "allowed_artifact_ids": [
+        "page:16"
+      ]
+    },
+    {
+      "id": "case-03",
+      "version": 1,
+      "task_kind": "page_claim_extraction",
+      "entity_ids": [
+        "dbt-labs"
+      ],
+      "question": "What analytics engineering or data transformation capability does the archived dbt Labs page state?",
+      "cutoff": "2024-12-31",
+      "replay_mode": "public_availability",
+      "universe_manifest_ref": "web/data/index.json#build_id",
+      "resolution_rule_ref": "docs/research/benchmark-protocol.md#p0-case-labels",
+      "horizon_if_applicable": null,
+      "rubric_version": "evidence-claim-v1",
+      "split": "smoke_regression",
+      "grouping_keys": [
+        "dbt-labs"
+      ],
+      "query_terms": [
+        "analytics"
+      ],
+      "semantic_label_status": "provisional",
+      "selection_rationale": "Use a date-bounded archived page and retain its exact partition hash.",
+      "allowed_artifact_ids": [
+        "page:12"
+      ]
+    },
+    {
+      "id": "case-04",
+      "version": 1,
+      "task_kind": "page_claim_extraction",
+      "entity_ids": [
+        "snowflake"
+      ],
+      "question": "What data platform capability does the archived Snowflake page describe, and can it establish product quality?",
+      "cutoff": "2024-12-31",
+      "replay_mode": "public_availability",
+      "universe_manifest_ref": "web/data/index.json#build_id",
+      "resolution_rule_ref": "docs/research/benchmark-protocol.md#p0-case-labels",
+      "horizon_if_applicable": null,
+      "rubric_version": "evidence-claim-v1",
+      "split": "smoke_regression",
+      "grouping_keys": [
+        "snowflake"
+      ],
+      "query_terms": [
+        "data"
+      ],
+      "semantic_label_status": "provisional",
+      "selection_rationale": "Archived page is an evidence locator, not validation of product quality.",
+      "allowed_artifact_ids": [
+        "page:63"
+      ]
+    },
+    {
+      "id": "case-05",
+      "version": 1,
+      "task_kind": "page_claim_extraction",
+      "entity_ids": [
+        "invision"
+      ],
+      "question": "What did this 2021 InVision page say about its service? Does this snapshot establish current operating status?",
+      "cutoff": "2024-12-31",
+      "replay_mode": "public_availability",
+      "universe_manifest_ref": "web/data/index.json#build_id",
+      "resolution_rule_ref": "docs/research/benchmark-protocol.md#p0-case-labels",
+      "horizon_if_applicable": null,
+      "rubric_version": "evidence-claim-v1",
+      "split": "smoke_regression",
+      "grouping_keys": [
+        "invision"
+      ],
+      "query_terms": [
+        "design"
+      ],
+      "semantic_label_status": "provisional",
+      "selection_rationale": "Discontinued company page is retained; current survival is not inferred.",
+      "allowed_artifact_ids": [
+        "page:27"
+      ]
+    },
+    {
+      "id": "case-06",
+      "version": 1,
+      "task_kind": "valid_abstention",
+      "entity_ids": [
+        "gitlab"
+      ],
+      "question": "Can the 32-character GitLab capture establish a financing round or amount? If not, what should the analyst do?",
+      "cutoff": "2023-01-01",
+      "replay_mode": "public_availability",
+      "universe_manifest_ref": "web/data/index.json#build_id",
+      "resolution_rule_ref": "docs/research/benchmark-protocol.md#p0-case-labels",
+      "horizon_if_applicable": null,
+      "rubric_version": "evidence-claim-v1",
+      "split": "smoke_regression",
+      "grouping_keys": [
+        "gitlab"
+      ],
+      "query_terms": [
+        "series",
+        "funding"
+      ],
+      "semantic_label_status": "provisional",
+      "selection_rationale": "The retained 32-character capture does not support a material financing claim.",
+      "allowed_artifact_ids": [
+        "page:86"
+      ]
+    },
+    {
+      "id": "case-07",
+      "version": 1,
+      "task_kind": "valid_abstention",
+      "entity_ids": [
+        "gitlab"
+      ],
+      "question": "Does the second short GitLab capture provide enough retained text to assert financing history?",
+      "cutoff": "2023-01-01",
+      "replay_mode": "public_availability",
+      "universe_manifest_ref": "web/data/index.json#build_id",
+      "resolution_rule_ref": "docs/research/benchmark-protocol.md#p0-case-labels",
+      "horizon_if_applicable": null,
+      "rubric_version": "evidence-claim-v1",
+      "split": "smoke_regression",
+      "grouping_keys": [
+        "gitlab"
+      ],
+      "query_terms": [
+        "series",
+        "funding"
+      ],
+      "semantic_label_status": "provisional",
+      "selection_rationale": "A second short capture guards against treating incomplete text as absence.",
+      "allowed_artifact_ids": [
+        "page:72"
+      ]
+    },
+    {
+      "id": "case-08",
+      "version": 1,
+      "task_kind": "operational_replay_gate",
+      "entity_ids": [
+        "datadog"
+      ],
+      "question": "Was this Datadog page in Log Pose system knowledge by 2024-12-31, given its archive capture and ingestion times?",
+      "cutoff": "2024-12-31",
+      "replay_mode": "system_known",
+      "universe_manifest_ref": "web/data/index.json#build_id",
+      "resolution_rule_ref": "docs/research/benchmark-protocol.md#p0-case-labels",
+      "horizon_if_applicable": null,
+      "rubric_version": "evidence-claim-v1",
+      "split": "smoke_regression",
+      "grouping_keys": [
+        "datadog"
+      ],
+      "query_terms": [
+        "monitoring"
+      ],
+      "semantic_label_status": "provisional",
+      "selection_rationale": "Public archive capture predates the cutoff; Log Pose ingestion does not.",
+      "allowed_artifact_ids": [
+        "page:70"
+      ]
+    },
+    {
+      "id": "case-09",
+      "version": 1,
+      "task_kind": "mutable_old_dated_page",
+      "entity_ids": [
+        "dbt-labs"
+      ],
+      "question": "Can the retained dbt Labs page bytes prove what exact funding-announcement content existed by 2022-02-24?",
+      "cutoff": "2024-12-31",
+      "replay_mode": "public_availability",
+      "universe_manifest_ref": "web/data/index.json#build_id",
+      "resolution_rule_ref": "docs/research/benchmark-protocol.md#p0-case-labels",
+      "horizon_if_applicable": null,
+      "rubric_version": "evidence-claim-v1",
+      "split": "smoke_regression",
+      "grouping_keys": [
+        "dbt-labs"
+      ],
+      "query_terms": [
+        "raises",
+        "222"
+      ],
+      "semantic_label_status": "blocked",
+      "selection_rationale": "Old page publication date does not prove that retained 2026 bytes existed in 2022.",
+      "allowed_artifact_ids": [
+        "dbt-series-d-2022"
+      ]
+    },
+    {
+      "id": "case-10",
+      "version": 1,
+      "task_kind": "sec_post_cutoff_filing",
+      "entity_ids": [
+        "datadog"
+      ],
+      "question": "Could a 2024-12-31 analyst use Datadog's FY2024 10-K to name competitors?",
+      "cutoff": "2024-12-31",
+      "replay_mode": "public_availability",
+      "universe_manifest_ref": "web/data/index.json#build_id",
+      "resolution_rule_ref": "docs/research/benchmark-protocol.md#p0-case-labels",
+      "horizon_if_applicable": null,
+      "rubric_version": "evidence-claim-v1",
+      "split": "smoke_regression",
+      "grouping_keys": [
+        "datadog"
+      ],
+      "query_terms": [
+        "competition",
+        "Elastic"
+      ],
+      "semantic_label_status": "blocked",
+      "selection_rationale": "FY2024 period end is not filing availability; published 2025-02-20.",
+      "allowed_artifact_ids": [
+        "datadog-2024-10k"
+      ]
+    },
+    {
+      "id": "case-11",
+      "version": 1,
+      "task_kind": "sec_fact_arrival_time",
+      "entity_ids": [
+        "datadog"
+      ],
+      "question": "Can the current SEC companyfacts record establish that this fact version was in Log Pose system knowledge by 2024-12-31?",
+      "cutoff": "2024-12-31",
+      "replay_mode": "system_known",
+      "universe_manifest_ref": "web/data/index.json#build_id",
+      "resolution_rule_ref": "docs/research/benchmark-protocol.md#p0-case-labels",
+      "horizon_if_applicable": null,
+      "rubric_version": "evidence-claim-v1",
+      "split": "smoke_regression",
+      "grouping_keys": [
+        "datadog"
+      ],
+      "query_terms": [
+        "revenue"
+      ],
+      "semantic_label_status": "blocked",
+      "selection_rationale": "Filed date predates cutoff, but current companyfacts artifact was observed in 2026.",
+      "allowed_artifact_ids": [
+        "sec:175"
+      ]
+    },
+    {
+      "id": "case-12",
+      "version": 1,
+      "task_kind": "sec_immutable_filing_version",
+      "entity_ids": [
+        "snowflake"
+      ],
+      "question": "Does the locally retained Snowflake FY2024 filing byte copy prove it was available to the system by 2024-12-31?",
+      "cutoff": "2024-12-31",
+      "replay_mode": "public_availability",
+      "universe_manifest_ref": "web/data/index.json#build_id",
+      "resolution_rule_ref": "docs/research/benchmark-protocol.md#p0-case-labels",
+      "horizon_if_applicable": null,
+      "rubric_version": "evidence-claim-v1",
+      "split": "smoke_regression",
+      "grouping_keys": [
+        "snowflake"
+      ],
+      "query_terms": [
+        "revenue"
+      ],
+      "semantic_label_status": "blocked",
+      "selection_rationale": "Filing date predates cutoff; this retained local byte copy was retrieved in 2026.",
+      "allowed_artifact_ids": [
+        "snowflake-fy2024-10k"
+      ]
+    },
+    {
+      "id": "case-13",
+      "version": 1,
+      "task_kind": "event_publication_ingestion_clocks",
+      "entity_ids": [
+        "dbt-labs",
+        "snowflake"
+      ],
+      "question": "Does a 2022 event date plus a 2022 publication date prove the exact current dbt Labs page version was historically available?",
+      "cutoff": "2022-03-01",
+      "replay_mode": "public_availability",
+      "universe_manifest_ref": "web/data/index.json#build_id",
+      "resolution_rule_ref": "docs/research/benchmark-protocol.md#p0-case-labels",
+      "horizon_if_applicable": null,
+      "rubric_version": "evidence-claim-v1",
+      "split": "smoke_regression",
+      "grouping_keys": [
+        "dbt-labs",
+        "snowflake"
+      ],
+      "query_terms": [
+        "Series",
+        "D"
+      ],
+      "semantic_label_status": "blocked",
+      "selection_rationale": "Event and publication times are not proof the exact retained mutable bytes were present then.",
+      "allowed_artifact_ids": [
+        "dbt-series-d-2022"
+      ]
+    },
+    {
+      "id": "case-14",
+      "version": 1,
+      "task_kind": "review_arrival_leakage",
+      "entity_ids": [
+        "dbt-labs",
+        "snowflake"
+      ],
+      "question": "Could a 2024 operational replay use the 2026-reviewed topology interpretation of the dbt Labs and Snowflake announcement?",
+      "cutoff": "2024-12-31",
+      "replay_mode": "system_known",
+      "universe_manifest_ref": "web/data/index.json#build_id",
+      "resolution_rule_ref": "docs/research/benchmark-protocol.md#p0-case-labels",
+      "horizon_if_applicable": null,
+      "rubric_version": "evidence-claim-v1",
+      "split": "smoke_regression",
+      "grouping_keys": [
+        "dbt-labs",
+        "snowflake"
+      ],
+      "query_terms": [
+        "partnership"
+      ],
+      "semantic_label_status": "blocked",
+      "selection_rationale": "The 2022 announcement and 2026 review are separate records; the review must not enter 2024 state.",
+      "allowed_artifact_ids": [
+        "dbt-series-d-2022",
+        "topology-review-v1"
+      ]
+    },
+    {
+      "id": "case-15",
+      "version": 1,
+      "task_kind": "unsupported_graph_interpretation",
+      "entity_ids": [
+        "datadog",
+        "snowflake"
+      ],
+      "question": "Do these 10-K artifacts support a 2024 Datadog–Snowflake shared-customer relationship claim, or is this only a hypothesis?",
+      "cutoff": "2024-12-31",
+      "replay_mode": "public_availability",
+      "universe_manifest_ref": "web/data/index.json#build_id",
+      "resolution_rule_ref": "docs/research/benchmark-protocol.md#p0-case-labels",
+      "horizon_if_applicable": null,
+      "rubric_version": "evidence-claim-v1",
+      "split": "smoke_regression",
+      "grouping_keys": [
+        "datadog",
+        "snowflake"
+      ],
+      "query_terms": [
+        "shared",
+        "exposure"
+      ],
+      "semantic_label_status": "blocked",
+      "selection_rationale": "A reviewed hypothesis remains a hypothesis and includes premises published after cutoff.",
+      "allowed_artifact_ids": [
+        "datadog-2024-10k",
+        "snowflake-fy2024-10k",
+        "topology-hypothesis-review-v1"
+      ]
+    },
+    {
+      "id": "case-16",
+      "version": 1,
+      "task_kind": "duplicate_identity_resolution",
+      "entity_ids": [
+        "weaviate"
+      ],
+      "question": "Can a current challenge identity review for Weaviate be treated as a 2024-known identity decision?",
+      "cutoff": "2024-12-31",
+      "replay_mode": "system_known",
+      "universe_manifest_ref": "web/data/index.json#build_id",
+      "resolution_rule_ref": "docs/research/benchmark-protocol.md#p0-case-labels",
+      "horizon_if_applicable": null,
+      "rubric_version": "evidence-claim-v1",
+      "split": "smoke_regression",
+      "grouping_keys": [
+        "weaviate"
+      ],
+      "query_terms": [
+        "Weaviate"
+      ],
+      "semantic_label_status": "blocked",
+      "selection_rationale": "Challenge identity review does not prove the 2024 identity decision was known then.",
+      "allowed_artifact_ids": [
+        "challenge-identity-reviews-v1"
+      ]
+    },
+    {
+      "id": "case-17",
+      "version": 1,
+      "task_kind": "absent_edge_is_unknown",
+      "entity_ids": [
+        "datadog",
+        "snowflake"
+      ],
+      "question": "If the frozen research slice contains no Datadog–Snowflake relationship edge, what can be concluded about whether a relationship exists?",
+      "cutoff": "2024-12-31",
+      "replay_mode": "public_availability",
+      "universe_manifest_ref": "web/data/index.json#build_id",
+      "resolution_rule_ref": "docs/research/benchmark-protocol.md#p0-case-labels",
+      "horizon_if_applicable": null,
+      "rubric_version": "evidence-claim-v1",
+      "split": "smoke_regression",
+      "grouping_keys": [
+        "datadog",
+        "snowflake"
+      ],
+      "query_terms": [
+        "relationship"
+      ],
+      "semantic_label_status": "unresolved",
+      "selection_rationale": "No retained edge is not evidence that no relationship exists.",
+      "allowed_artifact_ids": []
+    },
+    {
+      "id": "case-18",
+      "version": 1,
+      "task_kind": "contradictory_sources",
+      "entity_ids": [
+        "datadog",
+        "elastic"
+      ],
+      "question": "Does the frozen topology slice contain independent sources that contradict one another about Datadog and Elastic competition?",
+      "cutoff": "2024-12-31",
+      "replay_mode": "public_availability",
+      "universe_manifest_ref": "web/data/index.json#build_id",
+      "resolution_rule_ref": "docs/research/benchmark-protocol.md#p0-case-labels",
+      "horizon_if_applicable": null,
+      "rubric_version": "evidence-claim-v1",
+      "split": "smoke_regression",
+      "grouping_keys": [
+        "datadog",
+        "elastic"
+      ],
+      "query_terms": [
+        "competition"
+      ],
+      "semantic_label_status": "blocked_missing_evidence",
+      "selection_rationale": "The current topology export has support-only sources; no contradiction pair is retained.",
+      "allowed_artifact_ids": []
+    },
+    {
+      "id": "case-19",
+      "version": 1,
+      "task_kind": "reviewed_hypothesis_not_probability",
+      "entity_ids": [
+        "datadog",
+        "snowflake"
+      ],
+      "question": "Does acceptance of the shared-exposure topology hypothesis provide a calibrated probability for a real-world relationship?",
+      "cutoff": "2024-12-31",
+      "replay_mode": "public_availability",
+      "universe_manifest_ref": "web/data/index.json#build_id",
+      "resolution_rule_ref": "docs/research/benchmark-protocol.md#p0-case-labels",
+      "horizon_if_applicable": null,
+      "rubric_version": "evidence-claim-v1",
+      "split": "smoke_regression",
+      "grouping_keys": [
+        "datadog",
+        "snowflake"
+      ],
+      "query_terms": [
+        "shared",
+        "customer"
+      ],
+      "semantic_label_status": "provisional",
+      "selection_rationale": "Review status is a qualitative decision, not a calibrated edge probability.",
+      "allowed_artifact_ids": [
+        "datadog-2024-10k",
+        "snowflake-fy2024-10k",
+        "topology-hypothesis-review-v1"
+      ]
+    },
+    {
+      "id": "case-20",
+      "version": 1,
+      "task_kind": "inventory_overlap_not_relationship",
+      "entity_ids": [
+        "gitlab",
+        "datadog"
+      ],
+      "question": "Does appearing in the same CNCF inventory category establish an economic relationship between GitLab and Datadog?",
+      "cutoff": "2024-12-31",
+      "replay_mode": "public_availability",
+      "universe_manifest_ref": "web/data/index.json#build_id",
+      "resolution_rule_ref": "docs/research/benchmark-protocol.md#p0-case-labels",
+      "horizon_if_applicable": null,
+      "rubric_version": "evidence-claim-v1",
+      "split": "smoke_regression",
+      "grouping_keys": [
+        "gitlab",
+        "datadog"
+      ],
+      "query_terms": [
+        "logging"
+      ],
+      "semantic_label_status": "provisional",
+      "selection_rationale": "A shared category in an immutable inventory is a navigation lead, not a relationship.",
+      "allowed_artifact_ids": [
+        "cncf-2024-pinned-snapshot"
+      ]
+    }
+  ]
+}

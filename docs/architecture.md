@@ -7,7 +7,18 @@ Log Pose serves one research console from retained exports.
 
 ## data contracts
 
-The database remains the durable evidence store. Migration `007_warehouse_views.sql` adds read-only observation views; it does not create a new ingestion platform or claim a dimensional warehouse.
+The database remains the durable evidence store. Migration `007_warehouse_views.sql` adds read-only observation views. Migration `013_medallion_read_layers.sql` starts a medallion-inspired read path across **raw → bronze → silver → gold**. It exposes every domain table, including topology evidence, identity, candidates, reviews, and graph builds, through one named layer. The existing `public` tables remain the canonical write storage in this first step. The layer views do not copy or relabel records, change IDs, or move foreign keys. New consumers can use the layer paths while existing ingestion and exports continue to work. A later physical move must update all writers, SQL migrations, foreign keys, and test fixtures together; this migration does not claim that move has happened.
+
+[The layer contract](medallion.md) lists every relation's grain, key, clocks, and provenance and defines the next migration boundary.
+
+| layer | record grain and role | source time, arrival time, and provenance |
+| --- | --- | --- |
+| `raw` | one retained source payload or acquisition attempt: snapshots, SEC member/artifact, Cboe file, discovery artifact, topology source, and attempt/job | keep byte hashes, provider IDs, capture/publication times, retrieval/ingestion times, and failed attempts |
+| `bronze` | one source-faithful parsed row: SEC candidate fact, Cboe participant day, discovery occurrence or inventory row | preserve source row/index and parent raw ID; parsing does not create reviewed company or relationship truth |
+| `silver` | one explicit identity, source link, scoped topology candidate/evidence/review, or joined page/SEC observation | retain stable IDs, source IDs, review time, and separate event/reporting/source/arrival clocks; a candidate and its review remain distinct |
+| `gold` | one reproducible analytical build, daily aggregate, or current topology review projection | keep input/build IDs and denominators; current review is not historical replay, relation strength, or probability |
+
+`gold.topology_current_review` has one row per topology candidate, including candidates without a review and those whose latest review is not `accept`. Its key is `candidate_id`. It exposes the latest review ID, decision, reviewer, rationale, and time alongside source publication and retrieval. A consumer must filter by decision explicitly and must not infer relationship validity from the current view. The existing `reviewed_claims` query remains the time-aware publication path because it also checks supporting premises and review cutoffs.
 
 | relation | row grain and key | time | provenance |
 | --- | --- | --- | --- |
@@ -29,6 +40,8 @@ The database remains the durable evidence store. Migration `007_warehouse_views.
 
 `scripts/build_data_catalog.py` reads all retained page observations, normalized SEC candidate facts, Cboe daily totals and participant rows, and accepted topology reviews in one read-only repeatable-read transaction. `web/data/index.json` contains exact counts, stable record identifiers, source metadata, typed partition paths, hashes, and a deterministic build ID. Pages and SEC facts partition by company; Cboe partitions by retained file. `web/data/inventory-search.json` indexes all raw inventory row names and descriptions, including untagged rows, while the fourteen existing full inventory partitions remain lazy. The exporter reconciles inventory records with Postgres and checks daily Cboe totals against their participants. [The data contract](data-contract.md) specifies fields and rebuild commands.
 
+The catalog and analytical builders now read page and SEC observations from `silver`, source payload metadata from `raw`, parsed market and discovery rows from `bronze`, and daily totals from `gold`. The time-aware topology query still uses the underlying tables while its full cutoff logic is retained; the exported topology's direct source, entity, and review checks use layer views. This is a staged consumer migration, not a new source of truth.
+
 Page partitions contain complete normalized plain text by default, never raw HTML. An explicit positive `--page-text-limit` creates a smaller excerpt catalog with exact source length, displayed length, and a truncation flag. Full retained source bytes remain in Postgres. Decimal financial and notional values remain decimal strings in the typed partitions; chart code explicitly converts values for display.
 
 `web/discovery.json` is a separate lead index. Directory candidate IDs and navigation matches are not conformed company identities. The research desk uses an explicit identity review for a reviewed company relationship and labels other navigation matches as unreviewed leads.
@@ -41,12 +54,15 @@ The canonical `/` route opens the research desk with the full retained 18,542-re
 
 Migrations `008`–`011` add topology sources, identity and eligibility review, an acquisition queue, candidate claims with separate summaries and exact passages, extra evidence references, reviews, and build records. The [topology ontology](topology-ontology.md) defines predicate readings and what the time fields establish. A source-publication cutoff is not a relationship-validity query. A reviewed hypothesis remains a hypothesis; the system does not turn strength or confidence into a scalar edge weight. A source artifact remains in Postgres or the retained research artifacts; the static export contains the attributed summary and source reference, not raw HTML.
 
+The [benchmark protocol](research/benchmark-protocol.md) defines a separate, offline read model over retained artifacts. A versioned case manifest fixes the questions and artifact IDs; evaluator-only answer keys stay outside candidate-visible input. A replay run records its manifest hash, code and control versions, selected evidence IDs, exclusions, and case-level scores. This layer adds no evidence store or migration. Historical availability requires explicit proof from source publication, immutable capture or filing accession, and, for system-known replay, arrival time. Current dashboard selections and review annotations are not historical facts.
+
 ## safe extension seams
 
 - add a new source by retaining its immutable payload and provider identity first, then expose a read view with grain, key, source time, arrival time, and provenance.
 - add a reported metric by extending SEC candidate retention and selection policy before exporting it. Do not derive an unlabeled metric in the browser.
 - add a dashboard comparison in `research-model.js`, including missing-value and duplicate-grain tests, then compose it in `app.js` with period and source labels.
 - add schema through a new tested migration. Do not rewrite applied migrations or replace raw evidence.
+- assign each new durable record family to exactly one medallion layer, and document grain, key, clocks, and provenance before adding downstream projections. Keep raw bytes and failed acquisition records; keep bronze parsing, silver judgments, and gold aggregates traceable to upstream IDs.
 - add a topology predicate only after defining its direction, scope, evidence rule, and non-implications in the ontology. Keep different claims between the same entities separate and preserve each source premise.
 - keep 3D graph positions and projection deterministic in `research-model.js`. The WebGL module owns canvas geometry, interaction, and cleanup; `topology-view.js` opens a flat SVG map and retains filters, the claim index, evidence inspector, and optional 3D mode. Depth and distance are navigation aids, not quantitative encodings.
 
