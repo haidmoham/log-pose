@@ -185,3 +185,74 @@ code, pre, .source-token {
   font-family: var(--source-mono);
   font-variant-numeric: tabular-nums;
 }
+/* Typography: display → reading → controls → literal evidence. */
+:root {
+  --font-interface: 'Atlas Sans', Manrope, ui-sans-serif, system-ui, sans-serif;
+  --font-source: ui-monospace, 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+  --type-display: clamp(2.4rem, 4.4vw, 4.5rem);
+  --type-title: clamp(1.5rem, 2.2vw, 2.25rem);
+  --type-section: 1.125rem;
+  --type-body: .875rem;
+  --type-control: .8125rem;
+  --type-caption: .75rem;
+  --type-source: .6875rem;
+  --leading-reading: 1.65;
+  --leading-compact: 1.35;
+  --tracking-display: -.065em;
+  --tracking-title: -.04em;
+}
+body { font-family: var(--font-interface); font-size: var(--type-body); line-height: var(--leading-reading); }
+button, input, select, textarea { font-family: var(--font-interface); }
+.identity-name { font-size: 23px; line-height: 1.1; letter-spacing: -.065em; font-weight: 750; }
+.identity-note { font-size: 11px; letter-spacing: .015em; line-height: 1.4; }
+.tabs button { font-size: var(--type-control); line-height: var(--leading-compact); font-weight: 550; letter-spacing: -.015em; }
+.view-heading h2, body[data-layer=temporal] .view-heading h2 {
+  font: 520 var(--type-display)/1.08 var(--font-interface); letter-spacing: var(--tracking-display);
+}
+.view-heading .view-note, body[data-layer=temporal] .view-heading .view-note {
+  font: 450 var(--type-body)/var(--leading-reading) var(--font-interface); color: #626557;
+}
+.eyebrow, body[data-layer=temporal] .view-heading .eyebrow {
+  font: 650 var(--type-caption)/1.5 var(--font-interface); letter-spacing: .02em; text-transform: lowercase;
+}
+.constellation-heading h3 { font: 480 var(--type-title)/1.15 var(--font-interface); letter-spacing: var(--tracking-title); }
+.constellation-eyebrow { font: 550 11px/1.5 var(--font-interface); letter-spacing: .055em; }
+.constellation-count strong { font: 450 28px/1.1 var(--font-interface); letter-spacing: -.055em; font-variant-numeric: tabular-nums; }
+.constellation-count span { font: 450 11px/1.4 var(--font-interface); }
+.constellation-label { font: 450 11px/1 var(--font-interface); letter-spacing: -.01em; }
+.constellation-legend, .constellation-note, body[data-layer=temporal] .temporal-constellation .constellation-note,
+.constellation-tuning, .constellation-camera-controls output { font-family: var(--font-interface); font-size: 11px; line-height: 1.55; letter-spacing: 0; }
+body[data-layer=temporal] .topology-layer-button { font: 550 var(--type-caption)/1.4 var(--font-interface); }
+.temporal-frame-summary { font: 450 var(--type-caption)/1.5 var(--font-interface); font-variant-numeric: tabular-nums; }
+.temporal-stop-detail { font: 450 var(--type-caption)/1.5 var(--font-interface); }
+.temporal-stop-detail strong { font: 650 15px/1.35 var(--font-interface); letter-spacing: -.025em; }
+.temporal-stop-detail time { font: 400 var(--type-source)/1.55 var(--font-source); }
+.temporal-facets select, .temporal-rail button, .temporal-search-submit { font: 550 var(--type-caption)/1.35 var(--font-interface); }
+.temporal-search-form input { font: 450 var(--type-control)/1.4 var(--font-interface); }
+.temporal-search > .eyebrow, .temporal-ledger > .eyebrow, .temporal-inspector > .eyebrow {
+  font: 650 var(--type-caption)/1.5 var(--font-interface); letter-spacing: .01em;
+}
+.temporal-suggestion { font: 500 11px/1.4 var(--font-interface); }
+.temporal-change strong { font: 650 var(--type-control)/1.4 var(--font-interface); letter-spacing: -.015em; }
+.temporal-change span { font: 500 var(--type-caption)/1.45 var(--font-interface); }
+.temporal-change small { font: 450 11px/1.5 var(--font-interface); font-variant-numeric: tabular-nums; }
+.temporal-inspector h3 { font: 550 24px/1.2 var(--font-interface); letter-spacing: var(--tracking-title); }
+.temporal-inspector h4 { font: 650 var(--type-control)/1.45 var(--font-interface); letter-spacing: -.01em; }
+.temporal-inspector p, .temporal-ledger > p:not(.eyebrow) { font: 450 var(--type-control)/var(--leading-reading) var(--font-interface); }
+.temporal-evidence-card .eyebrow { font: 600 var(--type-caption)/1.6 var(--font-source); letter-spacing: -.025em; }
+.temporal-evidence-card small, .temporal-row-link, .temporal-frame-id, code, pre, .source-token,
+.source-foot code, .source-foot small { font: 400 var(--type-source)/1.65 var(--font-source); font-variant-numeric: tabular-nums; letter-spacing: 0; overflow-wrap: anywhere; }
+.temporal-evidence-card a { font: 550 var(--type-caption)/1.5 var(--font-interface); }
+.temporal-limitations p, .temporal-limitations summary, .temporal-coverage-note { font: 450 var(--type-caption)/1.65 var(--font-interface); }
+.temporal-limitations summary { font-weight: 600; }
+.table-wrap table { font-family: var(--font-interface); font-size: var(--type-control); line-height: 1.5; }
+.table-wrap th { font-weight: 650; letter-spacing: .01em; }
+.table-wrap td { font-variant-numeric: tabular-nums; }
+.source-quote, .record-raw, .record-json { font-family: var(--font-source); line-height: 1.7; font-size: var(--type-caption); }
+@media (max-width: 720px) {
+  :root { --type-display: 2.35rem; --type-title: 1.65rem; }
+  body[data-layer=temporal] .view-heading h2 { font-size: var(--type-display); }
+  body[data-layer=temporal] .view-heading .view-note { font-size: var(--type-control); }
+  .temporal-facets select { font-size: 12px; }
+  .temporal-search-form input { font-size: 16px; }
+}
