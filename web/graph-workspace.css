@@ -234,7 +234,7 @@ body[data-layer=temporal] .topology-layer-button { font: 550 var(--type-caption)
 .temporal-inspector p, .temporal-ledger > p:not(.eyebrow) { font: 450 var(--type-control)/var(--leading-reading) var(--font-interface); }
 .temporal-evidence-card .eyebrow { font: 600 var(--type-caption)/1.6 var(--font-source); letter-spacing: -.025em; }
 .temporal-evidence-card small, .temporal-row-link, .temporal-frame-id, code, pre, .source-token,
-.source-foot code, .source-foot small { font: 400 var(--type-source)/1.65 var(--font-source); font-variant-numeric: tabular-nums; letter-spacing: 0; overflow-wrap: anywhere; }
+.source-foot code, .source-foot small, .data-fact dd { font: 400 var(--type-source)/1.65 var(--font-source); font-variant-numeric: tabular-nums; letter-spacing: 0; overflow-wrap: anywhere; }
 .temporal-evidence-card a { font: 550 var(--type-caption)/1.5 var(--font-interface); }
 .temporal-limitations p, .temporal-limitations summary, .temporal-coverage-note { font: 450 var(--type-caption)/1.65 var(--font-interface); }
 .temporal-limitations summary { font-weight: 600; }
