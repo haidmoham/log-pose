@@ -1,0 +1,963 @@
+{
+  "schema_version": "1.0",
+  "id": "mlops-2024",
+  "title": "ML operations · eight-lead study",
+  "as_of": "2024-12-31",
+  "information_cutoff": "2024-12-31",
+  "question": "Which selected U.S.-based private ML operations vendors had a distinct commercial product and credible evidence of an expanding market foothold by 2024-12-31?",
+  "denominator": {
+    "kind": "frozen_leads",
+    "count": 8,
+    "note": "All eight fixed leads, including comparators and unresolved cases."
+  },
+  "role_rubric": [
+    "development/experiment management",
+    "deployment/serving",
+    "monitoring/evaluation",
+    "governance"
+  ],
+  "members": [
+    {
+      "id": "databricks",
+      "name": "Databricks / MLflow",
+      "disposition": "comparator",
+      "disposition_reason": "A reviewed managed-service relationship to MLflow; the project is not an independent Databricks company lead.",
+      "identity": {
+        "name": "Databricks",
+        "status": "reviewed",
+        "aliases": [
+          "MLflow",
+          "MLFlow"
+        ],
+        "candidate_ids": [
+          "be9bfc3d0ccd4bf29f49"
+        ],
+        "review_id": "identity-review-16"
+      },
+      "gates": {
+        "product": {
+          "decision": "supported",
+          "note": "Managed MLflow relationship is reviewed; independent commercial product details are outside this bounded pull.",
+          "evidence_ids": [
+            "databricks-managed-review",
+            "mlflow-inventory-2024"
+          ]
+        },
+        "private": {
+          "decision": "unknown",
+          "note": "No cutoff-dated ownership/control review in this set.",
+          "evidence_ids": []
+        },
+        "us_base": {
+          "decision": "unknown",
+          "note": "No cutoff-dated U.S. operating-base review in this set.",
+          "evidence_ids": []
+        }
+      },
+      "roles": [
+        "development/experiment management",
+        "deployment/serving"
+      ],
+      "comparison": {
+        "buyer": "enterprise ML teams",
+        "offering": "managed MLflow comparator; terms unreviewed",
+        "distribution": "MLflow appears in two 2024 inventories; no usage inference",
+        "financing": "not reviewed",
+        "competitive_context": "platform and open project comparator",
+        "unknowns": [
+          "commercial attach",
+          "paid retention",
+          "control and base at cutoff"
+        ]
+      },
+      "claims": [
+        {
+          "id": "databricks-relation",
+          "statement": "The MLflow listing is a project signal, not a count of Databricks customers.",
+          "basis": "Existing reviewed relation is managed_service (identity-review-16).",
+          "evidence_ids": [
+            "databricks-managed-review",
+            "mlflow-inventory-2024"
+          ],
+          "counterevidence_ids": [],
+          "unknowns": [
+            "managed-service conversion",
+            "commercial terms"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "datarobot",
+      "name": "DataRobot",
+      "disposition": "unresolved",
+      "disposition_reason": "Commercial platform and Boston headquarters are documented; private/control status at the cutoff remains unresolved.",
+      "identity": {
+        "name": "DataRobot, Inc.",
+        "status": "reviewed",
+        "aliases": [
+          "DataRobot"
+        ],
+        "pilot_slug": "datarobot"
+      },
+      "gates": {
+        "product": {
+          "decision": "supported",
+          "note": "Archived platform pages show enterprise AI software; the company reported its 2021 financing.",
+          "evidence_ids": [
+            "datarobot-page-2024",
+            "datarobot-series-g-2021"
+          ]
+        },
+        "private": {
+          "decision": "unresolved",
+          "note": "A 2021 private financing round does not establish 2024 control status.",
+          "evidence_ids": [
+            "datarobot-series-g-2021"
+          ]
+        },
+        "us_base": {
+          "decision": "supported",
+          "note": "ITOCHU describes DataRobot, Inc. as Boston headquartered in 2022.",
+          "evidence_ids": [
+            "datarobot-itochu-2022"
+          ]
+        }
+      },
+      "roles": [
+        "development/experiment management",
+        "deployment/serving",
+        "monitoring/evaluation",
+        "governance"
+      ],
+      "comparison": {
+        "buyer": "enterprise AI and data leaders",
+        "offering": "enterprise AI applications and platform",
+        "distribution": "ITOCHU described a pharmaceutical research partnership; paid scale unknown",
+        "financing": "company announced $300M Series G in 2021; neither revenue nor cutoff ownership proof",
+        "competitive_context": "broad platforms and specialist ML tooling",
+        "unknowns": [
+          "2024 ownership",
+          "organic recurring revenue",
+          "retention",
+          "services mix"
+        ]
+      },
+      "claims": [
+        {
+          "id": "datarobot-case",
+          "statement": "Partner-led enterprise distribution is a diligence hypothesis.",
+          "basis": "ITOCHU announced a partnership; outcome and commercial value are not established.",
+          "evidence_ids": [
+            "datarobot-itochu-2022",
+            "datarobot-page-2024"
+          ],
+          "counterevidence_ids": [],
+          "unknowns": [
+            "contract value",
+            "rollout",
+            "organic growth"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "weights-and-biases",
+      "name": "Weights & Biases",
+      "disposition": "unresolved",
+      "disposition_reason": "Product expansion and a 2024 San Francisco headquarters statement are documented; cutoff private/control status is unresolved.",
+      "identity": {
+        "name": "Weights & Biases",
+        "status": "reviewed",
+        "aliases": [
+          "W&B",
+          "wandb"
+        ],
+        "pilot_slug": "weights-and-biases"
+      },
+      "gates": {
+        "product": {
+          "decision": "supported",
+          "note": "Archived pages and the 2023 release document tracking and LLM tooling.",
+          "evidence_ids": [
+            "wandb-page-2021",
+            "wandb-round-2023",
+            "wandb-page-2024"
+          ]
+        },
+        "private": {
+          "decision": "unresolved",
+          "note": "2023 strategic financing and investor backing do not prove cutoff control status.",
+          "evidence_ids": [
+            "wandb-round-2023",
+            "wandb-aws-2024"
+          ]
+        },
+        "us_base": {
+          "decision": "supported",
+          "note": "A dated December 2024 company release explicitly says San Francisco headquarters; live retrieval weakens temporal certainty.",
+          "evidence_ids": [
+            "wandb-aws-2024"
+          ]
+        }
+      },
+      "roles": [
+        "development/experiment management",
+        "monitoring/evaluation",
+        "governance"
+      ],
+      "comparison": {
+        "buyer": "AI developers and enterprise model teams",
+        "offering": "experiment management, W&B Prompts and Weave",
+        "distribution": "NAIRR contributed licenses and company-reported users; neither is paid revenue",
+        "financing": "company announced $50M strategic round in 2023",
+        "competitive_context": "cloud ML suites and specialist observability tools",
+        "unknowns": [
+          "2024 control",
+          "paid-account cohorts",
+          "retention",
+          "LLM product attach"
+        ]
+      },
+      "claims": [
+        {
+          "id": "wandb-expansion",
+          "statement": "The company described expansion from experiment tooling into LLM workflows.",
+          "basis": "2021 archived positioning differs from the 2023 launch and 2024 archived homepage.",
+          "evidence_ids": [
+            "wandb-page-2021",
+            "wandb-round-2023",
+            "wandb-page-2024"
+          ],
+          "counterevidence_ids": [
+            "wandb-page-2022",
+            "wandb-page-2022-lower"
+          ],
+          "unknowns": [
+            "paid conversion",
+            "comparable usage series; the same 2022 page gives two counts"
+          ]
+        },
+        {
+          "id": "wandb-distribution",
+          "statement": "NAIRR is a distribution signal, not a federal revenue claim.",
+          "basis": "The company announced contributed licenses for a pilot.",
+          "evidence_ids": [
+            "wandb-nairr-2024"
+          ],
+          "counterevidence_ids": [],
+          "unknowns": [
+            "paid conversion",
+            "pilot usage"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "iterative-dvc",
+      "name": "Iterative / DVC",
+      "disposition": "unresolved",
+      "disposition_reason": "Provider link, commercial DVC Studio and San Francisco base are documented in 2021; cutoff continuity and market foothold need fresh evidence.",
+      "identity": {
+        "name": "Iterative",
+        "status": "reviewed",
+        "aliases": [
+          "DVC",
+          "DVC Studio"
+        ],
+        "candidate_ids": [
+          "be14615c5052b1c0025c"
+        ],
+        "review_id": "identity-review-05"
+      },
+      "gates": {
+        "product": {
+          "decision": "supported",
+          "note": "The 2021 company release calls DVC Studio its first commercial product.",
+          "evidence_ids": [
+            "iterative-series-a-2021"
+          ]
+        },
+        "private": {
+          "decision": "unresolved",
+          "note": "A 2021 venture round does not establish 2024 independent ownership.",
+          "evidence_ids": [
+            "iterative-series-a-2021"
+          ]
+        },
+        "us_base": {
+          "decision": "unresolved",
+          "note": "The 2021 release says San Francisco based; no newer base observation in this set.",
+          "evidence_ids": [
+            "iterative-series-a-2021"
+          ]
+        }
+      },
+      "roles": [
+        "development/experiment management"
+      ],
+      "comparison": {
+        "buyer": "data scientists and ML engineers",
+        "offering": "DVC Studio versus open DVC/CML",
+        "distribution": "2024 DVC directory listing; no commercial customer inference",
+        "financing": "company announced $20M Series A in 2021",
+        "competitive_context": "experiment platforms and cloud-native ML tooling",
+        "unknowns": [
+          "2024 status and base",
+          "customer accounts",
+          "paid retention"
+        ]
+      },
+      "claims": [
+        {
+          "id": "iterative-product",
+          "statement": "DVC Studio was described as commercial in 2021.",
+          "basis": "The developer relationship is separately reviewed; inventory presence does not establish adoption.",
+          "evidence_ids": [
+            "iterative-series-a-2021",
+            "dvc-inventory-2024"
+          ],
+          "counterevidence_ids": [],
+          "unknowns": [
+            "2024 product status",
+            "customer foothold"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bentoml",
+      "name": "BentoML",
+      "disposition": "unresolved",
+      "disposition_reason": "A dated TomTom technical collaboration exists; project aliases, independent provider, paid offering and U.S. base remain unreviewed.",
+      "identity": {
+        "name": "BentoML provider hypothesis",
+        "status": "unreviewed",
+        "aliases": [
+          "BentoML",
+          "BentoCloud"
+        ],
+        "candidate_ids": [
+          "172c379611b08a792ffe",
+          "2602af2c38fb5fd03c99"
+        ]
+      },
+      "gates": {
+        "product": {
+          "decision": "unresolved",
+          "note": "Case study shows technical use, not a paid contract or verified commercial terms.",
+          "evidence_ids": [
+            "bentoml-tomtom-2024"
+          ]
+        },
+        "private": {
+          "decision": "unknown",
+          "note": "No reviewed legal provider or cutoff control record.",
+          "evidence_ids": []
+        },
+        "us_base": {
+          "decision": "unknown",
+          "note": "No dated operating-base evidence in this set.",
+          "evidence_ids": []
+        }
+      },
+      "roles": [
+        "deployment/serving"
+      ],
+      "comparison": {
+        "buyer": "AI application and inference teams",
+        "offering": "BentoML framework; BentoCloud commercial status unverified",
+        "distribution": "TomTom reports one collaborative experiment, not paid rollout",
+        "financing": "not reviewed",
+        "competitive_context": "model-serving frameworks and cloud inference",
+        "unknowns": [
+          "alias identity",
+          "paid terms",
+          "U.S. base",
+          "contract and deployment scale"
+        ]
+      },
+      "claims": [
+        {
+          "id": "bentoml-experiment",
+          "statement": "TomTom described a technical experiment with BentoML.",
+          "basis": "The case reports approximately 50% latency and cost reductions in one experiment.",
+          "evidence_ids": [
+            "bentoml-tomtom-2024",
+            "bentoml-inventory-2024"
+          ],
+          "counterevidence_ids": [],
+          "unknowns": [
+            "production rollout",
+            "paid agreement",
+            "generalizability"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "seldon",
+      "name": "Seldon",
+      "disposition": "unresolved",
+      "disposition_reason": "A 2022 federal notice lists Seldon Technologies Limited in London; no U.S. operating base or paid-product record is established here.",
+      "identity": {
+        "name": "Seldon Technologies Limited hypothesis",
+        "status": "unreviewed",
+        "aliases": [
+          "Seldon"
+        ],
+        "candidate_ids": [
+          "d0a782423582785d9074"
+        ]
+      },
+      "gates": {
+        "product": {
+          "decision": "unknown",
+          "note": "Inventory listing is a project occurrence, not paid-product evidence.",
+          "evidence_ids": [
+            "seldon-inventory-2024"
+          ]
+        },
+        "private": {
+          "decision": "unknown",
+          "note": "No cutoff control record.",
+          "evidence_ids": []
+        },
+        "us_base": {
+          "decision": "unresolved",
+          "note": "The federal notice lists London; this does not rule out a U.S. operation.",
+          "evidence_ids": [
+            "federal-register-ai-consortium-2022"
+          ]
+        }
+      },
+      "roles": [
+        "deployment/serving",
+        "monitoring/evaluation"
+      ],
+      "comparison": {
+        "buyer": "ML platform teams",
+        "offering": "open project listed; paid offering unverified",
+        "distribution": "2024 directory listing only",
+        "financing": "not reviewed",
+        "competitive_context": "serving and monitoring platforms",
+        "unknowns": [
+          "provider link",
+          "paid terms",
+          "U.S. operation"
+        ]
+      },
+      "claims": [
+        {
+          "id": "seldon-location",
+          "statement": "The named Seldon entity had a London listing in the 2022 notice.",
+          "basis": "Location of a named entity is narrower than a company operating-base decision.",
+          "evidence_ids": [
+            "federal-register-ai-consortium-2022",
+            "seldon-inventory-2024"
+          ],
+          "counterevidence_ids": [],
+          "unknowns": [
+            "U.S. offices",
+            "provider relationship"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "zenml",
+      "name": "ZenML",
+      "disposition": "unresolved",
+      "disposition_reason": "A managed Cloud plan and German registered office are documented; launched paid availability and a U.S. operating base at cutoff are not.",
+      "identity": {
+        "name": "ZenML GmbH hypothesis",
+        "status": "unreviewed",
+        "aliases": [
+          "ZenML",
+          "ZenML Cloud"
+        ],
+        "candidate_ids": [
+          "474857eadd25cbb53593"
+        ]
+      },
+      "gates": {
+        "product": {
+          "decision": "unresolved",
+          "note": "2023 announcement calls Cloud forthcoming; 2024 terms mention billing without proving launch.",
+          "evidence_ids": [
+            "zenml-funding-2023",
+            "zenml-terms-2024"
+          ]
+        },
+        "private": {
+          "decision": "unresolved",
+          "note": "2023 seed extension does not prove 2024 control.",
+          "evidence_ids": [
+            "zenml-funding-2023"
+          ]
+        },
+        "us_base": {
+          "decision": "unresolved",
+          "note": "Munich registered office is not a full operating-base review.",
+          "evidence_ids": [
+            "zenml-terms-2024"
+          ]
+        }
+      },
+      "roles": [
+        "development/experiment management",
+        "deployment/serving"
+      ],
+      "comparison": {
+        "buyer": "ML platform builders",
+        "offering": "open framework; managed Cloud was planned",
+        "distribution": "2024 directory listing; adoption unknown",
+        "financing": "company reported $3.7M seed extension in 2023",
+        "competitive_context": "pipeline orchestration and managed ML platforms",
+        "unknowns": [
+          "Cloud launch and pricing",
+          "paid usage",
+          "U.S. operation",
+          "provider continuity"
+        ]
+      },
+      "claims": [
+        {
+          "id": "zenml-cloud",
+          "statement": "ZenML announced a managed Cloud plan, not proven 2023 availability.",
+          "basis": "The article describes a forthcoming service and the live terms carry a 2024 last-updated date.",
+          "evidence_ids": [
+            "zenml-funding-2023",
+            "zenml-terms-2024",
+            "zenml-inventory-2024"
+          ],
+          "counterevidence_ids": [],
+          "unknowns": [
+            "launch date",
+            "paid account count"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "whylogs",
+      "name": "whylogs",
+      "disposition": "unresolved",
+      "disposition_reason": "The 2024 whylogs project listing and a 2022 Seattle WhyLabs entity listing do not yet establish a reviewed provider link or paid product.",
+      "identity": {
+        "name": "WhyLabs Inc. provider hypothesis",
+        "status": "unreviewed",
+        "aliases": [
+          "whylogs",
+          "WhyLabs"
+        ],
+        "candidate_ids": [
+          "008a0f637e5153875eb3"
+        ]
+      },
+      "gates": {
+        "product": {
+          "decision": "unknown",
+          "note": "Project listing is not commercial availability.",
+          "evidence_ids": [
+            "whylogs-inventory-2024"
+          ]
+        },
+        "private": {
+          "decision": "unknown",
+          "note": "No cutoff control record.",
+          "evidence_ids": []
+        },
+        "us_base": {
+          "decision": "unresolved",
+          "note": "Federal notice lists WhyLabs Inc. in Seattle, but does not state operating-base type or link to whylogs.",
+          "evidence_ids": [
+            "federal-register-whylabs-2022"
+          ]
+        }
+      },
+      "roles": [
+        "monitoring/evaluation"
+      ],
+      "comparison": {
+        "buyer": "ML monitoring teams",
+        "offering": "whylogs project; provider commercial layer unreviewed",
+        "distribution": "2024 directory listing only",
+        "financing": "not reviewed",
+        "competitive_context": "model observability and data quality tools",
+        "unknowns": [
+          "provider link",
+          "paid product",
+          "Seattle operating-base type"
+        ]
+      },
+      "claims": [
+        {
+          "id": "whylogs-provider",
+          "statement": "WhyLabs and whylogs are an unresolved provider hypothesis.",
+          "basis": "Separate dated records name the entity and project but do not document their relationship.",
+          "evidence_ids": [
+            "federal-register-whylabs-2022",
+            "whylogs-inventory-2024"
+          ],
+          "counterevidence_ids": [],
+          "unknowns": [
+            "legal relationship",
+            "commercial offering"
+          ]
+        }
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "datarobot-series-g-2021",
+      "title": "DataRobot unveils major milestones and $300M Series G investment",
+      "publisher": "DataRobot",
+      "url": "https://www.datarobot.com/newsroom/press/datarobot-unveils-major-milestones-including-300m-series-g-funding-investment/",
+      "publication_date": "2021-07-27",
+      "date_kind": "document_date",
+      "captured_at": "2026-09-25T15:24:33.907643+00:00",
+      "artifact_path": "docs/research/source-artifacts/mlops-2024/datarobot-series-g-2021.html",
+      "artifact_sha256": "1a025c36b81bb6bf950f4a64533efddae2fbc4c9ad8ea67e806912509c4b8a02",
+      "passage": "today announced a $300 million Series G funding round to fuel platform innovation and enable DataRobot to bring the transformative impact of Augmented Intelligence to customers",
+      "review_note": "Live retrieval in 2026 of a dated source; historical body may have changed. Company claim; not independently verified."
+    },
+    {
+      "id": "wandb-round-2023",
+      "title": "Weights & Biases raises $50M and announces W&B Prompts",
+      "publisher": "Weights & Biases",
+      "url": "https://wandb.ai/site/press-release/weights-biases-raises-50-million-round-led-by-daniel-gross-and-nat-friedman-announces-wb-prompts/",
+      "publication_date": "2023-08-10",
+      "date_kind": "document_date",
+      "captured_at": "2026-09-25T15:24:34.877402+00:00",
+      "artifact_path": "docs/research/source-artifacts/mlops-2024/wandb-round-2023.html.gz",
+      "artifact_sha256": "05901f2e0f5ec789fe3cc8ba41584160a2bc2b04b921a55e9faac084cbccd811",
+      "passage": "strategic investment of $50 million at a $1.25 billion valuation and the launch of W&B Prompts. The round was led by Daniel Gross and Nat Friedman, with additional participation from",
+      "review_note": "Live retrieval in 2026 of a dated source; historical body may have changed. Company claim; not independently verified."
+    },
+    {
+      "id": "iterative-series-a-2021",
+      "title": "Iterative raises $20M Series A",
+      "publisher": "Iterative",
+      "url": "https://www.globenewswire.com/news-release/2021/06/02/2240670/0/en/mlops-company-iterative-raises-20-million-series-a-funding-led-by-468-capital.html",
+      "publication_date": "2021-06-02",
+      "date_kind": "document_date",
+      "captured_at": "2026-09-25T15:24:38.276578+00:00",
+      "artifact_path": "docs/research/source-artifacts/mlops-2024/iterative-series-a-2021.html",
+      "artifact_sha256": "61aeaaba453acf829fdab69b6f2cd7ec812f14e17c78034d873409346e676d35",
+      "passage": "DVC Studio, the company’s first commercial product for data scientists June 02, 2021 12:00 ET | Source: Iterative Iterative SAN FRANCISCO, June 02, 2021 (GLOBE NEWSWIRE) --",
+      "review_note": "Live retrieval in 2026 of a dated source; historical body may have changed. Company claim; not independently verified."
+    },
+    {
+      "id": "bentoml-tomtom-2024",
+      "title": "TomTom and BentoML are advancing location-based AI together",
+      "publisher": "BentoML and TomTom",
+      "url": "https://www.bentoml.com/blog/tomtom-and-bentoml-are-advancing-location-based-ai-together",
+      "publication_date": "2024-01-09",
+      "date_kind": "displayed_last_updated",
+      "captured_at": "2026-09-25T15:24:39.068524+00:00",
+      "artifact_path": "docs/research/source-artifacts/mlops-2024/bentoml-tomtom-2024.html",
+      "artifact_sha256": "0213e9bb5d83725c0f3567cedf12a6fdc6def71758301a682a7b964fe97f6c9f",
+      "passage": "In one experiment, we realized a significant reduction in both latency and cost, averaging a ~50% decrease in each, with on-par quality. Advanced inference capabilities : Fast, efficient inference with",
+      "review_note": "Live retrieval in 2026 of a dated source; historical body may have changed. Displayed date is last updated, not proven publication date. Company claim; not independently verified."
+    },
+    {
+      "id": "zenml-funding-2023",
+      "title": "ZenML seed extension and ZenML Cloud plan",
+      "publisher": "ZenML",
+      "url": "https://www.zenml.io/blog/were-revving-up-zenml-exciting-news-and-what-it-means-for-you",
+      "publication_date": "2023-10-23",
+      "date_kind": "document_date",
+      "captured_at": "2026-09-25T15:24:44.012875+00:00",
+      "artifact_path": "docs/research/source-artifacts/mlops-2024/zenml-funding-2023.html",
+      "artifact_sha256": "b360bb5d98ec96fd6144859e2cea126e18e50237071b4b07c3976fce6c169515",
+      "passage": "The startup is set to launch ZenML Cloud, a managed service with advanced features, while continuing to expand its open-source framework. Hamza Tahir & Adam Probst On",
+      "review_note": "Live retrieval in 2026 of a dated source; historical body may have changed. Company claim; not independently verified."
+    },
+    {
+      "id": "zenml-terms-2024",
+      "title": "ZenML GmbH terms of service",
+      "publisher": "ZenML GmbH",
+      "url": "https://www.zenml.io/terms-of-service",
+      "publication_date": "2024-02-16",
+      "date_kind": "displayed_last_updated",
+      "captured_at": "2026-09-25T15:24:44.246998+00:00",
+      "artifact_path": "docs/research/source-artifacts/mlops-2024/zenml-terms-2024.html",
+      "artifact_sha256": "a09fab1370dc41297c88bb525e98c7cf35fa4564c3c655bd59eb564ef3bee3c2",
+      "passage": "We are registered in Munich and have our registered office at Schellingstrasse 36, 80799 Munich, Germany. You agree that by accessing the Site, you have read, understood, and",
+      "review_note": "Live retrieval in 2026 of a dated source; historical body may have changed. Displayed date is last updated, not proven publication date. Company claim; not independently verified."
+    },
+    {
+      "id": "datarobot-itochu-2022",
+      "title": "ITOCHU announces partnership with DataRobot",
+      "publisher": "ITOCHU Corporation",
+      "url": "https://www.itochu.co.jp/en/news/press/2022/220810.html",
+      "publication_date": "2022-08-10",
+      "date_kind": "document_date",
+      "captured_at": "2026-09-25T15:28:09.171029+00:00",
+      "artifact_path": "docs/research/source-artifacts/mlops-2024/datarobot-itochu-2022.html",
+      "artifact_sha256": "daea865f5eae005637c14e7303a7366640f2265875221543273dd074ce4dc1c6",
+      "passage": "DataRobot, Inc. (headquartered in Boston, Massachusetts; Dan Wright, CEO; hereinafter \"DataRobot\"), through ITOCHU's subsidiary A2 Healthcare Corporation (headquartered in Bunkyo-ku, Tokyo; Hitoshi",
+      "review_note": "Live retrieval in 2026 of a dated source; historical body may have changed. Interpret within its stated scope."
+    },
+    {
+      "id": "wandb-nairr-2024",
+      "title": "NAIRR selects Weights & Biases for pilot program",
+      "publisher": "Weights & Biases",
+      "url": "https://wandb.ai/site/press-release/national-artificial-intelligence-research-resource-nairr-selects-weights-biases-for-pilot-program/",
+      "publication_date": "2024-01-24",
+      "date_kind": "document_date",
+      "captured_at": "2026-09-25T15:28:10.593200+00:00",
+      "artifact_path": "docs/research/source-artifacts/mlops-2024/wandb-nairr-2024.html.gz",
+      "artifact_sha256": "fcf3906d279ef92c4f5136bebd356034559d0b0a7b2f8d5a0e27a9e6d1f4ed54",
+      "passage": "By contributing licenses for their AI Developer Platform, Weights & Biases is providing NAIRR Pilot users access to critical software and tools needed to improve experimental rigor and model",
+      "review_note": "Live retrieval in 2026 of a dated source; historical body may have changed. Company claim; not independently verified."
+    },
+    {
+      "id": "federal-register-ai-consortium-2022",
+      "title": "Federal Register page 29180: AI Infrastructure Alliance notice 2022-10216",
+      "publisher": "U.S. Federal Register",
+      "url": "https://www.govinfo.gov/content/pkg/FR-2022-05-12/pdf/2022-10215.pdf",
+      "publication_date": "2022-05-12",
+      "date_kind": "document_date",
+      "captured_at": "2026-09-25T15:28:11.109695+00:00",
+      "artifact_path": "docs/research/source-artifacts/mlops-2024/federal-register-ai-consortium-2022.pdf",
+      "artifact_sha256": "daf0aabefca94df59f0bc0967cdf0fa911afcfe2097013019ccc901e470a3a61",
+      "passage": "Seldon Technologies Limited, London, Huntsville, AL; Greystones Consulting 3 Electronic Document Information System UNITED",
+      "review_note": "Live retrieval in 2026 of a dated source; historical body may have changed. This passage belongs to adjacent AI Infrastructure Alliance notice 2022-10216 on printed page 29180. Interpret within its stated scope."
+    },
+    {
+      "id": "federal-register-whylabs-2022",
+      "title": "Federal Register page 29180: AI Infrastructure Alliance notice 2022-10216",
+      "publisher": "U.S. Federal Register",
+      "url": "https://www.govinfo.gov/content/pkg/FR-2022-05-12/pdf/2022-10215.pdf",
+      "publication_date": "2022-05-12",
+      "date_kind": "document_date",
+      "captured_at": "2026-09-25T15:28:11.109695+00:00",
+      "artifact_path": "docs/research/source-artifacts/mlops-2024/federal-register-ai-consortium-2022.pdf",
+      "artifact_sha256": "daf0aabefca94df59f0bc0967cdf0fa911afcfe2097013019ccc901e470a3a61",
+      "passage": "WhyLabs Inc., Seattle, WA, Commission is properly sought will be venture are: Arctos Labs",
+      "review_note": "Live retrieval in 2026 of a dated source; historical body may have changed. This passage belongs to adjacent AI Infrastructure Alliance notice 2022-10216 on printed page 29180. Interpret within its stated scope."
+    },
+    {
+      "id": "wandb-aws-2024",
+      "title": "Weights & Biases named 2024 AWS partner award finalist",
+      "publisher": "Weights & Biases",
+      "url": "https://wandb.ai/site/de/articles/press-release/weights-biases-named-a-2024-geo-and-global-aws-partner-award-finalist/",
+      "publication_date": "2024-12-02",
+      "date_kind": "document_date",
+      "captured_at": "2026-09-25T15:32:14.820260+00:00",
+      "artifact_path": "docs/research/source-artifacts/mlops-2024/wandb-aws-2024.html.gz",
+      "artifact_sha256": "fb0e2424c39d65a8c8c3ca7a3e9bcc0e64b39cbeea30be32a924e5fe1fe9fb9f",
+      "passage": "Headquartered in San Francisco with a global presence, Weights & Biases is backed by leading investors, including Coatue, Felicis Ventures, BOND, Insight Partners,",
+      "review_note": "Live retrieval in 2026 of a dated source; historical body may have changed. Company claim; not independently verified."
+    },
+    {
+      "id": "datarobot-page-2024",
+      "title": "DataRobot archived homepage (2024)",
+      "publisher": "DataRobot",
+      "url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2024-51/segments/1733066110042.43/warc/CC-MAIN-20241212155226-20241212185226-00435.warc.gz",
+      "publication_date": "2024-12-12",
+      "date_kind": "archive_capture",
+      "captured_at": "2024-12-12T16:31:30+00:00",
+      "artifact_sha256": "e01f534cda1b87ce8972d9f0cec325682629448cc5e522d89ea7f6e15a55a418",
+      "record_id": "page:61",
+      "passage": "DataRobot delivers the industry-leading AI applications and platform that maximize impact and minimize risk for your business. Infuse AI into your business Integrate AI into your existing",
+      "review_note": "Contemporaneous Common Crawl homepage capture; positioning is a company claim."
+    },
+    {
+      "id": "wandb-page-2021",
+      "title": "Weights & Biases archived homepage (2021)",
+      "publisher": "Weights & Biases",
+      "url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2021-49/segments/1637964360951.9/warc/CC-MAIN-20211201203843-20211201233843-00498.warc.gz",
+      "publication_date": "2021-12-01",
+      "date_kind": "archive_capture",
+      "captured_at": "2021-12-01T21:55:57+00:00",
+      "artifact_sha256": "dfa0506bb674e21d2ecb8f3b12e1d6cda119a9345ff13e3c352d90ca05254f3f",
+      "record_id": "page:50",
+      "passage": "The developer-first ‍ MLOps platform Build better models faster with experiment tracking, dataset versioning, and model management Sign up Request demo Explore the Weights &",
+      "review_note": "Contemporaneous Common Crawl homepage capture; positioning is a company claim."
+    },
+    {
+      "id": "wandb-page-2022",
+      "title": "Weights & Biases archived homepage (2022)",
+      "publisher": "Weights & Biases",
+      "url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2022-49/segments/1669446706285.92/warc/CC-MAIN-20221126080725-20221126110725-00258.warc.gz",
+      "publication_date": "2022-11-26",
+      "date_kind": "archive_capture",
+      "captured_at": "2022-11-26T09:17:49+00:00",
+      "artifact_sha256": "2c381d0cee38897ca3b4e0f61df012900be1b0e0ece0b8b99652b4ee343bdf73",
+      "record_id": "page:51",
+      "passage": "300,000+ ML practitioners Weights & Biases is available in the cloud or installed on your private",
+      "review_note": "Contemporaneous Common Crawl homepage capture; positioning is a company claim."
+    },
+    {
+      "id": "wandb-page-2022-lower",
+      "title": "Weights & Biases archived homepage (2022)",
+      "publisher": "Weights & Biases",
+      "url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2022-49/segments/1669446706285.92/warc/CC-MAIN-20221126080725-20221126110725-00258.warc.gz",
+      "publication_date": "2022-11-26",
+      "date_kind": "archive_capture",
+      "captured_at": "2022-11-26T09:17:49+00:00",
+      "artifact_sha256": "2c381d0cee38897ca3b4e0f61df012900be1b0e0ece0b8b99652b4ee343bdf73",
+      "record_id": "page:51",
+      "passage": "500,000+ machine learning practitioners at 500+ companies and research institutions See Case Studies  \"W&B was",
+      "review_note": "Contemporaneous Common Crawl homepage capture; positioning is a company claim."
+    },
+    {
+      "id": "wandb-page-2024",
+      "title": "Weights & Biases archived homepage (2024)",
+      "publisher": "Weights & Biases",
+      "url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2024-51/segments/1733066067826.3/warc/CC-MAIN-20241210194529-20241210224529-00058.warc.gz",
+      "publication_date": "2024-12-10",
+      "date_kind": "archive_capture",
+      "captured_at": "2024-12-10T20:41:58+00:00",
+      "artifact_sha256": "1cccfac64b2bcdac3cde4c249335f20ed088866fed3fa86e43e268fffa238cf3",
+      "record_id": "page:53",
+      "passage": "The AI developer platform to build AI applications and models with confidence W&B Weave: Develop AI applications import weave weave.init(\"quickstart\") @weave.op() def llm_app(prompt):",
+      "review_note": "Contemporaneous Common Crawl homepage capture; positioning is a company claim."
+    },
+    {
+      "id": "databricks-managed-review",
+      "title": "Reviewed Databricks / MLflow relation",
+      "publisher": "Log Pose identity review",
+      "url": "https://community.databricks.com/t5/machine-learning/how-does-databricks-managed-mlflow-compare-with-open-source-oss/td-p/24711",
+      "publication_date": "2021-06-14",
+      "date_kind": "cited_forum_answer",
+      "captured_at": null,
+      "artifact_path": "web/discovery.json",
+      "artifact_sha256": "6f858649a7f17741653dc9a80c5dd93b5b7f87d4d683156dbb3c1d9cd3c7b5f6",
+      "record_id": "identity-review-16",
+      "passage": "A Databricks employee distinguishes managed MLflow from the open-source MLflow project; exclusive ownership is not inferred.",
+      "review_note": "Retained analyst review cites a dated employee answer. Live source retrieval failed with HTTP 403 in this bounded pull; original answer was checked separately, not captured as bytes."
+    },
+    {
+      "id": "mlflow-inventory-2024",
+      "title": "MLFlow in lfai inventory",
+      "publisher": "LFAI",
+      "url": "https://github.com/lfai/lfai-landscape/blob/9999a5ca4ddae6d202e83606ed6f84b368bc0099/landscape.yml",
+      "publication_date": "2024-12-19",
+      "date_kind": "inventory_commit",
+      "captured_at": "2024-12-19T04:29:51Z",
+      "artifact_path": "docs/research/source-artifacts/discovery/lfai-2024-9999a5ca4dda.yml",
+      "artifact_sha256": "22915df88f4e3b18f28563445baeb22bceb446763774015edcf74b788480adb8",
+      "record_id": "46e8fdef38548ff3a8ae",
+      "passage": "MLFlow: ",
+      "review_note": "Directory occurrence establishes listing only; not provider identity, payment, or adoption."
+    },
+    {
+      "id": "dvc-inventory-2024",
+      "title": "DVC in lfai inventory",
+      "publisher": "LFAI",
+      "url": "https://github.com/lfai/lfai-landscape/blob/9999a5ca4ddae6d202e83606ed6f84b368bc0099/landscape.yml",
+      "publication_date": "2024-12-19",
+      "date_kind": "inventory_commit",
+      "captured_at": "2024-12-19T04:29:51Z",
+      "artifact_path": "docs/research/source-artifacts/discovery/lfai-2024-9999a5ca4dda.yml",
+      "artifact_sha256": "22915df88f4e3b18f28563445baeb22bceb446763774015edcf74b788480adb8",
+      "record_id": "ba1f60c08acecb7c5929",
+      "passage": "DVC: ",
+      "review_note": "Directory occurrence establishes listing only; not provider identity, payment, or adoption."
+    },
+    {
+      "id": "bentoml-inventory-2024",
+      "title": "BentoML in cncf inventory",
+      "publisher": "CNCF",
+      "url": "https://github.com/cncf/landscape/blob/e4f13c918275affaefb3dbe1a21a4a8e38ee3842/landscape.yml",
+      "publication_date": "2024-12-31",
+      "date_kind": "inventory_commit",
+      "captured_at": "2024-12-31T14:58:22Z",
+      "artifact_path": "docs/research/source-artifacts/discovery/cncf-2024-e4f13c918275.yml",
+      "artifact_sha256": "f1036cb6b8e9b9ef7647a0203ac349ba308173bf407f79cc8ccd4d4a2e7d46fd",
+      "record_id": "ce7bded1908fc1f01e9e",
+      "passage": "BentoML: Build Production-Grade AI Applications",
+      "review_note": "Directory occurrence establishes listing only; not provider identity, payment, or adoption."
+    },
+    {
+      "id": "seldon-inventory-2024",
+      "title": "Seldon in cncf inventory",
+      "publisher": "CNCF",
+      "url": "https://github.com/cncf/landscape/blob/e4f13c918275affaefb3dbe1a21a4a8e38ee3842/landscape.yml",
+      "publication_date": "2024-12-31",
+      "date_kind": "inventory_commit",
+      "captured_at": "2024-12-31T14:58:22Z",
+      "artifact_path": "docs/research/source-artifacts/discovery/cncf-2024-e4f13c918275.yml",
+      "artifact_sha256": "f1036cb6b8e9b9ef7647a0203ac349ba308173bf407f79cc8ccd4d4a2e7d46fd",
+      "record_id": "afd1fd73ca63dddf9838",
+      "passage": "Seldon: ",
+      "review_note": "Directory occurrence establishes listing only; not provider identity, payment, or adoption."
+    },
+    {
+      "id": "zenml-inventory-2024",
+      "title": "ZenML in lfai inventory",
+      "publisher": "LFAI",
+      "url": "https://github.com/lfai/lfai-landscape/blob/9999a5ca4ddae6d202e83606ed6f84b368bc0099/landscape.yml",
+      "publication_date": "2024-12-19",
+      "date_kind": "inventory_commit",
+      "captured_at": "2024-12-19T04:29:51Z",
+      "artifact_path": "docs/research/source-artifacts/discovery/lfai-2024-9999a5ca4dda.yml",
+      "artifact_sha256": "22915df88f4e3b18f28563445baeb22bceb446763774015edcf74b788480adb8",
+      "record_id": "a4dc545be702c068f5cd",
+      "passage": "ZenML: ",
+      "review_note": "Directory occurrence establishes listing only; not provider identity, payment, or adoption."
+    },
+    {
+      "id": "whylogs-inventory-2024",
+      "title": "whylogs in lfai inventory",
+      "publisher": "LFAI",
+      "url": "https://github.com/lfai/lfai-landscape/blob/9999a5ca4ddae6d202e83606ed6f84b368bc0099/landscape.yml",
+      "publication_date": "2024-12-19",
+      "date_kind": "inventory_commit",
+      "captured_at": "2024-12-19T04:29:51Z",
+      "artifact_path": "docs/research/source-artifacts/discovery/lfai-2024-9999a5ca4dda.yml",
+      "artifact_sha256": "22915df88f4e3b18f28563445baeb22bceb446763774015edcf74b788480adb8",
+      "record_id": "97526d785cbfa2474e96",
+      "passage": "whylogs: ",
+      "review_note": "Directory occurrence establishes listing only; not provider identity, payment, or adoption."
+    }
+  ],
+  "memo": {
+    "priority_ids": [],
+    "decision": "No unconditional diligence priority passes every identity, commercial-product, private/control, U.S.-base and cutoff gate on this bounded record.",
+    "conditional_hypotheses": [
+      {
+        "member_id": "weights-and-biases",
+        "case": "Developer distribution plus a move into LLM workflows may support enterprise expansion.",
+        "counterargument": "Reported users may be free usage; NAIRR licenses were contributed, not federal revenue.",
+        "could_change": "A 2024 control record and paid-account cohorts, retention, expansion, and LLM product attach.",
+        "next_question": "What fraction of 2024 active organizations paid, retained, and expanded?",
+        "evidence_ids": [
+          "wandb-round-2023",
+          "wandb-nairr-2024",
+          "wandb-aws-2024",
+          "wandb-page-2022",
+          "wandb-page-2022-lower"
+        ]
+      },
+      {
+        "member_id": "datarobot",
+        "case": "Enterprise platform breadth and a pharmaceutical partner channel may support commercial durability.",
+        "counterargument": "Financing, acquisition, customer stories and partnership announcements do not establish organic growth or revenue quality.",
+        "could_change": "2024 control status and 2022–2024 recurring-revenue cohorts, retention, services mix, and partner outcomes.",
+        "next_question": "How much partner-sourced recurring revenue persisted after initial deployment?",
+        "evidence_ids": [
+          "datarobot-series-g-2021",
+          "datarobot-itochu-2022",
+          "datarobot-page-2024"
+        ]
+      }
+    ],
+    "lens": "Independent use of Telescope Partners' public partnerships and approach descriptions; not its internal criteria.",
+    "limits": "This record cannot establish market share, revenue quality, complete financing history, investment returns, or a recommendation. Missing evidence does not prove absence."
+  },
+  "source_budget": {
+    "new_dated_primary_documents": 10,
+    "attempted_documents": 11,
+    "failed_retrieval_ids": [
+      "databricks-managed-mlflow-2021"
+    ],
+    "maximum": 24,
+    "note": "Each source is one URL; the federal page informs two leads. Live 2026 retrieval caveats and failed retrievals remain visible."
+  }
+}
