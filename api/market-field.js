@@ -2,6 +2,7 @@
 // This module is shared by the Vercel function and the local read server.
 'use strict';
 
+const crypto = require('node:crypto');
 const graph = require('./data/market-field-graph.json');
 const projection = require('../web/data/topology-discovery.json');
 
@@ -15,10 +16,31 @@ const reviewPairs = new Map(projection.edges.map(edge =>
   [[edge.subject_candidate_id, edge.object_candidate_id].sort().join(':'), edge]));
 const tagOrder = ['ai_automation', 'data_infrastructure', 'developer_tools', 'security_observability'];
 
-if (projection.build_id !== graph.input_hashes.projection_build_id ||
-    projection.counts.possible_pairs !== graph.pairs.length ||
-    projection.counts.nodes !== graph.candidates.length) {
-  throw new Error('market field graph and detail projection differ');
+function canonicalEncode(value) {
+  if (Array.isArray(value)) return `[${value.map(canonicalEncode).join(',')}]`;
+  if (value !== null && typeof value === 'object') {
+    return `{${Object.keys(value).sort().map(key =>
+      `${JSON.stringify(key)}:${canonicalEncode(value[key])}`).join(',')}}`;
+  }
+  return JSON.stringify(value);
+}
+
+function verifyGraphDetail(readGraph, detailProjection) {
+  const projectionSha256 = crypto.createHash('sha256')
+    .update(canonicalEncode(detailProjection)).digest('hex');
+  if (projectionSha256 !== readGraph.input_hashes.projection_sha256 ||
+      detailProjection.build_id !== readGraph.input_hashes.projection_build_id ||
+      detailProjection.counts.possible_pairs !== readGraph.pairs.length ||
+      detailProjection.counts.nodes !== readGraph.candidates.length) {
+    throw new Error('market field graph and detail projection differ');
+  }
+}
+
+let graphDetailMismatch = false;
+try {
+  verifyGraphDetail(graph, projection);
+} catch {
+  graphDetailMismatch = true;
 }
 
 function response(status, body) {
@@ -195,6 +217,7 @@ function detail(params) {
 }
 
 function handleMarketField(searchParams) {
+  if (graphDetailMismatch) return response(503, { error: 'market_field_unavailable' });
   try {
     const params = searchParams instanceof URLSearchParams ? searchParams : new URLSearchParams(searchParams);
     const mode = parameter(params, 'mode', 'summary');
@@ -231,3 +254,4 @@ function vercelHandler(request, reply) {
 
 module.exports = vercelHandler;
 module.exports.handleMarketField = handleMarketField;
+module.exports.verifyGraphDetail = verifyGraphDetail;
