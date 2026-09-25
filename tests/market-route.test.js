@@ -565,6 +565,28 @@ test('repeated build mismatches stop after one automatic refresh', async () => {
   dom.window.close();
 });
 
+test('successful query responses cannot reset a repeated detail mismatch loop', async () => {
+  const apiOptions = { summaryCount: 0, detailCount: 0 };
+  apiOptions.handler = (params, { defaultHandler }) => {
+    if (params.mode === 'summary') apiOptions.summaryCount += 1;
+    if (params.mode === 'detail') {
+      apiOptions.detailCount += 1;
+      // Cap the fixture itself so a broken client cannot spin without a bound.
+      if (apiOptions.detailCount > 3) return { status: 503, body: { error: 'fixture request cap' } };
+      return { status: 409, body: { error: 'build_version_mismatch' } };
+    }
+    return { status: 200, body: defaultHandler(params) };
+  };
+  const candidate = topologyPayload.nodes[0].id;
+  const dom = await page(`/?view=topology&fieldCandidate=${candidate}`, null, false, apiOptions);
+  await waitFor(() => dom.window.document.querySelector('.error'));
+  try {
+    assert.equal(apiOptions.summaryCount, 2);
+    assert.equal(apiOptions.detailCount, 2);
+    assert.match(dom.window.document.querySelector('.error').textContent, /changed again/i);
+  } finally { dom.window.close(); }
+});
+
 test('query errors can retry and a no-result filter has an explicit empty state', async () => {
   const apiOptions = { failed: false };
   apiOptions.handler = (params, { defaultHandler }) => {

@@ -165,7 +165,8 @@
         queryResult = result;
         queryError = null;
         queryLoading = false;
-        mismatchRefreshAttempted = false;
+        // A focused read is complete only after its detail response also matches.
+        if (!state.fieldCandidate) mismatchRefreshAttempted = false;
         commitState({}, { replace: true });
       }).catch(failure => {
         if (!model.isCurrentRequest(requestId, key, queryRequest, queryKey)) return;
@@ -564,7 +565,8 @@
         loadedCandidates = loadedCandidates.concat(result.candidates);
         queryResult = result;
         queryLoading = false;
-        mismatchRefreshAttempted = false;
+        // A focused read is complete only after its detail response also matches.
+        if (!state.fieldCandidate) mismatchRefreshAttempted = false;
         commitState({}, { replace: true });
       }).catch(failure => {
         if (!model.isCurrentRequest(requestId, key, queryRequest, queryKey)) return;
@@ -596,7 +598,8 @@
           neighbors: queryResult.neighbors.concat(result.neighbors),
           next_neighbor_offset: result.next_neighbor_offset };
         queryLoading = false;
-        mismatchRefreshAttempted = false;
+        // A focused read is complete only after its detail response also matches.
+        if (!state.fieldCandidate) mismatchRefreshAttempted = false;
         commitState({}, { replace: true });
       }).catch(failure => {
         if (!model.isCurrentRequest(requestId, key, queryRequest, queryKey)) return;
