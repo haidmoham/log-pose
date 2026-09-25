@@ -7,7 +7,7 @@
     "portfolio entry terms, ownership, dilution, cash flows, and liquidity are absent"
   ],
   "case_manifest_sha256": "c8f07d0b70686037b7db025ef3950f247239610384f366f42a624e579d85e422",
-  "code_commit": "95266f4a6ec7b44e32d9cb3596f4bfb87f8b8f2f",
+  "code_commit": "511e7449d51f33ec3388c39c7a58cf3f6ee5c29e",
   "controls": {
     "capture_aware_exact_span": {
       "abstained": 14,
@@ -27,7 +27,7 @@
               "artifact_id": "page:28",
               "artifact_sha256": "a406ba0ef71e15b8d2a6d2a0b1a7e156369338ac4cb3f1ba19aba15e2c428cb8",
               "eligibility": "eligible_historical_reconstruction",
-              "span": "Join Datadog @ AWS re:Invent: virtually and in person Join Datadog @ AWS re:Invent Product Features Integrations Dashboards Infrastructure Monitoring Log Management APM Continuous Profiler CI Visibility Synthetic Monitoring Real User Monitoring Network Performance Monitoring Network Device Monitoring Security Platform Security Monitoring CSPM Cloud Workload Security Error Tracking Incident Management Database Monitoring Serverless Alerts API Customers Pricing Solutions Industry Financial Service"
+              "span": "emises Monitoring Log Analysis & Correlation About Contact Partners Latest News Leadership Careers Analyst Reports Investor Relations Awards Blog The Monitor Engineering Pup Culture Community Docs Login Get Started Free 2021 Gartner Magic Q"
             }
           ],
           "objective_status": "source_stated_marketing_claim",
@@ -49,7 +49,7 @@
               "artifact_id": "page:16",
               "artifact_sha256": "ea9bf7df0b3b99a15196a4250dead7f997c307375fc93d6921f33c4b57c4898f",
               "eligibility": "eligible_historical_reconstruction",
-              "span": "The DevOps Platform has arrived. Deliver software faster with better security and collaboration in a single platform. Get free trial Watch demo Partners Bronwyn Hastings, VP Technology Ecosystem on Google\u2019s partnership with GitLab to deliver digital transformations for customers. Learn more \u2192 Webcast The New DevOps. Iterating and Innovating in 2021 and Beyond. Join the webcast \u2192 Blog Post GitLab\u2019s Kubernetes Operator with support for Red Hat OpenShift is now generally available. Read now \u2192 Work "
+              "span": "The DevOps Platform has arrived. Deliver software faster with better security and collaboration in a single platform. Get free trial Watch demo Partners Bronwyn Hastings, VP Technology Ecosystem on Google\u2019s partnership with GitLab to delive"
             }
           ],
           "objective_status": "company_homepage_statement",
@@ -71,7 +71,7 @@
               "artifact_id": "page:12",
               "artifact_sha256": "d5112ed8c8725ae1fdd11240075e38b4fdcb4134cf976e20a19972efdbc85f4b",
               "eligibility": "eligible_historical_reconstruction",
-              "span": "Dec 6 - 10, 2021 Register for Free Scaling Knowledge > Scaling Bodies: Why dbt Labs is making the bet on a data literate organization - Erica Louie Keynote: How big is this wave? - Martin Casado & Tristan Handy dbt 101: Stories from real-life data practitioners + a live look at dbt - Natty (Jon Natkins) & Alexis Wong Baird How to build a mature dbt project from scratch - Dave Connors Analytics Engineering for storytellers - Winnie Winship The modern data experience - Benn Stancil Identity Crisis"
+              "span": "Alexis Wong Baird How to build a mature dbt project from scratch - Dave Connors Analytics Engineering for storytellers - Winnie Winship The modern data experience - Benn Stancil Identity Crisis: Navigating the Modern Data Organization - Jil"
             }
           ],
           "objective_status": "company_homepage_statement",
@@ -93,7 +93,7 @@
               "artifact_id": "page:63",
               "artifact_sha256": "71453eb319974a7178fea0361a2bfd6d6b91198f9f4e3768bbff3588661be0a7",
               "eligibility": "eligible_historical_reconstruction",
-              "span": "Skip to content MEDIA DATA CLOUD SUMMIT | JANUARY 19 Global Virtual Event Premiering Snowflake Solutions for Media, Advertising, and Entertainment REGISTER NOW Close Your browser does not support the video tag. Snowday the view ahead Snowflake's Product Announcement Event WATCH NOW Quick Links Weekly Demo Office Hours Virtual Labs Contact Us Pricing WHERE YOUR DATA CLOUD EXPERIENCE BEGINS: ONE PLATFORM, MANY WORKLOADS, NO DATA SILOS Your browser does not support the video tag. Data Sources Data "
+              "span": "Skip to content MEDIA DATA CLOUD SUMMIT | JANUARY 19 Global Virtual Event Premiering Snowflake Solutions for Media, Advertising, and Entertainment REGISTER NOW Close Your browser does not support the video tag. Snowday the view ahead Snowfl"
             }
           ],
           "objective_status": "company_homepage_statement",
@@ -115,7 +115,7 @@
               "artifact_id": "page:27",
               "artifact_sha256": "0c04922971341a4fe22ddda1bfbf8b101a79c54bdba802f67fff94679f89c372",
               "eligibility": "eligible_historical_reconstruction",
-              "span": "Transformative collaboration for all the work you do. Freehand is the visual collaboration tool disguised as an online whiteboard. Try Freehand \u2014 Free Request a demo Watch video Lead teams from ideas to execution with the digital whiteboard that\u2019s refreshingly simple, but surprisingly robust. \u2014 BRAINSTORM \u2014 BRAINSTORM\u2014BRAINSTORM \u2014 BRAIN STORM \u2014 BRAIN STORM \u2014 BRAIN STORM \u2014 BRAIN STORM \u2014 BRAIN STORM \u2014 BRAINSTORM\u2014BRAINSTORM Run your brainstorms like the teams at Xbox. \u201c Having a digital space to br"
+              "span": "this brainstorming template gave everyone equal input. \u201d Megan Sempre , Senior Designer at Xbox Spark creativity and collaborate in real time with an endless digital whiteboard that invites and inspires everyone to join in. Try Xbox's temp"
             }
           ],
           "objective_status": "historical_company_page",
@@ -479,7 +479,7 @@
           }
         ],
         "case_manifest_hash": "c8f07d0b70686037b7db025ef3950f247239610384f366f42a624e579d85e422",
-        "code_commit": "95266f4a6ec7b44e32d9cb3596f4bfb87f8b8f2f",
+        "code_commit": "511e7449d51f33ec3388c39c7a58cf3f6ee5c29e",
         "cost_and_latency": {
           "latency_ms": 0,
           "model_calls": 0,
@@ -499,35 +499,35 @@
           {
             "case_id": "case-01",
             "spans": [
-              "Join Datadog @ AWS re:Invent: virtually and in person Join Datadog @ AWS re:Invent Product Features Integrations Dashboards Infrastructure Monitoring Log Management APM Continuous Profiler CI Visibility Synthetic Monitoring Real User Monitoring Network Performance Monitoring Network Device Monitoring Security Platform Security Monitoring CSPM Cloud Workload Security Error Tracking Incident Management Database Monitoring Serverless Alerts API Customers Pricing Solutions Industry Financial Service"
+              "emises Monitoring Log Analysis & Correlation About Contact Partners Latest News Leadership Careers Analyst Reports Investor Relations Awards Blog The Monitor Engineering Pup Culture Community Docs Login Get Started Free 2021 Gartner Magic Q"
             ],
             "status": "answered"
           },
           {
             "case_id": "case-02",
             "spans": [
-              "The DevOps Platform has arrived. Deliver software faster with better security and collaboration in a single platform. Get free trial Watch demo Partners Bronwyn Hastings, VP Technology Ecosystem on Google\u2019s partnership with GitLab to deliver digital transformations for customers. Learn more \u2192 Webcast The New DevOps. Iterating and Innovating in 2021 and Beyond. Join the webcast \u2192 Blog Post GitLab\u2019s Kubernetes Operator with support for Red Hat OpenShift is now generally available. Read now \u2192 Work "
+              "The DevOps Platform has arrived. Deliver software faster with better security and collaboration in a single platform. Get free trial Watch demo Partners Bronwyn Hastings, VP Technology Ecosystem on Google\u2019s partnership with GitLab to delive"
             ],
             "status": "answered"
           },
           {
             "case_id": "case-03",
             "spans": [
-              "Dec 6 - 10, 2021 Register for Free Scaling Knowledge > Scaling Bodies: Why dbt Labs is making the bet on a data literate organization - Erica Louie Keynote: How big is this wave? - Martin Casado & Tristan Handy dbt 101: Stories from real-life data practitioners + a live look at dbt - Natty (Jon Natkins) & Alexis Wong Baird How to build a mature dbt project from scratch - Dave Connors Analytics Engineering for storytellers - Winnie Winship The modern data experience - Benn Stancil Identity Crisis"
+              "Alexis Wong Baird How to build a mature dbt project from scratch - Dave Connors Analytics Engineering for storytellers - Winnie Winship The modern data experience - Benn Stancil Identity Crisis: Navigating the Modern Data Organization - Jil"
             ],
             "status": "answered"
           },
           {
             "case_id": "case-04",
             "spans": [
-              "Skip to content MEDIA DATA CLOUD SUMMIT | JANUARY 19 Global Virtual Event Premiering Snowflake Solutions for Media, Advertising, and Entertainment REGISTER NOW Close Your browser does not support the video tag. Snowday the view ahead Snowflake's Product Announcement Event WATCH NOW Quick Links Weekly Demo Office Hours Virtual Labs Contact Us Pricing WHERE YOUR DATA CLOUD EXPERIENCE BEGINS: ONE PLATFORM, MANY WORKLOADS, NO DATA SILOS Your browser does not support the video tag. Data Sources Data "
+              "Skip to content MEDIA DATA CLOUD SUMMIT | JANUARY 19 Global Virtual Event Premiering Snowflake Solutions for Media, Advertising, and Entertainment REGISTER NOW Close Your browser does not support the video tag. Snowday the view ahead Snowfl"
             ],
             "status": "answered"
           },
           {
             "case_id": "case-05",
             "spans": [
-              "Transformative collaboration for all the work you do. Freehand is the visual collaboration tool disguised as an online whiteboard. Try Freehand \u2014 Free Request a demo Watch video Lead teams from ideas to execution with the digital whiteboard that\u2019s refreshingly simple, but surprisingly robust. \u2014 BRAINSTORM \u2014 BRAINSTORM\u2014BRAINSTORM \u2014 BRAIN STORM \u2014 BRAIN STORM \u2014 BRAIN STORM \u2014 BRAIN STORM \u2014 BRAIN STORM \u2014 BRAINSTORM\u2014BRAINSTORM Run your brainstorms like the teams at Xbox. \u201c Having a digital space to br"
+              "this brainstorming template gave everyone equal input. \u201d Megan Sempre , Senior Designer at Xbox Spark creativity and collaborate in real time with an endless digital whiteboard that invites and inspires everyone to join in. Try Xbox's temp"
             ],
             "status": "answered"
           },
@@ -635,7 +635,7 @@
               "artifact_id": "page:28",
               "artifact_sha256": "a406ba0ef71e15b8d2a6d2a0b1a7e156369338ac4cb3f1ba19aba15e2c428cb8",
               "eligibility": "eligible_historical_reconstruction",
-              "span": "Join Datadog @ AWS re:Invent: virtually and in person Join Datadog @ AWS re:Invent Product Features Integrations Dashboards Infrastructure Monitoring Log Management APM Continuous Profiler CI Visibility Synthetic Monitoring Real User Monitoring Network Performance Monitoring Network Device Monitoring Security Platform Security Monitoring CSPM Cloud Workload Security Error Tracking Incident Management Database Monitoring Serverless Alerts API Customers Pricing Solutions Industry Financial Service"
+              "span": "emises Monitoring Log Analysis & Correlation About Contact Partners Latest News Leadership Careers Analyst Reports Investor Relations Awards Blog The Monitor Engineering Pup Culture Community Docs Login Get Started Free 2021 Gartner Magic Q"
             }
           ],
           "objective_status": "source_stated_marketing_claim",
@@ -657,7 +657,7 @@
               "artifact_id": "page:16",
               "artifact_sha256": "ea9bf7df0b3b99a15196a4250dead7f997c307375fc93d6921f33c4b57c4898f",
               "eligibility": "eligible_historical_reconstruction",
-              "span": "The DevOps Platform has arrived. Deliver software faster with better security and collaboration in a single platform. Get free trial Watch demo Partners Bronwyn Hastings, VP Technology Ecosystem on Google\u2019s partnership with GitLab to deliver digital transformations for customers. Learn more \u2192 Webcast The New DevOps. Iterating and Innovating in 2021 and Beyond. Join the webcast \u2192 Blog Post GitLab\u2019s Kubernetes Operator with support for Red Hat OpenShift is now generally available. Read now \u2192 Work "
+              "span": "The DevOps Platform has arrived. Deliver software faster with better security and collaboration in a single platform. Get free trial Watch demo Partners Bronwyn Hastings, VP Technology Ecosystem on Google\u2019s partnership with GitLab to delive"
             }
           ],
           "objective_status": "company_homepage_statement",
@@ -679,7 +679,7 @@
               "artifact_id": "page:12",
               "artifact_sha256": "d5112ed8c8725ae1fdd11240075e38b4fdcb4134cf976e20a19972efdbc85f4b",
               "eligibility": "eligible_historical_reconstruction",
-              "span": "Dec 6 - 10, 2021 Register for Free Scaling Knowledge > Scaling Bodies: Why dbt Labs is making the bet on a data literate organization - Erica Louie Keynote: How big is this wave? - Martin Casado & Tristan Handy dbt 101: Stories from real-life data practitioners + a live look at dbt - Natty (Jon Natkins) & Alexis Wong Baird How to build a mature dbt project from scratch - Dave Connors Analytics Engineering for storytellers - Winnie Winship The modern data experience - Benn Stancil Identity Crisis"
+              "span": "Alexis Wong Baird How to build a mature dbt project from scratch - Dave Connors Analytics Engineering for storytellers - Winnie Winship The modern data experience - Benn Stancil Identity Crisis: Navigating the Modern Data Organization - Jil"
             }
           ],
           "objective_status": "company_homepage_statement",
@@ -701,7 +701,7 @@
               "artifact_id": "page:63",
               "artifact_sha256": "71453eb319974a7178fea0361a2bfd6d6b91198f9f4e3768bbff3588661be0a7",
               "eligibility": "eligible_historical_reconstruction",
-              "span": "Skip to content MEDIA DATA CLOUD SUMMIT | JANUARY 19 Global Virtual Event Premiering Snowflake Solutions for Media, Advertising, and Entertainment REGISTER NOW Close Your browser does not support the video tag. Snowday the view ahead Snowflake's Product Announcement Event WATCH NOW Quick Links Weekly Demo Office Hours Virtual Labs Contact Us Pricing WHERE YOUR DATA CLOUD EXPERIENCE BEGINS: ONE PLATFORM, MANY WORKLOADS, NO DATA SILOS Your browser does not support the video tag. Data Sources Data "
+              "span": "Skip to content MEDIA DATA CLOUD SUMMIT | JANUARY 19 Global Virtual Event Premiering Snowflake Solutions for Media, Advertising, and Entertainment REGISTER NOW Close Your browser does not support the video tag. Snowday the view ahead Snowfl"
             }
           ],
           "objective_status": "company_homepage_statement",
@@ -723,7 +723,7 @@
               "artifact_id": "page:27",
               "artifact_sha256": "0c04922971341a4fe22ddda1bfbf8b101a79c54bdba802f67fff94679f89c372",
               "eligibility": "eligible_historical_reconstruction",
-              "span": "Transformative collaboration for all the work you do. Freehand is the visual collaboration tool disguised as an online whiteboard. Try Freehand \u2014 Free Request a demo Watch video Lead teams from ideas to execution with the digital whiteboard that\u2019s refreshingly simple, but surprisingly robust. \u2014 BRAINSTORM \u2014 BRAINSTORM\u2014BRAINSTORM \u2014 BRAIN STORM \u2014 BRAIN STORM \u2014 BRAIN STORM \u2014 BRAIN STORM \u2014 BRAIN STORM \u2014 BRAINSTORM\u2014BRAINSTORM Run your brainstorms like the teams at Xbox. \u201c Having a digital space to br"
+              "span": "this brainstorming template gave everyone equal input. \u201d Megan Sempre , Senior Designer at Xbox Spark creativity and collaborate in real time with an endless digital whiteboard that invites and inspires everyone to join in. Try Xbox's temp"
             }
           ],
           "objective_status": "historical_company_page",
@@ -775,7 +775,7 @@
               "artifact_id": "page:70",
               "artifact_sha256": "3c27142519950d33e8ef6c76a9121d639168df3595cd3766d78f2c7524143221",
               "eligibility": "date_only_eligible_missing_proof",
-              "span": "Datadog named a Leader in the 2024 Gartner\u00ae Magic Quadrant\u2122 for Digital Experience Monitoring Leader in the Gartner\u00ae Magic Quadrant\u2122 Product Infrastructure Infrastructure Monitoring Metrics Container Monitoring Network Monitoring Serverless Cloud Cost Management Cloudcraft Applications Application Performance Monitoring Universal Service Monitoring Continuous Profiler Dynamic Instrumentation Data Streams Monitoring Database Monitoring Data Jobs Monitoring LLM Observability Logs Log Management Se"
+              "span": "adog named a Leader in the 2024 Gartner\u00ae Magic Quadrant\u2122 for Digital Experience Monitoring Leader in the Gartner\u00ae Magic Quadrant\u2122 Product Infrastructure Infrastructure Monitoring Metrics Container Monitoring Network Monitoring Serverless Cl"
             }
           ],
           "objective_status": "captured_before_but_ingested_after_cutoff",
@@ -799,7 +799,7 @@
               "artifact_id": "dbt-series-d-2022",
               "artifact_sha256": "64694c906f3c8be8b3fd90d88725fe3598a896533adf3123a24dc684610ffece",
               "eligibility": "date_only_eligible_missing_proof",
-              "span": "<!DOCTYPE html><html lang=\"en\"><head><meta charSet=\"UTF-8\"/><meta charSet=\"utf-8\"/><meta content=\"width=device-width, initial-scale=1.0\" name=\"viewport\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/><link rel=\"preload\" as=\"image\" imageSrcSet=\"/_next/image?url=%2Fimg%2Flogos%2Fdbt-labs-logo.svg&amp;w=256&amp;q=75 1x, /_next/image?url=%2Fimg%2Flogos%2Fdbt-labs-logo.svg&amp;w=384&amp;q=75 2x\"/><link rel=\"stylesheet\" href=\"/_next/static/css/627f448435ad5f68.css\" data-preceden"
+              "span": "te\" title=\"LLM-friendly markdown sitemap\" type=\"text/markdown\"/><title>dbt Labs raises $222M in Series D funding at $4.2B valuation led by Altimeter with participation from Databricks and Snowflake | dbt Labs</title><meta name=\"description\""
             }
           ],
           "objective_status": "old_publication_date_without_version_proof",
@@ -853,7 +853,7 @@
               "artifact_id": "snowflake-fy2024-10k",
               "artifact_sha256": "6c1f7dc96b0e484160a38025fcf2895a016a02a5f918ad5fb2250476e191a5a6",
               "eligibility": "date_only_eligible_missing_proof",
-              "span": "<title>snow-20240131</title></head><body><div style=\"display:none\"><ix:header><ix:hidden><ix:nonNumeric contextRef=\"c-1\" name=\"dei:EntityCentralIndexKey\" id=\"f-33\">0001640147</ix:nonNumeric><ix:nonNumeric contextRef=\"c-1\" name=\"dei:DocumentFiscalYearFocus\" id=\"f-34\">2024</ix:nonNumeric><ix:nonNumeric contextRef=\"c-1\" name=\"dei:DocumentFiscalPeriodFocus\" id=\"f-35\">FY</ix:nonNumeric><ix:nonNumeric contextRef=\"c-1\" name=\"dei:AmendmentFlag\" format=\"ixt:fixed-false\" id=\"f-36\">FALSE</ix:nonNumeric><ix"
+              "span": "ldi:explicitMember dimension=\"us-gaap:ConcentrationRiskByBenchmarkAxis\">us-gaap:RevenueFromContractWithCustomerMember</xbrldi:explicitMember><xbrldi:explicitMember dimension=\"us-gaap:ConcentrationRiskByTypeAxis\">us-gaap:ProductConcentration"
             }
           ],
           "objective_status": "historical_filing_version_proof",
@@ -877,7 +877,7 @@
               "artifact_id": "dbt-series-d-2022",
               "artifact_sha256": "64694c906f3c8be8b3fd90d88725fe3598a896533adf3123a24dc684610ffece",
               "eligibility": "date_only_eligible_missing_proof",
-              "span": "<!DOCTYPE html><html lang=\"en\"><head><meta charSet=\"UTF-8\"/><meta charSet=\"utf-8\"/><meta content=\"width=device-width, initial-scale=1.0\" name=\"viewport\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/><link rel=\"preload\" as=\"image\" imageSrcSet=\"/_next/image?url=%2Fimg%2Flogos%2Fdbt-labs-logo.svg&amp;w=256&amp;q=75 1x, /_next/image?url=%2Fimg%2Flogos%2Fdbt-labs-logo.svg&amp;w=384&amp;q=75 2x\"/><link rel=\"stylesheet\" href=\"/_next/static/css/627f448435ad5f68.css\" data-preceden"
+              "span": "<!DOCTYPE html><html lang=\"en\"><head><meta charSet=\"UTF-8\"/><meta charSet=\"utf-8\"/><meta content=\"width=device-width, initial-scale=1.0\" name=\"viewport\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/><link rel=\"preloa"
             }
           ],
           "objective_status": "event_before_cutoff_publication_before_cutoff_but_version_unknown",
@@ -901,7 +901,7 @@
               "artifact_id": "dbt-series-d-2022",
               "artifact_sha256": "64694c906f3c8be8b3fd90d88725fe3598a896533adf3123a24dc684610ffece",
               "eligibility": "date_only_eligible_missing_proof",
-              "span": "<!DOCTYPE html><html lang=\"en\"><head><meta charSet=\"UTF-8\"/><meta charSet=\"utf-8\"/><meta content=\"width=device-width, initial-scale=1.0\" name=\"viewport\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/><link rel=\"preload\" as=\"image\" imageSrcSet=\"/_next/image?url=%2Fimg%2Flogos%2Fdbt-labs-logo.svg&amp;w=256&amp;q=75 1x, /_next/image?url=%2Fimg%2Flogos%2Fdbt-labs-logo.svg&amp;w=384&amp;q=75 2x\"/><link rel=\"stylesheet\" href=\"/_next/static/css/627f448435ad5f68.css\" data-preceden"
+              "span": "Coalesce 2022 is scheduled for\u00a0October 17-21</em></a>.</li><li><strong>Deepened partnerships:</strong>\u00a0The number of partner products supporting data transformation workloads with dbt increased by 2x in 2021. dbt Labs added integrations wit"
             }
           ],
           "objective_status": "2026_topology_review_not_known_at_cutoff",
@@ -925,7 +925,7 @@
               "artifact_id": "snowflake-fy2024-10k",
               "artifact_sha256": "6c1f7dc96b0e484160a38025fcf2895a016a02a5f918ad5fb2250476e191a5a6",
               "eligibility": "date_only_eligible_missing_proof",
-              "span": "<title>snow-20240131</title></head><body><div style=\"display:none\"><ix:header><ix:hidden><ix:nonNumeric contextRef=\"c-1\" name=\"dei:EntityCentralIndexKey\" id=\"f-33\">0001640147</ix:nonNumeric><ix:nonNumeric contextRef=\"c-1\" name=\"dei:DocumentFiscalYearFocus\" id=\"f-34\">2024</ix:nonNumeric><ix:nonNumeric contextRef=\"c-1\" name=\"dei:DocumentFiscalPeriodFocus\" id=\"f-35\">FY</ix:nonNumeric><ix:nonNumeric contextRef=\"c-1\" name=\"dei:AmendmentFlag\" format=\"ixt:fixed-false\" id=\"f-36\">FALSE</ix:nonNumeric><ix"
+              "span": "up to take advantage of the cloud, and is built on an innovative multi-cluster, shared data architecture. It consists of three independently scalable layers deployed and generally connected globally across public clouds and regions:</span><"
             }
           ],
           "objective_status": "hypothesis_not_supported_relationship",
@@ -994,7 +994,7 @@
               "artifact_id": "snowflake-fy2024-10k",
               "artifact_sha256": "6c1f7dc96b0e484160a38025fcf2895a016a02a5f918ad5fb2250476e191a5a6",
               "eligibility": "date_only_eligible_missing_proof",
-              "span": "<title>snow-20240131</title></head><body><div style=\"display:none\"><ix:header><ix:hidden><ix:nonNumeric contextRef=\"c-1\" name=\"dei:EntityCentralIndexKey\" id=\"f-33\">0001640147</ix:nonNumeric><ix:nonNumeric contextRef=\"c-1\" name=\"dei:DocumentFiscalYearFocus\" id=\"f-34\">2024</ix:nonNumeric><ix:nonNumeric contextRef=\"c-1\" name=\"dei:DocumentFiscalPeriodFocus\" id=\"f-35\">FY</ix:nonNumeric><ix:nonNumeric contextRef=\"c-1\" name=\"dei:AmendmentFlag\" format=\"ixt:fixed-false\" id=\"f-36\">FALSE</ix:nonNumeric><ix"
+              "span": "6\">FALSE</ix:nonNumeric><ix:nonNumeric contextRef=\"c-71\" name=\"snow:ContractWithCustomerContractTerm\" id=\"f-517\">P1Y</ix:nonNumeric><ix:nonNumeric contextRef=\"c-74\" name=\"us-gaap:PropertyPlantAndEquipmentUsefulLife\" id=\"f-536\">P3Y</ix:nonNu"
             }
           ],
           "objective_status": "accepted_hypothesis_not_calibrated_probability",
@@ -1164,7 +1164,7 @@
           }
         ],
         "case_manifest_hash": "c8f07d0b70686037b7db025ef3950f247239610384f366f42a624e579d85e422",
-        "code_commit": "95266f4a6ec7b44e32d9cb3596f4bfb87f8b8f2f",
+        "code_commit": "511e7449d51f33ec3388c39c7a58cf3f6ee5c29e",
         "cost_and_latency": {
           "latency_ms": 0,
           "model_calls": 0,
@@ -1187,35 +1187,35 @@
           {
             "case_id": "case-01",
             "spans": [
-              "Join Datadog @ AWS re:Invent: virtually and in person Join Datadog @ AWS re:Invent Product Features Integrations Dashboards Infrastructure Monitoring Log Management APM Continuous Profiler CI Visibility Synthetic Monitoring Real User Monitoring Network Performance Monitoring Network Device Monitoring Security Platform Security Monitoring CSPM Cloud Workload Security Error Tracking Incident Management Database Monitoring Serverless Alerts API Customers Pricing Solutions Industry Financial Service"
+              "emises Monitoring Log Analysis & Correlation About Contact Partners Latest News Leadership Careers Analyst Reports Investor Relations Awards Blog The Monitor Engineering Pup Culture Community Docs Login Get Started Free 2021 Gartner Magic Q"
             ],
             "status": "answered"
           },
           {
             "case_id": "case-02",
             "spans": [
-              "The DevOps Platform has arrived. Deliver software faster with better security and collaboration in a single platform. Get free trial Watch demo Partners Bronwyn Hastings, VP Technology Ecosystem on Google\u2019s partnership with GitLab to deliver digital transformations for customers. Learn more \u2192 Webcast The New DevOps. Iterating and Innovating in 2021 and Beyond. Join the webcast \u2192 Blog Post GitLab\u2019s Kubernetes Operator with support for Red Hat OpenShift is now generally available. Read now \u2192 Work "
+              "The DevOps Platform has arrived. Deliver software faster with better security and collaboration in a single platform. Get free trial Watch demo Partners Bronwyn Hastings, VP Technology Ecosystem on Google\u2019s partnership with GitLab to delive"
             ],
             "status": "answered"
           },
           {
             "case_id": "case-03",
             "spans": [
-              "Dec 6 - 10, 2021 Register for Free Scaling Knowledge > Scaling Bodies: Why dbt Labs is making the bet on a data literate organization - Erica Louie Keynote: How big is this wave? - Martin Casado & Tristan Handy dbt 101: Stories from real-life data practitioners + a live look at dbt - Natty (Jon Natkins) & Alexis Wong Baird How to build a mature dbt project from scratch - Dave Connors Analytics Engineering for storytellers - Winnie Winship The modern data experience - Benn Stancil Identity Crisis"
+              "Alexis Wong Baird How to build a mature dbt project from scratch - Dave Connors Analytics Engineering for storytellers - Winnie Winship The modern data experience - Benn Stancil Identity Crisis: Navigating the Modern Data Organization - Jil"
             ],
             "status": "answered"
           },
           {
             "case_id": "case-04",
             "spans": [
-              "Skip to content MEDIA DATA CLOUD SUMMIT | JANUARY 19 Global Virtual Event Premiering Snowflake Solutions for Media, Advertising, and Entertainment REGISTER NOW Close Your browser does not support the video tag. Snowday the view ahead Snowflake's Product Announcement Event WATCH NOW Quick Links Weekly Demo Office Hours Virtual Labs Contact Us Pricing WHERE YOUR DATA CLOUD EXPERIENCE BEGINS: ONE PLATFORM, MANY WORKLOADS, NO DATA SILOS Your browser does not support the video tag. Data Sources Data "
+              "Skip to content MEDIA DATA CLOUD SUMMIT | JANUARY 19 Global Virtual Event Premiering Snowflake Solutions for Media, Advertising, and Entertainment REGISTER NOW Close Your browser does not support the video tag. Snowday the view ahead Snowfl"
             ],
             "status": "answered"
           },
           {
             "case_id": "case-05",
             "spans": [
-              "Transformative collaboration for all the work you do. Freehand is the visual collaboration tool disguised as an online whiteboard. Try Freehand \u2014 Free Request a demo Watch video Lead teams from ideas to execution with the digital whiteboard that\u2019s refreshingly simple, but surprisingly robust. \u2014 BRAINSTORM \u2014 BRAINSTORM\u2014BRAINSTORM \u2014 BRAIN STORM \u2014 BRAIN STORM \u2014 BRAIN STORM \u2014 BRAIN STORM \u2014 BRAIN STORM \u2014 BRAINSTORM\u2014BRAINSTORM Run your brainstorms like the teams at Xbox. \u201c Having a digital space to br"
+              "this brainstorming template gave everyone equal input. \u201d Megan Sempre , Senior Designer at Xbox Spark creativity and collaborate in real time with an endless digital whiteboard that invites and inspires everyone to join in. Try Xbox's temp"
             ],
             "status": "answered"
           },
@@ -1232,14 +1232,14 @@
           {
             "case_id": "case-08",
             "spans": [
-              "Datadog named a Leader in the 2024 Gartner\u00ae Magic Quadrant\u2122 for Digital Experience Monitoring Leader in the Gartner\u00ae Magic Quadrant\u2122 Product Infrastructure Infrastructure Monitoring Metrics Container Monitoring Network Monitoring Serverless Cloud Cost Management Cloudcraft Applications Application Performance Monitoring Universal Service Monitoring Continuous Profiler Dynamic Instrumentation Data Streams Monitoring Database Monitoring Data Jobs Monitoring LLM Observability Logs Log Management Se"
+              "adog named a Leader in the 2024 Gartner\u00ae Magic Quadrant\u2122 for Digital Experience Monitoring Leader in the Gartner\u00ae Magic Quadrant\u2122 Product Infrastructure Infrastructure Monitoring Metrics Container Monitoring Network Monitoring Serverless Cl"
             ],
             "status": "answered"
           },
           {
             "case_id": "case-09",
             "spans": [
-              "<!DOCTYPE html><html lang=\"en\"><head><meta charSet=\"UTF-8\"/><meta charSet=\"utf-8\"/><meta content=\"width=device-width, initial-scale=1.0\" name=\"viewport\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/><link rel=\"preload\" as=\"image\" imageSrcSet=\"/_next/image?url=%2Fimg%2Flogos%2Fdbt-labs-logo.svg&amp;w=256&amp;q=75 1x, /_next/image?url=%2Fimg%2Flogos%2Fdbt-labs-logo.svg&amp;w=384&amp;q=75 2x\"/><link rel=\"stylesheet\" href=\"/_next/static/css/627f448435ad5f68.css\" data-preceden"
+              "te\" title=\"LLM-friendly markdown sitemap\" type=\"text/markdown\"/><title>dbt Labs raises $222M in Series D funding at $4.2B valuation led by Altimeter with participation from Databricks and Snowflake | dbt Labs</title><meta name=\"description\""
             ],
             "status": "answered"
           },
@@ -1256,28 +1256,28 @@
           {
             "case_id": "case-12",
             "spans": [
-              "<title>snow-20240131</title></head><body><div style=\"display:none\"><ix:header><ix:hidden><ix:nonNumeric contextRef=\"c-1\" name=\"dei:EntityCentralIndexKey\" id=\"f-33\">0001640147</ix:nonNumeric><ix:nonNumeric contextRef=\"c-1\" name=\"dei:DocumentFiscalYearFocus\" id=\"f-34\">2024</ix:nonNumeric><ix:nonNumeric contextRef=\"c-1\" name=\"dei:DocumentFiscalPeriodFocus\" id=\"f-35\">FY</ix:nonNumeric><ix:nonNumeric contextRef=\"c-1\" name=\"dei:AmendmentFlag\" format=\"ixt:fixed-false\" id=\"f-36\">FALSE</ix:nonNumeric><ix"
+              "ldi:explicitMember dimension=\"us-gaap:ConcentrationRiskByBenchmarkAxis\">us-gaap:RevenueFromContractWithCustomerMember</xbrldi:explicitMember><xbrldi:explicitMember dimension=\"us-gaap:ConcentrationRiskByTypeAxis\">us-gaap:ProductConcentration"
             ],
             "status": "answered"
           },
           {
             "case_id": "case-13",
             "spans": [
-              "<!DOCTYPE html><html lang=\"en\"><head><meta charSet=\"UTF-8\"/><meta charSet=\"utf-8\"/><meta content=\"width=device-width, initial-scale=1.0\" name=\"viewport\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/><link rel=\"preload\" as=\"image\" imageSrcSet=\"/_next/image?url=%2Fimg%2Flogos%2Fdbt-labs-logo.svg&amp;w=256&amp;q=75 1x, /_next/image?url=%2Fimg%2Flogos%2Fdbt-labs-logo.svg&amp;w=384&amp;q=75 2x\"/><link rel=\"stylesheet\" href=\"/_next/static/css/627f448435ad5f68.css\" data-preceden"
+              "<!DOCTYPE html><html lang=\"en\"><head><meta charSet=\"UTF-8\"/><meta charSet=\"utf-8\"/><meta content=\"width=device-width, initial-scale=1.0\" name=\"viewport\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/><link rel=\"preloa"
             ],
             "status": "answered"
           },
           {
             "case_id": "case-14",
             "spans": [
-              "<!DOCTYPE html><html lang=\"en\"><head><meta charSet=\"UTF-8\"/><meta charSet=\"utf-8\"/><meta content=\"width=device-width, initial-scale=1.0\" name=\"viewport\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/><link rel=\"preload\" as=\"image\" imageSrcSet=\"/_next/image?url=%2Fimg%2Flogos%2Fdbt-labs-logo.svg&amp;w=256&amp;q=75 1x, /_next/image?url=%2Fimg%2Flogos%2Fdbt-labs-logo.svg&amp;w=384&amp;q=75 2x\"/><link rel=\"stylesheet\" href=\"/_next/static/css/627f448435ad5f68.css\" data-preceden"
+              "Coalesce 2022 is scheduled for\u00a0October 17-21</em></a>.</li><li><strong>Deepened partnerships:</strong>\u00a0The number of partner products supporting data transformation workloads with dbt increased by 2x in 2021. dbt Labs added integrations wit"
             ],
             "status": "answered"
           },
           {
             "case_id": "case-15",
             "spans": [
-              "<title>snow-20240131</title></head><body><div style=\"display:none\"><ix:header><ix:hidden><ix:nonNumeric contextRef=\"c-1\" name=\"dei:EntityCentralIndexKey\" id=\"f-33\">0001640147</ix:nonNumeric><ix:nonNumeric contextRef=\"c-1\" name=\"dei:DocumentFiscalYearFocus\" id=\"f-34\">2024</ix:nonNumeric><ix:nonNumeric contextRef=\"c-1\" name=\"dei:DocumentFiscalPeriodFocus\" id=\"f-35\">FY</ix:nonNumeric><ix:nonNumeric contextRef=\"c-1\" name=\"dei:AmendmentFlag\" format=\"ixt:fixed-false\" id=\"f-36\">FALSE</ix:nonNumeric><ix"
+              "up to take advantage of the cloud, and is built on an innovative multi-cluster, shared data architecture. It consists of three independently scalable layers deployed and generally connected globally across public clouds and regions:</span><"
             ],
             "status": "answered"
           },
@@ -1299,7 +1299,7 @@
           {
             "case_id": "case-19",
             "spans": [
-              "<title>snow-20240131</title></head><body><div style=\"display:none\"><ix:header><ix:hidden><ix:nonNumeric contextRef=\"c-1\" name=\"dei:EntityCentralIndexKey\" id=\"f-33\">0001640147</ix:nonNumeric><ix:nonNumeric contextRef=\"c-1\" name=\"dei:DocumentFiscalYearFocus\" id=\"f-34\">2024</ix:nonNumeric><ix:nonNumeric contextRef=\"c-1\" name=\"dei:DocumentFiscalPeriodFocus\" id=\"f-35\">FY</ix:nonNumeric><ix:nonNumeric contextRef=\"c-1\" name=\"dei:AmendmentFlag\" format=\"ixt:fixed-false\" id=\"f-36\">FALSE</ix:nonNumeric><ix"
+              "6\">FALSE</ix:nonNumeric><ix:nonNumeric contextRef=\"c-71\" name=\"snow:ContractWithCustomerContractTerm\" id=\"f-517\">P1Y</ix:nonNumeric><ix:nonNumeric contextRef=\"c-74\" name=\"us-gaap:PropertyPlantAndEquipmentUsefulLife\" id=\"f-536\">P3Y</ix:nonNu"
             ],
             "status": "answered"
           },
@@ -1345,7 +1345,7 @@
               "artifact_id": "page:28",
               "artifact_sha256": "a406ba0ef71e15b8d2a6d2a0b1a7e156369338ac4cb3f1ba19aba15e2c428cb8",
               "eligibility": "supplied_fixture",
-              "span": "Join Datadog @ AWS re:Invent: virtually and in person Join Datadog @ AWS re:Invent Product Features Integrations Dashboards Infrastructure Monitoring Log Management APM Continuous Profiler CI Visibility Synthetic Monitoring Real User Monitoring Network Performance Monitoring Network Device Monitoring Security Platform Security Monitoring CSPM Cloud Workload Security Error Tracking Incident Management Database Monitoring Serverless Alerts API Customers Pricing Solutions Industry Financial Service"
+              "span": "emises Monitoring Log Analysis & Correlation About Contact Partners Latest News Leadership Careers Analyst Reports Investor Relations Awards Blog The Monitor Engineering Pup Culture Community Docs Login Get Started Free 2021 Gartner Magic Q"
             }
           ],
           "objective_status": "source_stated_marketing_claim",
@@ -1367,7 +1367,7 @@
               "artifact_id": "page:16",
               "artifact_sha256": "ea9bf7df0b3b99a15196a4250dead7f997c307375fc93d6921f33c4b57c4898f",
               "eligibility": "supplied_fixture",
-              "span": "The DevOps Platform has arrived. Deliver software faster with better security and collaboration in a single platform. Get free trial Watch demo Partners Bronwyn Hastings, VP Technology Ecosystem on Google\u2019s partnership with GitLab to deliver digital transformations for customers. Learn more \u2192 Webcast The New DevOps. Iterating and Innovating in 2021 and Beyond. Join the webcast \u2192 Blog Post GitLab\u2019s Kubernetes Operator with support for Red Hat OpenShift is now generally available. Read now \u2192 Work "
+              "span": "The DevOps Platform has arrived. Deliver software faster with better security and collaboration in a single platform. Get free trial Watch demo Partners Bronwyn Hastings, VP Technology Ecosystem on Google\u2019s partnership with GitLab to delive"
             }
           ],
           "objective_status": "company_homepage_statement",
@@ -1389,7 +1389,7 @@
               "artifact_id": "page:12",
               "artifact_sha256": "d5112ed8c8725ae1fdd11240075e38b4fdcb4134cf976e20a19972efdbc85f4b",
               "eligibility": "supplied_fixture",
-              "span": "Dec 6 - 10, 2021 Register for Free Scaling Knowledge > Scaling Bodies: Why dbt Labs is making the bet on a data literate organization - Erica Louie Keynote: How big is this wave? - Martin Casado & Tristan Handy dbt 101: Stories from real-life data practitioners + a live look at dbt - Natty (Jon Natkins) & Alexis Wong Baird How to build a mature dbt project from scratch - Dave Connors Analytics Engineering for storytellers - Winnie Winship The modern data experience - Benn Stancil Identity Crisis"
+              "span": "Alexis Wong Baird How to build a mature dbt project from scratch - Dave Connors Analytics Engineering for storytellers - Winnie Winship The modern data experience - Benn Stancil Identity Crisis: Navigating the Modern Data Organization - Jil"
             }
           ],
           "objective_status": "company_homepage_statement",
@@ -1411,7 +1411,7 @@
               "artifact_id": "page:63",
               "artifact_sha256": "71453eb319974a7178fea0361a2bfd6d6b91198f9f4e3768bbff3588661be0a7",
               "eligibility": "supplied_fixture",
-              "span": "Skip to content MEDIA DATA CLOUD SUMMIT | JANUARY 19 Global Virtual Event Premiering Snowflake Solutions for Media, Advertising, and Entertainment REGISTER NOW Close Your browser does not support the video tag. Snowday the view ahead Snowflake's Product Announcement Event WATCH NOW Quick Links Weekly Demo Office Hours Virtual Labs Contact Us Pricing WHERE YOUR DATA CLOUD EXPERIENCE BEGINS: ONE PLATFORM, MANY WORKLOADS, NO DATA SILOS Your browser does not support the video tag. Data Sources Data "
+              "span": "Skip to content MEDIA DATA CLOUD SUMMIT | JANUARY 19 Global Virtual Event Premiering Snowflake Solutions for Media, Advertising, and Entertainment REGISTER NOW Close Your browser does not support the video tag. Snowday the view ahead Snowfl"
             }
           ],
           "objective_status": "company_homepage_statement",
@@ -1433,7 +1433,7 @@
               "artifact_id": "page:27",
               "artifact_sha256": "0c04922971341a4fe22ddda1bfbf8b101a79c54bdba802f67fff94679f89c372",
               "eligibility": "supplied_fixture",
-              "span": "Transformative collaboration for all the work you do. Freehand is the visual collaboration tool disguised as an online whiteboard. Try Freehand \u2014 Free Request a demo Watch video Lead teams from ideas to execution with the digital whiteboard that\u2019s refreshingly simple, but surprisingly robust. \u2014 BRAINSTORM \u2014 BRAINSTORM\u2014BRAINSTORM \u2014 BRAIN STORM \u2014 BRAIN STORM \u2014 BRAIN STORM \u2014 BRAIN STORM \u2014 BRAIN STORM \u2014 BRAINSTORM\u2014BRAINSTORM Run your brainstorms like the teams at Xbox. \u201c Having a digital space to br"
+              "span": "this brainstorming template gave everyone equal input. \u201d Megan Sempre , Senior Designer at Xbox Spark creativity and collaborate in real time with an endless digital whiteboard that invites and inspires everyone to join in. Try Xbox's temp"
             }
           ],
           "objective_status": "historical_company_page",
@@ -1788,7 +1788,7 @@
           }
         ],
         "case_manifest_hash": "c8f07d0b70686037b7db025ef3950f247239610384f366f42a624e579d85e422",
-        "code_commit": "95266f4a6ec7b44e32d9cb3596f4bfb87f8b8f2f",
+        "code_commit": "511e7449d51f33ec3388c39c7a58cf3f6ee5c29e",
         "cost_and_latency": {
           "latency_ms": 0,
           "model_calls": 0,
@@ -1807,35 +1807,35 @@
           {
             "case_id": "case-01",
             "spans": [
-              "Join Datadog @ AWS re:Invent: virtually and in person Join Datadog @ AWS re:Invent Product Features Integrations Dashboards Infrastructure Monitoring Log Management APM Continuous Profiler CI Visibility Synthetic Monitoring Real User Monitoring Network Performance Monitoring Network Device Monitoring Security Platform Security Monitoring CSPM Cloud Workload Security Error Tracking Incident Management Database Monitoring Serverless Alerts API Customers Pricing Solutions Industry Financial Service"
+              "emises Monitoring Log Analysis & Correlation About Contact Partners Latest News Leadership Careers Analyst Reports Investor Relations Awards Blog The Monitor Engineering Pup Culture Community Docs Login Get Started Free 2021 Gartner Magic Q"
             ],
             "status": "answered"
           },
           {
             "case_id": "case-02",
             "spans": [
-              "The DevOps Platform has arrived. Deliver software faster with better security and collaboration in a single platform. Get free trial Watch demo Partners Bronwyn Hastings, VP Technology Ecosystem on Google\u2019s partnership with GitLab to deliver digital transformations for customers. Learn more \u2192 Webcast The New DevOps. Iterating and Innovating in 2021 and Beyond. Join the webcast \u2192 Blog Post GitLab\u2019s Kubernetes Operator with support for Red Hat OpenShift is now generally available. Read now \u2192 Work "
+              "The DevOps Platform has arrived. Deliver software faster with better security and collaboration in a single platform. Get free trial Watch demo Partners Bronwyn Hastings, VP Technology Ecosystem on Google\u2019s partnership with GitLab to delive"
             ],
             "status": "answered"
           },
           {
             "case_id": "case-03",
             "spans": [
-              "Dec 6 - 10, 2021 Register for Free Scaling Knowledge > Scaling Bodies: Why dbt Labs is making the bet on a data literate organization - Erica Louie Keynote: How big is this wave? - Martin Casado & Tristan Handy dbt 101: Stories from real-life data practitioners + a live look at dbt - Natty (Jon Natkins) & Alexis Wong Baird How to build a mature dbt project from scratch - Dave Connors Analytics Engineering for storytellers - Winnie Winship The modern data experience - Benn Stancil Identity Crisis"
+              "Alexis Wong Baird How to build a mature dbt project from scratch - Dave Connors Analytics Engineering for storytellers - Winnie Winship The modern data experience - Benn Stancil Identity Crisis: Navigating the Modern Data Organization - Jil"
             ],
             "status": "answered"
           },
           {
             "case_id": "case-04",
             "spans": [
-              "Skip to content MEDIA DATA CLOUD SUMMIT | JANUARY 19 Global Virtual Event Premiering Snowflake Solutions for Media, Advertising, and Entertainment REGISTER NOW Close Your browser does not support the video tag. Snowday the view ahead Snowflake's Product Announcement Event WATCH NOW Quick Links Weekly Demo Office Hours Virtual Labs Contact Us Pricing WHERE YOUR DATA CLOUD EXPERIENCE BEGINS: ONE PLATFORM, MANY WORKLOADS, NO DATA SILOS Your browser does not support the video tag. Data Sources Data "
+              "Skip to content MEDIA DATA CLOUD SUMMIT | JANUARY 19 Global Virtual Event Premiering Snowflake Solutions for Media, Advertising, and Entertainment REGISTER NOW Close Your browser does not support the video tag. Snowday the view ahead Snowfl"
             ],
             "status": "answered"
           },
           {
             "case_id": "case-05",
             "spans": [
-              "Transformative collaboration for all the work you do. Freehand is the visual collaboration tool disguised as an online whiteboard. Try Freehand \u2014 Free Request a demo Watch video Lead teams from ideas to execution with the digital whiteboard that\u2019s refreshingly simple, but surprisingly robust. \u2014 BRAINSTORM \u2014 BRAINSTORM\u2014BRAINSTORM \u2014 BRAIN STORM \u2014 BRAIN STORM \u2014 BRAIN STORM \u2014 BRAIN STORM \u2014 BRAIN STORM \u2014 BRAINSTORM\u2014BRAINSTORM Run your brainstorms like the teams at Xbox. \u201c Having a digital space to br"
+              "this brainstorming template gave everyone equal input. \u201d Megan Sempre , Senior Designer at Xbox Spark creativity and collaborate in real time with an endless digital whiteboard that invites and inspires everyone to join in. Try Xbox's temp"
             ],
             "status": "answered"
           },
