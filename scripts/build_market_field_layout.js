@@ -5,7 +5,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const graph = require('../api/data/market-field-graph.json');
 const count = graph.candidates.length;
-// Quantize each integration step so platform math differences cannot compound.
+// Quantize each integration step to limit amplification of platform math differences.
 const coordinate = value => Math.round(value * 1000000) / 1000000;
 const lengthOf = (x, y) => Math.sqrt(x * x + y * y);
 const coordinates = graph.candidates.map(candidate => {
