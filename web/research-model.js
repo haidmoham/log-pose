@@ -352,6 +352,20 @@
     const allowedMarketMeasures = new Set(['total_shares', 'total_trade_count', 'total_notional']);
     const dataMarketMeasure = allowedMarketMeasures.has(params.get('dataMarketMeasure'))
       ? params.get('dataMarketMeasure') : 'total_shares';
+    const topologyLayer = params.get('topologyLayer') === 'reviewed'
+      || (!params.has('topologyLayer') && params.has('selectedClaim')) ? 'reviewed' : 'field';
+    const fieldSource = ['all', 'cncf', 'lfai'].includes(params.get('fieldSource'))
+      ? params.get('fieldSource') : 'all';
+    const fieldYear = /^20(?:20|2[1-6])$/.test(params.get('fieldYear') || '')
+      ? params.get('fieldYear') : 'all';
+    const fieldTag = ['all', 'ai_automation', 'data_infrastructure',
+      'developer_tools', 'security_observability'].includes(params.get('fieldTag'))
+      ? params.get('fieldTag') : 'all';
+    const fieldIdentity = ['all', 'reviewed', 'unreviewed'].includes(params.get('fieldIdentity'))
+      ? params.get('fieldIdentity') : 'all';
+    const requestedFieldCategory = params.get('fieldCategory') || 'all';
+    const fieldCategory = requestedFieldCategory.length <= 120 && !/[\x00-\x1f]/.test(requestedFieldCategory)
+      ? requestedFieldCategory : 'all';
     const requestedTopologyYear = params.get('topologySourceYear') || 'all';
     const topologySourceYear = requestedTopologyYear === 'all'
       || /^20(?:20|2[1-6])$/.test(requestedTopologyYear) ? requestedTopologyYear : 'all';
@@ -364,6 +378,10 @@
       dataQuery: (params.get('dataQuery') || '').slice(0, 200), dataCompany,
       dataYear, dataRecord, dataMarketDay, dataMarketMeasure,
       dataMarketParticipant: safeDataRecord(params.get('dataMarketParticipant') || '') || null,
+      topologyLayer, fieldQuery: (params.get('fieldQuery') || '').slice(0, 200),
+      fieldSource, fieldYear, fieldTag, fieldCategory, fieldIdentity,
+      fieldCandidate: safeDataRecord(params.get('fieldCandidate') || '') || null,
+      fieldNeighbor: safeDataRecord(params.get('fieldNeighbor') || '') || null,
       topologySourceYear, topologyCategory: choice('topologyCategory', allowedTopologyCategory),
       topologyStatus: choice('topologyStatus', allowedTopologyStatus),
       selectedClaim: safeDataRecord(params.get('selectedClaim') || '') || null };
@@ -408,14 +426,28 @@
       }
     }
     if (state.view === 'topology') {
-      if (state.topologySourceYear && state.topologySourceYear !== 'all')
-        params.set('topologySourceYear', state.topologySourceYear);
-      if (state.topologyCategory && state.topologyCategory !== 'all')
-        params.set('topologyCategory', state.topologyCategory);
-      if (state.topologyStatus && state.topologyStatus !== 'all')
-        params.set('topologyStatus', state.topologyStatus);
-      const selectedClaim = safeDataRecord(state.selectedClaim);
-      if (selectedClaim) params.set('selectedClaim', selectedClaim);
+      if (state.topologyLayer === 'reviewed') {
+        params.set('topologyLayer', 'reviewed');
+        if (state.topologySourceYear && state.topologySourceYear !== 'all')
+          params.set('topologySourceYear', state.topologySourceYear);
+        if (state.topologyCategory && state.topologyCategory !== 'all')
+          params.set('topologyCategory', state.topologyCategory);
+        if (state.topologyStatus && state.topologyStatus !== 'all')
+          params.set('topologyStatus', state.topologyStatus);
+        const selectedClaim = safeDataRecord(state.selectedClaim);
+        if (selectedClaim) params.set('selectedClaim', selectedClaim);
+      } else {
+        if (state.fieldQuery) params.set('fieldQuery', state.fieldQuery.slice(0, 200));
+        if (state.fieldSource !== 'all') params.set('fieldSource', state.fieldSource);
+        if (state.fieldYear !== 'all') params.set('fieldYear', state.fieldYear);
+        if (state.fieldTag !== 'all') params.set('fieldTag', state.fieldTag);
+        if (state.fieldCategory !== 'all') params.set('fieldCategory', state.fieldCategory);
+        if (state.fieldIdentity !== 'all') params.set('fieldIdentity', state.fieldIdentity);
+        const fieldCandidate = safeDataRecord(state.fieldCandidate);
+        const fieldNeighbor = safeDataRecord(state.fieldNeighbor);
+        if (fieldCandidate) params.set('fieldCandidate', fieldCandidate);
+        if (fieldNeighbor) params.set('fieldNeighbor', fieldNeighbor);
+      }
     }
     return params.toString();
   }

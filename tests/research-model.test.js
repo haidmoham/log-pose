@@ -126,6 +126,17 @@ test('relationship claim, status, category, and source year survive a URL round 
     invalid.topologyStatus, invalid.selectedClaim], ['all', 'all', 'all', null]);
 });
 
+test('source field opens by default and preserves its filters and candidate drill', () => {
+  const slugs = new Set();
+  const parsed = model.parseUrlState('?view=topology&fieldQuery=vector&fieldSource=lfai'
+    + '&fieldYear=2024&fieldTag=data_infrastructure&fieldCategory=Data%20%2F%20Operations'
+    + '&fieldIdentity=unreviewed&fieldCandidate=004c9f6b7ecc1c48c8e4', slugs, [2024]);
+  assert.equal(parsed.topologyLayer, 'field');
+  assert.equal(model.parseUrlState('?view=topology', slugs, [2024]).topologyLayer, 'field');
+  const serialized = model.toUrlParams({ ...parsed, compareSlugs: [] });
+  assert.deepEqual(model.parseUrlState('?' + serialized, slugs, [2024]), parsed);
+});
+
 test('market file, date, measure, and participant survive a URL round trip', () => {
   const route = '?dataFamily=market&dataRecord=market-file:4&dataMarketDay=2024-01-03'
     + '&dataMarketMeasure=total_notional&dataMarketParticipant=market-row:4:19';

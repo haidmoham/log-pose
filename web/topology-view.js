@@ -121,7 +121,7 @@
     function graph(baseClaims, visibleClaims) {
       const frame = node('div', '', 'topology-graph-frame');
       const positions = model.topologyPositions(baseClaims);
-      const svg = svgNode('svg', { viewBox: '0 0 1000 700', class: 'topology-graph',
+      const svg = svgNode('svg', { viewBox: '-100 -70 1200 840', class: 'topology-graph',
         role: 'group', 'aria-label': 'Relationship claim map. A matching list follows the map.' });
       const definitions = svgNode('defs');
       for (const category of Object.keys(CATEGORY_LABELS)) {
@@ -321,8 +321,6 @@
     }
 
     function render() {
-      root.append(title('04 / REVIEWED RELATIONSHIPS', 'relationship claims',
-        'explore a bounded map of dated, source-backed claims. the map is a reading aid, not a market model.'));
       const visibleClaims = model.filterTopologyClaims(claims, {
         sourceYear: state.topologySourceYear,
         category: state.topologyCategory,
@@ -405,7 +403,8 @@
       const open = node('button', 'Open relationship map →', 'text-button');
       open.type = 'button';
       open.addEventListener('click', () => commitState({ view: 'topology', company: slug,
-        selectedClaim: null }, { top: true, focus: '#topology-inspector' }));
+        topologyLayer: 'reviewed', selectedClaim: null },
+      { top: true, focus: '#topology-inspector' }));
       section.append(open);
       return section;
     }

@@ -26,16 +26,16 @@ browser wait 1500
 browser record stop
 
 browser open "$site_url/?view=topology"
-browser record start "$capture_dir/03-claims.webm" --fps 30
-browser wait 600
-browser click '.topology-claim-button'
-browser wait 1500
+browser record start "$capture_dir/03-source-field.webm" --fps 30
+browser wait 1000
+browser click '.field-index-row'
+browser wait 1400
 browser record stop
 
 ffmpeg -y -hide_banner -loglevel error \
   -i "$capture_dir/01-research-desk.webm" \
   -i "$capture_dir/02-market.webm" \
-  -i "$capture_dir/03-claims.webm" \
+  -i "$capture_dir/03-source-field.webm" \
   -filter_complex '[0:v]trim=duration=4.7,setpts=PTS-STARTPTS,fps=30,scale=1080:1350,format=yuv420p[v0];[1:v]trim=duration=3.8,setpts=PTS-STARTPTS,fps=30,scale=1080:1350,format=yuv420p[v1];[2:v]trim=duration=3.8,setpts=PTS-STARTPTS,fps=30,scale=1080:1350,format=yuv420p[v2];[v0][v1][v2]concat=n=3:v=1:a=0[out]' \
   -map '[out]' -c:v libx264 -preset medium -crf 19 -movflags +faststart \
   "$demo_dir/log-pose-research-desk.mp4"

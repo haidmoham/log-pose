@@ -12,7 +12,7 @@
   const formatCount = value => Number(value || 0).toLocaleString();
 
   function create({ root, state, index, discovery, commitState, persistDetail,
-    openCompany, openTopology }) {
+    openCompany, openTopology, openField }) {
     const { node, append, link, title, svgNode } = globalScope.LogPoseUI;
     const cache = new Map();
     let inventoryRecords = null;
@@ -117,40 +117,14 @@
         && terms.every(term => recordText(record).toLocaleLowerCase().includes(term)));
       if (state.dataFamily !== 'all' || terms.length || state.dataCompany !== 'all'
           || state.dataYear !== 'all') return matches;
-      const byFamily = new Map(FAMILY_ORDER.map(family => [family,
-        matches.filter(record => record.family === family)]));
-      const inventory = byFamily.get('inventory').filter(record =>
-        candidateById.get(record.candidate_id)?.pilot_match);
-      inventory.sort((left, right) => right.year - left.year || left.name.localeCompare(right.name));
-      const seenInventoryCandidates = new Set();
-      byFamily.set('inventory', inventory.filter(item => {
-        if (seenInventoryCandidates.has(item.candidate_id)) return false;
-        seenInventoryCandidates.add(item.candidate_id);
-        return true;
-      }));
-      const distinctCompanies = items => {
-        const seen = new Set();
-        return items.filter(item => {
-          if (seen.has(item.company_slug)) return false;
-          seen.add(item.company_slug);
-          return true;
-        });
-      };
-      byFamily.set('pages', distinctCompanies(byFamily.get('pages')
-        .filter(item => item.selected_for_pilot)
-        .sort((left, right) => right.captured_at.localeCompare(left.captured_at))));
-      byFamily.set('sec', distinctCompanies(byFamily.get('sec')
-        .filter(item => item.selected && item.year === 2024)
-        .sort((left, right) => left.company_name.localeCompare(right.company_name))));
-      byFamily.set('market', byFamily.get('market').sort((left, right) => right.year - left.year));
-      const balanced = [];
-      for (let row = 0; row < 4; row++) {
-        for (const family of FAMILY_ORDER) {
-          const item = byFamily.get(family)[row];
-          if (item) balanced.push(item);
-        }
+      const byFamily = FAMILY_ORDER.map(family =>
+        matches.filter(record => record.family === family));
+      const result = [];
+      const largestFamily = Math.max(...byFamily.map(items => items.length));
+      for (let row = 0; row < largestFamily; row++) {
+        for (const items of byFamily) if (items[row]) result.push(items[row]);
       }
-      return balanced;
+      return result;
     }
 
     function recordTitle(record) {
@@ -584,7 +558,20 @@
       activeRequest++;
       root.append(title('RESEARCH DESK / RETAINED EVIDENCE', 'research the record',
         'Search across source rows, dated page captures, reported facts, market activity, and reviewed relationships. Open a row to inspect it here.'));
-      root.append(deskToy(), coverage(), controls());
+      root.append(deskToy(), coverage());
+      if (index.exploratory_topology) {
+        const field = index.exploratory_topology;
+        const entry = node('section', '', 'data-field-entry');
+        entry.append(node('p', 'MARKET SOURCE FIELD', 'eyebrow'),
+          node('strong', `${formatCount(field.node_count)} candidates · ${formatCount(field.possible_pair_count)} exact co-listings`),
+          node('p', 'Explore every eligible retained candidate before narrowing by source, year, category, or identity. Co-listings are research leads; reviewed relationship claims stay separate.', 'muted'));
+        const open = node('button', 'explore the full source field →', 'text-button');
+        open.type = 'button';
+        open.addEventListener('click', openField);
+        entry.append(open);
+        root.append(entry);
+      }
+      root.append(controls());
       const context = companyContext();
       if (context) root.append(context);
       if ((state.dataFamily === 'all' || state.dataFamily === 'inventory')
@@ -600,16 +587,16 @@
         root.append(append(node('p', '', 'error'), node('span', inventoryError), retry));
       }
       const hits = matchingRecords();
-      const openingSet = state.dataFamily === 'all' && !state.dataQuery.trim()
+      const fullUniverse = state.dataFamily === 'all' && !state.dataQuery.trim()
         && state.dataCompany === 'all' && state.dataYear === 'all';
       const resultArea = node('div', '', 'data-workspace');
       const resultList = node('section', '', 'data-results');
       const header = node('div', '', 'data-results-head');
-      header.append(node('p', `${formatCount(hits.length)} ${openingSet ? 'starting records' : 'matching records'}`
+      header.append(node('p', `${formatCount(hits.length)} matching records`
         + (!inventoryRecords && (state.dataFamily === 'all' || state.dataFamily === 'inventory')
           ? ' · loading full inventory index' : ''), 'eyebrow'),
-        node('p', openingSet
-          ? 'Entry points across the five record families. Inventory navigation leads are unreviewed unless a separate identity review is attached.'
+        node('p', fullUniverse
+          ? 'The full retained index is open. Source entries from all five families are interleaved below; filter to narrow the field. Inventory navigation leads are unreviewed unless an identity review is attached.'
           : 'Filters use record metadata. Open a result to read the retained detail.', 'muted'));
       resultList.append(header);
       const selected = hits.find(item => item.id === state.dataRecord);

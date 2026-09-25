@@ -85,7 +85,7 @@ test('canonical route searches retained evidence and opens a full page record', 
   const { document, Event } = dom.window;
   assert.match(document.querySelector('#view h2').textContent, /research the record/i);
   assert.match(document.querySelector('.data-coverage').textContent, /18,076/);
-  await waitFor(() => document.querySelector('.data-results-head')?.textContent.includes('starting records')
+  await waitFor(() => document.querySelector('.data-results-head')?.textContent.includes('18,542 matching records')
     && !document.querySelector('.data-results-head')?.textContent.includes('loading full inventory'));
   const family = document.querySelector('[aria-label="Record family"]');
   family.value = 'pages';
@@ -159,7 +159,7 @@ test('research desk market point opens participant detail and topology shows rev
 });
 
 test('opening a claim map clears filters that would hide the selected claim', async () => {
-  const dom = await page('/?view=topology');
+  const dom = await page('/?view=topology&topologyLayer=reviewed');
   const { document, Event } = dom.window;
   const status = document.querySelector('[aria-label="Filter claim status"]');
   status.value = 'documented';
@@ -252,7 +252,7 @@ test('a failed raw partition offers a working retry', async () => {
 });
 
 test('filtered topology WebGL maps each matching claim and lets every shown edge open its evidence', async () => {
-  const dom = await page('/?view=topology', null, true);
+  const dom = await page('/?view=topology&topologyLayer=reviewed', null, true);
   const { document, Event } = dom.window;
   document.querySelector('[aria-label="switch to 3d relationship map"]').click();
   const status = document.querySelector('[aria-label="Filter claim status"]');
@@ -279,5 +279,39 @@ test('filtered topology WebGL maps each matching claim and lets every shown edge
   await waitFor(() => document.querySelectorAll('.topology-webgl-edge-button').length === 3);
   const documentedVertexCount = dom.window.__mockWebglBufferUploads.at(-2);
   assert(documentedVertexCount > 0, 'documented claims draw as source-stated lines');
+  dom.window.close();
+});
+
+test('source field starts with all retained candidates and drills into exact source rows', async () => {
+  const dom = await page('/?view=topology');
+  const { document, Event } = dom.window;
+  await waitFor(() => document.querySelector('.field-coverage')?.textContent.includes('47,288'));
+  assert.match(document.querySelector('.field-coverage').textContent, /1,240/);
+  assert.equal(document.querySelectorAll('.field-dot').length, 1240);
+  document.querySelector('.field-index-row').click();
+  await waitFor(() => document.querySelector('.field-observation .field-row-button'));
+  assert(document.querySelector('.field-index').textContent.includes('neighbors'));
+  const candidateId = new URL(dom.window.location.href).searchParams.get('fieldCandidate');
+  assert(candidateId);
+  document.querySelector('.field-observation .field-row-button').click();
+  await waitFor(() => document.querySelector('.data-inspector .data-facts'));
+  assert.equal(document.querySelector('[aria-label="Record family"]').value, 'inventory');
+  const reopened = await page(`/?view=topology&fieldCandidate=${candidateId}`);
+  await waitFor(() => reopened.window.document.querySelector('.field-observation'));
+  assert.equal(new URL(reopened.window.location.href).searchParams.get('fieldCandidate'), candidateId);
+  reopened.window.close();
+  dom.window.close();
+});
+
+test('source field filters all source candidates and preserves the selected filter in the URL', async () => {
+  const dom = await page('/?view=topology');
+  const { document, Event } = dom.window;
+  await waitFor(() => document.querySelector('.field-coverage')?.textContent.includes('47,288'));
+  const source = document.querySelector('#field-source');
+  source.value = 'lfai';
+  source.dispatchEvent(new Event('change', { bubbles: true }));
+  assert.equal(new URL(dom.window.location.href).searchParams.get('fieldSource'), 'lfai');
+  const filtered = Number(document.querySelector('.field-coverage-card strong').textContent.replaceAll(',', ''));
+  assert(filtered > 0 && filtered < 1240);
   dom.window.close();
 });

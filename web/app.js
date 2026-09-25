@@ -11,7 +11,9 @@ const state = { view: 'data', year: 2024, category: 'all', query: '', company: n
   inventoryArtifact: 'cncf-2026', inventoryQuery: '',
   selectedCandidate: null, selectedProvider: null, searchLimit: 30, compareSlugs: [],
   topologySourceYear: 'all', topologyCategory: 'all', topologyStatus: 'all',
-  topologyListLimit: 40, selectedClaim: null };
+  topologyListLimit: 40, selectedClaim: null, topologyLayer: 'field',
+  fieldQuery: '', fieldSource: 'all', fieldYear: 'all', fieldTag: 'all',
+  fieldCategory: 'all', fieldIdentity: 'all', fieldCandidate: null, fieldNeighbor: null };
 let data;
 let discovery;
 let dataIndex;
@@ -20,6 +22,7 @@ let identityReviewById;
 let financialIndex;
 let exploreView;
 let topologyView;
+let discoveryTopologyView;
 let dataView;
 
 function categoryName(value) {
@@ -459,7 +462,7 @@ function renderCompare() {
 }
 
 function render() {
-  if (!data || !exploreView || !topologyView || !dataView) return;
+  if (!data || !exploreView || !topologyView || !discoveryTopologyView || !dataView) return;
   topologyView.dispose();
   tabs.forEach(button => {
     if (button.dataset.view === state.view) button.setAttribute('aria-current', 'page');
@@ -471,13 +474,34 @@ function render() {
   if (state.view === 'data') dataView.render();
   else if (state.view === 'overview') renderOverview();
   else if (state.view === 'compare') renderCompare();
-  else if (state.view === 'topology') topologyView.render();
+  else if (state.view === 'topology') {
+    root.append(title('04 / MARKET EXPLORATION', state.topologyLayer === 'field'
+      ? 'the source field' : 'relationship claims', state.topologyLayer === 'field'
+      ? 'start with the full retained candidate frame. filter by source, year, category, or identity; open a candidate to inspect exact source rows and co-listings.'
+      : 'explore accepted, dated source-backed claims. the map is a reading aid, not a complete market model.'));
+    const layers = node('nav', '', 'topology-layer-nav');
+    layers.setAttribute('aria-label', 'Market map layers');
+    [['field', `${(dataIndex.exploratory_topology?.node_count || 1240).toLocaleString()} source candidates`],
+      ['reviewed', `${data.market_topology.claims.length} reviewed claims`]].forEach(([layer, label]) => {
+      const button = node('button', label, 'topology-layer-button');
+      button.type = 'button';
+      button.setAttribute('aria-current', state.topologyLayer === layer ? 'page' : 'false');
+      button.addEventListener('click', () => commitState({ topologyLayer: layer,
+        company: null, selectedClaim: null }, { top: true }));
+      layers.append(button);
+    });
+    root.append(layers);
+    if (state.topologyLayer === 'field') discoveryTopologyView.render();
+    else topologyView.render();
+  }
   else exploreView.render();
 }
 
 tabs.forEach(button => button.addEventListener('click', () => {
   const view = button.dataset.view;
   commitState({ view, company: view === 'explore' || view === 'data' ? null : state.company,
+    topologyLayer: view === 'topology' ? 'field' : state.topologyLayer,
+    selectedClaim: view === 'topology' ? null : state.selectedClaim,
     selectedCandidate: null, selectedProvider: null }, { top: true });
 }));
 
@@ -529,14 +553,28 @@ Promise.all(['./dashboard.json', './discovery.json', './data/index.json'].map(ur
       money, financials, companyDetail, commitState, writeUrl, pinCount
     });
     topologyView = window.LogPoseTopology.create({ root, state, data, model, commitState });
+    discoveryTopologyView = window.LogPoseDiscoveryTopologyView.create({
+      root, state, index: dataIndex, commitState,
+      openRecord: recordId => commitState({ view: 'data', dataFamily: 'inventory',
+        dataQuery: '', dataCompany: 'all', dataYear: 'all', dataRecord: recordId },
+      { top: true, focus: '#data-inspector' }),
+      openCompany: slug => commitState({ view: 'explore', company: slug, query: '',
+        searchYear: 'all', searchType: 'pilot', category: 'all' },
+      { top: true, focus: '#company-detail' })
+    });
     dataView = window.LogPoseDataView.create({
       root, state, index: dataIndex, discovery, commitState,
       persistDetail: changes => { Object.assign(state, changes); writeUrl(true); },
       openCompany: slug => commitState({ view: 'explore', company: slug, query: '',
         searchYear: 'all', searchType: 'pilot', category: 'all' }, { top: true, focus: '#company-detail' }),
-      openTopology: claimId => commitState({ view: 'topology', selectedClaim: claimId,
+      openTopology: claimId => commitState({ view: 'topology', topologyLayer: 'reviewed',
+        selectedClaim: claimId,
         company: null, topologySourceYear: 'all', topologyCategory: 'all',
-        topologyStatus: 'all' }, { top: true, focus: '#topology-inspector' })
+        topologyStatus: 'all' }, { top: true, focus: '#topology-inspector' }),
+      openField: () => commitState({ view: 'topology', topologyLayer: 'field',
+        fieldQuery: '', fieldSource: 'all', fieldYear: 'all', fieldTag: 'all',
+        fieldCategory: 'all', fieldIdentity: 'all', fieldCandidate: null,
+        fieldNeighbor: null }, { top: true })
     });
     const fromUrl = routeState();
     Object.assign(state, {
