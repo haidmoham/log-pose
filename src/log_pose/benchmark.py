@@ -194,7 +194,10 @@ def lexical_span(text: str | None, terms: Iterable[str]) -> str | None:
     for line in text.splitlines():
         folded = line.casefold()
         if all(term in folded for term in normalized_terms):
-            return line.strip()[:500]
+            first_match = min(folded.find(term) for term in normalized_terms)
+            left = max(0, first_match - 80)
+            right = min(len(line), left + 240)
+            return line[left:right].strip()
     return None
 
 
@@ -426,16 +429,17 @@ def render_markdown(report: dict[str, Any]) -> str:
         "",
         "## Controls",
         "",
-        "| Control | Answered | Abstained | Coverage | Temporal violations | Semantic score |",
-        "| --- | ---: | ---: | ---: | ---: | --- |",
+        "| Control | Answered | Abstained | Coverage | Temporal violations | Calls / tokens / ms | Semantic score |",
+        "| --- | ---: | ---: | ---: | ---: | --- | --- |",
     ]
     for name, summary in report["controls"].items():
-        lines.append(f"| `{name}` | {summary['answered']} | {summary['abstained']} | {summary['coverage']:.3f} | {summary['temporal_violations']} | not scored |")
+        cost = summary["cost"]
+        lines.append(f"| `{name}` | {summary['answered']} | {summary['abstained']} | {summary['coverage']:.3f} | {summary['temporal_violations']} | {cost['model_calls']} / {cost['tokens']} / {cost['latency_ms']} | not scored |")
     for name, summary in report["controls"].items():
-        lines.extend(["", f"## Case receipts: `{name}`", "", "| Case | Status | Evidence | Temporal violations | Semantic label |", "| --- | --- | --- | --- | --- |"])
+        lines.extend(["", f"## Case receipts: `{name}`", "", "| Case | Run status | Evidence | Temporal violations | Evaluator status | Semantic label |", "| --- | --- | --- | --- | --- | --- |"])
         for row in summary["cases"]:
             evidence = ", ".join(item["artifact_id"] for item in row["evidence"]) or "—"
             violations = ", ".join(row["temporal_violations"]) or "—"
-            lines.append(f"| `{row['case_id']}` | {row['status']} | {evidence} | {violations} | {row['semantic_label_status']} |")
+            lines.append(f"| `{row['case_id']}` | {row['status']} | {evidence} | {violations} | {row['objective_status']} | {row['semantic_label_status']} |")
     lines.extend(["", "## Unmeasured", "", *[f"- {item}" for item in report["unmeasured"]], "", "## Blocked", "", *[f"- {item}" for item in report["blocked"]], "", "## Verification limits", "", *[f"- {item}" for item in report["verification_limits"]], "", "## Gates", "", f"- Prospective forecasting: **{report['prospective_forecasting']['decision']}** — {report['prospective_forecasting']['reason']}", f"- Historical portfolio evaluation: **{report['historical_portfolio_evaluation']['decision']}** — {', '.join(report['historical_portfolio_evaluation']['data_blockers'])}", ""])
     return "\n".join(lines)

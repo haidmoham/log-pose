@@ -81,6 +81,16 @@ def test_event_publication_and_ingestion_times_are_not_interchangeable():
     assert temporal_eligibility(receipt, case["cutoff"], "system_known") == (False, "ingested_after_cutoff")
 
 
+def test_post_cutoff_filing_and_later_derived_review_are_rejected():
+    case, label = find_case("case-10")
+    filing = load_artifact(ROOT, label["artifacts"][0])
+    assert temporal_eligibility(filing, case["cutoff"], "public_availability") == (False, "not_available_by_cutoff")
+    review_case, review_label = find_case("case-14")
+    review = next(ref for ref in review_label["artifacts"] if ref["artifact_type"] == "review_bundle")
+    review_receipt = load_artifact(ROOT, review)
+    assert temporal_eligibility(review_receipt, review_case["cutoff"], "system_known") == (False, "missing_historical_proof")
+
+
 def test_strict_replay_fails_closed_without_historical_proof_and_date_cutoff_includes_day():
     receipt = ArtifactReceipt("unknown", "page", "x", "hash", "2024-12-31T18:00:00Z", None, None, "none")
     assert temporal_eligibility(receipt, "2024-12-31", "public_availability") == (False, "missing_historical_proof")
