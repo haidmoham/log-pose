@@ -1,0 +1,1978 @@
+{
+  "benchmark_version": "benchmark-cases-v1",
+  "blocked": [
+    "contradiction case lacks a retained contradictory source pair",
+    "independent semantic review is unavailable",
+    "historical SEC companyfacts version is not proven as-of its filing date",
+    "portfolio entry terms, ownership, dilution, cash flows, and liquidity are absent"
+  ],
+  "case_manifest_sha256": "c8f07d0b70686037b7db025ef3950f247239610384f366f42a624e579d85e422",
+  "code_commit": "95266f4a6ec7b44e32d9cb3596f4bfb87f8b8f2f",
+  "controls": {
+    "capture_aware_exact_span": {
+      "abstained": 14,
+      "answered": 6,
+      "case_count": 20,
+      "cases": [
+        {
+          "case_id": "case-01",
+          "cost": {
+            "latency_ms": 0,
+            "model_calls": 0,
+            "tokens": 0
+          },
+          "evaluation_note": "Homepage text can support only an attributed statement, never economic leadership.",
+          "evidence": [
+            {
+              "artifact_id": "page:28",
+              "artifact_sha256": "a406ba0ef71e15b8d2a6d2a0b1a7e156369338ac4cb3f1ba19aba15e2c428cb8",
+              "eligibility": "eligible_historical_reconstruction",
+              "span": "Join Datadog @ AWS re:Invent: virtually and in person Join Datadog @ AWS re:Invent Product Features Integrations Dashboards Infrastructure Monitoring Log Management APM Continuous Profiler CI Visibility Synthetic Monitoring Real User Monitoring Network Performance Monitoring Network Device Monitoring Security Platform Security Monitoring CSPM Cloud Workload Security Error Tracking Incident Management Database Monitoring Serverless Alerts API Customers Pricing Solutions Industry Financial Service"
+            }
+          ],
+          "objective_status": "source_stated_marketing_claim",
+          "semantic_correctness": null,
+          "semantic_label_status": "provisional",
+          "status": "answered",
+          "temporal_violations": []
+        },
+        {
+          "case_id": "case-02",
+          "cost": {
+            "latency_ms": 0,
+            "model_calls": 0,
+            "tokens": 0
+          },
+          "evaluation_note": "Archived page capture supports a historical source observation; ingestion occurred later.",
+          "evidence": [
+            {
+              "artifact_id": "page:16",
+              "artifact_sha256": "ea9bf7df0b3b99a15196a4250dead7f997c307375fc93d6921f33c4b57c4898f",
+              "eligibility": "eligible_historical_reconstruction",
+              "span": "The DevOps Platform has arrived. Deliver software faster with better security and collaboration in a single platform. Get free trial Watch demo Partners Bronwyn Hastings, VP Technology Ecosystem on Google\u2019s partnership with GitLab to deliver digital transformations for customers. Learn more \u2192 Webcast The New DevOps. Iterating and Innovating in 2021 and Beyond. Join the webcast \u2192 Blog Post GitLab\u2019s Kubernetes Operator with support for Red Hat OpenShift is now generally available. Read now \u2192 Work "
+            }
+          ],
+          "objective_status": "company_homepage_statement",
+          "semantic_correctness": null,
+          "semantic_label_status": "provisional",
+          "status": "answered",
+          "temporal_violations": []
+        },
+        {
+          "case_id": "case-03",
+          "cost": {
+            "latency_ms": 0,
+            "model_calls": 0,
+            "tokens": 0
+          },
+          "evaluation_note": "Use a date-bounded archived page and retain its exact partition hash.",
+          "evidence": [
+            {
+              "artifact_id": "page:12",
+              "artifact_sha256": "d5112ed8c8725ae1fdd11240075e38b4fdcb4134cf976e20a19972efdbc85f4b",
+              "eligibility": "eligible_historical_reconstruction",
+              "span": "Dec 6 - 10, 2021 Register for Free Scaling Knowledge > Scaling Bodies: Why dbt Labs is making the bet on a data literate organization - Erica Louie Keynote: How big is this wave? - Martin Casado & Tristan Handy dbt 101: Stories from real-life data practitioners + a live look at dbt - Natty (Jon Natkins) & Alexis Wong Baird How to build a mature dbt project from scratch - Dave Connors Analytics Engineering for storytellers - Winnie Winship The modern data experience - Benn Stancil Identity Crisis"
+            }
+          ],
+          "objective_status": "company_homepage_statement",
+          "semantic_correctness": null,
+          "semantic_label_status": "provisional",
+          "status": "answered",
+          "temporal_violations": []
+        },
+        {
+          "case_id": "case-04",
+          "cost": {
+            "latency_ms": 0,
+            "model_calls": 0,
+            "tokens": 0
+          },
+          "evaluation_note": "Archived page is an evidence locator, not validation of product quality.",
+          "evidence": [
+            {
+              "artifact_id": "page:63",
+              "artifact_sha256": "71453eb319974a7178fea0361a2bfd6d6b91198f9f4e3768bbff3588661be0a7",
+              "eligibility": "eligible_historical_reconstruction",
+              "span": "Skip to content MEDIA DATA CLOUD SUMMIT | JANUARY 19 Global Virtual Event Premiering Snowflake Solutions for Media, Advertising, and Entertainment REGISTER NOW Close Your browser does not support the video tag. Snowday the view ahead Snowflake's Product Announcement Event WATCH NOW Quick Links Weekly Demo Office Hours Virtual Labs Contact Us Pricing WHERE YOUR DATA CLOUD EXPERIENCE BEGINS: ONE PLATFORM, MANY WORKLOADS, NO DATA SILOS Your browser does not support the video tag. Data Sources Data "
+            }
+          ],
+          "objective_status": "company_homepage_statement",
+          "semantic_correctness": null,
+          "semantic_label_status": "provisional",
+          "status": "answered",
+          "temporal_violations": []
+        },
+        {
+          "case_id": "case-05",
+          "cost": {
+            "latency_ms": 0,
+            "model_calls": 0,
+            "tokens": 0
+          },
+          "evaluation_note": "Discontinued company page is retained; current survival is not inferred.",
+          "evidence": [
+            {
+              "artifact_id": "page:27",
+              "artifact_sha256": "0c04922971341a4fe22ddda1bfbf8b101a79c54bdba802f67fff94679f89c372",
+              "eligibility": "eligible_historical_reconstruction",
+              "span": "Transformative collaboration for all the work you do. Freehand is the visual collaboration tool disguised as an online whiteboard. Try Freehand \u2014 Free Request a demo Watch video Lead teams from ideas to execution with the digital whiteboard that\u2019s refreshingly simple, but surprisingly robust. \u2014 BRAINSTORM \u2014 BRAINSTORM\u2014BRAINSTORM \u2014 BRAIN STORM \u2014 BRAIN STORM \u2014 BRAIN STORM \u2014 BRAIN STORM \u2014 BRAIN STORM \u2014 BRAINSTORM\u2014BRAINSTORM Run your brainstorms like the teams at Xbox. \u201c Having a digital space to br"
+            }
+          ],
+          "objective_status": "historical_company_page",
+          "semantic_correctness": null,
+          "semantic_label_status": "provisional",
+          "status": "answered",
+          "temporal_violations": []
+        },
+        {
+          "case_id": "case-06",
+          "cost": {
+            "latency_ms": 0,
+            "model_calls": 0,
+            "tokens": 0
+          },
+          "evaluation_note": "The retained 32-character capture does not support a material financing claim.",
+          "evidence": [],
+          "objective_status": "insufficient_retained_text",
+          "semantic_correctness": null,
+          "semantic_label_status": "provisional",
+          "status": "abstained",
+          "temporal_violations": []
+        },
+        {
+          "case_id": "case-07",
+          "cost": {
+            "latency_ms": 0,
+            "model_calls": 0,
+            "tokens": 0
+          },
+          "evaluation_note": "A second short capture guards against treating incomplete text as absence.",
+          "evidence": [],
+          "objective_status": "insufficient_retained_text",
+          "semantic_correctness": null,
+          "semantic_label_status": "provisional",
+          "status": "abstained",
+          "temporal_violations": []
+        },
+        {
+          "case_id": "case-08",
+          "cost": {
+            "latency_ms": 0,
+            "model_calls": 0,
+            "tokens": 0
+          },
+          "evaluation_note": "Public archive capture predates the cutoff; Log Pose ingestion does not.",
+          "evidence": [],
+          "objective_status": "captured_before_but_ingested_after_cutoff",
+          "semantic_correctness": null,
+          "semantic_label_status": "provisional",
+          "status": "abstained",
+          "temporal_violations": []
+        },
+        {
+          "case_id": "case-09",
+          "cost": {
+            "latency_ms": 0,
+            "model_calls": 0,
+            "tokens": 0
+          },
+          "evaluation_note": "Old page publication date does not prove that retained 2026 bytes existed in 2022.",
+          "evidence": [],
+          "objective_status": "old_publication_date_without_version_proof",
+          "semantic_correctness": null,
+          "semantic_label_status": "blocked",
+          "status": "abstained",
+          "temporal_violations": []
+        },
+        {
+          "case_id": "case-10",
+          "cost": {
+            "latency_ms": 0,
+            "model_calls": 0,
+            "tokens": 0
+          },
+          "evaluation_note": "FY2024 period end is not filing availability; published 2025-02-20.",
+          "evidence": [],
+          "objective_status": "post_cutoff_filing",
+          "semantic_correctness": null,
+          "semantic_label_status": "blocked",
+          "status": "abstained",
+          "temporal_violations": []
+        },
+        {
+          "case_id": "case-11",
+          "cost": {
+            "latency_ms": 0,
+            "model_calls": 0,
+            "tokens": 0
+          },
+          "evaluation_note": "Filed date predates cutoff, but current companyfacts artifact was observed in 2026.",
+          "evidence": [],
+          "objective_status": "SEC_fact_retrieved_later",
+          "semantic_correctness": null,
+          "semantic_label_status": "blocked",
+          "status": "abstained",
+          "temporal_violations": []
+        },
+        {
+          "case_id": "case-12",
+          "cost": {
+            "latency_ms": 0,
+            "model_calls": 0,
+            "tokens": 0
+          },
+          "evaluation_note": "Filing date predates cutoff; this retained local byte copy was retrieved in 2026.",
+          "evidence": [],
+          "objective_status": "historical_filing_version_proof",
+          "semantic_correctness": null,
+          "semantic_label_status": "blocked",
+          "status": "abstained",
+          "temporal_violations": []
+        },
+        {
+          "case_id": "case-13",
+          "cost": {
+            "latency_ms": 0,
+            "model_calls": 0,
+            "tokens": 0
+          },
+          "evaluation_note": "Event and publication times are not proof the exact retained mutable bytes were present then.",
+          "evidence": [],
+          "objective_status": "event_before_cutoff_publication_before_cutoff_but_version_unknown",
+          "semantic_correctness": null,
+          "semantic_label_status": "blocked",
+          "status": "abstained",
+          "temporal_violations": []
+        },
+        {
+          "case_id": "case-14",
+          "cost": {
+            "latency_ms": 0,
+            "model_calls": 0,
+            "tokens": 0
+          },
+          "evaluation_note": "The 2022 announcement and 2026 review are separate records; the review must not enter 2024 state.",
+          "evidence": [],
+          "objective_status": "2026_topology_review_not_known_at_cutoff",
+          "semantic_correctness": null,
+          "semantic_label_status": "blocked",
+          "status": "abstained",
+          "temporal_violations": []
+        },
+        {
+          "case_id": "case-15",
+          "cost": {
+            "latency_ms": 0,
+            "model_calls": 0,
+            "tokens": 0
+          },
+          "evaluation_note": "A reviewed hypothesis remains a hypothesis and includes premises published after cutoff.",
+          "evidence": [],
+          "objective_status": "hypothesis_not_supported_relationship",
+          "semantic_correctness": null,
+          "semantic_label_status": "blocked",
+          "status": "abstained",
+          "temporal_violations": []
+        },
+        {
+          "case_id": "case-16",
+          "cost": {
+            "latency_ms": 0,
+            "model_calls": 0,
+            "tokens": 0
+          },
+          "evaluation_note": "Challenge identity review does not prove the 2024 identity decision was known then.",
+          "evidence": [],
+          "objective_status": "identity_alias_review_arrived_later",
+          "semantic_correctness": null,
+          "semantic_label_status": "blocked",
+          "status": "abstained",
+          "temporal_violations": []
+        },
+        {
+          "case_id": "case-17",
+          "cost": {
+            "latency_ms": 0,
+            "model_calls": 0,
+            "tokens": 0
+          },
+          "evaluation_note": "No retained edge is not evidence that no relationship exists.",
+          "evidence": [],
+          "objective_status": "no_claim_found_in_frozen_slice",
+          "semantic_correctness": null,
+          "semantic_label_status": "unresolved",
+          "status": "abstained",
+          "temporal_violations": []
+        },
+        {
+          "case_id": "case-18",
+          "cost": {
+            "latency_ms": 0,
+            "model_calls": 0,
+            "tokens": 0
+          },
+          "evaluation_note": "The current topology export has support-only sources; no contradiction pair is retained.",
+          "evidence": [],
+          "objective_status": "contradictory_pair_not_retained",
+          "semantic_correctness": null,
+          "semantic_label_status": "blocked_missing_evidence",
+          "status": "abstained",
+          "temporal_violations": []
+        },
+        {
+          "case_id": "case-19",
+          "cost": {
+            "latency_ms": 0,
+            "model_calls": 0,
+            "tokens": 0
+          },
+          "evaluation_note": "Review status is a qualitative decision, not a calibrated edge probability.",
+          "evidence": [],
+          "objective_status": "accepted_hypothesis_not_calibrated_probability",
+          "semantic_correctness": null,
+          "semantic_label_status": "provisional",
+          "status": "abstained",
+          "temporal_violations": []
+        },
+        {
+          "case_id": "case-20",
+          "cost": {
+            "latency_ms": 0,
+            "model_calls": 0,
+            "tokens": 0
+          },
+          "evaluation_note": "A shared category in an immutable inventory is a navigation lead, not a relationship.",
+          "evidence": [
+            {
+              "artifact_id": "cncf-2024-pinned-snapshot",
+              "artifact_sha256": "f1036cb6b8e9b9ef7647a0203ac349ba308173bf407f79cc8ccd4d4a2e7d46fd",
+              "eligibility": "eligible_historical_reconstruction",
+              "span": "logging, tracing, statistics, metrics, JSON/YAML/BSON; functionality to change the service configuration on-the-fly; deadline propagation;"
+            }
+          ],
+          "objective_status": "co_listing_is_not_economic_relationship",
+          "semantic_correctness": null,
+          "semantic_label_status": "provisional",
+          "status": "answered",
+          "temporal_violations": []
+        }
+      ],
+      "cost": {
+        "latency_ms": 0,
+        "model_calls": 0,
+        "tokens": 0
+      },
+      "coverage": 0.3,
+      "run": {
+        "action_trace": [
+          {
+            "action": "answered",
+            "artifact_ids": [
+              "page:28"
+            ],
+            "case_id": "case-01"
+          },
+          {
+            "action": "answered",
+            "artifact_ids": [
+              "page:16"
+            ],
+            "case_id": "case-02"
+          },
+          {
+            "action": "answered",
+            "artifact_ids": [
+              "page:12"
+            ],
+            "case_id": "case-03"
+          },
+          {
+            "action": "answered",
+            "artifact_ids": [
+              "page:63"
+            ],
+            "case_id": "case-04"
+          },
+          {
+            "action": "answered",
+            "artifact_ids": [
+              "page:27"
+            ],
+            "case_id": "case-05"
+          },
+          {
+            "action": "abstained",
+            "artifact_ids": [],
+            "case_id": "case-06"
+          },
+          {
+            "action": "abstained",
+            "artifact_ids": [],
+            "case_id": "case-07"
+          },
+          {
+            "action": "abstained",
+            "artifact_ids": [],
+            "case_id": "case-08"
+          },
+          {
+            "action": "abstained",
+            "artifact_ids": [],
+            "case_id": "case-09"
+          },
+          {
+            "action": "abstained",
+            "artifact_ids": [],
+            "case_id": "case-10"
+          },
+          {
+            "action": "abstained",
+            "artifact_ids": [],
+            "case_id": "case-11"
+          },
+          {
+            "action": "abstained",
+            "artifact_ids": [],
+            "case_id": "case-12"
+          },
+          {
+            "action": "abstained",
+            "artifact_ids": [],
+            "case_id": "case-13"
+          },
+          {
+            "action": "abstained",
+            "artifact_ids": [],
+            "case_id": "case-14"
+          },
+          {
+            "action": "abstained",
+            "artifact_ids": [],
+            "case_id": "case-15"
+          },
+          {
+            "action": "abstained",
+            "artifact_ids": [],
+            "case_id": "case-16"
+          },
+          {
+            "action": "abstained",
+            "artifact_ids": [],
+            "case_id": "case-17"
+          },
+          {
+            "action": "abstained",
+            "artifact_ids": [],
+            "case_id": "case-18"
+          },
+          {
+            "action": "abstained",
+            "artifact_ids": [],
+            "case_id": "case-19"
+          },
+          {
+            "action": "answered",
+            "artifact_ids": [
+              "cncf-2024-pinned-snapshot"
+            ],
+            "case_id": "case-20"
+          }
+        ],
+        "case_manifest_hash": "c8f07d0b70686037b7db025ef3950f247239610384f366f42a624e579d85e422",
+        "code_commit": "95266f4a6ec7b44e32d9cb3596f4bfb87f8b8f2f",
+        "cost_and_latency": {
+          "latency_ms": 0,
+          "model_calls": 0,
+          "tokens": 0
+        },
+        "grader_version": "mechanical-temporal-and-provenance-v1",
+        "model_or_policy_version": "capture_aware_exact_span-v1",
+        "observed_artifact_ids": [
+          "cncf-2024-pinned-snapshot",
+          "page:12",
+          "page:16",
+          "page:27",
+          "page:28",
+          "page:63"
+        ],
+        "predictions_or_answers": [
+          {
+            "case_id": "case-01",
+            "spans": [
+              "Join Datadog @ AWS re:Invent: virtually and in person Join Datadog @ AWS re:Invent Product Features Integrations Dashboards Infrastructure Monitoring Log Management APM Continuous Profiler CI Visibility Synthetic Monitoring Real User Monitoring Network Performance Monitoring Network Device Monitoring Security Platform Security Monitoring CSPM Cloud Workload Security Error Tracking Incident Management Database Monitoring Serverless Alerts API Customers Pricing Solutions Industry Financial Service"
+            ],
+            "status": "answered"
+          },
+          {
+            "case_id": "case-02",
+            "spans": [
+              "The DevOps Platform has arrived. Deliver software faster with better security and collaboration in a single platform. Get free trial Watch demo Partners Bronwyn Hastings, VP Technology Ecosystem on Google\u2019s partnership with GitLab to deliver digital transformations for customers. Learn more \u2192 Webcast The New DevOps. Iterating and Innovating in 2021 and Beyond. Join the webcast \u2192 Blog Post GitLab\u2019s Kubernetes Operator with support for Red Hat OpenShift is now generally available. Read now \u2192 Work "
+            ],
+            "status": "answered"
+          },
+          {
+            "case_id": "case-03",
+            "spans": [
+              "Dec 6 - 10, 2021 Register for Free Scaling Knowledge > Scaling Bodies: Why dbt Labs is making the bet on a data literate organization - Erica Louie Keynote: How big is this wave? - Martin Casado & Tristan Handy dbt 101: Stories from real-life data practitioners + a live look at dbt - Natty (Jon Natkins) & Alexis Wong Baird How to build a mature dbt project from scratch - Dave Connors Analytics Engineering for storytellers - Winnie Winship The modern data experience - Benn Stancil Identity Crisis"
+            ],
+            "status": "answered"
+          },
+          {
+            "case_id": "case-04",
+            "spans": [
+              "Skip to content MEDIA DATA CLOUD SUMMIT | JANUARY 19 Global Virtual Event Premiering Snowflake Solutions for Media, Advertising, and Entertainment REGISTER NOW Close Your browser does not support the video tag. Snowday the view ahead Snowflake's Product Announcement Event WATCH NOW Quick Links Weekly Demo Office Hours Virtual Labs Contact Us Pricing WHERE YOUR DATA CLOUD EXPERIENCE BEGINS: ONE PLATFORM, MANY WORKLOADS, NO DATA SILOS Your browser does not support the video tag. Data Sources Data "
+            ],
+            "status": "answered"
+          },
+          {
+            "case_id": "case-05",
+            "spans": [
+              "Transformative collaboration for all the work you do. Freehand is the visual collaboration tool disguised as an online whiteboard. Try Freehand \u2014 Free Request a demo Watch video Lead teams from ideas to execution with the digital whiteboard that\u2019s refreshingly simple, but surprisingly robust. \u2014 BRAINSTORM \u2014 BRAINSTORM\u2014BRAINSTORM \u2014 BRAIN STORM \u2014 BRAIN STORM \u2014 BRAIN STORM \u2014 BRAIN STORM \u2014 BRAIN STORM \u2014 BRAINSTORM\u2014BRAINSTORM Run your brainstorms like the teams at Xbox. \u201c Having a digital space to br"
+            ],
+            "status": "answered"
+          },
+          {
+            "case_id": "case-06",
+            "spans": [],
+            "status": "abstained"
+          },
+          {
+            "case_id": "case-07",
+            "spans": [],
+            "status": "abstained"
+          },
+          {
+            "case_id": "case-08",
+            "spans": [],
+            "status": "abstained"
+          },
+          {
+            "case_id": "case-09",
+            "spans": [],
+            "status": "abstained"
+          },
+          {
+            "case_id": "case-10",
+            "spans": [],
+            "status": "abstained"
+          },
+          {
+            "case_id": "case-11",
+            "spans": [],
+            "status": "abstained"
+          },
+          {
+            "case_id": "case-12",
+            "spans": [],
+            "status": "abstained"
+          },
+          {
+            "case_id": "case-13",
+            "spans": [],
+            "status": "abstained"
+          },
+          {
+            "case_id": "case-14",
+            "spans": [],
+            "status": "abstained"
+          },
+          {
+            "case_id": "case-15",
+            "spans": [],
+            "status": "abstained"
+          },
+          {
+            "case_id": "case-16",
+            "spans": [],
+            "status": "abstained"
+          },
+          {
+            "case_id": "case-17",
+            "spans": [],
+            "status": "abstained"
+          },
+          {
+            "case_id": "case-18",
+            "spans": [],
+            "status": "abstained"
+          },
+          {
+            "case_id": "case-19",
+            "spans": [],
+            "status": "abstained"
+          },
+          {
+            "case_id": "case-20",
+            "spans": [
+              "logging, tracing, statistics, metrics, JSON/YAML/BSON; functionality to change the service configuration on-the-fly; deadline propagation;"
+            ],
+            "status": "answered"
+          }
+        ],
+        "prompt_hash": "562686c4342c6ab45b52af972cd577e903446c6d691053c94ed3c3222f2143ac",
+        "representation_version": "retained-normalized-text-v1",
+        "seed": null,
+        "violations": []
+      },
+      "semantic_scores": "not_scored_independent_review_unavailable",
+      "temporal_violations": 0
+    },
+    "publication_date_only": {
+      "abstained": 7,
+      "answered": 13,
+      "case_count": 20,
+      "cases": [
+        {
+          "case_id": "case-01",
+          "cost": {
+            "latency_ms": 0,
+            "model_calls": 0,
+            "tokens": 0
+          },
+          "evaluation_note": "Homepage text can support only an attributed statement, never economic leadership.",
+          "evidence": [
+            {
+              "artifact_id": "page:28",
+              "artifact_sha256": "a406ba0ef71e15b8d2a6d2a0b1a7e156369338ac4cb3f1ba19aba15e2c428cb8",
+              "eligibility": "eligible_historical_reconstruction",
+              "span": "Join Datadog @ AWS re:Invent: virtually and in person Join Datadog @ AWS re:Invent Product Features Integrations Dashboards Infrastructure Monitoring Log Management APM Continuous Profiler CI Visibility Synthetic Monitoring Real User Monitoring Network Performance Monitoring Network Device Monitoring Security Platform Security Monitoring CSPM Cloud Workload Security Error Tracking Incident Management Database Monitoring Serverless Alerts API Customers Pricing Solutions Industry Financial Service"
+            }
+          ],
+          "objective_status": "source_stated_marketing_claim",
+          "semantic_correctness": null,
+          "semantic_label_status": "provisional",
+          "status": "answered",
+          "temporal_violations": []
+        },
+        {
+          "case_id": "case-02",
+          "cost": {
+            "latency_ms": 0,
+            "model_calls": 0,
+            "tokens": 0
+          },
+          "evaluation_note": "Archived page capture supports a historical source observation; ingestion occurred later.",
+          "evidence": [
+            {
+              "artifact_id": "page:16",
+              "artifact_sha256": "ea9bf7df0b3b99a15196a4250dead7f997c307375fc93d6921f33c4b57c4898f",
+              "eligibility": "eligible_historical_reconstruction",
+              "span": "The DevOps Platform has arrived. Deliver software faster with better security and collaboration in a single platform. Get free trial Watch demo Partners Bronwyn Hastings, VP Technology Ecosystem on Google\u2019s partnership with GitLab to deliver digital transformations for customers. Learn more \u2192 Webcast The New DevOps. Iterating and Innovating in 2021 and Beyond. Join the webcast \u2192 Blog Post GitLab\u2019s Kubernetes Operator with support for Red Hat OpenShift is now generally available. Read now \u2192 Work "
+            }
+          ],
+          "objective_status": "company_homepage_statement",
+          "semantic_correctness": null,
+          "semantic_label_status": "provisional",
+          "status": "answered",
+          "temporal_violations": []
+        },
+        {
+          "case_id": "case-03",
+          "cost": {
+            "latency_ms": 0,
+            "model_calls": 0,
+            "tokens": 0
+          },
+          "evaluation_note": "Use a date-bounded archived page and retain its exact partition hash.",
+          "evidence": [
+            {
+              "artifact_id": "page:12",
+              "artifact_sha256": "d5112ed8c8725ae1fdd11240075e38b4fdcb4134cf976e20a19972efdbc85f4b",
+              "eligibility": "eligible_historical_reconstruction",
+              "span": "Dec 6 - 10, 2021 Register for Free Scaling Knowledge > Scaling Bodies: Why dbt Labs is making the bet on a data literate organization - Erica Louie Keynote: How big is this wave? - Martin Casado & Tristan Handy dbt 101: Stories from real-life data practitioners + a live look at dbt - Natty (Jon Natkins) & Alexis Wong Baird How to build a mature dbt project from scratch - Dave Connors Analytics Engineering for storytellers - Winnie Winship The modern data experience - Benn Stancil Identity Crisis"
+            }
+          ],
+          "objective_status": "company_homepage_statement",
+          "semantic_correctness": null,
+          "semantic_label_status": "provisional",
+          "status": "answered",
+          "temporal_violations": []
+        },
+        {
+          "case_id": "case-04",
+          "cost": {
+            "latency_ms": 0,
+            "model_calls": 0,
+            "tokens": 0
+          },
+          "evaluation_note": "Archived page is an evidence locator, not validation of product quality.",
+          "evidence": [
+            {
+              "artifact_id": "page:63",
+              "artifact_sha256": "71453eb319974a7178fea0361a2bfd6d6b91198f9f4e3768bbff3588661be0a7",
+              "eligibility": "eligible_historical_reconstruction",
+              "span": "Skip to content MEDIA DATA CLOUD SUMMIT | JANUARY 19 Global Virtual Event Premiering Snowflake Solutions for Media, Advertising, and Entertainment REGISTER NOW Close Your browser does not support the video tag. Snowday the view ahead Snowflake's Product Announcement Event WATCH NOW Quick Links Weekly Demo Office Hours Virtual Labs Contact Us Pricing WHERE YOUR DATA CLOUD EXPERIENCE BEGINS: ONE PLATFORM, MANY WORKLOADS, NO DATA SILOS Your browser does not support the video tag. Data Sources Data "
+            }
+          ],
+          "objective_status": "company_homepage_statement",
+          "semantic_correctness": null,
+          "semantic_label_status": "provisional",
+          "status": "answered",
+          "temporal_violations": []
+        },
+        {
+          "case_id": "case-05",
+          "cost": {
+            "latency_ms": 0,
+            "model_calls": 0,
+            "tokens": 0
+          },
+          "evaluation_note": "Discontinued company page is retained; current survival is not inferred.",
+          "evidence": [
+            {
+              "artifact_id": "page:27",
+              "artifact_sha256": "0c04922971341a4fe22ddda1bfbf8b101a79c54bdba802f67fff94679f89c372",
+              "eligibility": "eligible_historical_reconstruction",
+              "span": "Transformative collaboration for all the work you do. Freehand is the visual collaboration tool disguised as an online whiteboard. Try Freehand \u2014 Free Request a demo Watch video Lead teams from ideas to execution with the digital whiteboard that\u2019s refreshingly simple, but surprisingly robust. \u2014 BRAINSTORM \u2014 BRAINSTORM\u2014BRAINSTORM \u2014 BRAIN STORM \u2014 BRAIN STORM \u2014 BRAIN STORM \u2014 BRAIN STORM \u2014 BRAIN STORM \u2014 BRAINSTORM\u2014BRAINSTORM Run your brainstorms like the teams at Xbox. \u201c Having a digital space to br"
+            }
+          ],
+          "objective_status": "historical_company_page",
+          "semantic_correctness": null,
+          "semantic_label_status": "provisional",
+          "status": "answered",
+          "temporal_violations": []
+        },
+        {
+          "case_id": "case-06",
+          "cost": {
+            "latency_ms": 0,
+            "model_calls": 0,
+            "tokens": 0
+          },
+          "evaluation_note": "The retained 32-character capture does not support a material financing claim.",
+          "evidence": [],
+          "objective_status": "insufficient_retained_text",
+          "semantic_correctness": null,
+          "semantic_label_status": "provisional",
+          "status": "abstained",
+          "temporal_violations": []
+        },
+        {
+          "case_id": "case-07",
+          "cost": {
+            "latency_ms": 0,
+            "model_calls": 0,
+            "tokens": 0
+          },
+          "evaluation_note": "A second short capture guards against treating incomplete text as absence.",
+          "evidence": [],
+          "objective_status": "insufficient_retained_text",
+          "semantic_correctness": null,
+          "semantic_label_status": "provisional",
+          "status": "abstained",
+          "temporal_violations": []
+        },
+        {
+          "case_id": "case-08",
+          "cost": {
+            "latency_ms": 0,
+            "model_calls": 0,
+            "tokens": 0
+          },
+          "evaluation_note": "Public archive capture predates the cutoff; Log Pose ingestion does not.",
+          "evidence": [
+            {
+              "artifact_id": "page:70",
+              "artifact_sha256": "3c27142519950d33e8ef6c76a9121d639168df3595cd3766d78f2c7524143221",
+              "eligibility": "date_only_eligible_missing_proof",
+              "span": "Datadog named a Leader in the 2024 Gartner\u00ae Magic Quadrant\u2122 for Digital Experience Monitoring Leader in the Gartner\u00ae Magic Quadrant\u2122 Product Infrastructure Infrastructure Monitoring Metrics Container Monitoring Network Monitoring Serverless Cloud Cost Management Cloudcraft Applications Application Performance Monitoring Universal Service Monitoring Continuous Profiler Dynamic Instrumentation Data Streams Monitoring Database Monitoring Data Jobs Monitoring LLM Observability Logs Log Management Se"
+            }
+          ],
+          "objective_status": "captured_before_but_ingested_after_cutoff",
+          "semantic_correctness": null,
+          "semantic_label_status": "provisional",
+          "status": "answered",
+          "temporal_violations": [
+            "date_only_eligible_missing_proof"
+          ]
+        },
+        {
+          "case_id": "case-09",
+          "cost": {
+            "latency_ms": 0,
+            "model_calls": 0,
+            "tokens": 0
+          },
+          "evaluation_note": "Old page publication date does not prove that retained 2026 bytes existed in 2022.",
+          "evidence": [
+            {
+              "artifact_id": "dbt-series-d-2022",
+              "artifact_sha256": "64694c906f3c8be8b3fd90d88725fe3598a896533adf3123a24dc684610ffece",
+              "eligibility": "date_only_eligible_missing_proof",
+              "span": "<!DOCTYPE html><html lang=\"en\"><head><meta charSet=\"UTF-8\"/><meta charSet=\"utf-8\"/><meta content=\"width=device-width, initial-scale=1.0\" name=\"viewport\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/><link rel=\"preload\" as=\"image\" imageSrcSet=\"/_next/image?url=%2Fimg%2Flogos%2Fdbt-labs-logo.svg&amp;w=256&amp;q=75 1x, /_next/image?url=%2Fimg%2Flogos%2Fdbt-labs-logo.svg&amp;w=384&amp;q=75 2x\"/><link rel=\"stylesheet\" href=\"/_next/static/css/627f448435ad5f68.css\" data-preceden"
+            }
+          ],
+          "objective_status": "old_publication_date_without_version_proof",
+          "semantic_correctness": null,
+          "semantic_label_status": "blocked",
+          "status": "answered",
+          "temporal_violations": [
+            "date_only_eligible_missing_proof"
+          ]
+        },
+        {
+          "case_id": "case-10",
+          "cost": {
+            "latency_ms": 0,
+            "model_calls": 0,
+            "tokens": 0
+          },
+          "evaluation_note": "FY2024 period end is not filing availability; published 2025-02-20.",
+          "evidence": [],
+          "objective_status": "post_cutoff_filing",
+          "semantic_correctness": null,
+          "semantic_label_status": "blocked",
+          "status": "abstained",
+          "temporal_violations": []
+        },
+        {
+          "case_id": "case-11",
+          "cost": {
+            "latency_ms": 0,
+            "model_calls": 0,
+            "tokens": 0
+          },
+          "evaluation_note": "Filed date predates cutoff, but current companyfacts artifact was observed in 2026.",
+          "evidence": [],
+          "objective_status": "SEC_fact_retrieved_later",
+          "semantic_correctness": null,
+          "semantic_label_status": "blocked",
+          "status": "abstained",
+          "temporal_violations": []
+        },
+        {
+          "case_id": "case-12",
+          "cost": {
+            "latency_ms": 0,
+            "model_calls": 0,
+            "tokens": 0
+          },
+          "evaluation_note": "Filing date predates cutoff; this retained local byte copy was retrieved in 2026.",
+          "evidence": [
+            {
+              "artifact_id": "snowflake-fy2024-10k",
+              "artifact_sha256": "6c1f7dc96b0e484160a38025fcf2895a016a02a5f918ad5fb2250476e191a5a6",
+              "eligibility": "date_only_eligible_missing_proof",
+              "span": "<title>snow-20240131</title></head><body><div style=\"display:none\"><ix:header><ix:hidden><ix:nonNumeric contextRef=\"c-1\" name=\"dei:EntityCentralIndexKey\" id=\"f-33\">0001640147</ix:nonNumeric><ix:nonNumeric contextRef=\"c-1\" name=\"dei:DocumentFiscalYearFocus\" id=\"f-34\">2024</ix:nonNumeric><ix:nonNumeric contextRef=\"c-1\" name=\"dei:DocumentFiscalPeriodFocus\" id=\"f-35\">FY</ix:nonNumeric><ix:nonNumeric contextRef=\"c-1\" name=\"dei:AmendmentFlag\" format=\"ixt:fixed-false\" id=\"f-36\">FALSE</ix:nonNumeric><ix"
+            }
+          ],
+          "objective_status": "historical_filing_version_proof",
+          "semantic_correctness": null,
+          "semantic_label_status": "blocked",
+          "status": "answered",
+          "temporal_violations": [
+            "date_only_eligible_missing_proof"
+          ]
+        },
+        {
+          "case_id": "case-13",
+          "cost": {
+            "latency_ms": 0,
+            "model_calls": 0,
+            "tokens": 0
+          },
+          "evaluation_note": "Event and publication times are not proof the exact retained mutable bytes were present then.",
+          "evidence": [
+            {
+              "artifact_id": "dbt-series-d-2022",
+              "artifact_sha256": "64694c906f3c8be8b3fd90d88725fe3598a896533adf3123a24dc684610ffece",
+              "eligibility": "date_only_eligible_missing_proof",
+              "span": "<!DOCTYPE html><html lang=\"en\"><head><meta charSet=\"UTF-8\"/><meta charSet=\"utf-8\"/><meta content=\"width=device-width, initial-scale=1.0\" name=\"viewport\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/><link rel=\"preload\" as=\"image\" imageSrcSet=\"/_next/image?url=%2Fimg%2Flogos%2Fdbt-labs-logo.svg&amp;w=256&amp;q=75 1x, /_next/image?url=%2Fimg%2Flogos%2Fdbt-labs-logo.svg&amp;w=384&amp;q=75 2x\"/><link rel=\"stylesheet\" href=\"/_next/static/css/627f448435ad5f68.css\" data-preceden"
+            }
+          ],
+          "objective_status": "event_before_cutoff_publication_before_cutoff_but_version_unknown",
+          "semantic_correctness": null,
+          "semantic_label_status": "blocked",
+          "status": "answered",
+          "temporal_violations": [
+            "date_only_eligible_missing_proof"
+          ]
+        },
+        {
+          "case_id": "case-14",
+          "cost": {
+            "latency_ms": 0,
+            "model_calls": 0,
+            "tokens": 0
+          },
+          "evaluation_note": "The 2022 announcement and 2026 review are separate records; the review must not enter 2024 state.",
+          "evidence": [
+            {
+              "artifact_id": "dbt-series-d-2022",
+              "artifact_sha256": "64694c906f3c8be8b3fd90d88725fe3598a896533adf3123a24dc684610ffece",
+              "eligibility": "date_only_eligible_missing_proof",
+              "span": "<!DOCTYPE html><html lang=\"en\"><head><meta charSet=\"UTF-8\"/><meta charSet=\"utf-8\"/><meta content=\"width=device-width, initial-scale=1.0\" name=\"viewport\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/><link rel=\"preload\" as=\"image\" imageSrcSet=\"/_next/image?url=%2Fimg%2Flogos%2Fdbt-labs-logo.svg&amp;w=256&amp;q=75 1x, /_next/image?url=%2Fimg%2Flogos%2Fdbt-labs-logo.svg&amp;w=384&amp;q=75 2x\"/><link rel=\"stylesheet\" href=\"/_next/static/css/627f448435ad5f68.css\" data-preceden"
+            }
+          ],
+          "objective_status": "2026_topology_review_not_known_at_cutoff",
+          "semantic_correctness": null,
+          "semantic_label_status": "blocked",
+          "status": "answered",
+          "temporal_violations": [
+            "date_only_eligible_missing_proof"
+          ]
+        },
+        {
+          "case_id": "case-15",
+          "cost": {
+            "latency_ms": 0,
+            "model_calls": 0,
+            "tokens": 0
+          },
+          "evaluation_note": "A reviewed hypothesis remains a hypothesis and includes premises published after cutoff.",
+          "evidence": [
+            {
+              "artifact_id": "snowflake-fy2024-10k",
+              "artifact_sha256": "6c1f7dc96b0e484160a38025fcf2895a016a02a5f918ad5fb2250476e191a5a6",
+              "eligibility": "date_only_eligible_missing_proof",
+              "span": "<title>snow-20240131</title></head><body><div style=\"display:none\"><ix:header><ix:hidden><ix:nonNumeric contextRef=\"c-1\" name=\"dei:EntityCentralIndexKey\" id=\"f-33\">0001640147</ix:nonNumeric><ix:nonNumeric contextRef=\"c-1\" name=\"dei:DocumentFiscalYearFocus\" id=\"f-34\">2024</ix:nonNumeric><ix:nonNumeric contextRef=\"c-1\" name=\"dei:DocumentFiscalPeriodFocus\" id=\"f-35\">FY</ix:nonNumeric><ix:nonNumeric contextRef=\"c-1\" name=\"dei:AmendmentFlag\" format=\"ixt:fixed-false\" id=\"f-36\">FALSE</ix:nonNumeric><ix"
+            }
+          ],
+          "objective_status": "hypothesis_not_supported_relationship",
+          "semantic_correctness": null,
+          "semantic_label_status": "blocked",
+          "status": "answered",
+          "temporal_violations": [
+            "date_only_eligible_missing_proof"
+          ]
+        },
+        {
+          "case_id": "case-16",
+          "cost": {
+            "latency_ms": 0,
+            "model_calls": 0,
+            "tokens": 0
+          },
+          "evaluation_note": "Challenge identity review does not prove the 2024 identity decision was known then.",
+          "evidence": [],
+          "objective_status": "identity_alias_review_arrived_later",
+          "semantic_correctness": null,
+          "semantic_label_status": "blocked",
+          "status": "abstained",
+          "temporal_violations": []
+        },
+        {
+          "case_id": "case-17",
+          "cost": {
+            "latency_ms": 0,
+            "model_calls": 0,
+            "tokens": 0
+          },
+          "evaluation_note": "No retained edge is not evidence that no relationship exists.",
+          "evidence": [],
+          "objective_status": "no_claim_found_in_frozen_slice",
+          "semantic_correctness": null,
+          "semantic_label_status": "unresolved",
+          "status": "abstained",
+          "temporal_violations": []
+        },
+        {
+          "case_id": "case-18",
+          "cost": {
+            "latency_ms": 0,
+            "model_calls": 0,
+            "tokens": 0
+          },
+          "evaluation_note": "The current topology export has support-only sources; no contradiction pair is retained.",
+          "evidence": [],
+          "objective_status": "contradictory_pair_not_retained",
+          "semantic_correctness": null,
+          "semantic_label_status": "blocked_missing_evidence",
+          "status": "abstained",
+          "temporal_violations": []
+        },
+        {
+          "case_id": "case-19",
+          "cost": {
+            "latency_ms": 0,
+            "model_calls": 0,
+            "tokens": 0
+          },
+          "evaluation_note": "Review status is a qualitative decision, not a calibrated edge probability.",
+          "evidence": [
+            {
+              "artifact_id": "snowflake-fy2024-10k",
+              "artifact_sha256": "6c1f7dc96b0e484160a38025fcf2895a016a02a5f918ad5fb2250476e191a5a6",
+              "eligibility": "date_only_eligible_missing_proof",
+              "span": "<title>snow-20240131</title></head><body><div style=\"display:none\"><ix:header><ix:hidden><ix:nonNumeric contextRef=\"c-1\" name=\"dei:EntityCentralIndexKey\" id=\"f-33\">0001640147</ix:nonNumeric><ix:nonNumeric contextRef=\"c-1\" name=\"dei:DocumentFiscalYearFocus\" id=\"f-34\">2024</ix:nonNumeric><ix:nonNumeric contextRef=\"c-1\" name=\"dei:DocumentFiscalPeriodFocus\" id=\"f-35\">FY</ix:nonNumeric><ix:nonNumeric contextRef=\"c-1\" name=\"dei:AmendmentFlag\" format=\"ixt:fixed-false\" id=\"f-36\">FALSE</ix:nonNumeric><ix"
+            }
+          ],
+          "objective_status": "accepted_hypothesis_not_calibrated_probability",
+          "semantic_correctness": null,
+          "semantic_label_status": "provisional",
+          "status": "answered",
+          "temporal_violations": [
+            "date_only_eligible_missing_proof"
+          ]
+        },
+        {
+          "case_id": "case-20",
+          "cost": {
+            "latency_ms": 0,
+            "model_calls": 0,
+            "tokens": 0
+          },
+          "evaluation_note": "A shared category in an immutable inventory is a navigation lead, not a relationship.",
+          "evidence": [
+            {
+              "artifact_id": "cncf-2024-pinned-snapshot",
+              "artifact_sha256": "f1036cb6b8e9b9ef7647a0203ac349ba308173bf407f79cc8ccd4d4a2e7d46fd",
+              "eligibility": "eligible_historical_reconstruction",
+              "span": "logging, tracing, statistics, metrics, JSON/YAML/BSON; functionality to change the service configuration on-the-fly; deadline propagation;"
+            }
+          ],
+          "objective_status": "co_listing_is_not_economic_relationship",
+          "semantic_correctness": null,
+          "semantic_label_status": "provisional",
+          "status": "answered",
+          "temporal_violations": []
+        }
+      ],
+      "cost": {
+        "latency_ms": 0,
+        "model_calls": 0,
+        "tokens": 0
+      },
+      "coverage": 0.65,
+      "run": {
+        "action_trace": [
+          {
+            "action": "answered",
+            "artifact_ids": [
+              "page:28"
+            ],
+            "case_id": "case-01"
+          },
+          {
+            "action": "answered",
+            "artifact_ids": [
+              "page:16"
+            ],
+            "case_id": "case-02"
+          },
+          {
+            "action": "answered",
+            "artifact_ids": [
+              "page:12"
+            ],
+            "case_id": "case-03"
+          },
+          {
+            "action": "answered",
+            "artifact_ids": [
+              "page:63"
+            ],
+            "case_id": "case-04"
+          },
+          {
+            "action": "answered",
+            "artifact_ids": [
+              "page:27"
+            ],
+            "case_id": "case-05"
+          },
+          {
+            "action": "abstained",
+            "artifact_ids": [],
+            "case_id": "case-06"
+          },
+          {
+            "action": "abstained",
+            "artifact_ids": [],
+            "case_id": "case-07"
+          },
+          {
+            "action": "answered",
+            "artifact_ids": [
+              "page:70"
+            ],
+            "case_id": "case-08"
+          },
+          {
+            "action": "answered",
+            "artifact_ids": [
+              "dbt-series-d-2022"
+            ],
+            "case_id": "case-09"
+          },
+          {
+            "action": "abstained",
+            "artifact_ids": [],
+            "case_id": "case-10"
+          },
+          {
+            "action": "abstained",
+            "artifact_ids": [],
+            "case_id": "case-11"
+          },
+          {
+            "action": "answered",
+            "artifact_ids": [
+              "snowflake-fy2024-10k"
+            ],
+            "case_id": "case-12"
+          },
+          {
+            "action": "answered",
+            "artifact_ids": [
+              "dbt-series-d-2022"
+            ],
+            "case_id": "case-13"
+          },
+          {
+            "action": "answered",
+            "artifact_ids": [
+              "dbt-series-d-2022"
+            ],
+            "case_id": "case-14"
+          },
+          {
+            "action": "answered",
+            "artifact_ids": [
+              "snowflake-fy2024-10k"
+            ],
+            "case_id": "case-15"
+          },
+          {
+            "action": "abstained",
+            "artifact_ids": [],
+            "case_id": "case-16"
+          },
+          {
+            "action": "abstained",
+            "artifact_ids": [],
+            "case_id": "case-17"
+          },
+          {
+            "action": "abstained",
+            "artifact_ids": [],
+            "case_id": "case-18"
+          },
+          {
+            "action": "answered",
+            "artifact_ids": [
+              "snowflake-fy2024-10k"
+            ],
+            "case_id": "case-19"
+          },
+          {
+            "action": "answered",
+            "artifact_ids": [
+              "cncf-2024-pinned-snapshot"
+            ],
+            "case_id": "case-20"
+          }
+        ],
+        "case_manifest_hash": "c8f07d0b70686037b7db025ef3950f247239610384f366f42a624e579d85e422",
+        "code_commit": "95266f4a6ec7b44e32d9cb3596f4bfb87f8b8f2f",
+        "cost_and_latency": {
+          "latency_ms": 0,
+          "model_calls": 0,
+          "tokens": 0
+        },
+        "grader_version": "mechanical-temporal-and-provenance-v1",
+        "model_or_policy_version": "publication_date_only-v1",
+        "observed_artifact_ids": [
+          "cncf-2024-pinned-snapshot",
+          "dbt-series-d-2022",
+          "page:12",
+          "page:16",
+          "page:27",
+          "page:28",
+          "page:63",
+          "page:70",
+          "snowflake-fy2024-10k"
+        ],
+        "predictions_or_answers": [
+          {
+            "case_id": "case-01",
+            "spans": [
+              "Join Datadog @ AWS re:Invent: virtually and in person Join Datadog @ AWS re:Invent Product Features Integrations Dashboards Infrastructure Monitoring Log Management APM Continuous Profiler CI Visibility Synthetic Monitoring Real User Monitoring Network Performance Monitoring Network Device Monitoring Security Platform Security Monitoring CSPM Cloud Workload Security Error Tracking Incident Management Database Monitoring Serverless Alerts API Customers Pricing Solutions Industry Financial Service"
+            ],
+            "status": "answered"
+          },
+          {
+            "case_id": "case-02",
+            "spans": [
+              "The DevOps Platform has arrived. Deliver software faster with better security and collaboration in a single platform. Get free trial Watch demo Partners Bronwyn Hastings, VP Technology Ecosystem on Google\u2019s partnership with GitLab to deliver digital transformations for customers. Learn more \u2192 Webcast The New DevOps. Iterating and Innovating in 2021 and Beyond. Join the webcast \u2192 Blog Post GitLab\u2019s Kubernetes Operator with support for Red Hat OpenShift is now generally available. Read now \u2192 Work "
+            ],
+            "status": "answered"
+          },
+          {
+            "case_id": "case-03",
+            "spans": [
+              "Dec 6 - 10, 2021 Register for Free Scaling Knowledge > Scaling Bodies: Why dbt Labs is making the bet on a data literate organization - Erica Louie Keynote: How big is this wave? - Martin Casado & Tristan Handy dbt 101: Stories from real-life data practitioners + a live look at dbt - Natty (Jon Natkins) & Alexis Wong Baird How to build a mature dbt project from scratch - Dave Connors Analytics Engineering for storytellers - Winnie Winship The modern data experience - Benn Stancil Identity Crisis"
+            ],
+            "status": "answered"
+          },
+          {
+            "case_id": "case-04",
+            "spans": [
+              "Skip to content MEDIA DATA CLOUD SUMMIT | JANUARY 19 Global Virtual Event Premiering Snowflake Solutions for Media, Advertising, and Entertainment REGISTER NOW Close Your browser does not support the video tag. Snowday the view ahead Snowflake's Product Announcement Event WATCH NOW Quick Links Weekly Demo Office Hours Virtual Labs Contact Us Pricing WHERE YOUR DATA CLOUD EXPERIENCE BEGINS: ONE PLATFORM, MANY WORKLOADS, NO DATA SILOS Your browser does not support the video tag. Data Sources Data "
+            ],
+            "status": "answered"
+          },
+          {
+            "case_id": "case-05",
+            "spans": [
+              "Transformative collaboration for all the work you do. Freehand is the visual collaboration tool disguised as an online whiteboard. Try Freehand \u2014 Free Request a demo Watch video Lead teams from ideas to execution with the digital whiteboard that\u2019s refreshingly simple, but surprisingly robust. \u2014 BRAINSTORM \u2014 BRAINSTORM\u2014BRAINSTORM \u2014 BRAIN STORM \u2014 BRAIN STORM \u2014 BRAIN STORM \u2014 BRAIN STORM \u2014 BRAIN STORM \u2014 BRAINSTORM\u2014BRAINSTORM Run your brainstorms like the teams at Xbox. \u201c Having a digital space to br"
+            ],
+            "status": "answered"
+          },
+          {
+            "case_id": "case-06",
+            "spans": [],
+            "status": "abstained"
+          },
+          {
+            "case_id": "case-07",
+            "spans": [],
+            "status": "abstained"
+          },
+          {
+            "case_id": "case-08",
+            "spans": [
+              "Datadog named a Leader in the 2024 Gartner\u00ae Magic Quadrant\u2122 for Digital Experience Monitoring Leader in the Gartner\u00ae Magic Quadrant\u2122 Product Infrastructure Infrastructure Monitoring Metrics Container Monitoring Network Monitoring Serverless Cloud Cost Management Cloudcraft Applications Application Performance Monitoring Universal Service Monitoring Continuous Profiler Dynamic Instrumentation Data Streams Monitoring Database Monitoring Data Jobs Monitoring LLM Observability Logs Log Management Se"
+            ],
+            "status": "answered"
+          },
+          {
+            "case_id": "case-09",
+            "spans": [
+              "<!DOCTYPE html><html lang=\"en\"><head><meta charSet=\"UTF-8\"/><meta charSet=\"utf-8\"/><meta content=\"width=device-width, initial-scale=1.0\" name=\"viewport\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/><link rel=\"preload\" as=\"image\" imageSrcSet=\"/_next/image?url=%2Fimg%2Flogos%2Fdbt-labs-logo.svg&amp;w=256&amp;q=75 1x, /_next/image?url=%2Fimg%2Flogos%2Fdbt-labs-logo.svg&amp;w=384&amp;q=75 2x\"/><link rel=\"stylesheet\" href=\"/_next/static/css/627f448435ad5f68.css\" data-preceden"
+            ],
+            "status": "answered"
+          },
+          {
+            "case_id": "case-10",
+            "spans": [],
+            "status": "abstained"
+          },
+          {
+            "case_id": "case-11",
+            "spans": [],
+            "status": "abstained"
+          },
+          {
+            "case_id": "case-12",
+            "spans": [
+              "<title>snow-20240131</title></head><body><div style=\"display:none\"><ix:header><ix:hidden><ix:nonNumeric contextRef=\"c-1\" name=\"dei:EntityCentralIndexKey\" id=\"f-33\">0001640147</ix:nonNumeric><ix:nonNumeric contextRef=\"c-1\" name=\"dei:DocumentFiscalYearFocus\" id=\"f-34\">2024</ix:nonNumeric><ix:nonNumeric contextRef=\"c-1\" name=\"dei:DocumentFiscalPeriodFocus\" id=\"f-35\">FY</ix:nonNumeric><ix:nonNumeric contextRef=\"c-1\" name=\"dei:AmendmentFlag\" format=\"ixt:fixed-false\" id=\"f-36\">FALSE</ix:nonNumeric><ix"
+            ],
+            "status": "answered"
+          },
+          {
+            "case_id": "case-13",
+            "spans": [
+              "<!DOCTYPE html><html lang=\"en\"><head><meta charSet=\"UTF-8\"/><meta charSet=\"utf-8\"/><meta content=\"width=device-width, initial-scale=1.0\" name=\"viewport\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/><link rel=\"preload\" as=\"image\" imageSrcSet=\"/_next/image?url=%2Fimg%2Flogos%2Fdbt-labs-logo.svg&amp;w=256&amp;q=75 1x, /_next/image?url=%2Fimg%2Flogos%2Fdbt-labs-logo.svg&amp;w=384&amp;q=75 2x\"/><link rel=\"stylesheet\" href=\"/_next/static/css/627f448435ad5f68.css\" data-preceden"
+            ],
+            "status": "answered"
+          },
+          {
+            "case_id": "case-14",
+            "spans": [
+              "<!DOCTYPE html><html lang=\"en\"><head><meta charSet=\"UTF-8\"/><meta charSet=\"utf-8\"/><meta content=\"width=device-width, initial-scale=1.0\" name=\"viewport\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/><link rel=\"preload\" as=\"image\" imageSrcSet=\"/_next/image?url=%2Fimg%2Flogos%2Fdbt-labs-logo.svg&amp;w=256&amp;q=75 1x, /_next/image?url=%2Fimg%2Flogos%2Fdbt-labs-logo.svg&amp;w=384&amp;q=75 2x\"/><link rel=\"stylesheet\" href=\"/_next/static/css/627f448435ad5f68.css\" data-preceden"
+            ],
+            "status": "answered"
+          },
+          {
+            "case_id": "case-15",
+            "spans": [
+              "<title>snow-20240131</title></head><body><div style=\"display:none\"><ix:header><ix:hidden><ix:nonNumeric contextRef=\"c-1\" name=\"dei:EntityCentralIndexKey\" id=\"f-33\">0001640147</ix:nonNumeric><ix:nonNumeric contextRef=\"c-1\" name=\"dei:DocumentFiscalYearFocus\" id=\"f-34\">2024</ix:nonNumeric><ix:nonNumeric contextRef=\"c-1\" name=\"dei:DocumentFiscalPeriodFocus\" id=\"f-35\">FY</ix:nonNumeric><ix:nonNumeric contextRef=\"c-1\" name=\"dei:AmendmentFlag\" format=\"ixt:fixed-false\" id=\"f-36\">FALSE</ix:nonNumeric><ix"
+            ],
+            "status": "answered"
+          },
+          {
+            "case_id": "case-16",
+            "spans": [],
+            "status": "abstained"
+          },
+          {
+            "case_id": "case-17",
+            "spans": [],
+            "status": "abstained"
+          },
+          {
+            "case_id": "case-18",
+            "spans": [],
+            "status": "abstained"
+          },
+          {
+            "case_id": "case-19",
+            "spans": [
+              "<title>snow-20240131</title></head><body><div style=\"display:none\"><ix:header><ix:hidden><ix:nonNumeric contextRef=\"c-1\" name=\"dei:EntityCentralIndexKey\" id=\"f-33\">0001640147</ix:nonNumeric><ix:nonNumeric contextRef=\"c-1\" name=\"dei:DocumentFiscalYearFocus\" id=\"f-34\">2024</ix:nonNumeric><ix:nonNumeric contextRef=\"c-1\" name=\"dei:DocumentFiscalPeriodFocus\" id=\"f-35\">FY</ix:nonNumeric><ix:nonNumeric contextRef=\"c-1\" name=\"dei:AmendmentFlag\" format=\"ixt:fixed-false\" id=\"f-36\">FALSE</ix:nonNumeric><ix"
+            ],
+            "status": "answered"
+          },
+          {
+            "case_id": "case-20",
+            "spans": [
+              "logging, tracing, statistics, metrics, JSON/YAML/BSON; functionality to change the service configuration on-the-fly; deadline propagation;"
+            ],
+            "status": "answered"
+          }
+        ],
+        "prompt_hash": "562686c4342c6ab45b52af972cd577e903446c6d691053c94ed3c3222f2143ac",
+        "representation_version": "retained-normalized-text-v1",
+        "seed": null,
+        "violations": [
+          "case-08",
+          "case-09",
+          "case-12",
+          "case-13",
+          "case-14",
+          "case-15",
+          "case-19"
+        ]
+      },
+      "semantic_scores": "not_scored_independent_review_unavailable",
+      "temporal_violations": 7
+    },
+    "supplied_prediction_fixture": {
+      "abstained": 15,
+      "answered": 5,
+      "case_count": 20,
+      "cases": [
+        {
+          "case_id": "case-01",
+          "cost": {
+            "latency_ms": 0,
+            "model_calls": 0,
+            "tokens": 0
+          },
+          "evaluation_note": "Homepage text can support only an attributed statement, never economic leadership.",
+          "evidence": [
+            {
+              "artifact_id": "page:28",
+              "artifact_sha256": "a406ba0ef71e15b8d2a6d2a0b1a7e156369338ac4cb3f1ba19aba15e2c428cb8",
+              "eligibility": "supplied_fixture",
+              "span": "Join Datadog @ AWS re:Invent: virtually and in person Join Datadog @ AWS re:Invent Product Features Integrations Dashboards Infrastructure Monitoring Log Management APM Continuous Profiler CI Visibility Synthetic Monitoring Real User Monitoring Network Performance Monitoring Network Device Monitoring Security Platform Security Monitoring CSPM Cloud Workload Security Error Tracking Incident Management Database Monitoring Serverless Alerts API Customers Pricing Solutions Industry Financial Service"
+            }
+          ],
+          "objective_status": "source_stated_marketing_claim",
+          "semantic_correctness": null,
+          "semantic_label_status": "provisional",
+          "status": "answered",
+          "temporal_violations": []
+        },
+        {
+          "case_id": "case-02",
+          "cost": {
+            "latency_ms": 0,
+            "model_calls": 0,
+            "tokens": 0
+          },
+          "evaluation_note": "Archived page capture supports a historical source observation; ingestion occurred later.",
+          "evidence": [
+            {
+              "artifact_id": "page:16",
+              "artifact_sha256": "ea9bf7df0b3b99a15196a4250dead7f997c307375fc93d6921f33c4b57c4898f",
+              "eligibility": "supplied_fixture",
+              "span": "The DevOps Platform has arrived. Deliver software faster with better security and collaboration in a single platform. Get free trial Watch demo Partners Bronwyn Hastings, VP Technology Ecosystem on Google\u2019s partnership with GitLab to deliver digital transformations for customers. Learn more \u2192 Webcast The New DevOps. Iterating and Innovating in 2021 and Beyond. Join the webcast \u2192 Blog Post GitLab\u2019s Kubernetes Operator with support for Red Hat OpenShift is now generally available. Read now \u2192 Work "
+            }
+          ],
+          "objective_status": "company_homepage_statement",
+          "semantic_correctness": null,
+          "semantic_label_status": "provisional",
+          "status": "answered",
+          "temporal_violations": []
+        },
+        {
+          "case_id": "case-03",
+          "cost": {
+            "latency_ms": 0,
+            "model_calls": 0,
+            "tokens": 0
+          },
+          "evaluation_note": "Use a date-bounded archived page and retain its exact partition hash.",
+          "evidence": [
+            {
+              "artifact_id": "page:12",
+              "artifact_sha256": "d5112ed8c8725ae1fdd11240075e38b4fdcb4134cf976e20a19972efdbc85f4b",
+              "eligibility": "supplied_fixture",
+              "span": "Dec 6 - 10, 2021 Register for Free Scaling Knowledge > Scaling Bodies: Why dbt Labs is making the bet on a data literate organization - Erica Louie Keynote: How big is this wave? - Martin Casado & Tristan Handy dbt 101: Stories from real-life data practitioners + a live look at dbt - Natty (Jon Natkins) & Alexis Wong Baird How to build a mature dbt project from scratch - Dave Connors Analytics Engineering for storytellers - Winnie Winship The modern data experience - Benn Stancil Identity Crisis"
+            }
+          ],
+          "objective_status": "company_homepage_statement",
+          "semantic_correctness": null,
+          "semantic_label_status": "provisional",
+          "status": "answered",
+          "temporal_violations": []
+        },
+        {
+          "case_id": "case-04",
+          "cost": {
+            "latency_ms": 0,
+            "model_calls": 0,
+            "tokens": 0
+          },
+          "evaluation_note": "Archived page is an evidence locator, not validation of product quality.",
+          "evidence": [
+            {
+              "artifact_id": "page:63",
+              "artifact_sha256": "71453eb319974a7178fea0361a2bfd6d6b91198f9f4e3768bbff3588661be0a7",
+              "eligibility": "supplied_fixture",
+              "span": "Skip to content MEDIA DATA CLOUD SUMMIT | JANUARY 19 Global Virtual Event Premiering Snowflake Solutions for Media, Advertising, and Entertainment REGISTER NOW Close Your browser does not support the video tag. Snowday the view ahead Snowflake's Product Announcement Event WATCH NOW Quick Links Weekly Demo Office Hours Virtual Labs Contact Us Pricing WHERE YOUR DATA CLOUD EXPERIENCE BEGINS: ONE PLATFORM, MANY WORKLOADS, NO DATA SILOS Your browser does not support the video tag. Data Sources Data "
+            }
+          ],
+          "objective_status": "company_homepage_statement",
+          "semantic_correctness": null,
+          "semantic_label_status": "provisional",
+          "status": "answered",
+          "temporal_violations": []
+        },
+        {
+          "case_id": "case-05",
+          "cost": {
+            "latency_ms": 0,
+            "model_calls": 0,
+            "tokens": 0
+          },
+          "evaluation_note": "Discontinued company page is retained; current survival is not inferred.",
+          "evidence": [
+            {
+              "artifact_id": "page:27",
+              "artifact_sha256": "0c04922971341a4fe22ddda1bfbf8b101a79c54bdba802f67fff94679f89c372",
+              "eligibility": "supplied_fixture",
+              "span": "Transformative collaboration for all the work you do. Freehand is the visual collaboration tool disguised as an online whiteboard. Try Freehand \u2014 Free Request a demo Watch video Lead teams from ideas to execution with the digital whiteboard that\u2019s refreshingly simple, but surprisingly robust. \u2014 BRAINSTORM \u2014 BRAINSTORM\u2014BRAINSTORM \u2014 BRAIN STORM \u2014 BRAIN STORM \u2014 BRAIN STORM \u2014 BRAIN STORM \u2014 BRAIN STORM \u2014 BRAINSTORM\u2014BRAINSTORM Run your brainstorms like the teams at Xbox. \u201c Having a digital space to br"
+            }
+          ],
+          "objective_status": "historical_company_page",
+          "semantic_correctness": null,
+          "semantic_label_status": "provisional",
+          "status": "answered",
+          "temporal_violations": []
+        },
+        {
+          "case_id": "case-06",
+          "cost": {
+            "latency_ms": 0,
+            "model_calls": 0,
+            "tokens": 0
+          },
+          "evaluation_note": "The retained 32-character capture does not support a material financing claim.",
+          "evidence": [],
+          "objective_status": "insufficient_retained_text",
+          "semantic_correctness": null,
+          "semantic_label_status": "provisional",
+          "status": "abstained",
+          "temporal_violations": []
+        },
+        {
+          "case_id": "case-07",
+          "cost": {
+            "latency_ms": 0,
+            "model_calls": 0,
+            "tokens": 0
+          },
+          "evaluation_note": "A second short capture guards against treating incomplete text as absence.",
+          "evidence": [],
+          "objective_status": "insufficient_retained_text",
+          "semantic_correctness": null,
+          "semantic_label_status": "provisional",
+          "status": "abstained",
+          "temporal_violations": []
+        },
+        {
+          "case_id": "case-08",
+          "cost": {
+            "latency_ms": 0,
+            "model_calls": 0,
+            "tokens": 0
+          },
+          "evaluation_note": "Public archive capture predates the cutoff; Log Pose ingestion does not.",
+          "evidence": [],
+          "objective_status": "captured_before_but_ingested_after_cutoff",
+          "semantic_correctness": null,
+          "semantic_label_status": "provisional",
+          "status": "abstained",
+          "temporal_violations": []
+        },
+        {
+          "case_id": "case-09",
+          "cost": {
+            "latency_ms": 0,
+            "model_calls": 0,
+            "tokens": 0
+          },
+          "evaluation_note": "Old page publication date does not prove that retained 2026 bytes existed in 2022.",
+          "evidence": [],
+          "objective_status": "old_publication_date_without_version_proof",
+          "semantic_correctness": null,
+          "semantic_label_status": "blocked",
+          "status": "abstained",
+          "temporal_violations": []
+        },
+        {
+          "case_id": "case-10",
+          "cost": {
+            "latency_ms": 0,
+            "model_calls": 0,
+            "tokens": 0
+          },
+          "evaluation_note": "FY2024 period end is not filing availability; published 2025-02-20.",
+          "evidence": [],
+          "objective_status": "post_cutoff_filing",
+          "semantic_correctness": null,
+          "semantic_label_status": "blocked",
+          "status": "abstained",
+          "temporal_violations": []
+        },
+        {
+          "case_id": "case-11",
+          "cost": {
+            "latency_ms": 0,
+            "model_calls": 0,
+            "tokens": 0
+          },
+          "evaluation_note": "Filed date predates cutoff, but current companyfacts artifact was observed in 2026.",
+          "evidence": [],
+          "objective_status": "SEC_fact_retrieved_later",
+          "semantic_correctness": null,
+          "semantic_label_status": "blocked",
+          "status": "abstained",
+          "temporal_violations": []
+        },
+        {
+          "case_id": "case-12",
+          "cost": {
+            "latency_ms": 0,
+            "model_calls": 0,
+            "tokens": 0
+          },
+          "evaluation_note": "Filing date predates cutoff; this retained local byte copy was retrieved in 2026.",
+          "evidence": [],
+          "objective_status": "historical_filing_version_proof",
+          "semantic_correctness": null,
+          "semantic_label_status": "blocked",
+          "status": "abstained",
+          "temporal_violations": []
+        },
+        {
+          "case_id": "case-13",
+          "cost": {
+            "latency_ms": 0,
+            "model_calls": 0,
+            "tokens": 0
+          },
+          "evaluation_note": "Event and publication times are not proof the exact retained mutable bytes were present then.",
+          "evidence": [],
+          "objective_status": "event_before_cutoff_publication_before_cutoff_but_version_unknown",
+          "semantic_correctness": null,
+          "semantic_label_status": "blocked",
+          "status": "abstained",
+          "temporal_violations": []
+        },
+        {
+          "case_id": "case-14",
+          "cost": {
+            "latency_ms": 0,
+            "model_calls": 0,
+            "tokens": 0
+          },
+          "evaluation_note": "The 2022 announcement and 2026 review are separate records; the review must not enter 2024 state.",
+          "evidence": [],
+          "objective_status": "2026_topology_review_not_known_at_cutoff",
+          "semantic_correctness": null,
+          "semantic_label_status": "blocked",
+          "status": "abstained",
+          "temporal_violations": []
+        },
+        {
+          "case_id": "case-15",
+          "cost": {
+            "latency_ms": 0,
+            "model_calls": 0,
+            "tokens": 0
+          },
+          "evaluation_note": "A reviewed hypothesis remains a hypothesis and includes premises published after cutoff.",
+          "evidence": [],
+          "objective_status": "hypothesis_not_supported_relationship",
+          "semantic_correctness": null,
+          "semantic_label_status": "blocked",
+          "status": "abstained",
+          "temporal_violations": []
+        },
+        {
+          "case_id": "case-16",
+          "cost": {
+            "latency_ms": 0,
+            "model_calls": 0,
+            "tokens": 0
+          },
+          "evaluation_note": "Challenge identity review does not prove the 2024 identity decision was known then.",
+          "evidence": [],
+          "objective_status": "identity_alias_review_arrived_later",
+          "semantic_correctness": null,
+          "semantic_label_status": "blocked",
+          "status": "abstained",
+          "temporal_violations": []
+        },
+        {
+          "case_id": "case-17",
+          "cost": {
+            "latency_ms": 0,
+            "model_calls": 0,
+            "tokens": 0
+          },
+          "evaluation_note": "No retained edge is not evidence that no relationship exists.",
+          "evidence": [],
+          "objective_status": "no_claim_found_in_frozen_slice",
+          "semantic_correctness": null,
+          "semantic_label_status": "unresolved",
+          "status": "abstained",
+          "temporal_violations": []
+        },
+        {
+          "case_id": "case-18",
+          "cost": {
+            "latency_ms": 0,
+            "model_calls": 0,
+            "tokens": 0
+          },
+          "evaluation_note": "The current topology export has support-only sources; no contradiction pair is retained.",
+          "evidence": [],
+          "objective_status": "contradictory_pair_not_retained",
+          "semantic_correctness": null,
+          "semantic_label_status": "blocked_missing_evidence",
+          "status": "abstained",
+          "temporal_violations": []
+        },
+        {
+          "case_id": "case-19",
+          "cost": {
+            "latency_ms": 0,
+            "model_calls": 0,
+            "tokens": 0
+          },
+          "evaluation_note": "Review status is a qualitative decision, not a calibrated edge probability.",
+          "evidence": [],
+          "objective_status": "accepted_hypothesis_not_calibrated_probability",
+          "semantic_correctness": null,
+          "semantic_label_status": "provisional",
+          "status": "abstained",
+          "temporal_violations": []
+        },
+        {
+          "case_id": "case-20",
+          "cost": {
+            "latency_ms": 0,
+            "model_calls": 0,
+            "tokens": 0
+          },
+          "evaluation_note": "A shared category in an immutable inventory is a navigation lead, not a relationship.",
+          "evidence": [],
+          "objective_status": "co_listing_is_not_economic_relationship",
+          "semantic_correctness": null,
+          "semantic_label_status": "provisional",
+          "status": "abstained",
+          "temporal_violations": []
+        }
+      ],
+      "cost": {
+        "latency_ms": 0,
+        "model_calls": 0,
+        "tokens": 0
+      },
+      "coverage": 0.25,
+      "run": {
+        "action_trace": [
+          {
+            "action": "answered",
+            "artifact_ids": [
+              "page:28"
+            ],
+            "case_id": "case-01"
+          },
+          {
+            "action": "answered",
+            "artifact_ids": [
+              "page:16"
+            ],
+            "case_id": "case-02"
+          },
+          {
+            "action": "answered",
+            "artifact_ids": [
+              "page:12"
+            ],
+            "case_id": "case-03"
+          },
+          {
+            "action": "answered",
+            "artifact_ids": [
+              "page:63"
+            ],
+            "case_id": "case-04"
+          },
+          {
+            "action": "answered",
+            "artifact_ids": [
+              "page:27"
+            ],
+            "case_id": "case-05"
+          },
+          {
+            "action": "abstained",
+            "artifact_ids": [],
+            "case_id": "case-06"
+          },
+          {
+            "action": "abstained",
+            "artifact_ids": [],
+            "case_id": "case-07"
+          },
+          {
+            "action": "abstained",
+            "artifact_ids": [],
+            "case_id": "case-08"
+          },
+          {
+            "action": "abstained",
+            "artifact_ids": [],
+            "case_id": "case-09"
+          },
+          {
+            "action": "abstained",
+            "artifact_ids": [],
+            "case_id": "case-10"
+          },
+          {
+            "action": "abstained",
+            "artifact_ids": [],
+            "case_id": "case-11"
+          },
+          {
+            "action": "abstained",
+            "artifact_ids": [],
+            "case_id": "case-12"
+          },
+          {
+            "action": "abstained",
+            "artifact_ids": [],
+            "case_id": "case-13"
+          },
+          {
+            "action": "abstained",
+            "artifact_ids": [],
+            "case_id": "case-14"
+          },
+          {
+            "action": "abstained",
+            "artifact_ids": [],
+            "case_id": "case-15"
+          },
+          {
+            "action": "abstained",
+            "artifact_ids": [],
+            "case_id": "case-16"
+          },
+          {
+            "action": "abstained",
+            "artifact_ids": [],
+            "case_id": "case-17"
+          },
+          {
+            "action": "abstained",
+            "artifact_ids": [],
+            "case_id": "case-18"
+          },
+          {
+            "action": "abstained",
+            "artifact_ids": [],
+            "case_id": "case-19"
+          },
+          {
+            "action": "abstained",
+            "artifact_ids": [],
+            "case_id": "case-20"
+          }
+        ],
+        "case_manifest_hash": "c8f07d0b70686037b7db025ef3950f247239610384f366f42a624e579d85e422",
+        "code_commit": "95266f4a6ec7b44e32d9cb3596f4bfb87f8b8f2f",
+        "cost_and_latency": {
+          "latency_ms": 0,
+          "model_calls": 0,
+          "tokens": 0
+        },
+        "grader_version": "mechanical-temporal-and-provenance-v1",
+        "model_or_policy_version": "supplied_prediction_fixture-v1",
+        "observed_artifact_ids": [
+          "page:12",
+          "page:16",
+          "page:27",
+          "page:28",
+          "page:63"
+        ],
+        "predictions_or_answers": [
+          {
+            "case_id": "case-01",
+            "spans": [
+              "Join Datadog @ AWS re:Invent: virtually and in person Join Datadog @ AWS re:Invent Product Features Integrations Dashboards Infrastructure Monitoring Log Management APM Continuous Profiler CI Visibility Synthetic Monitoring Real User Monitoring Network Performance Monitoring Network Device Monitoring Security Platform Security Monitoring CSPM Cloud Workload Security Error Tracking Incident Management Database Monitoring Serverless Alerts API Customers Pricing Solutions Industry Financial Service"
+            ],
+            "status": "answered"
+          },
+          {
+            "case_id": "case-02",
+            "spans": [
+              "The DevOps Platform has arrived. Deliver software faster with better security and collaboration in a single platform. Get free trial Watch demo Partners Bronwyn Hastings, VP Technology Ecosystem on Google\u2019s partnership with GitLab to deliver digital transformations for customers. Learn more \u2192 Webcast The New DevOps. Iterating and Innovating in 2021 and Beyond. Join the webcast \u2192 Blog Post GitLab\u2019s Kubernetes Operator with support for Red Hat OpenShift is now generally available. Read now \u2192 Work "
+            ],
+            "status": "answered"
+          },
+          {
+            "case_id": "case-03",
+            "spans": [
+              "Dec 6 - 10, 2021 Register for Free Scaling Knowledge > Scaling Bodies: Why dbt Labs is making the bet on a data literate organization - Erica Louie Keynote: How big is this wave? - Martin Casado & Tristan Handy dbt 101: Stories from real-life data practitioners + a live look at dbt - Natty (Jon Natkins) & Alexis Wong Baird How to build a mature dbt project from scratch - Dave Connors Analytics Engineering for storytellers - Winnie Winship The modern data experience - Benn Stancil Identity Crisis"
+            ],
+            "status": "answered"
+          },
+          {
+            "case_id": "case-04",
+            "spans": [
+              "Skip to content MEDIA DATA CLOUD SUMMIT | JANUARY 19 Global Virtual Event Premiering Snowflake Solutions for Media, Advertising, and Entertainment REGISTER NOW Close Your browser does not support the video tag. Snowday the view ahead Snowflake's Product Announcement Event WATCH NOW Quick Links Weekly Demo Office Hours Virtual Labs Contact Us Pricing WHERE YOUR DATA CLOUD EXPERIENCE BEGINS: ONE PLATFORM, MANY WORKLOADS, NO DATA SILOS Your browser does not support the video tag. Data Sources Data "
+            ],
+            "status": "answered"
+          },
+          {
+            "case_id": "case-05",
+            "spans": [
+              "Transformative collaboration for all the work you do. Freehand is the visual collaboration tool disguised as an online whiteboard. Try Freehand \u2014 Free Request a demo Watch video Lead teams from ideas to execution with the digital whiteboard that\u2019s refreshingly simple, but surprisingly robust. \u2014 BRAINSTORM \u2014 BRAINSTORM\u2014BRAINSTORM \u2014 BRAIN STORM \u2014 BRAIN STORM \u2014 BRAIN STORM \u2014 BRAIN STORM \u2014 BRAIN STORM \u2014 BRAINSTORM\u2014BRAINSTORM Run your brainstorms like the teams at Xbox. \u201c Having a digital space to br"
+            ],
+            "status": "answered"
+          },
+          {
+            "case_id": "case-06",
+            "spans": [],
+            "status": "abstained"
+          },
+          {
+            "case_id": "case-07",
+            "spans": [],
+            "status": "abstained"
+          },
+          {
+            "case_id": "case-08",
+            "spans": [],
+            "status": "abstained"
+          },
+          {
+            "case_id": "case-09",
+            "spans": [],
+            "status": "abstained"
+          },
+          {
+            "case_id": "case-10",
+            "spans": [],
+            "status": "abstained"
+          },
+          {
+            "case_id": "case-11",
+            "spans": [],
+            "status": "abstained"
+          },
+          {
+            "case_id": "case-12",
+            "spans": [],
+            "status": "abstained"
+          },
+          {
+            "case_id": "case-13",
+            "spans": [],
+            "status": "abstained"
+          },
+          {
+            "case_id": "case-14",
+            "spans": [],
+            "status": "abstained"
+          },
+          {
+            "case_id": "case-15",
+            "spans": [],
+            "status": "abstained"
+          },
+          {
+            "case_id": "case-16",
+            "spans": [],
+            "status": "abstained"
+          },
+          {
+            "case_id": "case-17",
+            "spans": [],
+            "status": "abstained"
+          },
+          {
+            "case_id": "case-18",
+            "spans": [],
+            "status": "abstained"
+          },
+          {
+            "case_id": "case-19",
+            "spans": [],
+            "status": "abstained"
+          },
+          {
+            "case_id": "case-20",
+            "spans": [],
+            "status": "abstained"
+          }
+        ],
+        "prompt_hash": "562686c4342c6ab45b52af972cd577e903446c6d691053c94ed3c3222f2143ac",
+        "representation_version": "retained-normalized-text-v1",
+        "seed": null,
+        "violations": []
+      },
+      "semantic_scores": "not_scored_independent_review_unavailable",
+      "temporal_violations": 0
+    }
+  },
+  "counts": {
+    "cases": 20,
+    "companies": 7,
+    "semantic_labels_provisional_or_blocked": 20
+  },
+  "credentialed_models_executed": false,
+  "execution": "offline_deterministic_controls_only",
+  "historical_portfolio_evaluation": {
+    "data_blockers": [
+      "entry security and price",
+      "allocation access",
+      "dated contributions and distributions",
+      "dilution and follow-on rules",
+      "liquidation preferences",
+      "realized liquidity",
+      "fees and carry",
+      "mature outcome/censoring rules"
+    ],
+    "decision": "no-go"
+  },
+  "prospective_forecasting": {
+    "decision": "no-go",
+    "reason": "no append-only forecast registry or independent resolution process is in place"
+  },
+  "schema_version": "1.0",
+  "synthetic_score_rule_fixture": {
+    "brier": {
+      "denominator": 2,
+      "unresolved": 2,
+      "value": 0.11125000000000002
+    },
+    "log_loss": {
+      "denominator": 2,
+      "epsilon": 1e-15,
+      "unresolved": 2,
+      "value": 0.3992538481088858
+    },
+    "purpose": "synthetic metric contract smoke check; not company evidence or model performance",
+    "rows": 4
+  },
+  "unmeasured": [
+    "semantic claim correctness",
+    "forecast skill and calibration",
+    "diligence ranking utility",
+    "research policy value",
+    "investment returns",
+    "causal effects"
+  ],
+  "verification_limits": [
+    "Common Crawl raw WARC payloads are referenced but not vendored; the harness recomputes normalized-text and partition hashes and checks the cataloged raw-source digest metadata. Exact source-byte verification needs the retained WARC payload."
+  ]
+}
