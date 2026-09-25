@@ -4,16 +4,19 @@ const pinCount = document.querySelector('#pin-count');
 const model = window.LogPoseResearchModel;
 const { node, append, link, title, metric, table } = window.LogPoseUI;
 const seriesChart = (...args) => window.LogPoseUI.seriesChart(model, ...args);
-const state = { view: 'data', year: 2024, category: 'all', query: '', company: null,
+const state = { view: 'topology', year: 2024, category: 'all', query: '', company: null,
   dataFamily: 'all', dataQuery: '', dataCompany: 'all', dataYear: 'all', dataRecord: null,
   dataMarketDay: null, dataMarketMeasure: 'total_shares', dataMarketParticipant: null,
   searchYear: 'all', searchSource: 'all', searchType: 'all', searchUs: 'all',
   inventoryArtifact: 'cncf-2026', inventoryQuery: '',
   selectedCandidate: null, selectedProvider: null, searchLimit: 30, compareSlugs: [],
   topologySourceYear: 'all', topologyCategory: 'all', topologyStatus: 'all',
-  topologyListLimit: 40, selectedClaim: null, topologyLayer: 'field',
+  topologyListLimit: 40, selectedClaim: null, topologyLayer: 'temporal',
   fieldQuery: '', fieldSource: 'all', fieldYear: 'all', fieldTag: 'all',
   fieldCategory: 'all', fieldIdentity: 'all', fieldCandidate: null, fieldNeighbor: null,
+  temporalSource: 'lfai', temporalYear: '2024', temporalCompareYear: 'auto',
+  temporalMode: 'snapshot', temporalCategory: 'all', temporalQuery: '',
+  temporalCandidate: null, temporalNeighbor: null,
   researchMember: null, researchRole: 'all', researchDisposition: 'all', researchQuery: '' };
 let data;
 let discovery;
@@ -24,6 +27,7 @@ let financialIndex;
 let exploreView;
 let topologyView;
 let discoveryTopologyView;
+let temporalTopologyView;
 let dataView;
 let researchSetView;
 
@@ -464,7 +468,7 @@ function renderCompare() {
 }
 
 function render() {
-  if (!data || !exploreView || !topologyView || !discoveryTopologyView || !dataView
+  if (!data || !exploreView || !topologyView || !discoveryTopologyView || !temporalTopologyView || !dataView
       || !researchSetView) return;
   topologyView.dispose();
   tabs.forEach(button => {
@@ -472,6 +476,8 @@ function render() {
     else button.removeAttribute('aria-current');
   });
   root.replaceChildren();
+  document.body.dataset.view = state.view;
+  document.body.dataset.layer = state.view === 'topology' ? state.topologyLayer : '';
   root.setAttribute('aria-busy', 'false');
   pinCount.textContent = String(state.compareSlugs.length);
   if (state.view === 'data') dataView.render();
@@ -479,13 +485,17 @@ function render() {
   else if (state.view === 'overview') renderOverview();
   else if (state.view === 'compare') renderCompare();
   else if (state.view === 'topology') {
-    root.append(title('04 / MARKET EXPLORATION', state.topologyLayer === 'field'
-      ? 'the source field' : 'relationship claims', state.topologyLayer === 'field'
-      ? 'start with the full retained candidate frame. filter by source, year, category, or identity; open a candidate to inspect exact source rows and co-listings.'
-      : 'explore accepted, dated source-backed claims. the map is a reading aid, not a complete market model.'));
+    root.append(title('MARKET ATLAS', state.topologyLayer === 'temporal'
+      ? 'the observed field' : state.topologyLayer === 'field'
+        ? 'all retained overlaps' : 'reviewed relationships', state.topologyLayer === 'temporal'
+      ? 'follow retained source inventories through time. choose a stop, then ask why a shared placement appears here.'
+      : state.topologyLayer === 'field'
+        ? 'inspect the current build’s full candidate universe and exact source-category-year overlaps.'
+        : 'read accepted, source-backed claims on their documented evidence clocks.'));
     const layers = node('nav', '', 'topology-layer-nav');
     layers.setAttribute('aria-label', 'Market map layers');
-    [['field', `${(dataIndex.exploratory_topology?.node_count || 1240).toLocaleString()} source candidates`],
+    [['temporal', 'through time'],
+      ['field', 'all retained overlaps'],
       ['reviewed', `${data.market_topology.claims.length} reviewed claims`]].forEach(([layer, label]) => {
       const button = node('button', label, 'topology-layer-button');
       button.type = 'button';
@@ -495,7 +505,8 @@ function render() {
       layers.append(button);
     });
     root.append(layers);
-    if (state.topologyLayer === 'field') discoveryTopologyView.render();
+    if (state.topologyLayer === 'temporal') temporalTopologyView.render();
+    else if (state.topologyLayer === 'field') discoveryTopologyView.render();
     else topologyView.render();
   }
   else exploreView.render();
@@ -504,7 +515,7 @@ function render() {
 tabs.forEach(button => button.addEventListener('click', () => {
   const view = button.dataset.view;
   commitState({ view, company: view === 'explore' || view === 'data' ? null : state.company,
-    topologyLayer: view === 'topology' ? 'field' : state.topologyLayer,
+    topologyLayer: view === 'topology' ? 'temporal' : state.topologyLayer,
     selectedClaim: view === 'topology' ? null : state.selectedClaim,
     selectedCandidate: null, selectedProvider: null,
     researchMember: view === 'research-set' ? state.researchMember : null }, { top: true });
@@ -566,6 +577,12 @@ Promise.all(['./dashboard.json', './discovery.json', './data/index.json'].map(ur
       openCompany: slug => commitState({ view: 'explore', company: slug, query: '',
         searchYear: 'all', searchType: 'pilot', category: 'all' },
       { top: true, focus: '#company-detail' })
+    });
+    temporalTopologyView = window.LogPoseTemporalTopologyView.create({
+      root, state, commitState,
+      openRecord: recordId => commitState({ view: 'data', dataFamily: 'inventory',
+        dataQuery: '', dataCompany: 'all', dataYear: 'all', dataRecord: recordId },
+      { top: true, focus: '#data-inspector' })
     });
     dataView = window.LogPoseDataView.create({
       root, state, index: dataIndex, discovery, commitState,

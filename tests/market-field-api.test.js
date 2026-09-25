@@ -117,3 +117,81 @@ test('the pinned unfiltered responses stay below the one MiB read budget', () =>
   assert(Buffer.byteLength(JSON.stringify(summary.body)) < 1024 * 1024);
   assert(Buffer.byteLength(JSON.stringify(query.body)) < 1024 * 1024);
 });
+
+test('temporal timeline preserves year precision, pinned commit clocks, and partial coverage', () => {
+  const result = request('timeline');
+  assert.equal(result.status, 200);
+  assert.equal(result.body.frames.length, 14);
+  assert.equal(result.body.clocks.active, 'inventory_year');
+  assert.equal(result.body.clocks.precision, 'year');
+  assert.equal(result.body.clocks.source_publication, 'unknown');
+  const partial = result.body.frames.filter(frame => frame.coverage_status === 'partial_year_snapshot');
+  assert.deepEqual(partial.map(frame => [frame.source, frame.year]), [['cncf', 2026], ['lfai', 2026]]);
+  assert(partial.every(frame => frame.commit_at && frame.artifact_sha256 && frame.source_url));
+});
+
+test('snapshot and accumulated frames keep exact source-year-category overlap semantics', () => {
+  const snapshot = request('frame', { source: 'lfai', year: '2024', temporal_mode: 'snapshot',
+    candidate: '00a2fb1597f507022279' });
+  const accumulated = request('frame', { source: 'lfai', year: '2024', temporal_mode: 'accumulated',
+    candidate: '00a2fb1597f507022279' });
+  assert.equal(snapshot.status, 200);
+  assert.equal(snapshot.body.compare_year, 2023);
+  assert.equal(snapshot.body.active_clock, 'inventory_year');
+  assert(snapshot.body.edges.length > 0);
+  assert.equal(accumulated.body.compare_year, 2023);
+  assert(accumulated.body.edges.length >= snapshot.body.edges.length);
+  assert.match(accumulated.body.comparison_description, /previously observed only/);
+  for (const edge of accumulated.body.edges) {
+    for (const placement of edge.placements) {
+      assert.equal(placement[0], 'lfai');
+      assert(placement[1] <= 2024);
+      assert.equal(placement.length, 3);
+    }
+  }
+  const repeat = request('frame', { source: 'lfai', year: '2024', temporal_mode: 'snapshot',
+    candidate: '00a2fb1597f507022279' });
+  assert.deepEqual(snapshot.body, repeat.body);
+});
+
+test('temporal edge detail resolves both exact retained rows and comparison reason', () => {
+  const frame = request('frame', { source: 'lfai', year: '2024', temporal_mode: 'snapshot',
+    candidate: '00a2fb1597f507022279' }).body;
+  const comparable = frame.changes.find(change => change.status === 'observed_in_both');
+  assert(comparable);
+  const result = request('frame', { source: 'lfai', year: '2024', temporal_mode: 'snapshot',
+    candidate: '00a2fb1597f507022279', neighbor: comparable.candidate_id });
+  assert.equal(result.status, 200);
+  assert.equal(result.body.detail.status, 'observed_in_both');
+  const shared = result.body.detail.selected_placements[0];
+  assert.equal(shared.source, 'lfai');
+  assert.equal(shared.year, 2024);
+  assert(shared.source_category);
+  assert.equal(shared.subject_rows.length, shared.subject_occurrence_ids.length);
+  assert.equal(shared.object_rows.length, shared.object_occurrence_ids.length);
+  assert.match(shared.artifact_sha256, /^[a-f0-9]{64}$/);
+  assert.match(shared.source_url, /^https:\/\//);
+});
+
+test('missing snapshots and unsupported clocks remain explicit', () => {
+  const sameFrameComparison = request('frame', { source: 'lfai', year: '2024', temporal_mode: 'snapshot',
+    compare_year: '2024' });
+  assert.equal(sameFrameComparison.status, 400); // a stop cannot compare with itself
+  const unavailable = request('frame', { source: 'lfai', year: '2020', temporal_mode: 'snapshot',
+    clock: 'event_validity' });
+  assert.equal(unavailable.status, 400);
+  const gap = request('frame', { source: 'lfai', year: '2019', temporal_mode: 'snapshot' });
+  assert.equal(gap.status, 200);
+  assert.equal(gap.body.status, 'missing_snapshot');
+  const omitted = handleMarketField(new URLSearchParams({ mode: 'frame', build_id: graph.build_id,
+    source: 'lfai', year: '2027', temporal_mode: 'snapshot' }));
+  assert.equal(omitted.status, 200);
+  assert.equal(omitted.body.status, 'missing_snapshot');
+});
+
+test('reviewed overlay and historical event clock cannot be requested as inventory frames', () => {
+  const reviewed = request('frame', { source: 'lfai', year: '2024', temporal_mode: 'reviewed' });
+  const eventClock = request('frame', { source: 'lfai', year: '2024', clock: 'event_validity' });
+  assert.equal(reviewed.status, 400);
+  assert.equal(eventClock.status, 400);
+});

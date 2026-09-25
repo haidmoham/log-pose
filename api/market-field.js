@@ -2,7 +2,9 @@
 // This module is shared by the Vercel function and the local read server.
 'use strict';
 
+const { createHash } = require('node:crypto');
 const graph = require('./data/market-field-graph.json');
+const layout = require('./data/market-field-layout.json');
 const projection = require('../web/data/topology-discovery.json');
 
 const MAX_PAGE = 100;
@@ -13,9 +15,12 @@ const fullCandidates = new Map(projection.nodes.map(candidate => [candidate.id, 
 const artifactByHash = new Map(projection.artifacts.map(artifact => [artifact.raw_sha256, artifact]));
 const reviewPairs = new Map(projection.edges.map(edge =>
   [[edge.subject_candidate_id, edge.object_candidate_id].sort().join(':'), edge]));
+const artifactsBySourceYear = new Map(projection.artifacts.map(artifact =>
+  [`${artifact.source}:${artifact.year}`, artifact]));
 const tagOrder = ['ai_automation', 'data_infrastructure', 'developer_tools', 'security_observability'];
 
 if (projection.build_id !== graph.input_hashes.projection_build_id ||
+    layout.build_id !== graph.build_id || Object.keys(layout.positions).length !== graph.candidates.length ||
     projection.counts.possible_pairs !== graph.pairs.length ||
     projection.counts.nodes !== graph.candidates.length) {
   throw new Error('market field graph and detail projection differ');
@@ -194,20 +199,313 @@ function detail(params) {
     in_review_worklist: Boolean(reviewPair), review_pair: reviewPair });
 }
 
+function temporalTimeline() {
+  return response(200, { schema_version: graph.schema_version, build_id: graph.build_id,
+    clocks: { active: 'inventory_year', precision: 'year',
+      commit_at: 'pinned_source_commit_time', source_publication: 'unknown',
+      event_validity: 'unknown', ingestion: 'not_available', review: 'not_available' },
+    accumulation: { meaning: 'observed_at_or_before_selected_inventory_year',
+      validity: 'previously_observed_does_not_mean_valid_today' },
+    frames: projection.artifacts.map(artifact => ({ source: artifact.source, year: artifact.year,
+      commit_at: artifact.commit_at, coverage_status: artifact.coverage_status,
+      artifact_sha256: artifact.raw_sha256, source_url: artifact.url,
+      repository: artifact.repository, commit: artifact.commit,
+      observation_basis: artifact.observation_basis })) });
+}
+
+function temporalFrameId(options) {
+  return createHash('sha256').update(JSON.stringify({ query_version: 1, ...options })).digest('hex');
+}
+
+function temporalFrame(params) {
+  const source = parameter(params, 'source', '');
+  const yearValue = parameter(params, 'year', '');
+  const mode = parameter(params, 'temporal_mode', 'snapshot');
+  const clock = parameter(params, 'clock', 'inventory_year');
+  const candidateId = parameter(params, 'candidate', '');
+  const neighborId = parameter(params, 'neighbor', '');
+  const offset = numberParameter(params, 'offset', 0, graph.candidates.length);
+  const category = parameter(params, 'category', 'all');
+  const queryText = parameter(params, 'query', '').trim().toLocaleLowerCase();
+  if (!['cncf', 'lfai'].includes(source)) throw new Error('invalid source');
+  if (!/^20\d{2}$/.test(yearValue)) throw new Error('invalid year');
+  if (!['snapshot', 'accumulated'].includes(mode)) throw new Error('invalid temporal_mode');
+  if (clock !== 'inventory_year') throw new Error('unsupported temporal clock');
+  if (queryText.length > 200 || category.length > 200) throw new Error('filter exceeds maximum length');
+  const year = Number(yearValue);
+  const artifact = artifactsBySourceYear.get(`${source}:${year}`);
+  const candidates = projection.nodes;
+  const artifactYears = projection.artifacts.filter(item => item.source === source
+    && item.year <= year).map(item => item.year).sort((left, right) => left - right);
+  const compareArtifact = projection.artifacts.filter(item => item.source === source && item.year < year)
+    .sort((left, right) => right.year - left.year)[0] || null;
+  const compareYear = parameter(params, 'compare_year', compareArtifact ? String(compareArtifact.year) : '');
+  if (compareYear && (!/^20(?:20|2[1-6])$/.test(compareYear)
+      || !artifactsBySourceYear.has(`${source}:${Number(compareYear)}`)
+      || Number(compareYear) >= year)) throw new Error('invalid compare_year');
+  const comparison = compareYear ? artifactsBySourceYear.get(`${source}:${Number(compareYear)}`) : null;
+  const frameId = temporalFrameId({ build_id: graph.build_id, source, year, mode,
+    compare_year: comparison?.year ?? null, category, query: queryText,
+    candidate: candidateId || null, neighbor: neighborId || null, offset,
+    limit: numberParameter(params, 'limit', 60, 100) });
+  const selectedYears = mode === 'snapshot' ? (artifact ? [year] : []) : artifactYears;
+  const comparisonYears = mode === 'snapshot'
+    ? (comparison ? [Number(compareYear)] : []) : (comparison ? projection.artifacts
+      .filter(item => item.source === source && item.year <= Number(compareYear))
+      .map(item => item.year) : []);
+  const keyMatches = key => key[0] === source
+    && (selectedYears.includes(key[1])) && (category === 'all' || key[2] === category);
+  const comparisonKeyMatches = key => key[0] === source
+    && comparisonYears.includes(key[1]) && (category === 'all' || key[2] === category);
+  const eligibleObservations = (candidate, years = selectedYears) => candidate.observations.filter(observation =>
+    observation.source === source && years.includes(observation.year)
+      && (category === 'all' || observation.source_category === category));
+  const rowNameMatch = candidate => eligibleObservations(candidate).some(observation =>
+    observation.rows.some(row => `${row.name} ${row.description}`.toLocaleLowerCase().includes(queryText)));
+  const eligibleName = candidate => eligibleObservations(candidate)[0]?.rows[0]?.name || candidate.name;
+  const matchingCandidates = candidates.filter(candidate => eligibleObservations(candidate).length
+    && (!queryText || rowNameMatch(candidate)))
+    .sort((left, right) => eligibleName(left).localeCompare(eligibleName(right))
+      || left.id.localeCompare(right.id));
+
+  if (!artifact) return response(200, { schema_version: graph.schema_version,
+    build_id: graph.build_id, status: 'missing_snapshot', source, year, temporal_mode: mode,
+    frame_id: frameId,
+    compare_year: comparison?.year ?? null, active_clock: 'inventory_year', precision: 'year',
+    nodes: [], edges: [], changes: [], candidate_count: 0, edge_count: 0,
+    coverage: { status: 'missing', source, year, source_rows: 0,
+      explanation: 'No retained source snapshot exists for this provider and year.' },
+    limitations: ['No frame is available. This gap does not establish that any candidate or relationship ended.'] });
+
+  const nodeLimit = numberParameter(params, 'limit', 60, 100);
+  if (nodeLimit === 0) throw new Error('page limits must be positive');
+  const focus = candidateId ? candidates.find(candidate => candidate.id === candidateId) : null;
+  if (candidateId && !focus) return response(404, { error: 'unknown_candidate' });
+  if (neighborId && !candidates.some(candidate => candidate.id === neighborId)) {
+    return response(404, { error: 'unknown_candidate' });
+  }
+
+  function candidateDescriptor(candidate, years = selectedYears) {
+    const observations = eligibleObservations(candidate, years);
+    const rows = observations.flatMap(observation => observation.rows);
+    return { id: candidate.id, name: rows[0]?.name || candidate.name,
+      position: layout.positions[candidate.id],
+      description: rows.find(row => row.description)?.description || '',
+      observed_years: [...new Set(observations.map(item => item.year))],
+      identity_status: 'unreviewed_candidate_key',
+      observations: observations.map(observation => ({ source: observation.source,
+        year: observation.year, source_category: observation.source_category,
+        artifact_sha256: observation.artifact_sha256, partition_path: observation.partition_path,
+        occurrence_ids: observation.occurrence_ids, rows: observation.rows })) };
+  }
+  function pairPlacements(pairIndex, matches) {
+    return graph.pairs[pairIndex][2].filter(keyIndex => matches(graph.keys[keyIndex]))
+      .map(keyIndex => graph.keys[keyIndex]);
+  }
+  function edgeMap(center, matches) {
+    const result = new Map();
+    const centerIndex = candidateIndex.get(center);
+    for (const pairIndex of graph.adjacency[centerIndex]) {
+      const [left, right] = graph.pairs[pairIndex];
+      const otherIndex = left === centerIndex ? right : left;
+      const placements = pairPlacements(pairIndex, matches);
+      if (placements.length) result.set(graph.candidates[otherIndex].id, placements);
+    }
+    return result;
+  }
+  const suggestions = matchingCandidates.slice(0, 30).map(candidate => ({
+    id: candidate.id, name: eligibleObservations(candidate)[0].rows[0]?.name || candidate.name }));
+  if (!focus) {
+    const matchedIndices = new Set(matchingCandidates.map(candidate => candidateIndex.get(candidate.id)));
+    const contextEdges = [];
+    let totalContextEdges = 0;
+    for (const [left, right, keyIndices] of graph.pairs) {
+      if (!matchedIndices.has(left) || !matchedIndices.has(right)) continue;
+      const placements = keyIndices.filter(keyIndex => keyMatches(graph.keys[keyIndex]))
+        .map(keyIndex => graph.keys[keyIndex]);
+      if (!placements.length) continue;
+      totalContextEdges += 1;
+      if (contextEdges.length < 2500) contextEdges.push({ left: graph.candidates[left].id,
+        right: graph.candidates[right].id, placements });
+    }
+    return response(200, { schema_version: graph.schema_version, build_id: graph.build_id,
+    status: 'ready', frame_id: frameId, source, year, temporal_mode: mode, compare_year: comparison?.year ?? null,
+    active_clock: 'inventory_year', precision: 'year', artifact: {
+      commit_at: artifact.commit_at, coverage_status: artifact.coverage_status,
+      artifact_sha256: artifact.raw_sha256, source_url: artifact.url, commit: artifact.commit,
+      repository: artifact.repository, observation_basis: artifact.observation_basis },
+    coverage: { status: artifact.coverage_status, selected_rows: projection.nodes.reduce((count, candidate) =>
+      count + candidate.observations.filter(item => item.source === source
+        && selectedYears.includes(item.year)).reduce((sum, item) => sum + item.rows.length, 0), 0),
+      eligible_candidates: matchingCandidates.length, source_candidates: candidates.filter(candidate =>
+        candidate.observations.some(item => item.source === source && selectedYears.includes(item.year))).length },
+    filters: { source, category, query: queryText }, suggestions, candidate_count: matchingCandidates.length,
+    focus: null,
+    nodes: matchingCandidates.map(candidate => ({ id: candidate.id, name: eligibleName(candidate),
+      position: layout.positions[candidate.id],
+      observed_years: [...new Set(eligibleObservations(candidate).map(item => item.year))],
+      identity_status: 'unreviewed_candidate_key', frame_presence: 'observed_in_selected_frame' })),
+    edges: [], changes: [], context_edges: contextEdges,
+    total_context_edges: totalContextEdges, context_edges_truncated: totalContextEdges > contextEdges.length,
+    limitations: temporalLimitations(mode) });
+  }
+
+  const focusHasSelectedObservation = eligibleObservations(focus).length > 0;
+  const selectedNeighbors = edgeMap(candidateId, keyMatches);
+  const comparisonNeighbors = comparisonYears.length ? edgeMap(candidateId, comparisonKeyMatches) : new Map();
+  const unfilteredCurrent = category === 'all' ? selectedNeighbors : edgeMap(candidateId, key =>
+    key[0] === source && selectedYears.includes(key[1]));
+  const unfilteredPrevious = category === 'all' ? comparisonNeighbors : edgeMap(candidateId, key =>
+    key[0] === source && comparisonYears.includes(key[1]));
+  const changeIds = [...new Set([...selectedNeighbors.keys(), ...comparisonNeighbors.keys(),
+    ...unfilteredCurrent.keys(), ...unfilteredPrevious.keys()])].sort();
+  const changes = changeIds.map(id => {
+    const current = selectedNeighbors.get(id) || [];
+    const previous = comparisonNeighbors.get(id) || [];
+    const currentUnfiltered = unfilteredCurrent.get(id) || [];
+    const previousUnfiltered = unfilteredPrevious.get(id) || [];
+    const currentFiltered = currentUnfiltered.length > 0 && current.length === 0;
+    const previousFiltered = previousUnfiltered.length > 0 && previous.length === 0;
+    const status = currentFiltered ? 'filtered_out_current'
+      : previousFiltered ? 'filtered_out_previous'
+        : current.length && previous.length ? 'observed_in_both'
+          : current.length ? 'newly_observed_in_selected_frame' : 'absent_from_selected_frame';
+    return { candidate_id: id, status, current_placements: current,
+      comparison_placements: previous, current_unfiltered_placements: currentUnfiltered,
+      comparison_unfiltered_placements: previousUnfiltered };
+  });
+  const ordered = changes.filter(change => change.status !== 'filtered_out_current'
+    && change.status !== 'filtered_out_previous').sort((left, right) =>
+    left.candidate_id.localeCompare(right.candidate_id));
+  const visibleChanges = ordered.slice(offset, offset + nodeLimit);
+  const visibleIds = new Set([candidateId, ...visibleChanges.map(change => change.candidate_id)]);
+  const visibleEdges = visibleChanges.filter(change => change.current_placements.length)
+    .map(change => ({ candidate_id: change.candidate_id,
+      placements: change.current_placements,
+      status: change.status === 'observed_in_both' ? 'previously_observed'
+        : 'first_observed_in_selected_evidence' }));
+  const visibleIndexById = new Map([...visibleIds].map(id => [id, candidateIndex.get(id)]));
+  const contextEdges = [];
+  for (const [id, index] of visibleIndexById) {
+    for (const pairIndex of graph.adjacency[index]) {
+      const [left, right] = graph.pairs[pairIndex];
+      const otherIndex = left === index ? right : left;
+      const otherId = graph.candidates[otherIndex].id;
+      if (id >= otherId || !visibleIds.has(otherId)) continue;
+      const placements = pairPlacements(pairIndex, keyMatches);
+      if (placements.length) contextEdges.push({ left: id, right: otherId, placements });
+    }
+  }
+  contextEdges.sort((left, right) => left.left.localeCompare(right.left)
+    || left.right.localeCompare(right.right));
+  const contextEdgeLimit = 2500;
+  let detail = null;
+  if (neighborId) {
+    const currentChange = changes.find(change => change.candidate_id === neighborId);
+    const focusDescriptor = candidateDescriptor(focus);
+    const neighbor = candidates.find(candidate => candidate.id === neighborId);
+    const neighborDescriptor = candidateDescriptor(neighbor);
+    const placementDetails = keys => keys.map(([keySource, keyYear, keyCategory]) => {
+      const leftObservation = focus.observations.find(item => item.source === keySource
+        && item.year === keyYear && item.source_category === keyCategory);
+      const rightObservation = neighbor.observations.find(item => item.source === keySource
+        && item.year === keyYear && item.source_category === keyCategory);
+      if (!leftObservation || !rightObservation
+          || leftObservation.artifact_sha256 !== rightObservation.artifact_sha256) return null;
+      const sourceArtifact = artifactsBySourceYear.get(`${keySource}:${keyYear}`);
+      return { source: keySource, year: keyYear, source_category: keyCategory,
+        artifact_sha256: leftObservation.artifact_sha256,
+        source_url: sourceArtifact.url, source_commit: sourceArtifact.commit,
+        source_committed_at: sourceArtifact.commit_at, coverage_status: sourceArtifact.coverage_status,
+        partition_path: leftObservation.partition_path,
+        subject_occurrence_ids: leftObservation.occurrence_ids,
+        object_occurrence_ids: rightObservation.occurrence_ids,
+        subject_rows: leftObservation.rows, object_rows: rightObservation.rows };
+    }).filter(Boolean);
+    detail = { focus: focusDescriptor, neighbor: neighborDescriptor,
+      status: currentChange?.status || 'absent_from_selected_frame',
+      selected_placements: placementDetails(currentChange?.current_unfiltered_placements || []),
+      comparison_placements: placementDetails(currentChange?.comparison_unfiltered_placements || []),
+      current_filtered_placements: currentChange?.current_placements || [],
+      comparison_filtered_placements: currentChange?.comparison_placements || [] };
+  }
+  const nodeById = new Map([[candidateId, candidateDescriptor(focus)]]);
+  for (const id of visibleIds) if (id !== candidateId) {
+    const item = candidates.find(candidate => candidate.id === id);
+    if (item) {
+      const currentObservations = eligibleObservations(item);
+      const descriptor = currentObservations.length ? candidateDescriptor(item)
+        : candidateDescriptor(item, comparisonYears);
+      descriptor.frame_presence = currentObservations.length ? 'observed_in_selected_frame'
+        : 'comparison_context_only';
+      nodeById.set(id, descriptor);
+    }
+  }
+  const comparisonDescription = mode === 'snapshot'
+    ? 'selected source snapshot compared with previous retained snapshot from the same provider'
+    : 'observations accumulated through the selected source year; persistence means previously observed only';
+  return response(200, { schema_version: graph.schema_version, build_id: graph.build_id,
+    status: 'ready', frame_id: frameId, source, year, temporal_mode: mode, compare_year: comparison?.year ?? null,
+    active_clock: 'inventory_year', precision: 'year', comparison_description: comparisonDescription,
+    artifact: { commit_at: artifact.commit_at, coverage_status: artifact.coverage_status,
+      artifact_sha256: artifact.raw_sha256, source_url: artifact.url, commit: artifact.commit,
+      repository: artifact.repository, observation_basis: artifact.observation_basis },
+    coverage: { status: artifact.coverage_status, selected_rows: projection.nodes.reduce((count, candidate) =>
+      count + candidate.observations.filter(item => item.source === source
+        && selectedYears.includes(item.year)).reduce((sum, item) => sum + item.rows.length, 0), 0),
+      eligible_candidates: matchingCandidates.length, source_candidates: candidates.filter(candidate =>
+        candidate.observations.some(item => item.source === source && selectedYears.includes(item.year))).length,
+      comparison_source_rows: comparison ? projection.nodes.reduce((count, candidate) => count
+        + candidate.observations.filter(item => item.source === source
+          && comparisonYears.includes(item.year)).reduce((sum, item) => sum + item.rows.length, 0), 0) : 0 },
+    filters: { source, category, query: queryText }, focus: candidateId,
+    focus_present: focusHasSelectedObservation, candidate_count: matchingCandidates.length,
+    total_neighbors: ordered.length, offset, limit: nodeLimit,
+    next_offset: offset + visibleChanges.length < ordered.length ? offset + visibleChanges.length : null,
+    truncated: offset + visibleChanges.length < ordered.length,
+    changes: changes.slice(offset, offset + nodeLimit),
+    total_changes: changes.length,
+    nodes: [...nodeById.values()], edges: visibleEdges,
+    context_edges: contextEdges.slice(0, contextEdgeLimit),
+    context_edges_truncated: contextEdges.length > contextEdgeLimit, detail,
+    limitations: temporalLimitations(mode) });
+}
+
+function temporalLimitations(mode) {
+  const limitations = [
+    'First observed means first in this retained evidence slice, not when a project or relationship formed.',
+    'Absence means absent from the selected source slice; it does not establish closure or relationship termination.',
+    'Candidate identity keys and names remain unreviewed. Similar names can represent spelling changes or distinct projects.',
+    'Stable candidate groupings are from the current build across retained years; they are not historical identity decisions.',
+    'Source publication, event validity, ingestion, and review timestamps are not available for this inventory frame.'
+  ];
+  if (mode === 'accumulated') limitations.push(
+    'Accumulation records prior observation only. It does not mean the candidate or overlap remains valid today.');
+  limitations.push('Reviewed relationship overlays are unsupported because the reviewed claims do not have a compatible historical knowledge clock.');
+  return limitations;
+}
+
 function handleMarketField(searchParams) {
   try {
     const params = searchParams instanceof URLSearchParams ? searchParams : new URLSearchParams(searchParams);
     const mode = parameter(params, 'mode', 'summary');
-    if (!['summary', 'query', 'detail'].includes(mode)) throw new Error('invalid mode');
+    if (!['summary', 'query', 'detail', 'timeline', 'frame'].includes(mode)) throw new Error('invalid mode');
     if (mode === 'summary') return response(200, { schema_version: graph.schema_version,
       build_id: graph.build_id, status: graph.status, counts: graph.counts,
       facets: graph.facets, candidates: graph.candidates.map(fieldCandidate), input_hashes: graph.input_hashes });
+    if (mode === 'timeline') {
+      const requestedBuild = parameter(params, 'build_id', '');
+      if (requestedBuild && requestedBuild !== graph.build_id) return response(409, {
+        error: 'build_version_mismatch', build_id: graph.build_id });
+      return temporalTimeline();
+    }
     const requestedBuild = parameter(params, 'build_id', '');
     if (requestedBuild !== graph.build_id) return response(409, {
       error: 'build_version_mismatch', build_id: graph.build_id });
-    return mode === 'query' ? query(params) : detail(params);
+    return mode === 'query' ? query(params) : mode === 'detail' ? detail(params) : temporalFrame(params);
   } catch (error) {
-    if (error.message.startsWith('invalid ') || error.message.startsWith('repeat ') ||
+    if (error.message.startsWith('invalid ') || error.message.startsWith('unsupported ')
+        || error.message.startsWith('repeat ') ||
         error.message.includes('exceeds') || error.message.includes('must be positive')) {
       return response(400, { error: 'invalid_request', message: error.message });
     }

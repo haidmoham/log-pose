@@ -4,8 +4,8 @@
   "scripts": {
     "dev": "bash scripts/dev.sh",
     "dashboard": "node scripts/market_field_dev.js",
-    "build:market-field": "PYTHONPATH=src python3 scripts/build_market_field_graph.py",
-    "test:dashboard": "node --test tests/research-model.test.js tests/discovery-topology-model.test.js tests/market-route.test.js tests/market-field-api.test.js tests/research-set-route.test.js"
+    "build:market-field": "PYTHONPATH=src python3 scripts/build_market_field_graph.py && node scripts/build_market_field_layout.js",
+    "test:dashboard": "node --test tests/research-model.test.js tests/discovery-topology-model.test.js tests/temporal-graph.test.js tests/market-route.test.js tests/market-field-api.test.js tests/research-set-route.test.js"
   },
   "devDependencies": {
     "jsdom": "^26.1.0"
