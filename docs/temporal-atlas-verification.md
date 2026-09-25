@@ -12,14 +12,14 @@ the visual direction combines a dark plum workspace, a luminous graph, locally s
 - `node --test tests/deployment-health.test.mjs`: 6 passed after integrating the CI changes from `main` through `33e6274`.
 - `PYTHONPATH=src python3 -m pytest -q tests/test_market_field_graph.py`: 5 passed.
 - `PYTHONPATH=src python3 scripts/check_data_health.py`: 6 checked, 0 failed, 2 explicitly not evaluated: semantic truth and prepared-database reconciliation.
-- `npm run build:market-field`: graph and fixed-layout rebuilds have no diff. CI now checks both artifacts.
+- `npm run build:market-field`: graph and fixed-layout rebuilds have no diff. CI now checks both artifacts. Its first Linux run caught floating-point drift in the layout; version 3 quantizes every integration step and uses explicit square-root distances, while retaining the exact-byte gate.
 - Chrome, explicitly authorized after the in-app browser was unavailable: WebGL rendering, overview → Vespa → Dragonfly, keyboard selection, exact supporting rows and source hash, backward/forward year stepping with unchanged camera and retained selection, a missing 2019 stop, and no captured runtime errors.
 - The actual backward step revealed a classification defect: Dragonfly has no support in either 2023 or its comparator. This now retains the identifier with an explicit unsupported state instead of implying a removal. A regression test covers it.
 - Browser viewport override did not change the measured 1960 px viewport. Narrow-screen visual verification is not claimed. Reduced-motion behavior is tested through the route harness; OS-level media emulation is not claimed.
 
 ## response measurements
 
-[`evidence/temporal-frame-measurements.json`](evidence/temporal-frame-measurements.json) contains the exact build, frame IDs, 28 retained provider/year/mode responses and five neighborhood trials. Largest uncompressed response body: 369,649 bytes. Vespa 2024 neighborhood: 52,088 bytes and 1.41–2.62 ms over local HTTP in this run. These timings include the local query and transfer. They exclude production network conditions and are not GPU frame-rate measurements.
+[`evidence/temporal-frame-measurements.json`](evidence/temporal-frame-measurements.json) contains the exact build, frame IDs, 28 retained provider/year/mode responses and five neighborhood trials. Largest uncompressed response body: 369,635 bytes. Vespa 2024 neighborhood: 52,084 bytes and 1.58–4.20 ms over local HTTP in this run. These timings include the local query and transfer. They exclude production network conditions and are not GPU frame-rate measurements.
 
 Repeat against an independently started local preview:
 
