@@ -41,6 +41,8 @@ The canonical `/` route opens the research desk with the full retained 18,542-re
 
 Migrations `008`–`011` add topology sources, identity and eligibility review, an acquisition queue, candidate claims with separate summaries and exact passages, extra evidence references, reviews, and build records. The [topology ontology](topology-ontology.md) defines predicate readings and what the time fields establish. A source-publication cutoff is not a relationship-validity query. A reviewed hypothesis remains a hypothesis; the system does not turn strength or confidence into a scalar edge weight. A source artifact remains in Postgres or the retained research artifacts; the static export contains the attributed summary and source reference, not raw HTML.
 
+The [benchmark protocol](research/benchmark-protocol.md) defines a separate, offline read model over retained artifacts. A versioned case manifest fixes the questions and artifact IDs; evaluator-only answer keys stay outside candidate-visible input. A replay run records its manifest hash, code and control versions, selected evidence IDs, exclusions, and case-level scores. This layer adds no evidence store or migration. Historical availability requires explicit proof from source publication, immutable capture or filing accession, and, for system-known replay, arrival time. Current dashboard selections and review annotations are not historical facts.
+
 ## safe extension seams
 
 - add a new source by retaining its immutable payload and provider identity first, then expose a read view with grain, key, source time, arrival time, and provenance.
