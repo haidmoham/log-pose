@@ -79,16 +79,16 @@ def export_topology(connection, cohort: list[dict]) -> dict:
         if len(page) < 500:
             break
     with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM topology_entities ORDER BY id")
+        cursor.execute("SELECT * FROM silver.topology_entities ORDER BY id")
         stored_entities = {row["id"]: row for row in cursor.fetchall()}
         cursor.execute("""SELECT source.*, snapshot.raw_html AS snapshot_body
-            FROM topology_sources AS source
-            LEFT JOIN snapshots AS snapshot ON snapshot.id=source.snapshot_id
+            FROM raw.topology_sources AS source
+            LEFT JOIN raw.snapshots AS snapshot ON snapshot.id=source.snapshot_id
             ORDER BY source.id""")
         sources = {row["id"]: row for row in cursor.fetchall()}
-        cursor.execute("SELECT * FROM topology_reviews ORDER BY reviewed_at,id")
+        cursor.execute("SELECT * FROM silver.topology_reviews ORDER BY reviewed_at,id")
         reviews = cursor.fetchall()
-        cursor.execute("SELECT id FROM topology_candidates ORDER BY id")
+        cursor.execute("SELECT id FROM silver.topology_candidates ORDER BY id")
         candidate_ids = [row["id"] for row in cursor.fetchall()]
     companies = {row["slug"]: row for row in cohort}
     if len(companies) != len(cohort):

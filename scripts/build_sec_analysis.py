@@ -20,7 +20,7 @@ def main() -> None:
     cohort = [item for item in json.loads(args.cohort.read_text()) if item.get("cik")]
     with connect() as conn, conn.cursor() as cur:
         cur.execute("""SELECT artifact_version, source_url, etag, last_modified,
-                content_length, observed_at FROM sec_artifacts ORDER BY observed_at""")
+                content_length, observed_at FROM raw.sec_artifacts ORDER BY observed_at""")
         artifacts = cur.fetchall()
         if len(artifacts) != 1:
             raise ValueError(f"expected one pinned SEC artifact, found {len(artifacts)}")
@@ -29,7 +29,7 @@ def main() -> None:
         cur.execute("""SELECT cik, entity_name, raw_sha256, artifact_version,
                 fact_id, concept_group, taxonomy, tag, unit, value, start_date,
                 end_date, filed_date, accession_number, form, fy, fp, frame
-            FROM warehouse.sec_fact_observations
+            FROM silver.sec_fact_observations
             WHERE artifact_version=%s ORDER BY cik, fact_id""", (artifact_version,))
         facts = cur.fetchall()
 
