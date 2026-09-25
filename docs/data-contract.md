@@ -43,16 +43,16 @@ PYTHONPATH=src:. .venv/bin/python scripts/rebuild_data.py --prepare-local-databa
 
 this never turns inventory pairs or new acquisition results into accepted claims. imports compare immutable evidence and preserve existing review decisions. a later rejection survives reimport.
 
-for full retained normalized page text in a local-only copy of the same console:
+to make a local-only copy of the same console with full retained normalized page text:
 
 ```sh
 mkdir -p site/local
 cp -R web/. site/local/
-PYTHONPATH=src .venv/bin/python scripts/build_data_catalog.py --web-root site/local --page-text-limit 0
+PYTHONPATH=src .venv/bin/python scripts/build_data_catalog.py --web-root site/local
 python3 -m http.server 8081 --bind 127.0.0.1 --directory site/local
 ```
 
-`site/` is ignored by Git. the default public export limits each page body to 6,000 characters. neither mode exports raw HTML. opening `npm run dev` serves the retained public export and performs no acquisition or schema writes; `/api/*` remains available when a database URL is supplied.
+`site/` is ignored by Git. the default export includes all retained normalized page text. set `--page-text-limit` to a positive character count to make a smaller excerpt export. neither mode exports raw HTML. opening `npm run dev` serves the retained export and performs no acquisition or schema writes; `/api/*` remains available when a database URL is supplied.
 
 ## verification
 

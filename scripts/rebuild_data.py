@@ -20,7 +20,7 @@ def main():
                         help="apply existing migrations and import pinned discovery into the chosen local database")
     parser.add_argument("--import-reviewed-seed", action="store_true",
                         help="restore the existing dated curated seed reviews; this performs no new source review")
-    parser.add_argument("--page-text-limit", type=int, default=6000)
+    parser.add_argument("--page-text-limit", type=int, default=0)
     parser.add_argument("--web-root", type=Path, default=Path("web"),
                         help="catalog output root; use a copy of web/ under site/ for full local text")
     args = parser.parse_args()

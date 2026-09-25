@@ -30,7 +30,7 @@ def encode(payload):
                        separators=(",", ":"), default=json_default) + "\n").encode()
 
 
-def build_data_export(connection, *, repository_root: Path, page_text_limit: int = 6000):
+def build_data_export(connection, *, repository_root: Path, page_text_limit: int = 0):
     """Read within the caller's repeatable-read transaction; do not mutate evidence."""
     if page_text_limit < 0:
         raise ValueError("page text limit must be zero (full local text) or positive")

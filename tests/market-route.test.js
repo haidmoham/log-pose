@@ -215,6 +215,7 @@ test('a failed raw partition offers a working retry', async () => {
 test('filtered topology WebGL maps each matching claim and lets every shown edge open its evidence', async () => {
   const dom = await page('/?view=topology', null, true);
   const { document, Event } = dom.window;
+  document.querySelector('[aria-label="switch to 3d relationship map"]').click();
   const status = document.querySelector('[aria-label="Filter claim status"]');
   status.value = 'hypothesis';
   status.dispatchEvent(new Event('change', { bubbles: true }));

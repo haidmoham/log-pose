@@ -24,7 +24,7 @@
   function create({ root, state, data, model, commitState }) {
     const { node, append, link, title, svgNode } = globalScope.LogPoseUI;
     const topology = data.market_topology || { claims: [] };
-    let graphMode = '3d';
+    let graphMode = 'flat';
     const graphView = { yaw: 22, tilt: -14, zoom: 2.4 };
     let activeScene = null;
     const claims = topology.claims;

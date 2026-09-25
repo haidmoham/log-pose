@@ -169,7 +169,7 @@
       const section = node('section', '', 'data-coverage');
       const metrics = [
         ['inventory', index.counts.inventory_rows, 'source rows', '14 pinned snapshots · leads'],
-        ['pages', index.counts.pages ?? index.counts.page_snapshots, 'page captures', 'full record trail'],
+        ['pages', index.counts.pages ?? index.counts.page_snapshots, 'page captures', 'retained text + source trail'],
         ['sec', index.counts.sec ?? index.counts.sec_candidates, 'SEC fact candidates', 'selection visible'],
         ['market', index.counts.market_rows ?? index.counts.market_participant_rows, 'market rows', 'participant and date grain'],
         ['topology', index.counts.topology_claims, 'reviewed claims', 'source and review trail']

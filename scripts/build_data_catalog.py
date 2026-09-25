@@ -12,8 +12,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--repository-root", type=Path, default=Path("."))
     parser.add_argument("--web-root", type=Path, default=Path("web"))
-    parser.add_argument("--page-text-limit", type=int, default=6000,
-                        help="plain-text characters per snapshot; 0 includes full text for a local export")
+    parser.add_argument("--page-text-limit", type=int, default=0,
+                        help="plain-text characters per snapshot; 0 includes full retained text")
     args = parser.parse_args()
     with connect() as connection:
         connection.execute("SET TRANSACTION ISOLATION LEVEL REPEATABLE READ READ ONLY")

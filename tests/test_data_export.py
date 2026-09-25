@@ -77,3 +77,9 @@ def test_catalog_reconciles_retained_database_and_partitions():
             assert "raw_html" not in detail
         again, _ = build_data_export(connection, repository_root=Path(__file__).parents[1], page_text_limit=100)
         assert index["build_id"] == again["build_id"]
+        full_index, full_partitions = build_data_export(connection,
+                                                       repository_root=Path(__file__).parents[1])
+        assert full_index["provenance"]["page_text_limit"] == 0
+        assert all(not record["text_truncated"]
+                   for path, payload in full_partitions.items() if path.startswith("data/pages/")
+                   for record in payload["records"])
