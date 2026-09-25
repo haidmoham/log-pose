@@ -53,6 +53,8 @@ npm run build:market-field
 git diff --exit-code -- api/data/market-field-graph.json
 ```
 
+the CI workflow also runs `node --test tests/deployment-health.test.mjs` and an isolated Chromium smoke test. `scripts/check_deployment_health.mjs` accepts `EXPECTED_SHA` (full commit), `PRODUCTION_URL`, `ALIAS_URL`, optional `DEPLOYMENT_URL`, and `REPORT_PATH`; it only permits this project's public origins. use the production workflow's manual dispatch to repeat a release check with its exact commit and deployment URL.
+
 for database integration tests, set `LOG_POSE_TEST_DATABASE_URL` to a disposable PostgreSQL database: the fixtures delete its records. for read-only reconciliation with a prepared evidence clone, use the different variable `LOG_POSE_CATALOG_TEST_DATABASE_URL` and the named catalog reconciliation test. never reuse the prepared clone as the disposable fixture database.
 
 the market-field performance evidence and response limits are in [market-field-service.md](market-field-service.md). browser throttling is emulation, not physical-device measurement. production checks must not imply that an unmeasured device or live latency budget was tested.
