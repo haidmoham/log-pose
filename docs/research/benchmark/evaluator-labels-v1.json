@@ -1,0 +1,487 @@
+{
+  "schema_version": "1.0",
+  "version": "evaluator-labels-v1",
+  "labels": {
+    "case-01": {
+      "hidden_answer_or_outcome_ref": "evaluator-labels-v1.json#/labels/case-01",
+      "objective_status": "source_stated_marketing_claim",
+      "independent_review": "unavailable",
+      "note": "Homepage text can support only an attributed statement, never economic leadership.",
+      "supplied_prediction": {
+        "abstain": false,
+        "artifact_ids": [
+          "page:28"
+        ],
+        "answer_text": null
+      },
+      "artifacts": [
+        {
+          "artifact_id": "page:28",
+          "artifact_type": "page",
+          "path": "data/pages/datadog.json",
+          "sha256": "a406ba0ef71e15b8d2a6d2a0b1a7e156369338ac4cb3f1ba19aba15e2c428cb8",
+          "partition_sha256": "ae4b09894a35050ed7104fc7cffc8c71d41828906f7ba2dd241e248e8abdb0c2",
+          "source_hash": "1cbc2f5b61cec83c9ccb9e3e9091cc9b198c74edf99d968b064ef2492c265111",
+          "capture_at": "2021-12-07T22:18:21+00:00",
+          "ingested_at": "2026-09-23T16:39:07.311271+00:00"
+        }
+      ]
+    },
+    "case-02": {
+      "hidden_answer_or_outcome_ref": "evaluator-labels-v1.json#/labels/case-02",
+      "objective_status": "company_homepage_statement",
+      "independent_review": "unavailable",
+      "note": "Archived page capture supports a historical source observation; ingestion occurred later.",
+      "supplied_prediction": {
+        "abstain": false,
+        "artifact_ids": [
+          "page:16"
+        ],
+        "answer_text": null
+      },
+      "artifacts": [
+        {
+          "artifact_id": "page:16",
+          "artifact_type": "page",
+          "path": "data/pages/gitlab.json",
+          "sha256": "ea9bf7df0b3b99a15196a4250dead7f997c307375fc93d6921f33c4b57c4898f",
+          "partition_sha256": "034d9212f3f4a32d8983fce4dc4bc644906f45fbb90dea14920f6168d7e36a1c",
+          "source_hash": "ef8ab62a084b26fd446c9433ae13f49765cf1d478fbc390ba1d54970a9fd91b8",
+          "capture_at": "2021-12-09T03:54:48+00:00",
+          "ingested_at": "2026-09-23T16:36:41.292839+00:00"
+        }
+      ]
+    },
+    "case-03": {
+      "hidden_answer_or_outcome_ref": "evaluator-labels-v1.json#/labels/case-03",
+      "objective_status": "company_homepage_statement",
+      "independent_review": "unavailable",
+      "note": "Use a date-bounded archived page and retain its exact partition hash.",
+      "supplied_prediction": {
+        "abstain": false,
+        "artifact_ids": [
+          "page:12"
+        ],
+        "answer_text": null
+      },
+      "artifacts": [
+        {
+          "artifact_id": "page:12",
+          "artifact_type": "page",
+          "path": "data/pages/dbt-labs.json",
+          "sha256": "d5112ed8c8725ae1fdd11240075e38b4fdcb4134cf976e20a19972efdbc85f4b",
+          "partition_sha256": "88c72b49fd3103bd82258bec0ad817911060cd6866738b73c161148733aa1992",
+          "source_hash": "f242b5c92f356603a48a8cf85ac65490a3c16505fbd9b3ee0932129079adfd3e",
+          "capture_at": "2021-12-05T17:21:48+00:00",
+          "ingested_at": "2026-09-23T16:36:27.057853+00:00"
+        }
+      ]
+    },
+    "case-04": {
+      "hidden_answer_or_outcome_ref": "evaluator-labels-v1.json#/labels/case-04",
+      "objective_status": "company_homepage_statement",
+      "independent_review": "unavailable",
+      "note": "Archived page is an evidence locator, not validation of product quality.",
+      "supplied_prediction": {
+        "abstain": false,
+        "artifact_ids": [
+          "page:63"
+        ],
+        "answer_text": null
+      },
+      "artifacts": [
+        {
+          "artifact_id": "page:63",
+          "artifact_type": "page",
+          "path": "data/pages/snowflake.json",
+          "sha256": "71453eb319974a7178fea0361a2bfd6d6b91198f9f4e3768bbff3588661be0a7",
+          "partition_sha256": "97949dc85a2e8d5d242b37636f4d355653da44c6d9757334f797756042da0a91",
+          "source_hash": "ab43c161bb53180d9af3873e3bb38bc24083e8d8a4bf2a153a3bee1e6300f6c9",
+          "capture_at": "2021-12-04T08:31:38+00:00",
+          "ingested_at": "2026-09-23T16:43:52.140895+00:00"
+        }
+      ]
+    },
+    "case-05": {
+      "hidden_answer_or_outcome_ref": "evaluator-labels-v1.json#/labels/case-05",
+      "objective_status": "historical_company_page",
+      "independent_review": "unavailable",
+      "note": "Discontinued company page is retained; current survival is not inferred.",
+      "supplied_prediction": {
+        "abstain": false,
+        "artifact_ids": [
+          "page:27"
+        ],
+        "answer_text": null
+      },
+      "artifacts": [
+        {
+          "artifact_id": "page:27",
+          "artifact_type": "page",
+          "path": "data/pages/invision.json",
+          "sha256": "0c04922971341a4fe22ddda1bfbf8b101a79c54bdba802f67fff94679f89c372",
+          "partition_sha256": "e177850b72bb3b16be2848e0d0fb24a66302b4a356395d1f61be5f11fb4b5a4e",
+          "source_hash": "d5a36953b78f1335bf5c5b384cfb6729bf56172f6cef6cd1022ed199f20273f9",
+          "capture_at": "2021-12-08T00:47:48+00:00",
+          "ingested_at": "2026-09-23T16:38:21.176301+00:00"
+        }
+      ]
+    },
+    "case-06": {
+      "hidden_answer_or_outcome_ref": "evaluator-labels-v1.json#/labels/case-06",
+      "objective_status": "insufficient_retained_text",
+      "independent_review": "unavailable",
+      "note": "The retained 32-character capture does not support a material financing claim.",
+      "supplied_prediction": {
+        "abstain": true,
+        "artifact_ids": [
+          "page:86"
+        ],
+        "answer_text": null
+      },
+      "artifacts": [
+        {
+          "artifact_id": "page:86",
+          "artifact_type": "page",
+          "path": "data/pages/gitlab.json",
+          "sha256": "7a6703435dec53e5e1be17cf034a03332698c70b0a11383c0b74b8c1370c7308",
+          "partition_sha256": "034d9212f3f4a32d8983fce4dc4bc644906f45fbb90dea14920f6168d7e36a1c",
+          "source_hash": "108976a1436e2da7279c9f39d69d3b8c2eb26649703461b170a4aaf679dd2957",
+          "capture_at": "2022-10-07T11:41:06+00:00",
+          "ingested_at": "2026-09-23T17:05:59.275840+00:00"
+        }
+      ]
+    },
+    "case-07": {
+      "hidden_answer_or_outcome_ref": "evaluator-labels-v1.json#/labels/case-07",
+      "objective_status": "insufficient_retained_text",
+      "independent_review": "unavailable",
+      "note": "A second short capture guards against treating incomplete text as absence.",
+      "supplied_prediction": {
+        "abstain": true,
+        "artifact_ids": [
+          "page:72"
+        ],
+        "answer_text": null
+      },
+      "artifacts": [
+        {
+          "artifact_id": "page:72",
+          "artifact_type": "page",
+          "path": "data/pages/gitlab.json",
+          "sha256": "7a6703435dec53e5e1be17cf034a03332698c70b0a11383c0b74b8c1370c7308",
+          "partition_sha256": "034d9212f3f4a32d8983fce4dc4bc644906f45fbb90dea14920f6168d7e36a1c",
+          "source_hash": "c813a67f9a37c0b4d8517cf3c7e775114ebfdc6d4550ceebf88b466ead7c158a",
+          "capture_at": "2022-12-09T18:15:36+00:00",
+          "ingested_at": "2026-09-23T16:50:45.859105+00:00"
+        }
+      ]
+    },
+    "case-08": {
+      "hidden_answer_or_outcome_ref": "evaluator-labels-v1.json#/labels/case-08",
+      "objective_status": "captured_before_but_ingested_after_cutoff",
+      "independent_review": "unavailable",
+      "note": "Public archive capture predates the cutoff; Log Pose ingestion does not.",
+      "supplied_prediction": {
+        "abstain": false,
+        "artifact_ids": [
+          "page:70"
+        ],
+        "answer_text": null
+      },
+      "artifacts": [
+        {
+          "artifact_id": "page:70",
+          "artifact_type": "page",
+          "path": "data/pages/datadog.json",
+          "sha256": "3c27142519950d33e8ef6c76a9121d639168df3595cd3766d78f2c7524143221",
+          "partition_sha256": "ae4b09894a35050ed7104fc7cffc8c71d41828906f7ba2dd241e248e8abdb0c2",
+          "source_hash": "40c881670f1d47d572a3668ae5fe186fc979cfe03b22f8463030f26cd5ce383f",
+          "capture_at": "2024-12-14T04:40:34+00:00",
+          "ingested_at": "2026-09-23T16:44:12.545576+00:00"
+        }
+      ]
+    },
+    "case-09": {
+      "hidden_answer_or_outcome_ref": "evaluator-labels-v1.json#/labels/case-09",
+      "objective_status": "old_publication_date_without_version_proof",
+      "independent_review": "unavailable",
+      "note": "Old page publication date does not prove that retained 2026 bytes existed in 2022.",
+      "supplied_prediction": {
+        "abstain": false,
+        "artifact_ids": [],
+        "answer_text": null
+      },
+      "artifacts": [
+        {
+          "artifact_id": "dbt-series-d-2022",
+          "artifact_type": "topology_html",
+          "path": "docs/research/source-artifacts/topology/dbt-series-d-2022.html",
+          "sha256": "64694c906f3c8be8b3fd90d88725fe3598a896533adf3123a24dc684610ffece",
+          "published_at": "2022-02-24",
+          "event_at": "2022-02-24",
+          "retrieved_at": "2026-09-24T17:50:30+00:00"
+        }
+      ]
+    },
+    "case-10": {
+      "hidden_answer_or_outcome_ref": "evaluator-labels-v1.json#/labels/case-10",
+      "objective_status": "post_cutoff_filing",
+      "independent_review": "unavailable",
+      "note": "FY2024 period end is not filing availability; published 2025-02-20.",
+      "supplied_prediction": {
+        "abstain": false,
+        "artifact_ids": [],
+        "answer_text": null
+      },
+      "artifacts": [
+        {
+          "artifact_id": "datadog-2024-10k",
+          "artifact_type": "topology_html",
+          "path": "docs/research/source-artifacts/topology/datadog-2024-10k.html",
+          "sha256": "711ee14f238f3e12597a03d889b7d8c29785eee865e1cecd8e20e0578a67facf",
+          "published_at": "2025-02-20",
+          "event_at": null,
+          "retrieved_at": "2026-09-24T17:50:30+00:00"
+        }
+      ]
+    },
+    "case-11": {
+      "hidden_answer_or_outcome_ref": "evaluator-labels-v1.json#/labels/case-11",
+      "objective_status": "SEC_fact_retrieved_later",
+      "independent_review": "unavailable",
+      "note": "Filed date predates cutoff, but current companyfacts artifact was observed in 2026.",
+      "supplied_prediction": {
+        "abstain": false,
+        "artifact_ids": [],
+        "answer_text": null
+      },
+      "artifacts": [
+        {
+          "artifact_id": "sec:175",
+          "artifact_type": "sec_fact",
+          "path": "data/sec/datadog.json",
+          "sha256": "d3c4561fd839e25b1cde245ff3ca1f821b2a70e70d34688c5ede40bbc0f600a2",
+          "partition_sha256": "1ade0712dff46c81d4e14e1d0cdfdd43234d1d058fa1662036d4b7b02e76100b",
+          "event_at": "2021-12-31",
+          "filed_at": "2024-02-23",
+          "ingested_at": "2026-09-23T17:19:53.283522+00:00"
+        }
+      ]
+    },
+    "case-12": {
+      "hidden_answer_or_outcome_ref": "evaluator-labels-v1.json#/labels/case-12",
+      "objective_status": "historical_filing_version_proof",
+      "independent_review": "unavailable",
+      "note": "Filing date predates cutoff; this retained local byte copy was retrieved in 2026.",
+      "supplied_prediction": {
+        "abstain": false,
+        "artifact_ids": [],
+        "answer_text": null
+      },
+      "artifacts": [
+        {
+          "artifact_id": "snowflake-fy2024-10k",
+          "artifact_type": "topology_html",
+          "path": "docs/research/source-artifacts/topology/snowflake-fy2024-10k.html",
+          "sha256": "6c1f7dc96b0e484160a38025fcf2895a016a02a5f918ad5fb2250476e191a5a6",
+          "published_at": "2024-03-26",
+          "event_at": null,
+          "retrieved_at": "2026-09-24T17:50:30+00:00"
+        }
+      ]
+    },
+    "case-13": {
+      "hidden_answer_or_outcome_ref": "evaluator-labels-v1.json#/labels/case-13",
+      "objective_status": "event_before_cutoff_publication_before_cutoff_but_version_unknown",
+      "independent_review": "unavailable",
+      "note": "Event and publication times are not proof the exact retained mutable bytes were present then.",
+      "supplied_prediction": {
+        "abstain": false,
+        "artifact_ids": [],
+        "answer_text": null
+      },
+      "artifacts": [
+        {
+          "artifact_id": "dbt-series-d-2022",
+          "artifact_type": "topology_html",
+          "path": "docs/research/source-artifacts/topology/dbt-series-d-2022.html",
+          "sha256": "64694c906f3c8be8b3fd90d88725fe3598a896533adf3123a24dc684610ffece",
+          "published_at": "2022-02-24",
+          "event_at": "2022-02-24",
+          "retrieved_at": "2026-09-24T17:50:30+00:00"
+        }
+      ]
+    },
+    "case-14": {
+      "hidden_answer_or_outcome_ref": "evaluator-labels-v1.json#/labels/case-14",
+      "objective_status": "2026_topology_review_not_known_at_cutoff",
+      "independent_review": "unavailable",
+      "note": "The 2022 announcement and 2026 review are separate records; the review must not enter 2024 state.",
+      "supplied_prediction": {
+        "abstain": false,
+        "artifact_ids": [],
+        "answer_text": null
+      },
+      "artifacts": [
+        {
+          "artifact_id": "dbt-series-d-2022",
+          "artifact_type": "topology_html",
+          "path": "docs/research/source-artifacts/topology/dbt-series-d-2022.html",
+          "sha256": "64694c906f3c8be8b3fd90d88725fe3598a896533adf3123a24dc684610ffece",
+          "published_at": "2022-02-24",
+          "event_at": "2022-02-24",
+          "retrieved_at": "2026-09-24T17:50:30+00:00"
+        },
+        {
+          "artifact_id": "topology-review-v1",
+          "artifact_type": "review_bundle",
+          "path": "docs/research/market-topology.json",
+          "sha256": "dfd29fad49146550aac5f292ac1e6db68b5413721ca583cc143a6c0ac5b716c9",
+          "recorded_at": "2026-09-24"
+        }
+      ]
+    },
+    "case-15": {
+      "hidden_answer_or_outcome_ref": "evaluator-labels-v1.json#/labels/case-15",
+      "objective_status": "hypothesis_not_supported_relationship",
+      "independent_review": "unavailable",
+      "note": "A reviewed hypothesis remains a hypothesis and includes premises published after cutoff.",
+      "supplied_prediction": {
+        "abstain": false,
+        "artifact_ids": [],
+        "answer_text": null
+      },
+      "artifacts": [
+        {
+          "artifact_id": "datadog-2024-10k",
+          "artifact_type": "topology_html",
+          "path": "docs/research/source-artifacts/topology/datadog-2024-10k.html",
+          "sha256": "711ee14f238f3e12597a03d889b7d8c29785eee865e1cecd8e20e0578a67facf",
+          "published_at": "2025-02-20",
+          "event_at": null,
+          "retrieved_at": "2026-09-24T17:50:30+00:00"
+        },
+        {
+          "artifact_id": "snowflake-fy2024-10k",
+          "artifact_type": "topology_html",
+          "path": "docs/research/source-artifacts/topology/snowflake-fy2024-10k.html",
+          "sha256": "6c1f7dc96b0e484160a38025fcf2895a016a02a5f918ad5fb2250476e191a5a6",
+          "published_at": "2024-03-26",
+          "event_at": null,
+          "retrieved_at": "2026-09-24T17:50:30+00:00"
+        },
+        {
+          "artifact_id": "topology-hypothesis-review-v1",
+          "artifact_type": "review_bundle",
+          "path": "docs/research/market-topology.json",
+          "sha256": "dfd29fad49146550aac5f292ac1e6db68b5413721ca583cc143a6c0ac5b716c9",
+          "recorded_at": "2026-09-24"
+        }
+      ]
+    },
+    "case-16": {
+      "hidden_answer_or_outcome_ref": "evaluator-labels-v1.json#/labels/case-16",
+      "objective_status": "identity_alias_review_arrived_later",
+      "independent_review": "unavailable",
+      "note": "Challenge identity review does not prove the 2024 identity decision was known then.",
+      "supplied_prediction": {
+        "abstain": true,
+        "artifact_ids": [],
+        "answer_text": null
+      },
+      "artifacts": [
+        {
+          "artifact_id": "challenge-identity-reviews-v1",
+          "artifact_type": "review_bundle",
+          "path": "docs/research/challenge-identity-reviews.json",
+          "sha256": "54a8ab771a7e46e7ed241b0e0449387998ce404111c68811fd6a7ccb02dcbfcd",
+          "recorded_at": "2026-09-24"
+        }
+      ]
+    },
+    "case-17": {
+      "hidden_answer_or_outcome_ref": "evaluator-labels-v1.json#/labels/case-17",
+      "objective_status": "no_claim_found_in_frozen_slice",
+      "independent_review": "unavailable",
+      "note": "No retained edge is not evidence that no relationship exists.",
+      "supplied_prediction": {
+        "abstain": true,
+        "artifact_ids": [],
+        "answer_text": null
+      },
+      "artifacts": []
+    },
+    "case-18": {
+      "hidden_answer_or_outcome_ref": "evaluator-labels-v1.json#/labels/case-18",
+      "objective_status": "contradictory_pair_not_retained",
+      "independent_review": "unavailable",
+      "note": "The current topology export has support-only sources; no contradiction pair is retained.",
+      "supplied_prediction": {
+        "abstain": true,
+        "artifact_ids": [],
+        "answer_text": null
+      },
+      "artifacts": []
+    },
+    "case-19": {
+      "hidden_answer_or_outcome_ref": "evaluator-labels-v1.json#/labels/case-19",
+      "objective_status": "accepted_hypothesis_not_calibrated_probability",
+      "independent_review": "unavailable",
+      "note": "Review status is a qualitative decision, not a calibrated edge probability.",
+      "supplied_prediction": {
+        "abstain": false,
+        "artifact_ids": [],
+        "answer_text": null
+      },
+      "artifacts": [
+        {
+          "artifact_id": "datadog-2024-10k",
+          "artifact_type": "topology_html",
+          "path": "docs/research/source-artifacts/topology/datadog-2024-10k.html",
+          "sha256": "711ee14f238f3e12597a03d889b7d8c29785eee865e1cecd8e20e0578a67facf",
+          "published_at": "2025-02-20",
+          "event_at": null,
+          "retrieved_at": "2026-09-24T17:50:30+00:00"
+        },
+        {
+          "artifact_id": "snowflake-fy2024-10k",
+          "artifact_type": "topology_html",
+          "path": "docs/research/source-artifacts/topology/snowflake-fy2024-10k.html",
+          "sha256": "6c1f7dc96b0e484160a38025fcf2895a016a02a5f918ad5fb2250476e191a5a6",
+          "published_at": "2024-03-26",
+          "event_at": null,
+          "retrieved_at": "2026-09-24T17:50:30+00:00"
+        },
+        {
+          "artifact_id": "topology-hypothesis-review-v1",
+          "artifact_type": "review_bundle",
+          "path": "docs/research/market-topology.json",
+          "sha256": "dfd29fad49146550aac5f292ac1e6db68b5413721ca583cc143a6c0ac5b716c9",
+          "recorded_at": "2026-09-24"
+        }
+      ]
+    },
+    "case-20": {
+      "hidden_answer_or_outcome_ref": "evaluator-labels-v1.json#/labels/case-20",
+      "objective_status": "co_listing_is_not_economic_relationship",
+      "independent_review": "unavailable",
+      "note": "A shared category in an immutable inventory is a navigation lead, not a relationship.",
+      "supplied_prediction": {
+        "abstain": false,
+        "artifact_ids": [],
+        "answer_text": null
+      },
+      "artifacts": [
+        {
+          "artifact_id": "cncf-2024-pinned-snapshot",
+          "artifact_type": "discovery_snapshot",
+          "path": "docs/research/source-artifacts/discovery/cncf-2024-e4f13c918275.yml",
+          "sha256": "f1036cb6b8e9b9ef7647a0203ac349ba308173bf407f79cc8ccd4d4a2e7d46fd",
+          "commit_at": "2024-12-31T14:58:22Z",
+          "source_url": "https://github.com/cncf/landscape/blob/e4f13c918275affaefb3dbe1a21a4a8e38ee3842/landscape.yml"
+        }
+      ]
+    }
+  }
+}

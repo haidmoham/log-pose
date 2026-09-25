@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0",
+  "version": "prediction-fixtures-v1",
+  "fixture_type": "synthetic_metric_contract_only",
+  "warning": "These rows are invented software test inputs. They are not company forecasts, resolved outcomes, or benchmark performance.",
+  "predictions": [
+    {
+      "fixture_id": "synthetic-resolved-event",
+      "probability": 0.75,
+      "resolution_status": "event_observed"
+    },
+    {
+      "fixture_id": "synthetic-complete-no-event",
+      "probability": 0.4,
+      "resolution_status": "horizon_complete_no_event"
+    },
+    {
+      "fixture_id": "synthetic-censored",
+      "probability": 0.6,
+      "resolution_status": "censored"
+    },
+    {
+      "fixture_id": "synthetic-horizon-unelapsed",
+      "probability": 0.3,
+      "resolution_status": "horizon_unelapsed"
+    }
+  ]
+}
