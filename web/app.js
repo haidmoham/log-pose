@@ -476,7 +476,7 @@ function render() {
 
 tabs.forEach(button => button.addEventListener('click', () => {
   const view = button.dataset.view;
-  commitState({ view, company: view === 'explore' ? null : state.company,
+  commitState({ view, company: view === 'explore' || view === 'data' ? null : state.company,
     selectedCandidate: null, selectedProvider: null }, { top: true });
 }));
 

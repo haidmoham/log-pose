@@ -48,11 +48,11 @@
         inventoryRecords = payload.records;
         cachedRecords = null;
         inventoryLoading = false;
-        if (state.view === 'data') render();
+        if (state.view === 'data') commitState({}, { replace: true });
       }).catch(error => {
         inventoryError = error.message;
         inventoryLoading = false;
-        if (state.view === 'data') render();
+        if (state.view === 'data') commitState({}, { replace: true });
       });
     }
 
@@ -108,9 +108,32 @@
           || state.dataYear !== 'all') return matches;
       const byFamily = new Map(FAMILY_ORDER.map(family => [family,
         matches.filter(record => record.family === family)]));
+      const inventory = byFamily.get('inventory').filter(record =>
+        candidateById.get(record.candidate_id)?.pilot_match);
+      inventory.sort((left, right) => right.year - left.year || left.name.localeCompare(right.name));
+      const seenInventoryCandidates = new Set();
+      byFamily.set('inventory', inventory.filter(item => {
+        if (seenInventoryCandidates.has(item.candidate_id)) return false;
+        seenInventoryCandidates.add(item.candidate_id);
+        return true;
+      }));
+      const distinctCompanies = items => {
+        const seen = new Set();
+        return items.filter(item => {
+          if (seen.has(item.company_slug)) return false;
+          seen.add(item.company_slug);
+          return true;
+        });
+      };
+      byFamily.set('pages', distinctCompanies(byFamily.get('pages')
+        .filter(item => item.selected_for_pilot)
+        .sort((left, right) => right.captured_at.localeCompare(left.captured_at))));
+      byFamily.set('sec', distinctCompanies(byFamily.get('sec')
+        .filter(item => item.selected && item.year === 2024)
+        .sort((left, right) => left.company_name.localeCompare(right.company_name))));
+      byFamily.set('market', byFamily.get('market').sort((left, right) => right.year - left.year));
       const balanced = [];
-      const largest = Math.max(...[...byFamily.values()].map(items => items.length));
-      for (let row = 0; row < largest; row++) {
+      for (let row = 0; row < 4; row++) {
         for (const family of FAMILY_ORDER) {
           const item = byFamily.get(family)[row];
           if (item) balanced.push(item);
@@ -146,9 +169,9 @@
       const section = node('section', '', 'data-coverage');
       const metrics = [
         ['inventory', index.counts.inventory_rows, 'source rows', '14 pinned snapshots · leads'],
-        ['pages', index.counts.pages, 'page captures', 'full record trail'],
-        ['sec', index.counts.sec, 'SEC fact candidates', 'selection visible'],
-        ['market', index.counts.market_rows, 'market rows', 'participant and date grain'],
+        ['pages', index.counts.pages ?? index.counts.page_snapshots, 'page captures', 'full record trail'],
+        ['sec', index.counts.sec ?? index.counts.sec_candidates, 'SEC fact candidates', 'selection visible'],
+        ['market', index.counts.market_rows ?? index.counts.market_participant_rows, 'market rows', 'participant and date grain'],
         ['topology', index.counts.topology_claims, 'reviewed claims', 'source and review trail']
       ];
       for (const [family, value, label, note] of metrics) {
@@ -523,25 +546,29 @@
       root.append(deskToy(), coverage(), controls());
       const context = companyContext();
       if (context) root.append(context);
-      if (!inventoryRecords && !inventoryError) loadInventory();
+      if ((state.dataFamily === 'all' || state.dataFamily === 'inventory')
+          && !inventoryRecords && !inventoryError) loadInventory();
       if (inventoryError) {
         const retry = node('button', 'retry inventory index', 'quiet-button');
         retry.type = 'button';
         retry.addEventListener('click', () => {
           inventoryError = null;
           loadInventory();
-          render();
+          commitState({}, { replace: true });
         });
         root.append(append(node('p', '', 'error'), node('span', inventoryError), retry));
       }
       const hits = matchingRecords();
+      const openingSet = state.dataFamily === 'all' && !state.dataQuery.trim()
+        && state.dataCompany === 'all' && state.dataYear === 'all';
       const resultArea = node('div', '', 'data-workspace');
       const resultList = node('section', '', 'data-results');
       const header = node('div', '', 'data-results-head');
-      header.append(node('p', `${formatCount(hits.length)} matching records`
-        + (!inventoryRecords ? ' · loading full inventory index' : ''), 'eyebrow'),
-        node('p', state.dataFamily === 'all' && !state.dataQuery
-          ? 'A balanced opening set is shown below. Choose a family or search to narrow the full record set.'
+      header.append(node('p', `${formatCount(hits.length)} ${openingSet ? 'starting records' : 'matching records'}`
+        + (!inventoryRecords && (state.dataFamily === 'all' || state.dataFamily === 'inventory')
+          ? ' · loading full inventory index' : ''), 'eyebrow'),
+        node('p', openingSet
+          ? 'Recent and reviewed entry points across the five record families. Search or choose a lens to work through the full retained set.'
           : 'Filters use record metadata. Open a result to read the retained detail.', 'muted'));
       resultList.append(header);
       const selected = hits.find(item => item.id === state.dataRecord);

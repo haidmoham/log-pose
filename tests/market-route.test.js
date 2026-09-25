@@ -80,8 +80,69 @@ async function page(route = '/', failOncePath = null, mockWebgl = false) {
   return dom;
 }
 
-test('canonical route exposes 2020–2026 raw rows and keeps company years separate', async () => {
+test('canonical route searches retained evidence and opens a full page record', async () => {
   const dom = await page();
+  const { document, Event } = dom.window;
+  assert.match(document.querySelector('#view h2').textContent, /research the record/i);
+  assert.match(document.querySelector('.data-coverage').textContent, /18,076/);
+  await waitFor(() => document.querySelector('.data-results-head')?.textContent.includes('starting records')
+    && !document.querySelector('.data-results-head')?.textContent.includes('loading full inventory'));
+  const family = document.querySelector('[aria-label="Record family"]');
+  family.value = 'pages';
+  family.dispatchEvent(new Event('change', { bubbles: true }));
+  assert.match(document.querySelector('.data-results-head').textContent, /89 matching records/);
+  document.querySelector('.data-result').click();
+  await waitFor(() => document.querySelector('.data-inspector .data-reading')?.textContent.length > 500);
+  assert.match(document.querySelector('.data-inspector').textContent, /captured text/i);
+  assert.equal(new URL(dom.window.location.href).searchParams.get('dataFamily'), 'pages');
+  const reloaded = await page(dom.window.location.pathname + dom.window.location.search);
+  await waitFor(() => reloaded.window.document.querySelector('.data-inspector .data-reading')?.textContent.length > 500);
+  dom.window.close();
+  reloaded.window.close();
+});
+
+test('research desk drills from untagged inventory and SEC candidates into retained detail', async () => {
+  const inventory = await page('/?dataFamily=inventory&dataQuery=Airship');
+  const inventoryDocument = inventory.window.document;
+  await waitFor(() => inventoryDocument.querySelector('.data-results-head')?.textContent.includes('matching records')
+    && !inventoryDocument.querySelector('.data-results-head')?.textContent.includes('loading full inventory'));
+  assert.match(inventoryDocument.querySelector('.data-results').textContent, /Airship/);
+  inventoryDocument.querySelector('.data-result').click();
+  await waitFor(() => inventoryDocument.querySelector('.data-inspector-body .data-facts'));
+  assert.match(inventoryDocument.querySelector('.data-inspector').textContent, /unmapped_category/);
+  assert.match(inventoryDocument.querySelector('.data-inspector').textContent, /No candidate tag or reviewed company link/);
+  inventory.window.close();
+
+  const sec = await page('/?dataFamily=sec&dataCompany=palantir&dataYear=2021');
+  const secDocument = sec.window.document;
+  assert.match(secDocument.querySelector('.data-results-head').textContent, /matching records/);
+  secDocument.querySelector('.data-result').click();
+  await waitFor(() => secDocument.querySelector('.data-inspector-body')?.textContent.includes('Selection policy'));
+  assert.match(secDocument.querySelector('.data-inspector').textContent, /accession/i);
+  assert(secDocument.querySelectorAll('.data-alternative').length > 0);
+  sec.window.close();
+});
+
+test('research desk market point opens participant detail and topology shows review history', async () => {
+  const market = await page('/?dataFamily=market');
+  const marketDocument = market.window.document;
+  marketDocument.querySelector('.data-result').click();
+  await waitFor(() => marketDocument.querySelector('.data-market-chart svg'));
+  assert.match(marketDocument.querySelector('.data-market-day').textContent, /participant/i);
+  marketDocument.querySelector('.data-participant-button').click();
+  assert.match(marketDocument.querySelector('.data-participant-breakdown').textContent, /tape a shares/i);
+  market.window.close();
+
+  const topology = await page('/?dataFamily=topology');
+  const topologyDocument = topology.window.document;
+  topologyDocument.querySelector('.data-result').click();
+  assert.match(topologyDocument.querySelector('.data-inspector').textContent, /review history/i);
+  assert.match(topologyDocument.querySelector('.data-inspector').textContent, /source/i);
+  topology.window.close();
+});
+
+test('source inventory route exposes 2020–2026 raw rows and keeps company years separate', async () => {
+  const dom = await page('/?view=explore');
   const { document, Event } = dom.window;
   assert.match(document.querySelector('#view h2').textContent, /explore software sources/i);
   assert.match(document.querySelector('#view').textContent, /2020–2026/);
@@ -142,7 +203,7 @@ test('canonical route exposes 2020–2026 raw rows and keeps company years separ
 });
 
 test('a failed raw partition offers a working retry', async () => {
-  const dom = await page('/', '/discovery-inventory/cncf-2026.json');
+  const dom = await page('/?view=explore', '/discovery-inventory/cncf-2026.json');
   const { document } = dom.window;
   await waitFor(() => document.querySelector('.full-inventory [role="status"]')
     ?.textContent.includes('Could not load'));

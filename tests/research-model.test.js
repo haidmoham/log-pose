@@ -102,6 +102,13 @@ test('legacy explore URLs remain explore routes after the data desk becomes defa
     ['cncf-2026', 'cncf-2024']).inventoryArtifact, 'cncf-2024');
 });
 
+test('a pinned comparison does not turn a data-desk URL into a legacy explore route', () => {
+  const slugs = new Set(['pilot']);
+  const state = model.parseUrlState('', slugs, [2021, 2024], [], slugs);
+  const url = model.toUrlParams({ ...state, compareSlugs: ['pilot'] });
+  assert.equal(model.parseUrlState('?' + url, slugs, [2021, 2024], [], slugs).view, 'data');
+});
+
 test('market route keeps inventory controls separate from the SEC period', () => {
   const artifacts = ['cncf-2026', 'cncf-2020', 'lfai-2020'];
   const parsed = model.parseUrlState(
