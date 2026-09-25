@@ -376,9 +376,9 @@
       ? 'none' : /^20\d{2}$/.test(params.get('temporalCompareYear') || '')
         ? params.get('temporalCompareYear') : 'auto';
     const temporalMode = ['snapshot', 'accumulated'].includes(params.get('temporalMode'))
-      ? params.get('temporalMode') : 'snapshot';
+      ? params.get('temporalMode') : 'accumulated';
     const temporalSource = ['cncf', 'lfai'].includes(params.get('temporalSource'))
-      ? params.get('temporalSource') : 'lfai';
+      ? params.get('temporalSource') : 'cncf';
     const requestedTemporalCategory = params.get('temporalCategory') || 'all';
     const temporalCategory = requestedTemporalCategory.length <= 120
       && !/[\x00-\x1f]/.test(requestedTemporalCategory) ? requestedTemporalCategory : 'all';
@@ -462,9 +462,9 @@
         if (selectedClaim) params.set('selectedClaim', selectedClaim);
       } else if (state.topologyLayer === 'temporal') {
         params.set('topologyLayer', 'temporal');
-        params.set('temporalSource', state.temporalSource || 'lfai');
+        params.set('temporalSource', state.temporalSource || 'cncf');
         params.set('temporalYear', state.temporalYear || '2024');
-        params.set('temporalMode', state.temporalMode || 'snapshot');
+        params.set('temporalMode', state.temporalMode || 'accumulated');
         if (state.temporalCompareYear && state.temporalCompareYear !== 'auto')
           params.set('temporalCompareYear', state.temporalCompareYear);
         if (state.temporalCategory && state.temporalCategory !== 'all')

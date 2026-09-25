@@ -291,7 +291,7 @@ test('temporal atlas opens the retained overview and a selected evidence edge su
     const result = marketFieldApi.handleMarketField(new URLSearchParams(params));
     return { status: result.status, body: result.body };
   };
-  const route = '/?view=topology&topologyLayer=temporal&temporalSource=lfai&temporalYear=2024';
+  const route = '/?view=topology&topologyLayer=temporal&temporalSource=lfai&temporalMode=snapshot&temporalYear=2024';
   const overview = await page(route, null, true, { temporal });
   const overviewDocument = overview.window.document;
   assert(overviewDocument.querySelector('.temporal-workspace'));
@@ -333,13 +333,13 @@ test('temporal inventory gaps stay explicit and late frames cannot replace the s
     const result = marketFieldApi.handleMarketField(new URLSearchParams(params));
     return { status: result.status, body: result.body };
   };
-  const missing = await page('/?view=topology&topologyLayer=temporal&temporalSource=lfai&temporalYear=2019',
+  const missing = await page('/?view=topology&topologyLayer=temporal&temporalSource=lfai&temporalMode=snapshot&temporalYear=2019',
     null, true, { temporal });
   assert.match(missing.window.document.querySelector('.temporal-missing').textContent,
     /does not show that any candidate or relationship ended/i);
   missing.window.close();
 
-  const stale = await page('/?view=topology&topologyLayer=temporal&temporalSource=lfai&temporalYear=2023',
+  const stale = await page('/?view=topology&topologyLayer=temporal&temporalSource=lfai&temporalMode=snapshot&temporalYear=2023',
     null, true, { temporal });
   const requests = stale.window.__marketFieldRequests;
   assert(requests.some(request => request.params.mode === 'frame' && request.params.year === '2023'));
@@ -369,7 +369,7 @@ test('scrubbing keeps the range and dated evidence mounted until the latest fram
     const result = marketFieldApi.handleMarketField(new URLSearchParams(params));
     return { status: result.status, body: result.body };
   };
-  const dom = await page(`/?view=topology&temporalYear=2024&temporalCandidate=${focus}`
+  const dom = await page(`/?view=topology&temporalSource=lfai&temporalMode=snapshot&temporalYear=2024&temporalCandidate=${focus}`
     + `&temporalNeighbor=${neighbor}`, null, true, { temporal });
   const { document, Event } = dom.window;
   const range = document.querySelector('[aria-label="Scrub retained inventory year"]');
@@ -415,10 +415,10 @@ test('a newly selected missing stop replaces the dated graph with an explicit co
     const result = marketFieldApi.handleMarketField(new URLSearchParams(params));
     return { status: result.status, body: result.body };
   };
-  const dom = await page('/?view=topology&temporalYear=2024', null, false, { temporal });
+  const dom = await page('/?view=topology&temporalSource=lfai&temporalMode=snapshot&temporalYear=2024', null, false, { temporal });
   const { document, history, Event } = dom.window;
   assert(document.querySelector('.temporal-graph-panel'));
-  history.pushState(null, '', '/?view=topology&temporalYear=2019');
+  history.pushState(null, '', '/?view=topology&temporalSource=lfai&temporalMode=snapshot&temporalYear=2019');
   dom.window.dispatchEvent(new Event('popstate'));
   await waitFor(() => document.querySelector('.temporal-transition-status')?.dataset.state === 'missing');
   assert.equal(document.querySelector('.temporal-graph-panel'), null);
@@ -436,7 +436,7 @@ test('a failed target retains the last dated frame and a retry can replace it', 
     const result = marketFieldApi.handleMarketField(new URLSearchParams(params));
     return { status: result.status, body: result.body };
   };
-  const dom = await page('/?view=topology&temporalYear=2024', null, false, { temporal });
+  const dom = await page('/?view=topology&temporalSource=lfai&temporalMode=snapshot&temporalYear=2024', null, false, { temporal });
   const { document, Event } = dom.window;
   const range = document.querySelector('[aria-label="Scrub retained inventory year"]');
   const previousFrameId = document.querySelector('.temporal-frame-id').textContent;
@@ -464,7 +464,7 @@ test('a failed timeline clears busy state and its retry restores the controls', 
     const result = marketFieldApi.handleMarketField(new URLSearchParams(params));
     return { status: result.status, body: result.body };
   };
-  const dom = await page('/?view=topology&temporalYear=2024', null, false, { temporal });
+  const dom = await page('/?view=topology&temporalSource=lfai&temporalMode=snapshot&temporalYear=2024', null, false, { temporal });
   const { document } = dom.window;
   assert.equal(document.querySelector('#view').getAttribute('aria-busy'), 'false');
   assert.match(document.querySelector('.temporal-transition-status').textContent,
@@ -530,7 +530,7 @@ test('temporal inspector identifies a frame with no comparison selected', async 
     const result = marketFieldApi.handleMarketField(new URLSearchParams(params));
     return { status: result.status, body: result.body };
   };
-  const dom = await page(`/?view=topology&temporalCandidate=${focus}`
+  const dom = await page(`/?view=topology&temporalSource=lfai&temporalMode=snapshot&temporalCandidate=${focus}`
     + `&temporalNeighbor=${neighbor}&temporalCompareYear=none`, null, false, { temporal });
   await waitFor(() => dom.window.document.querySelector('.temporal-evidence-card'));
   assert.match(dom.window.document.querySelector('.temporal-inspector').textContent,
@@ -964,7 +964,7 @@ test('candidate and neighbor lists request bounded follow-up pages', async () =>
 
 test('reduced motion advances one retained stop without starting playback', async () => {
   const temporal = async params => marketFieldApi.handleMarketField(new URLSearchParams(params));
-  const dom = await page('/?view=topology&topologyLayer=temporal&temporalSource=lfai&temporalYear=2024',
+  const dom = await page('/?view=topology&topologyLayer=temporal&temporalSource=lfai&temporalMode=snapshot&temporalYear=2024',
     null, false, { temporal });
   await waitFor(() => dom.window.document.querySelector('.temporal-play'));
   let playbackTimers = 0;
@@ -975,4 +975,21 @@ test('reduced motion advances one retained stop without starting playback', asyn
   assert.equal(playbackTimers, 0);
   assert.equal(new URL(dom.window.location.href).searchParams.get('temporalYear'), '2025');
   dom.window.close();
+});
+
+
+test('the home route requests the broader accumulated CNCF field', async () => {
+  const requests = [];
+  const temporal = async params => {
+    requests.push(params);
+    return marketFieldApi.handleMarketField(new URLSearchParams(params));
+  };
+  const dom = await page('/', null, true, { temporal });
+  try {
+    await waitFor(() => dom.window.document.querySelector('.temporal-transition-status')?.dataset.state === 'ready');
+    const request = requests.find(item => item.mode === 'frame');
+    assert.equal(request.source, 'cncf');
+    assert.equal(request.temporal_mode, 'accumulated');
+    assert.match(dom.window.document.querySelector('.temporal-frame-summary').textContent, /observed through 2024/);
+  } finally { dom.window.close(); }
 });

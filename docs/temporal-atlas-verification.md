@@ -2,13 +2,13 @@
 
 ## scope and interpretation
 
-the atlas is the default route. select a provider/year, inspect a candidate neighborhood, select a co-listing, and open either retained source row. snapshot and accumulated evidence retain exact provider/year/category joins; inventory time never becomes business-event time. additions and absences describe retained observations. candidates remain unresolved identity leads, and reviewed claims remain a separate present-day view.
+the atlas is the default route, opening CNCF accumulated evidence through 2024. explicit provider and snapshot deep links retain their meaning. select a provider/year, inspect a candidate neighborhood, select a co-listing, and open either retained source row. snapshot and accumulated evidence retain exact provider/year/category joins; inventory time never becomes business-event time. additions and absences describe retained observations. candidates remain unresolved identity leads, and reviewed claims remain a separate present-day view.
 
 the visual direction combines a dark plum workspace, a luminous graph, locally served sans typography, literal-source mono, and a restrained slab main heading. node anchors are computed once for the pinned build. collision relaxation targets separation rather than encoding strength. entering a neighborhood fits its camera; changing its year preserves the camera and anchors. graph distance, brightness and size are display choices. the API owns topology and changes; the browser owns display and interaction.
 
 ## checked locally on 2026-09-25
 
-- `npm run test:dashboard`: 82 tests passed, including exact temporal joins, accumulated evidence, coverage gaps, filters, reproducible frames, deep links, out-of-order responses, route departure, selected identifiers, and reduced-motion single stepping.
+- `npm run test:dashboard`: 84 tests passed, including exact temporal joins, accumulated evidence, coverage gaps, filters, reproducible frames, deep links, out-of-order responses, route departure, selected identifiers, and reduced-motion single stepping.
 - `node --test tests/deployment-health.test.mjs`: 6 passed after integrating the CI changes from `main` through `33e6274`.
 - `PYTHONPATH=src python3 -m pytest -q tests/test_market_field_graph.py`: 5 passed.
 - `PYTHONPATH=src python3 scripts/check_data_health.py`: 6 checked, 0 failed, 2 explicitly not evaluated: semantic truth and prepared-database reconciliation.
@@ -16,6 +16,8 @@ the visual direction combines a dark plum workspace, a luminous graph, locally s
 - Chrome, explicitly authorized after the in-app browser was unavailable: WebGL rendering, overview → Vespa → Dragonfly, keyboard selection, exact supporting rows and source hash, backward/forward year stepping with unchanged camera and retained selection, a missing 2019 stop, and no captured runtime errors.
 - The actual backward step revealed a classification defect: Dragonfly has no support in either 2023 or its comparator. This now retains the identifier with an explicit unsupported state instead of implying a removal. A regression test covers it.
 - Browser viewport override did not change the measured 1960 px viewport. Narrow-screen visual verification is not claimed. Reduced-motion behavior is tested through the route harness; OS-level media emulation is not claimed.
+
+The broader default was checked in Chrome: CNCF accumulated through 2024 exposes 852 candidates and 2,634 retained rows, with 2,500 of 35,870 exact peer connections drawn. Explicit LF AI snapshot links retain their previous meaning.
 
 ## motion review
 
@@ -54,7 +56,7 @@ The delivered MP4 is a composed sequence of actual Chrome captures, not a real-t
 
 Capture four normal 1960×915 viewport images with the authorized browser tool, named:
 
-1. `01-overview.png`: `/`, LF AI 2024 overview.
+1. `01-overview.png`: `/?temporalSource=lfai&temporalMode=snapshot&temporalYear=2024`, LF AI 2024 overview.
 2. `02-neighborhood.png`: keyboard-select the `explore Vespa` graph node.
 3. `03-connection.png`: keyboard-select `inspect Dragonfly, newly observed in selected slice`.
 4. `04-source-row.png`: choose `Dragonfly: Dragonfly · inspect retained row`.

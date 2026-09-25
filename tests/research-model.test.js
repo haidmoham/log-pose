@@ -333,3 +333,16 @@ test('inventory partition validation binds every row to the pinned artifact', ()
     { source: 'cncf', year: 2026, raw_sha256: 'source-hash',
       rows: [{ ...row, artifact_sha256: 'different' }] }), /invalid or duplicate/);
 });
+
+
+test('the atlas defaults to accumulated CNCF evidence and preserves explicit snapshot links', () => {
+  const defaults = model.parseUrlState('', new Set(), [2024]);
+  assert.equal(defaults.temporalSource, 'cncf');
+  assert.equal(defaults.temporalMode, 'accumulated');
+  assert.equal(defaults.temporalYear, '2024');
+  const explicit = model.parseUrlState('?temporalSource=lfai&temporalMode=snapshot', new Set(), [2024]);
+  assert.equal(explicit.temporalSource, 'lfai');
+  assert.equal(explicit.temporalMode, 'snapshot');
+  const serialized = model.toUrlParams({ ...explicit, compareSlugs: [] });
+  assert.equal(model.parseUrlState('?' + serialized, new Set(), [2024]).temporalMode, 'snapshot');
+});

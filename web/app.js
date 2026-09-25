@@ -14,8 +14,8 @@ const state = { view: 'topology', year: 2024, category: 'all', query: '', compan
   topologyListLimit: 40, selectedClaim: null, topologyLayer: 'temporal',
   fieldQuery: '', fieldSource: 'all', fieldYear: 'all', fieldTag: 'all',
   fieldCategory: 'all', fieldIdentity: 'all', fieldCandidate: null, fieldNeighbor: null,
-  temporalSource: 'lfai', temporalYear: '2024', temporalCompareYear: 'auto',
-  temporalMode: 'snapshot', temporalCategory: 'all', temporalQuery: '',
+  temporalSource: 'cncf', temporalYear: '2024', temporalCompareYear: 'auto',
+  temporalMode: 'accumulated', temporalCategory: 'all', temporalQuery: '',
   temporalCandidate: null, temporalNeighbor: null, temporalOffset: 0 };
 let data;
 let discovery;
