@@ -386,6 +386,9 @@
     const temporalOffsetValue = Number(params.get('temporalOffset'));
     const temporalOffset = Number.isSafeInteger(temporalOffsetValue) && temporalOffsetValue >= 0
       ? Math.min(5000, temporalOffsetValue) : 0;
+    const temporalCandidate = safeDataRecord(params.get('temporalCandidate') || '') || null;
+    const temporalNeighbor = temporalCandidate
+      ? safeDataRecord(params.get('temporalNeighbor') || '') || null : null;
     const requestedTopologyYear = params.get('topologySourceYear') || 'all';
     const topologySourceYear = requestedTopologyYear === 'all'
       || /^20(?:20|2[1-6])$/.test(requestedTopologyYear) ? requestedTopologyYear : 'all';
@@ -405,8 +408,7 @@
       temporalSource, temporalYear, temporalCompareYear, temporalMode,
       temporalCategory, temporalQuery,
       temporalOffset,
-      temporalCandidate: safeDataRecord(params.get('temporalCandidate') || '') || null,
-      temporalNeighbor: safeDataRecord(params.get('temporalNeighbor') || '') || null,
+      temporalCandidate, temporalNeighbor,
       topologySourceYear, topologyCategory: choice('topologyCategory', allowedTopologyCategory),
       topologyStatus: choice('topologyStatus', allowedTopologyStatus),
       selectedClaim: safeDataRecord(params.get('selectedClaim') || '') || null };
@@ -472,7 +474,7 @@
         const candidate = safeDataRecord(state.temporalCandidate);
         const neighbor = safeDataRecord(state.temporalNeighbor);
         if (candidate) params.set('temporalCandidate', candidate);
-        if (neighbor) params.set('temporalNeighbor', neighbor);
+        if (candidate && neighbor) params.set('temporalNeighbor', neighbor);
       } else {
         params.set('topologyLayer', 'field');
         if (state.fieldQuery) params.set('fieldQuery', state.fieldQuery.slice(0, 200));

@@ -121,6 +121,19 @@ test('temporal frame pages preserve stable URLs and reject unsafe offsets', () =
   assert.equal(model.parseUrlState('?view=topology&temporalOffset=999999', new Set(), [2024]).temporalOffset, 5000);
 });
 
+test('a temporal neighbor requires a selected candidate', () => {
+  const neighborOnly = model.parseUrlState(
+    '?view=topology&temporalNeighbor=neighbor-id', new Set(), [2024]);
+  assert.equal(neighborOnly.temporalNeighbor, null);
+  assert.equal(new URLSearchParams(model.toUrlParams({ ...neighborOnly,
+    compareSlugs: [] })).has('temporalNeighbor'), false);
+
+  const focused = model.parseUrlState(
+    '?view=topology&temporalCandidate=focus-id&temporalNeighbor=neighbor-id',
+    new Set(), [2024]);
+  assert.equal(focused.temporalNeighbor, 'neighbor-id');
+});
+
 test('relationship claim, status, category, and source year survive a URL round trip', () => {
   const slugs = new Set(['datadog', 'elastic']);
   const parsed = model.parseUrlState(
