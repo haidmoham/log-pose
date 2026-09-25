@@ -383,6 +383,9 @@
     const temporalCategory = requestedTemporalCategory.length <= 120
       && !/[\x00-\x1f]/.test(requestedTemporalCategory) ? requestedTemporalCategory : 'all';
     const temporalQuery = (params.get('temporalQuery') || '').slice(0, 200);
+    const temporalOffsetValue = Number(params.get('temporalOffset'));
+    const temporalOffset = Number.isSafeInteger(temporalOffsetValue) && temporalOffsetValue >= 0
+      ? Math.min(5000, temporalOffsetValue) : 0;
     const requestedTopologyYear = params.get('topologySourceYear') || 'all';
     const topologySourceYear = requestedTopologyYear === 'all'
       || /^20(?:20|2[1-6])$/.test(requestedTopologyYear) ? requestedTopologyYear : 'all';
@@ -401,6 +404,7 @@
       fieldNeighbor: safeDataRecord(params.get('fieldNeighbor') || '') || null,
       temporalSource, temporalYear, temporalCompareYear, temporalMode,
       temporalCategory, temporalQuery,
+      temporalOffset,
       temporalCandidate: safeDataRecord(params.get('temporalCandidate') || '') || null,
       temporalNeighbor: safeDataRecord(params.get('temporalNeighbor') || '') || null,
       topologySourceYear, topologyCategory: choice('topologyCategory', allowedTopologyCategory),
@@ -410,10 +414,7 @@
 
   function toUrlParams(state) {
     const params = new URLSearchParams();
-    if (state.view !== 'data') params.set('view', state.view);
-    if (state.view === 'data' && (state.company || state.compareSlugs.length)) {
-      params.set('view', 'data');
-    }
+    params.set('view', state.view);
     if (state.view !== 'data' && state.view !== 'explore' && state.year) {
       params.set('year', String(state.year));
     }
@@ -467,11 +468,13 @@
         if (state.temporalCategory && state.temporalCategory !== 'all')
           params.set('temporalCategory', state.temporalCategory);
         if (state.temporalQuery) params.set('temporalQuery', state.temporalQuery.slice(0, 200));
+        if (state.temporalOffset > 0) params.set('temporalOffset', String(state.temporalOffset));
         const candidate = safeDataRecord(state.temporalCandidate);
         const neighbor = safeDataRecord(state.temporalNeighbor);
         if (candidate) params.set('temporalCandidate', candidate);
         if (neighbor) params.set('temporalNeighbor', neighbor);
       } else {
+        params.set('topologyLayer', 'field');
         if (state.fieldQuery) params.set('fieldQuery', state.fieldQuery.slice(0, 200));
         if (state.fieldSource !== 'all') params.set('fieldSource', state.fieldSource);
         if (state.fieldYear !== 'all') params.set('fieldYear', state.fieldYear);

@@ -284,6 +284,10 @@ function temporalFrame(params) {
   const eligibleObservations = (candidate, years = selectedYears) => candidate.observations.filter(observation =>
     observation.source === source && years.includes(observation.year)
       && (category === 'all' || observation.source_category === category));
+  const retainedRowCount = years => projection.nodes.reduce((count, candidate) =>
+    count + candidate.observations.filter(item => item.source === source
+      && years.includes(item.year) && (category === 'all' || item.source_category === category))
+      .reduce((sum, item) => sum + item.rows.length, 0), 0);
   const availableCategories = [...new Set(candidates.flatMap(candidate => candidate.observations
     .filter(observation => observation.source === source && selectedYears.includes(observation.year))
     .map(observation => observation.source_category)))].sort();
@@ -315,7 +319,7 @@ function temporalFrame(params) {
   function candidateDescriptor(candidate, years = selectedYears) {
     const observations = eligibleObservations(candidate, years);
     const rows = observations.flatMap(observation => observation.rows);
-    return { id: candidate.id, name: rows[0]?.name || candidate.name,
+    return { id: candidate.id, name: rows[0]?.name || `unobserved candidate ${candidate.id.slice(0, 8)}`,
       position: layout.positions[candidate.id],
       description: rows.find(row => row.description)?.description || '',
       observed_years: [...new Set(observations.map(item => item.year))],
@@ -361,9 +365,7 @@ function temporalFrame(params) {
       commit_at: artifact.commit_at, coverage_status: artifact.coverage_status,
       artifact_sha256: artifact.raw_sha256, source_url: artifact.url, commit: artifact.commit,
       repository: artifact.repository, observation_basis: artifact.observation_basis },
-    coverage: { status: artifact.coverage_status, selected_rows: projection.nodes.reduce((count, candidate) =>
-      count + candidate.observations.filter(item => item.source === source
-        && selectedYears.includes(item.year)).reduce((sum, item) => sum + item.rows.length, 0), 0),
+    coverage: { status: artifact.coverage_status, selected_rows: retainedRowCount(selectedYears),
       eligible_candidates: matchingCandidates.length, source_candidates: candidates.filter(candidate =>
         candidate.observations.some(item => item.source === source && selectedYears.includes(item.year))).length },
     filters: { source, category, query: queryText }, suggestions, candidate_count: matchingCandidates.length,
@@ -415,6 +417,7 @@ function temporalFrame(params) {
         : 'first_observed_in_selected_evidence' }));
   const visibleIndexById = new Map([...visibleIds].map(id => [id, candidateIndex.get(id)]));
   const contextEdges = [];
+  let totalContextEdges = 0;
   for (const [id, index] of visibleIndexById) {
     for (const pairIndex of graph.adjacency[index]) {
       const [left, right] = graph.pairs[pairIndex];
@@ -422,7 +425,10 @@ function temporalFrame(params) {
       const otherId = graph.candidates[otherIndex].id;
       if (id >= otherId || !visibleIds.has(otherId)) continue;
       const placements = pairPlacements(pairIndex, keyMatches);
-      if (placements.length) contextEdges.push({ left: id, right: otherId });
+      if (placements.length) {
+        totalContextEdges += 1;
+        contextEdges.push({ left: id, right: otherId });
+      }
     }
   }
   contextEdges.sort((left, right) => left.left.localeCompare(right.left)
@@ -479,14 +485,10 @@ function temporalFrame(params) {
     artifact: { commit_at: artifact.commit_at, coverage_status: artifact.coverage_status,
       artifact_sha256: artifact.raw_sha256, source_url: artifact.url, commit: artifact.commit,
       repository: artifact.repository, observation_basis: artifact.observation_basis },
-    coverage: { status: artifact.coverage_status, selected_rows: projection.nodes.reduce((count, candidate) =>
-      count + candidate.observations.filter(item => item.source === source
-        && selectedYears.includes(item.year)).reduce((sum, item) => sum + item.rows.length, 0), 0),
+    coverage: { status: artifact.coverage_status, selected_rows: retainedRowCount(selectedYears),
       eligible_candidates: matchingCandidates.length, source_candidates: candidates.filter(candidate =>
         candidate.observations.some(item => item.source === source && selectedYears.includes(item.year))).length,
-      comparison_source_rows: comparison ? projection.nodes.reduce((count, candidate) => count
-        + candidate.observations.filter(item => item.source === source
-          && comparisonYears.includes(item.year)).reduce((sum, item) => sum + item.rows.length, 0), 0) : 0 },
+      comparison_source_rows: comparison ? retainedRowCount(comparisonYears) : 0 },
     filters: { source, category, query: queryText }, focus: candidateId,
     available_categories: availableCategories,
     focus_present: focus.observations.some(observation => observation.source === source
@@ -501,8 +503,9 @@ function temporalFrame(params) {
     total_changes: changes.length,
     nodes: [...nodeById.values()], edges: visibleEdges,
     context_edges: contextEdges.slice(0, contextEdgeLimit),
-    context_edge_count: contextEdges.length,
-    context_edges_truncated: contextEdges.length > contextEdgeLimit, detail,
+    context_edge_count: Math.min(contextEdges.length, contextEdgeLimit),
+    total_context_edges: totalContextEdges,
+    context_edges_truncated: totalContextEdges > contextEdgeLimit, detail,
     limitations: temporalLimitations(mode) });
 }
 

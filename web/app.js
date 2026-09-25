@@ -16,7 +16,7 @@ const state = { view: 'topology', year: 2024, category: 'all', query: '', compan
   fieldCategory: 'all', fieldIdentity: 'all', fieldCandidate: null, fieldNeighbor: null,
   temporalSource: 'lfai', temporalYear: '2024', temporalCompareYear: 'auto',
   temporalMode: 'snapshot', temporalCategory: 'all', temporalQuery: '',
-  temporalCandidate: null, temporalNeighbor: null };
+  temporalCandidate: null, temporalNeighbor: null, temporalOffset: 0 };
 let data;
 let discovery;
 let dataIndex;

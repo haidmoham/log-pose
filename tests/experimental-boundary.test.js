@@ -4,6 +4,7 @@ const fs = require('node:fs/promises');
 const path = require('node:path');
 const { JSDOM, ResourceLoader, VirtualConsole } = require('jsdom');
 const model = require('../web/research-model.js');
+const marketFieldApi = require('../api/market-field.js');
 const web = path.resolve(__dirname, '../web');
 
 test('normal console works without requesting experimental assets', async () => {
@@ -27,10 +28,15 @@ test('normal console works without requesting experimental assets', async () => 
     virtualConsole,
     beforeParse(window) {
       window.fetch = async url => {
-        const pathname = new URL(url, window.location.href).pathname;
+        const parsed = new URL(url, window.location.href);
+        const pathname = parsed.pathname;
         requests.push(pathname);
         if (pathname.includes('experimental') || pathname.includes('research-set')) {
           throw new Error('normal console requested experimental data');
+        }
+        if (pathname === '/api/market-field') {
+          const result = marketFieldApi.handleMarketField(parsed.searchParams);
+          return { ok: result.status < 400, status: result.status, json: async () => result.body };
         }
         return { ok: true, json: async () => JSON.parse(await fs.readFile(path.join(web, pathname), 'utf8')) };
       };
@@ -38,8 +44,7 @@ test('normal console works without requesting experimental assets', async () => 
   });
   try {
     for (let attempt = 0; attempt < 120; attempt += 1) {
-      const heading = dom.window.document.querySelector('.data-results-head')?.textContent || '';
-      if (heading.includes('18,542 matching records') && !heading.includes('loading full inventory')) break;
+      if (dom.window.document.querySelector('.constellation-map')) break;
       await new Promise(resolve => setTimeout(resolve, 25));
     }
     const document = dom.window.document;
@@ -49,8 +54,8 @@ test('normal console works without requesting experimental assets', async () => 
     assert.equal(document.querySelector('[data-view="research-set"]'), null);
     assert.equal(dom.window.LogPoseResearchSetView, undefined);
     assert.ok(requests.every(item => !/experimental|research-set/.test(item)));
-    assert.match(document.querySelector('.data-results-head').textContent, /18,542 matching records/);
-    assert.doesNotMatch(document.querySelector('.data-results-head').textContent, /loading full inventory/);
+    assert.ok(document.querySelector('.constellation-map'));
+    assert.equal(document.body.dataset.layer, 'temporal');
   } finally {
     dom.window.close();
   }

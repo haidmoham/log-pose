@@ -13,6 +13,7 @@
     let frameKey = '';
     let frameLoading = false;
     let playTimer = null;
+    let queryDraft = state.temporalQuery || '';
 
     const endpoint = params => `./api/market-field?${new URLSearchParams(params).toString()}`;
     const formatCount = value => Number(value || 0).toLocaleString();
@@ -34,7 +35,7 @@
     function selectedFrameKey() {
       return JSON.stringify([timeline?.build_id, state.temporalSource, Number(state.temporalYear),
         state.temporalMode, state.temporalCompareYear, state.temporalCategory, state.temporalQuery,
-        state.temporalCandidate, state.temporalNeighbor]);
+        state.temporalCandidate, state.temporalNeighbor, state.temporalOffset]);
     }
 
     function loadTimeline() {
@@ -60,6 +61,8 @@
         source: state.temporalSource, year: String(state.temporalYear),
         temporal_mode: state.temporalMode, category: state.temporalCategory || 'all',
         query: state.temporalQuery || '' };
+      params.offset = String(state.temporalOffset || 0);
+      params.limit = '60';
       if (state.temporalCompareYear && state.temporalCompareYear !== 'auto') {
         params.compare_year = state.temporalCompareYear;
       }
@@ -118,7 +121,7 @@
       const index = frames.findIndex(item => item.year === Number(state.temporalYear));
       const next = frames[index + amount];
       if (!next) return;
-      change({ temporalYear: String(next.year), temporalNeighbor: null });
+      change({ temporalYear: String(next.year) });
     }
 
     function playbackButton() {
@@ -161,32 +164,39 @@
         .forEach(([value, label]) => source.add(new Option(label, value)));
       source.value = state.temporalSource;
       source.addEventListener('change', () => {
-        const available = currentTimeline().map(item => item.year);
         const sourceFrames = timeline.frames.filter(item => item.source === source.value);
         const preferred = sourceFrames.find(item => item.year === Number(state.temporalYear))
           || sourceFrames.filter(item => item.coverage_status === 'dated_inventory_snapshot').at(-1)
           || sourceFrames.at(-1);
         change({ temporalSource: source.value, temporalYear: String(preferred.year),
-          temporalCandidate: null, temporalNeighbor: null });
+          temporalCandidate: null, temporalNeighbor: null, temporalOffset: 0 });
       });
       const mode = node('select');
       mode.setAttribute('aria-label', 'Temporal evidence meaning');
       mode.add(new Option('snapshot · selected source slice', 'snapshot'));
       mode.add(new Option('accumulated · observed through this year', 'accumulated'));
       mode.value = state.temporalMode;
-      mode.addEventListener('change', () => change({ temporalMode: mode.value,
-        temporalNeighbor: null }));
+      mode.addEventListener('change', () => change({ temporalMode: mode.value, temporalOffset: 0 }));
+      const compare = node('select');
+      compare.setAttribute('aria-label', 'Comparable inventory stop');
+      compare.add(new Option('previous retained stop', 'auto'));
+      compare.add(new Option('no comparison', 'none'));
+      const frameStops = currentTimeline();
+      frameStops.filter(item => item.year < Number(state.temporalYear)).forEach(item =>
+        compare.add(new Option(`${item.year} · ${item.coverage_status.replaceAll('_', ' ')}`,
+          String(item.year))));
+      compare.value = state.temporalCompareYear || 'auto';
+      compare.addEventListener('change', () => change({ temporalCompareYear: compare.value,
+        temporalOffset: 0 }));
       const category = node('select');
       category.setAttribute('aria-label', 'Exact source category filter');
       category.add(new Option('all exact categories', 'all'));
-      const categories = [...new Set((frame?.nodes || []).flatMap(candidate =>
-        candidate.observations.map(item => item.source_category)))].sort();
+      const categories = frame?.available_categories || [];
       categories.forEach(value => category.add(new Option(value, value)));
       category.value = categories.includes(state.temporalCategory) ? state.temporalCategory : 'all';
       category.addEventListener('change', () => change({ temporalCategory: category.value,
-        temporalNeighbor: null }));
-      const form = append(node('div', '', 'temporal-facets'), source, mode, category);
-      const frameStops = currentTimeline();
+        temporalOffset: 0 }));
+      const form = append(node('div', '', 'temporal-facets'), source, mode, compare, category);
       const selectedIndex = frameStops.findIndex(item => item.year === Number(state.temporalYear));
       const yearControl = node('input');
       yearControl.type = 'range';
@@ -195,9 +205,10 @@
       yearControl.step = '1';
       yearControl.value = String(Math.max(0, selectedIndex));
       yearControl.setAttribute('aria-label', 'Scrub retained inventory year');
+      yearControl.disabled = selectedIndex < 0;
       yearControl.addEventListener('input', () => {
         const target = frameStops[Number(yearControl.value)];
-        if (target) change({ temporalYear: String(target.year), temporalNeighbor: null });
+        if (target) change({ temporalYear: String(target.year), temporalOffset: 0 });
       });
       yearControl.addEventListener('keydown', event => {
         if (event.key === 'ArrowLeft') { event.preventDefault(); navigateStep(-1); }
@@ -209,7 +220,7 @@
       previous.addEventListener('click', () => navigateStep(-1));
       const next = node('button', 'next →', 'temporal-step');
       next.type = 'button';
-      next.disabled = selectedIndex < 0 || selectedIndex >= frameStops.length - 1;
+      next.disabled = selectedIndex >= frameStops.length - 1;
       next.addEventListener('click', () => navigateStep(1));
       const rail = append(node('div', '', 'temporal-rail'), previous, yearControl,
         playbackButton(), next);
@@ -222,6 +233,8 @@
         selected.lastChild.dateTime = currentArtifact.commit_at;
         if (selected.lastChild.textContent) selected.lastChild.title = currentArtifact.commit_at;
         head.append(selected);
+      } else {
+        head.append(node('p', `No retained ${state.temporalSource.toUpperCase()} snapshot exists for ${state.temporalYear}. Step to a retained stop to continue.`, 'temporal-coverage-note'));
       }
       section.append(head, form, rail);
       if (frameStops.some(item => item.coverage_status === 'partial_year_snapshot')) {
@@ -232,14 +245,22 @@
 
     function candidateSearch() {
       const section = node('section', '', 'temporal-search');
+      const form = node('form', '', 'temporal-search-form');
       const input = node('input');
       input.type = 'search';
-      input.value = state.temporalQuery || '';
+      input.value = queryDraft;
       input.placeholder = 'search names in this source slice';
       input.setAttribute('aria-label', 'Search names in selected source slice');
-      input.addEventListener('input', () => change({ temporalQuery: input.value.slice(0, 200),
-        temporalCandidate: null, temporalNeighbor: null }));
-      section.append(node('p', 'FIND A CANDIDATE IN THIS SOURCE SLICE', 'eyebrow'), input);
+      input.addEventListener('input', () => { queryDraft = input.value.slice(0, 200); });
+      const submit = node('button', 'find', 'temporal-search-submit');
+      submit.type = 'submit';
+      form.addEventListener('submit', event => {
+        event.preventDefault();
+        change({ temporalQuery: queryDraft, temporalCandidate: null, temporalNeighbor: null,
+          temporalOffset: 0 });
+      });
+      form.append(input, submit);
+      section.append(node('p', 'FIND A CANDIDATE IN THIS SOURCE SLICE', 'eyebrow'), form);
       if (frame?.suggestions?.length) {
         const suggestions = node('div', '', 'temporal-suggestions');
         frame.suggestions.forEach(candidate => {
@@ -247,7 +268,7 @@
           button.type = 'button';
           button.setAttribute('aria-pressed', String(state.temporalCandidate === candidate.id));
           button.addEventListener('click', () => change({ temporalCandidate: candidate.id,
-            temporalNeighbor: null }, { focus: '#temporal-inspector' }));
+            temporalNeighbor: null, temporalOffset: 0 }, { focus: '#temporal-inspector' }));
           suggestions.append(button);
         });
         section.append(suggestions);
@@ -268,7 +289,9 @@
       const section = node('section', '', 'temporal-ledger');
       section.append(node('p', 'WHAT CHANGED AROUND THIS CANDIDATE', 'eyebrow'));
       if (!frame?.changes?.length) {
-        section.append(node('p', frame?.focus_present === false
+        section.append(node('p', !frame?.focus
+          ? 'Choose a point in the field to inspect its retained neighbors.'
+          : frame?.focus_present === false
           ? 'This candidate has no row in the selected source slice.'
           : 'No exact shared source-category placement is in this neighborhood.', 'muted'));
         return section;
@@ -286,7 +309,25 @@
         section.append(button);
       });
       if (frame.total_neighbors > frame.edges.length) section.append(node('p',
-        `Showing ${formatCount(frame.edges.length)} of ${formatCount(frame.total_neighbors)} exact neighbors.`, 'muted'));
+        `Showing ${formatCount(frame.changes.length)} neighbor records of ${formatCount(frame.total_neighbors)}; some comparison rows have no selected-slice edge.`, 'muted'));
+      if (frame.next_offset !== null || frame.offset > 0) {
+        const paging = node('div', '', 'temporal-ledger-paging');
+        if (frame.offset > 0) {
+          const previous = node('button', 'previous 60', 'temporal-page-button');
+          previous.type = 'button';
+          previous.addEventListener('click', () => change({ temporalOffset: Math.max(0, frame.offset - frame.limit),
+            temporalNeighbor: null }));
+          paging.append(previous);
+        }
+        if (frame.next_offset !== null) {
+          const next = node('button', 'next 60', 'temporal-page-button');
+          next.type = 'button';
+          next.addEventListener('click', () => change({ temporalOffset: frame.next_offset,
+            temporalNeighbor: null }));
+          paging.append(next);
+        }
+        section.append(paging);
+      }
       return section;
     }
 
@@ -360,14 +401,10 @@
       section.append(append(node('div', '', 'temporal-graph-heading'),
         node('p', 'RETAINED SOURCE TOPOLOGY', 'eyebrow'),
         node('span', frame?.frame_id ? `frame ${frame.frame_id.slice(0, 12)}` : '', 'temporal-frame-id')));
-      if (!frame?.focus) {
-        section.append(node('p', 'Choose a candidate above to open its observed neighborhood.', 'temporal-graph-empty'));
-        return section;
-      }
       const options = { selectedEdge: state.temporalNeighbor,
         onSelectEdge: changeStateNeighbor,
         onSelectCandidate: candidateId => change({ temporalCandidate: candidateId,
-          temporalNeighbor: null }, { focus: '#temporal-inspector' }) };
+          temporalNeighbor: null, temporalOffset: 0 }, { focus: '#temporal-inspector' }) };
       const rendered = globalScope.LogPoseTemporalGraph?.render
         ? globalScope.LogPoseTemporalGraph.render(frame, options) : fallbackGraph(frame, options);
       section.append(rendered);
@@ -380,7 +417,8 @@
         if (candidate.id === result.focus) continue;
         const button = node('button', candidate.name, 'temporal-fallback-edge');
         button.type = 'button';
-        button.addEventListener('click', () => options.onSelectEdge(candidate.id));
+        button.addEventListener('click', () => result.focus
+          ? options.onSelectEdge(candidate.id) : options.onSelectCandidate(candidate.id));
         list.append(button);
       }
       return list;
@@ -396,7 +434,9 @@
     }
 
     function render() {
-      root.replaceChildren();
+      root.querySelector('.temporal-view-state')?.remove();
+      const surface = node('div', '', 'temporal-view-state');
+      root.append(surface);
       root.setAttribute('aria-busy', String(frameLoading || (!timeline && !timelineError)));
       if (!timeline) {
         if (timelineError) {
@@ -407,46 +447,52 @@
             timelineRequest = 0;
             loadTimeline();
           });
-          root.append(node('p', `The temporal inventory is unavailable: ${timelineError}`, 'error'), retry);
+          surface.append(node('p', `The temporal inventory is unavailable: ${timelineError}`, 'error'), retry);
         } else {
-          root.append(node('p', 'Loading retained inventory stops…', 'loading'));
+          surface.append(node('p', 'Loading retained inventory stops…', 'loading'));
           loadTimeline();
         }
         return;
       }
       loadFrame();
-      root.append(controls(), candidateSearch());
+      const controlPanel = controls();
       if (frameLoading || (!frame && !frameError)) {
-        root.append(node('p', `${state.temporalSource.toUpperCase()} ${state.temporalYear} · loading the selected frame…`, 'loading temporal-loading'));
+        surface.append(controlPanel,
+          node('p', `${state.temporalSource.toUpperCase()} ${state.temporalYear} · loading the selected frame…`, 'loading temporal-loading'));
         return;
       }
       if (frameError) {
         const retry = node('button', 'retry selected frame', 'quiet-button');
         retry.type = 'button';
         retry.addEventListener('click', () => { frameError = null; frame = null; render(); });
-        root.append(node('p', `This frame failed to load: ${frameError}`, 'error'), retry);
+        surface.append(controlPanel, node('p', `This frame failed to load: ${frameError}`, 'error'), retry);
         return;
       }
       if (frame.status === 'missing_snapshot') {
-        root.append(missingFrame());
+        surface.append(controlPanel, missingFrame());
         return;
       }
-      if (!frame.focus) {
-        root.append(node('p', `${formatCount(frame.candidate_count)} candidate names match this selected source slice. Select one above to inspect its neighborhood.`, 'muted'));
-        return;
-      }
+      const graphConnections = frame.focus
+        ? `${formatCount(frame.total_neighbors)} exact neighbors`
+        : `${formatCount(frame.context_edge_count)} of ${formatCount(frame.total_context_edges)} peer connections shown`;
       const coverage = append(node('section', '', 'temporal-frame-summary'),
         node('span', `${formatCount(frame.coverage.selected_rows)} retained rows`, 'temporal-count'),
-        node('span', `${formatCount(frame.total_neighbors)} exact neighbors`, 'temporal-count'),
+        node('span', graphConnections, 'temporal-count'),
         node('span', frame.temporal_mode === 'snapshot'
           ? `compared with ${frame.compare_year || 'no prior retained stop'}`
           : `observed through ${frame.year}; persistence means previously observed`, 'temporal-count'));
-      root.append(coverage, graphPanel(), changeLedger(), inspector());
+      const workspace = node('section', '', 'temporal-workspace');
+      const main = node('div', '', 'temporal-main');
+      main.append(coverage, graphPanel());
+      const sidebar = node('aside', '', 'temporal-sidebar');
+      sidebar.append(candidateSearch(), changeLedger(), inspector());
+      workspace.append(main, sidebar);
+      surface.append(workspace, controlPanel);
       if (frame.limitations?.length) {
         const disclosure = node('details', '', 'temporal-limitations');
         disclosure.append(node('summary', 'Clock and interpretation limits'));
         frame.limitations.forEach(item => disclosure.append(node('p', item)));
-        root.append(disclosure);
+        surface.append(disclosure);
       }
     }
 

@@ -61,7 +61,7 @@ test('URL state validates routes, years, slugs, duplicates, and pin capacity', (
 test('data desk URL state defaults to all sources and validates each selector', () => {
   const allSlugs = new Set(['pilot', 'external']);
   const pilotSlugs = new Set(['pilot']);
-  const defaults = model.parseUrlState('', allSlugs, [2021, 2022, 2023, 2024], [], pilotSlugs);
+  const defaults = model.parseUrlState('?view=data', allSlugs, [2021, 2022, 2023, 2024], [], pilotSlugs);
   assert.equal(defaults.view, 'data');
   assert.equal(defaults.dataFamily, 'all');
   assert.equal(defaults.dataCompany, 'all');
@@ -104,9 +104,21 @@ test('legacy explore URLs remain explore routes after the data desk becomes defa
 
 test('a pinned comparison does not turn a data-desk URL into a legacy explore route', () => {
   const slugs = new Set(['pilot']);
-  const state = model.parseUrlState('', slugs, [2021, 2024], [], slugs);
+  const state = model.parseUrlState('?view=data', slugs, [2021, 2024], [], slugs);
   const url = model.toUrlParams({ ...state, compareSlugs: ['pilot'] });
   assert.equal(model.parseUrlState('?' + url, slugs, [2021, 2024], [], slugs).view, 'data');
+});
+
+test('temporal frame pages preserve stable URLs and reject unsafe offsets', () => {
+  const valid = model.parseUrlState(
+    '?view=topology&topologyLayer=temporal&temporalCandidate=vespa&temporalOffset=120',
+    new Set(), [2024]);
+  assert.equal(valid.temporalOffset, 120);
+  const serialized = model.toUrlParams({ ...valid, compareSlugs: [] });
+  assert.equal(new URLSearchParams(serialized).get('temporalOffset'), '120');
+  assert.equal(model.parseUrlState('?' + serialized, new Set(), [2024]).temporalOffset, 120);
+  assert.equal(model.parseUrlState('?view=topology&temporalOffset=-1', new Set(), [2024]).temporalOffset, 0);
+  assert.equal(model.parseUrlState('?view=topology&temporalOffset=999999', new Set(), [2024]).temporalOffset, 5000);
 });
 
 test('relationship claim, status, category, and source year survive a URL round trip', () => {
@@ -126,19 +138,24 @@ test('relationship claim, status, category, and source year survive a URL round 
     invalid.topologyStatus, invalid.selectedClaim], ['all', 'all', 'all', null]);
 });
 
-test('source field opens by default and preserves its filters and candidate drill', () => {
+test('temporal atlas opens by default and explicit field links preserve their filters', () => {
   const slugs = new Set();
   const parsed = model.parseUrlState('?view=topology&fieldQuery=vector&fieldSource=lfai'
     + '&fieldYear=2024&fieldTag=data_infrastructure&fieldCategory=Data%20%2F%20Operations'
     + '&fieldIdentity=unreviewed&fieldCandidate=004c9f6b7ecc1c48c8e4', slugs, [2024]);
   assert.equal(parsed.topologyLayer, 'field');
-  assert.equal(model.parseUrlState('?view=topology', slugs, [2024]).topologyLayer, 'field');
+  assert.equal(model.parseUrlState('?view=topology', slugs, [2024]).topologyLayer, 'temporal');
+  assert.equal(model.parseUrlState('', slugs, [2024]).view, 'topology');
   const serialized = model.toUrlParams({ ...parsed, compareSlugs: [] });
   assert.deepEqual(model.parseUrlState('?' + serialized, slugs, [2024]), parsed);
+  const fieldHome = model.parseUrlState('?view=topology&topologyLayer=field', slugs, [2024]);
+  const fieldHomeUrl = model.toUrlParams({ ...fieldHome, compareSlugs: [] });
+  assert.equal(new URLSearchParams(fieldHomeUrl).get('topologyLayer'), 'field');
+  assert.equal(model.parseUrlState('?' + fieldHomeUrl, slugs, [2024]).topologyLayer, 'field');
 });
 
 test('market file, date, measure, and participant survive a URL round trip', () => {
-  const route = '?dataFamily=market&dataRecord=market-file:4&dataMarketDay=2024-01-03'
+  const route = '?view=data&dataFamily=market&dataRecord=market-file:4&dataMarketDay=2024-01-03'
     + '&dataMarketMeasure=total_notional&dataMarketParticipant=market-row:4:19';
   const parsed = model.parseUrlState(route, new Set(), [2024]);
   assert.deepEqual([parsed.dataRecord, parsed.dataMarketDay, parsed.dataMarketMeasure,

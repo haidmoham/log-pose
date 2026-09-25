@@ -5,6 +5,7 @@ const fs = require('node:fs/promises');
 const path = require('node:path');
 const { JSDOM, ResourceLoader, VirtualConsole } = require('jsdom');
 const topologyOracle = require('./fixtures/discovery-topology-oracle.js');
+const marketFieldApi = require('../api/market-field.js');
 
 const web = path.resolve(__dirname, '../web');
 const topologyPayload = JSON.parse(fsSync.readFileSync(
@@ -174,7 +175,9 @@ async function page(route = '/', failOncePath = null, mockWebgl = false, apiOpti
           const request = { params, options: fetchOptions };
           apiRequests.push(request);
           try {
-            const response = apiOptions.handler
+            const response = apiOptions.temporal
+              ? await apiOptions.temporal(params, { request, requests: apiRequests, window })
+              : apiOptions.handler
               ? await apiOptions.handler(params, { request, requests: apiRequests,
                 window, defaultHandler: mockMarketField })
               : { body: mockMarketField(params), status: 200 };
@@ -206,7 +209,7 @@ async function page(route = '/', failOncePath = null, mockWebgl = false, apiOpti
 }
 
 test('canonical route searches retained evidence and opens a full page record', async () => {
-  const dom = await page();
+  const dom = await page('/?view=data');
   const { document, Event } = dom.window;
   assert.match(document.querySelector('#view h2').textContent, /research the record/i);
   assert.match(document.querySelector('.data-coverage').textContent, /18,076/);
@@ -227,7 +230,7 @@ test('canonical route searches retained evidence and opens a full page record', 
 });
 
 test('research desk drills from untagged inventory and SEC candidates into retained detail', async () => {
-  const inventory = await page('/?dataFamily=inventory&dataQuery=Airship');
+  const inventory = await page('/?view=data&dataFamily=inventory&dataQuery=Airship');
   const inventoryDocument = inventory.window.document;
   await waitFor(() => inventoryDocument.querySelector('.data-results-head')?.textContent.includes('matching records')
     && !inventoryDocument.querySelector('.data-results-head')?.textContent.includes('loading full inventory'));
@@ -238,7 +241,7 @@ test('research desk drills from untagged inventory and SEC candidates into retai
   assert.match(inventoryDocument.querySelector('.data-inspector').textContent, /No candidate tag or reviewed company link/);
   inventory.window.close();
 
-  const navigation = await page('/?dataFamily=inventory&dataQuery=ClickHouse');
+  const navigation = await page('/?view=data&dataFamily=inventory&dataQuery=ClickHouse');
   const navigationDocument = navigation.window.document;
   await waitFor(() => !navigationDocument.querySelector('.data-results-head')?.textContent.includes('loading full inventory'));
   navigationDocument.querySelector('.data-result').click();
@@ -247,7 +250,7 @@ test('research desk drills from untagged inventory and SEC candidates into retai
   assert.doesNotMatch(navigationDocument.querySelector('.data-inspector').textContent, /Reviewed relationship to ClickHouse/);
   navigation.window.close();
 
-  const sec = await page('/?dataFamily=sec&dataCompany=palantir&dataYear=2021');
+  const sec = await page('/?view=data&dataFamily=sec&dataCompany=palantir&dataYear=2021');
   const secDocument = sec.window.document;
   assert.match(secDocument.querySelector('.data-results-head').textContent, /matching records/);
   secDocument.querySelector('.data-result').click();
@@ -258,7 +261,7 @@ test('research desk drills from untagged inventory and SEC candidates into retai
 });
 
 test('research desk market point opens participant detail and topology shows review history', async () => {
-  const market = await page('/?dataFamily=market&dataQuery=FINRA');
+  const market = await page('/?view=data&dataFamily=market&dataQuery=FINRA');
   const marketDocument = market.window.document;
   assert.match(marketDocument.querySelector('.data-results-head').textContent, /4 matching records/);
   marketDocument.querySelector('.data-result').click();
@@ -274,13 +277,81 @@ test('research desk market point opens participant detail and topology shows rev
   market.window.close();
   reopenedMarket.window.close();
 
-  const topology = await page('/?dataFamily=topology');
+  const topology = await page('/?view=data&dataFamily=topology');
   const topologyDocument = topology.window.document;
   topologyDocument.querySelector('.data-result').click();
   assert.match(topologyDocument.querySelector('.data-inspector').textContent, /review history/i);
   assert.match(topologyDocument.querySelector('.data-inspector').textContent, /source/i);
   assert.match(topologyDocument.querySelector('.data-inspector').textContent, /reviewed_at|reviewer|review history/i);
   topology.window.close();
+});
+
+test('temporal atlas opens the retained overview and a selected evidence edge survives a deep link', async () => {
+  const temporal = async params => {
+    const result = marketFieldApi.handleMarketField(new URLSearchParams(params));
+    return { status: result.status, body: result.body };
+  };
+  const route = '/?view=topology&topologyLayer=temporal&temporalSource=lfai&temporalYear=2024';
+  const overview = await page(route, null, true, { temporal });
+  const overviewDocument = overview.window.document;
+  assert(overviewDocument.querySelector('.temporal-workspace'));
+  assert(overviewDocument.querySelectorAll('.constellation-node').length > 100);
+  assert.match(overviewDocument.querySelector('.temporal-frame-summary').textContent,
+    /peer connections shown/);
+  const target = overviewDocument.querySelector('[data-candidate="00a2fb1597f507022279"]');
+  assert(target);
+  target.dispatchEvent(new overview.window.KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+  await waitFor(() => new URL(overview.window.location.href).searchParams.has('temporalCandidate'));
+  await waitFor(() => overviewDocument.querySelector('.temporal-graph-panel .constellation-map'));
+  assert.match(overviewDocument.querySelector('.temporal-inspector').textContent,
+    /select a connected edge/i);
+  const firstChange = overviewDocument.querySelector('.temporal-change');
+  assert(firstChange);
+  firstChange.click();
+  await waitFor(() => overviewDocument.querySelector('.temporal-evidence-card'));
+  const linkedRoute = overview.window.location.pathname + overview.window.location.search;
+  const inspectorText = overviewDocument.querySelector('.temporal-inspector').textContent;
+  assert.match(inspectorText, /retained row/);
+  assert.match(inspectorText, /artifact SHA-256/);
+  assert(overviewDocument.querySelector('.temporal-evidence-card a[href^="https://"]'));
+  const reopened = await page(linkedRoute, null, true, { temporal });
+  await waitFor(() => reopened.window.document.querySelector('.temporal-evidence-card'));
+  assert.equal(new URL(reopened.window.location.href).searchParams.get('temporalNeighbor'),
+    new URL(overview.window.location.href).searchParams.get('temporalNeighbor'));
+  assert.match(reopened.window.document.querySelector('.temporal-inspector').textContent,
+    /artifact SHA-256/);
+  overview.window.close();
+  reopened.window.close();
+});
+
+test('temporal inventory gaps stay explicit and late frames cannot replace the selected stop', async () => {
+  const temporal = async (params, context) => {
+    if (params.mode === 'frame' && params.year === '2023') {
+      await new Promise(resolve => setTimeout(resolve, 140));
+    }
+    const result = marketFieldApi.handleMarketField(new URLSearchParams(params));
+    return { status: result.status, body: result.body };
+  };
+  const missing = await page('/?view=topology&topologyLayer=temporal&temporalSource=lfai&temporalYear=2019',
+    null, true, { temporal });
+  assert.match(missing.window.document.querySelector('.temporal-missing').textContent,
+    /does not show that any candidate or relationship ended/i);
+  missing.window.close();
+
+  const stale = await page('/?view=topology&topologyLayer=temporal&temporalSource=lfai&temporalYear=2023',
+    null, true, { temporal });
+  const requests = stale.window.__marketFieldRequests;
+  assert(requests.some(request => request.params.mode === 'frame' && request.params.year === '2023'));
+  const slider = stale.window.document.querySelector('[aria-label="Scrub retained inventory year"]');
+  slider.value = '5';
+  slider.dispatchEvent(new stale.window.Event('input', { bubbles: true }));
+  await waitFor(() => new URL(stale.window.location.href).searchParams.get('temporalYear') === '2025');
+  await waitFor(() => stale.window.document.querySelector('.temporal-frame-id')?.textContent.startsWith('frame ')
+    && !stale.window.document.querySelector('.temporal-loading'));
+  await new Promise(resolve => setTimeout(resolve, 180));
+  assert.equal(new URL(stale.window.location.href).searchParams.get('temporalYear'), '2025');
+  assert(stale.window.document.querySelector('.temporal-stop-detail')?.textContent.includes('2025'));
+  stale.window.close();
 });
 
 test('opening a claim map clears filters that would hide the selected claim', async () => {
@@ -408,7 +479,7 @@ test('filtered topology WebGL maps each matching claim and lets every shown edge
 });
 
 test('source field starts with all retained candidates and drills into exact source rows', async () => {
-  const dom = await page('/?view=topology');
+  const dom = await page('/?view=topology&topologyLayer=field');
   const { document, Event } = dom.window;
   await waitFor(() => document.querySelector('.field-coverage')?.textContent.includes('47,288'));
   assert.match(document.querySelector('.field-coverage').textContent, /1,240/);
@@ -429,7 +500,7 @@ test('source field starts with all retained candidates and drills into exact sou
 });
 
 test('source field filters all source candidates and preserves the selected filter in the URL', async () => {
-  const dom = await page('/?view=topology');
+  const dom = await page('/?view=topology&topologyLayer=field');
   const { document, Event } = dom.window;
   await waitFor(() => document.querySelector('.field-coverage')?.textContent.includes('47,288'));
   const source = document.querySelector('#field-source');
@@ -452,7 +523,7 @@ test('late filter responses cannot replace the latest market field result', asyn
     }
     return { body: defaultHandler(params), status: 200 };
   };
-  const dom = await page('/?view=topology', null, false, apiOptions);
+  const dom = await page('/?view=topology&topologyLayer=field', null, false, apiOptions);
   const { document, Event } = dom.window;
   apiOptions.holdQueries = true;
 
@@ -490,7 +561,7 @@ test('late candidate detail cannot replace a newer selected neighbor detail', as
     }
     return { body: defaultHandler(params), status: 200 };
   };
-  const dom = await page('/?view=topology', null, false, apiOptions);
+  const dom = await page('/?view=topology&topologyLayer=field', null, false, apiOptions);
   const { document } = dom.window;
   apiOptions.holdDetails = true;
   document.querySelector('.field-index-row').click();
@@ -529,7 +600,7 @@ test('a build mismatch refreshes the summary once and retries against its new bu
     }
     return { body: defaultHandler(params, 'new-build'), status: 200 };
   };
-  const dom = await page('/?view=topology', null, false, apiOptions);
+  const dom = await page('/?view=topology&topologyLayer=field', null, false, apiOptions);
   await waitFor(() => apiOptions.summaryCount === 2
     && dom.window.document.querySelector('.field-coverage'));
   assert.equal(apiOptions.summaryCount, 2);
@@ -557,7 +628,7 @@ test('repeated build mismatches stop after one automatic refresh', async () => {
     }
     return { body: defaultHandler(params, 'current-build'), status: 200 };
   };
-  const dom = await page('/?view=topology', null, false, apiOptions);
+  const dom = await page('/?view=topology&topologyLayer=field', null, false, apiOptions);
   assert.equal(apiOptions.summaryCount, 2);
   assert.equal(apiOptions.queryCount, 2);
   assert.match(dom.window.document.querySelector('.error').textContent,
@@ -596,7 +667,7 @@ test('query errors can retry and a no-result filter has an explicit empty state'
     }
     return { body: defaultHandler(params), status: 200 };
   };
-  const dom = await page('/?view=topology', null, false, apiOptions);
+  const dom = await page('/?view=topology&topologyLayer=field', null, false, apiOptions);
   const { document, Event } = dom.window;
   assert.match(document.querySelector('.error').textContent, /temporary field outage/);
   document.querySelector('button.quiet-button').click();
@@ -629,7 +700,7 @@ test('candidate and neighbor deep links open the exact source inspector', async 
 });
 
 test('candidate and neighbor lists request bounded follow-up pages', async () => {
-  const dom = await page('/?view=topology');
+  const dom = await page('/?view=topology&topologyLayer=field');
   const { document } = dom.window;
   assert.equal(document.querySelectorAll('.field-index-row').length, 80);
   document.querySelector('.field-show-more').click();
