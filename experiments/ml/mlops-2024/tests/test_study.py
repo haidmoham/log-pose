@@ -9,9 +9,9 @@ import unittest
 from pathlib import Path
 
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[4]
 SPEC = importlib.util.spec_from_file_location(
-    "build_mlops_research_set", ROOT / "scripts/build_mlops_research_set.py")
+    "build_mlops_research_set", ROOT / "experiments/ml/mlops-2024/build.py")
 MODULE = importlib.util.module_from_spec(SPEC)
 assert SPEC and SPEC.loader
 SPEC.loader.exec_module(MODULE)
@@ -23,9 +23,9 @@ class ResearchSetTests(unittest.TestCase):
         cls.built = MODULE.build()
 
     def test_versioned_export_is_deterministic(self) -> None:
-        expected = json.loads((ROOT / "web/data/research-set-mlops-2024.json").read_text())
+        expected = json.loads((ROOT / "web/experimental/mlops-2024/study.json").read_text())
         self.assertEqual(self.built, expected)
-        self.assertEqual(expected, json.loads((ROOT / "docs/research/mlops-2024-study.json").read_text()))
+        self.assertEqual(expected, json.loads((ROOT / "experiments/ml/mlops-2024/study.json").read_text()))
 
     def test_duplicate_identity_is_rejected(self) -> None:
         changed = copy.deepcopy(self.built)

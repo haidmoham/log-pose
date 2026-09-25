@@ -1,6 +1,6 @@
-# ML operations: fixed eight-lead study
+# experimental study · ML operations: fixed eight-lead study
 
-**Information cutoff:** 2024-12-31. **Decision:** zero unconditional diligence priorities. The saved [research set](mlops-2024-study.json) and its [browser export](../../web/data/research-set-mlops-2024.json) contain all eight leads, 23 retained passages, gate notes, and comparison fields. Four of eight lead identities have a reviewed provider or direct company record; this is an identity count, not an eligibility count. Roles overlap and cannot be summed as companies.
+**Information cutoff:** 2024-12-31. **Decision:** zero unconditional diligence priorities. The saved [research set](study.json) and its [browser export](../../../web/experimental/mlops-2024/study.json) contain all eight leads, 23 retained passages, gate notes, and comparison fields. Four of eight lead identities have a reviewed provider or direct company record; this is an identity count, not an eligibility count. Roles overlap and cannot be summed as companies.
 
 The question is which selected U.S.-based private ML operations vendors had a distinct commercial product and credible evidence of an expanding market foothold by the cutoff. I used Telescope Partners' [public partnerships](https://www.telescopepartners.com/partnerships) and [approach](https://www.telescopepartners.com/approach) pages as a research lens for product maturity, market foothold, competition, business model, go-to-market, pace, and useful operating metrics. This is independent analysis, not a statement about its private rubric.
 
@@ -31,4 +31,4 @@ The cohort was frozen before evidence review. The bounded pull retained ten new 
 
 The study cannot establish market share, complete financing history, revenue quality, investment returns or an investment recommendation. Missing evidence does not prove absence. No post-2024 acquisition fact is used to infer 2024 private status.
 
-Rebuild with `python3 scripts/build_mlops_research_set.py`; run `python3 -m unittest tests.test_mlops_research_set`. The generator validates cohort identity, fixed denominator, evidence links, source hashes, date cutoff and all priority gates. Its output is copied to the static browser export; neither build mutates the database.
+Rebuild with `python3 experiments/ml/mlops-2024/build.py`; run `python3 -m pytest -q experiments/ml/mlops-2024/tests`. The generator validates cohort identity, fixed denominator, evidence links, source hashes, date cutoff and all priority gates. Its output is copied to the static browser export; neither build mutates the database.

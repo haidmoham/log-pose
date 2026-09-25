@@ -58,6 +58,23 @@ test('query matches the pure model for exact intersections, identity, search, an
         && (filters.year === 'all' || observation.year === Number(filters.year))
         && (filters.category === 'all' || observation.source_category === filters.category)).length, 0);
     assert.equal(result.body.observation_count, observations);
+    for (const candidate of [candidates[0], candidates[Math.floor(candidates.length / 2)], candidates.at(-1)]) {
+      if (!candidate) continue;
+      const focused = request('query', { ...filters, candidate: candidate.id }).body;
+      const expected = model.matchingNeighbors(prepared, candidate.id,
+        candidates.map(item => item.id), filters);
+      // The new contract adds an ID tie-breaker where the old model only used names.
+      expected.sort((left, right) => right.keys.length - left.keys.length
+        || left.candidate.name.localeCompare(right.candidate.name)
+        || left.candidate.id.localeCompare(right.candidate.id));
+      assert.equal(focused.neighbor_count, expected.length);
+      assert.deepEqual(focused.neighbors.map(item => ({
+        id: item.candidate.id, keys: item.keys.map(key => JSON.stringify(key)).sort()
+      })),
+        expected.slice(0, focused.neighbor_limit).map(item => ({
+          id: item.candidate.id, keys: [...item.keys].sort()
+        })));
+    }
   }
 });
 

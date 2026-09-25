@@ -15,7 +15,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400..800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="./style.css" />
     <link rel="stylesheet" href="./console.css" />
-    <link rel="stylesheet" href="./research-set.css" />
     <link rel="stylesheet" href="./temporal-graph.css" />
     <link rel="stylesheet" href="./graph-workspace.css" />
   </head>
@@ -44,7 +43,6 @@
         <button type="button" data-view="overview" disabled>companies</button>
         <button type="button" data-view="compare" disabled>compare <output id="pin-count">0</output></button>
         <button type="button" data-view="explore" disabled>sources</button>
-        <button type="button" data-view="research-set" disabled>research set</button>
       </nav>
 
       <main id="view" aria-busy="true">
@@ -53,7 +51,7 @@
 
       <footer>
         <span>log pose / retained market research</span>
-        <span>source dates and limits accompany each view.</span>
+        <a href="./experimental/index.html">experimental space →</a>
       </footer>
     </div>
     <script src="./research-model.js"></script>
@@ -66,7 +64,6 @@
     <script src="./topology-view.js"></script>
     <script src="./temporal-graph.js"></script>
     <script src="./temporal-topology-view.js"></script>
-    <script src="./research-set-view.js"></script>
     <script src="./app.js"></script>
   </body>
 </html>

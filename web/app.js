@@ -16,8 +16,7 @@ const state = { view: 'topology', year: 2024, category: 'all', query: '', compan
   fieldCategory: 'all', fieldIdentity: 'all', fieldCandidate: null, fieldNeighbor: null,
   temporalSource: 'lfai', temporalYear: '2024', temporalCompareYear: 'auto',
   temporalMode: 'snapshot', temporalCategory: 'all', temporalQuery: '',
-  temporalCandidate: null, temporalNeighbor: null,
-  researchMember: null, researchRole: 'all', researchDisposition: 'all', researchQuery: '' };
+  temporalCandidate: null, temporalNeighbor: null };
 let data;
 let discovery;
 let dataIndex;
@@ -29,7 +28,6 @@ let topologyView;
 let discoveryTopologyView;
 let temporalTopologyView;
 let dataView;
-let researchSetView;
 
 function categoryName(value) {
   return {
@@ -469,7 +467,7 @@ function renderCompare() {
 
 function render() {
   if (!data || !exploreView || !topologyView || !discoveryTopologyView || !temporalTopologyView || !dataView
-      || !researchSetView) return;
+      ) return;
   topologyView.dispose();
   tabs.forEach(button => {
     if (button.dataset.view === state.view) button.setAttribute('aria-current', 'page');
@@ -481,7 +479,6 @@ function render() {
   root.setAttribute('aria-busy', 'false');
   pinCount.textContent = String(state.compareSlugs.length);
   if (state.view === 'data') dataView.render();
-  else if (state.view === 'research-set') researchSetView.render();
   else if (state.view === 'overview') renderOverview();
   else if (state.view === 'compare') renderCompare();
   else if (state.view === 'topology') {
@@ -517,8 +514,7 @@ tabs.forEach(button => button.addEventListener('click', () => {
   commitState({ view, company: view === 'explore' || view === 'data' ? null : state.company,
     topologyLayer: view === 'topology' ? 'temporal' : state.topologyLayer,
     selectedClaim: view === 'topology' ? null : state.selectedClaim,
-    selectedCandidate: null, selectedProvider: null,
-    researchMember: view === 'research-set' ? state.researchMember : null }, { top: true });
+    selectedCandidate: null, selectedProvider: null }, { top: true });
 }));
 
 function routeState() {
@@ -539,7 +535,10 @@ window.addEventListener('popstate', () => {
   render();
 });
 
-Promise.all(['./dashboard.json', './discovery.json', './data/index.json'].map(url =>
+const legacyStudyTarget = model.legacyResearchSetTarget(location.search);
+if (legacyStudyTarget) {
+  location.replace(legacyStudyTarget);
+} else Promise.all(['./dashboard.json', './discovery.json', './data/index.json'].map(url =>
   fetch(url).then(response => {
     if (!response.ok) throw new Error(url + ' HTTP ' + response.status);
     return response.json();
@@ -598,7 +597,6 @@ Promise.all(['./dashboard.json', './discovery.json', './data/index.json'].map(ur
         fieldCategory: 'all', fieldIdentity: 'all', fieldCandidate: null,
         fieldNeighbor: null }, { top: true })
     });
-    researchSetView = window.LogPoseResearchSetView.create({ root, state, commitState, writeUrl });
     const fromUrl = routeState();
     Object.assign(state, {
       ...fromUrl,

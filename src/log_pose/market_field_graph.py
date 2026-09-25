@@ -79,7 +79,8 @@ def build_market_field_graph(projection: dict) -> dict:
         "status": projection["status"],
         "input_hashes": {"discovery_sha256": projection["provenance"]["discovery_sha256"],
                          "queue_sha256": projection["provenance"]["queue_sha256"],
-                         "projection_build_id": projection["build_id"]},
+                         "projection_build_id": projection["build_id"],
+                         "projection_sha256": hashlib.sha256(encode(projection)).hexdigest()},
         "counts": {name: projection["counts"][name] for name in
                    ("nodes", "observations", "possible_pairs", "edges")},
         "facets": {"sources": sorted({artifact["source"] for artifact in projection["artifacts"]}),

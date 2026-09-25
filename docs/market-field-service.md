@@ -32,7 +32,7 @@ cache keys consist of the endpoint, operation, all filter/focus/page parameters,
 
 `npm run dashboard` serves the saved console and the same Node read handler used by Vercel. `npm run dev` retains the Python preview and its optional database reads while exposing the market-field handler. a plain static HTTP server cannot provide the new market-field endpoint.
 
-the graph rebuild runs from retained inputs without network acquisition. see the graph build command in `package.json` and the retained-data rebuild procedure in [data-contract.md](data-contract.md). complete the rebuild before restarting a local server: Node caches its loaded graph for the process lifetime. commit the graph and matching source projection together.
+the graph rebuild runs from retained inputs without network acquisition. run `npm run build:market-field` (Python 3.11 or later) and the retained-data rebuild procedure in [data-contract.md](data-contract.md). complete the rebuild before restarting a local server: Node caches its loaded graph for the process lifetime. commit the graph and matching source projection together.
 
 ## deployment and costs
 
@@ -50,4 +50,34 @@ if the read service is unavailable, the field shows an error with retry. it does
 
 the baseline at `3c5390e` is retained in [issue4/baseline-performance.json](research/issue4/baseline-performance.json). median browser graph preparation was 43.4 ms on desktop and 259.2 ms under throttling. the graph input transferred 4,542,298 bytes including browser-reported HTTP overhead. all initial page resources transferred 10,907,104 bytes; other research catalog traffic is outside this issue's graph migration.
 
-the baseline defines the following practical checks: zero browser `prepare`/full-pair scan calls, initial field reads below 1 MB decoded, and no client source-row transfer before selection. filter and focus measurements include request latency and rendering, so they must be reported separately from removed graph work. the benchmark polls at 100 ms; small timings include observation delay.
+the baseline defines the following practical checks: zero browser `prepare`/full-pair scan calls, initial field reads below 1 MB decoded, no client source-row transfer before selection, and filter/focus completion within 1 s on desktop or 2 s under the defined throttling. pass `--enforce` to the benchmark to check the byte, graph-call, browser-error, and latency budgets. filter and focus measurements include request latency and rendering, so they must be reported separately from removed graph work. the benchmark polls at 100 ms; small timings include observation delay.
+
+
+the local Vercel build passed with CLI 60.0.1. its emitted function uses `nodejs24.x` and includes both the 2 MB graph and the 4.54 MB retained detail projection. executing that bundled handler returned the pinned counts. this verifies local packaging, not production availability.
+
+final local results on Apple M3 / macOS 26.5.2, using the installed Chrome for Testing build (three-run medians):
+
+| measurement | desktop before → after | constrained emulation before → after |
+| --- | --- | --- |
+| field data, decoded bytes | 4,541,998 → 240,132 | 4,541,998 → 240,132 |
+| all initial resources, transferred bytes | 10,907,104 → 6,639,937 | 10,907,104 → 6,639,937 |
+| browser graph construction | 43.4 → 0 ms | 259.2 → 0 ms |
+| page ready | 467.9 → 168.5 ms | 12,632.9 → 7,292.7 ms |
+| year filter completion | 76.0 → 40.7 ms | 275.6 → 166.4 ms |
+| focus with source detail | 78.6 → 41.5 ms | 151.8 → 266.4 ms |
+
+field data fell 94.7%. constrained focus added about 115 ms because source detail now requires a read request. that cost is visible and within the 2 s budget. no browser errors or graph preparation/pair/neighbor scan calls occurred. the after-run includes the independently landed research-set route, so all-page byte and time comparisons include that small change; the field-specific byte comparison isolates this migration. local HTTP is uncompressed and same-host; deployment cold starts and real mobile hardware remain separate checks.
+
+raw after measurements: [issue4/after-performance.json](research/issue4/after-performance.json). reproduce against an isolated test browser with remote debugging enabled:
+
+```sh
+PORT=8080 npm run dashboard
+# Use the loopback debug port reported by the authorized test browser.
+node scripts/benchmark_market_field.mjs http://127.0.0.1:9222 http://127.0.0.1:8080 /tmp/market-field-performance.json --enforce
+```
+
+final verification: 58 dashboard/API/route tests passed; 95 Python tests passed with 13 database-dependent tests skipped because no disposable test database was supplied. rebuilding the graph produced no diff. its content-bound build ID is `0c15e1ce1a92738173af8d94f7f89a2175d5c267f93e87f35a2b3ec01756d338`. a source inspector check opened retained row `2a3de0564d73c91e7760` with CNCF 2024 category and full artifact hash. production publication and smoke checks have not been performed.
+
+`scripts/capture_market_field_demo.sh` records the real overview, focus, and shared-placement inspector through an isolated browser session, then encodes a 10-second silent H.264 clip with FFmpeg. generated footage stays outside Git in `~/desktop/demos`; the capture script retains its raw intermediate outside the repository. no microphone audio or posting is part of that command.
+
+deployed preview verification for code commit `2b523e1`: Vercel deployment `dpl_2wwZ7QeCfXdf1MPvHHPNsAdG7bcE` reached Ready at `https://log-pose-8hsadv5fw-zarnab.vercel.app`. authenticated `vercel curl` reads returned the expected graph build and 1,240/47,288/100 counts. Kueue's query returned three neighbors; Kueue/Kuberay detail returned two exact placements with both source rows and artifact hashes. the candidate/neighbor deep-link HTML matches the committed file plus Vercel's injected preview toolbar. preview protection remains enabled. production smoke verification is still pending.

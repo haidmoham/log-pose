@@ -24,7 +24,8 @@ def fixture_projection():
 
     return {"build_id": "projection-v1", "status": "unreviewed_inventory_overlap",
             "provenance": {"discovery_sha256": "a" * 64, "queue_sha256": "b" * 64},
-            "artifacts": [{"source": "cncf", "year": 2024}],
+            "artifacts": [{"source": "cncf", "year": 2024,
+                           "url": "https://example.org/original-pinned-source"}],
             "nodes": [candidate("a", [observation("cncf", 2024, "A", "a1")]),
                       candidate("b", [observation("cncf", 2024, "A", "b1")]),
                       candidate("c", [observation("cncf", 2024, "B", "c1")])],
@@ -43,7 +44,10 @@ def test_exact_key_deduplicates_placements_and_is_stable():
     assert build_market_field_graph(copy.deepcopy(projection)) == graph
     reversed_nodes = copy.deepcopy(projection)
     reversed_nodes["nodes"].reverse()
-    assert build_market_field_graph(reversed_nodes) == graph
+    reordered_graph = build_market_field_graph(reversed_nodes)
+    for field in ("keys", "candidates", "pairs", "adjacency"):
+        assert reordered_graph[field] == graph[field]
+    assert reordered_graph["build_id"] != graph["build_id"]
     changed = copy.deepcopy(projection)
     changed["nodes"][2]["observations"][0]["source_category"] = "C"
     assert build_market_field_graph(changed)["build_id"] != graph["build_id"]
@@ -68,3 +72,17 @@ def test_shipped_artifact_rebuilds_from_pinned_projection():
     projection = json.loads((ROOT / "web/data/topology-discovery.json").read_text())
     graph = json.loads((ROOT / "api/data/market-field-graph.json").read_text())
     assert build_market_field_graph(projection) == graph
+
+
+def test_detail_only_changes_renew_graph_id_even_with_stale_projection_id():
+    projection = fixture_projection()
+    first = build_market_field_graph(projection)
+    changed_row = copy.deepcopy(projection)
+    changed_row["nodes"][0]["observations"][0]["rows"][0]["id"] = "different-source-row"
+    changed_artifact = copy.deepcopy(projection)
+    changed_artifact["artifacts"][0]["url"] = "https://example.org/new-pinned-source"
+    for changed in (changed_row, changed_artifact):
+        assert changed["build_id"] == projection["build_id"]
+        rebuilt = build_market_field_graph(changed)
+        assert rebuilt["input_hashes"]["projection_sha256"] != first["input_hashes"]["projection_sha256"]
+        assert rebuilt["build_id"] != first["build_id"]

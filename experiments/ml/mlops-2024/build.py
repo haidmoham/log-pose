@@ -14,7 +14,7 @@ import sys
 from datetime import date
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT / "src"))
 from log_pose.core import normalize  # noqa: E402
 
@@ -59,8 +59,8 @@ def claim(identifier: str, statement: str, basis: str, evidence_ids: list[str],
 
 
 def build() -> dict:
-    manifest = json.loads((ROOT / "docs/research/mlops-2024-source-manifest.json").read_text())
-    report = json.loads((ROOT / "docs/research/mlops-2024-acquisition-report.json").read_text())
+    manifest = json.loads((ROOT / "experiments/ml/mlops-2024/source-manifest.json").read_text())
+    report = json.loads((ROOT / "experiments/ml/mlops-2024/acquisition-report.json").read_text())
     report_by_id = {item["id"]: item for item in report["results"]}
     failed_ids = {item["id"] for item in report["failures"]}
     evidence: list[dict] = []
@@ -382,6 +382,6 @@ def validate(result: dict) -> None:
 
 if __name__ == "__main__":
     artifact = build()
-    write_json(ROOT / "docs/research/mlops-2024-study.json", artifact)
-    write_json(ROOT / "web/data/research-set-mlops-2024.json", artifact)
+    write_json(ROOT / "experiments/ml/mlops-2024/study.json", artifact)
+    write_json(ROOT / "web/experimental/mlops-2024/study.json", artifact)
     print(f"built {len(artifact['members'])} leads, {len(artifact['evidence'])} evidence passages")

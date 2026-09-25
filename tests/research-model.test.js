@@ -58,21 +58,6 @@ test('URL state validates routes, years, slugs, duplicates, and pin capacity', (
   assert.equal(model.parseUrlState('?view=topology', slugs, [2024]).view, 'topology');
 });
 
-test('saved research set URL state preserves filters and a safe selected lead', () => {
-  const parsed = model.parseUrlState(
-    '?view=research-set&member=lead.alpha&role=platform%20engineering'
-      + '&disposition=include&researchQuery=feature%20store', new Set(), [2024]);
-  assert.deepEqual([parsed.view, parsed.researchMember, parsed.researchRole,
-    parsed.researchDisposition, parsed.researchQuery],
-  ['research-set', 'lead.alpha', 'platform engineering', 'include', 'feature store']);
-  assert.equal(model.toUrlParams({ ...parsed, compareSlugs: [] }),
-    'view=research-set&member=lead.alpha&role=platform+engineering&disposition=include&researchQuery=feature+store');
-  const invalid = model.parseUrlState(
-    '?view=research-set&member=../../other&researchQuery=' + 'x'.repeat(220), new Set(), [2024]);
-  assert.equal(invalid.researchMember, null);
-  assert.equal(invalid.researchQuery.length, 200);
-});
-
 test('data desk URL state defaults to all sources and validates each selector', () => {
   const allSlugs = new Set(['pilot', 'external']);
   const pilotSlugs = new Set(['pilot']);

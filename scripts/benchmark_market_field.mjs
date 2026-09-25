@@ -101,7 +101,7 @@ try {
     });
     for (let trial = 1; trial <= 3; trial++) {
       await send('Page.navigate', { url: `${siteOrigin}/?view=topology` });
-      await waitFor(`document.querySelectorAll('.field-dot').length === 1240 && document.querySelectorAll('.field-index-row').length > 0`);
+      await waitFor(`document.querySelectorAll('.field-dot').length > 0 && document.querySelectorAll('.field-index-row').length > 0`);
       const initial = await evaluate(`({
         readyMs: performance.now(), metrics: structuredClone(__fieldBench),
         resources: performance.getEntriesByType('resource').map(entry => ({

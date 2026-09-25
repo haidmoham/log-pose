@@ -2,7 +2,7 @@
 // This module is shared by the Vercel function and the local read server.
 'use strict';
 
-const { createHash } = require('node:crypto');
+const crypto = require('node:crypto');
 const graph = require('./data/market-field-graph.json');
 const layout = require('./data/market-field-layout.json');
 const projection = require('../web/data/topology-discovery.json');
@@ -19,11 +19,34 @@ const artifactsBySourceYear = new Map(projection.artifacts.map(artifact =>
   [`${artifact.source}:${artifact.year}`, artifact]));
 const tagOrder = ['ai_automation', 'data_infrastructure', 'developer_tools', 'security_observability'];
 
-if (projection.build_id !== graph.input_hashes.projection_build_id ||
-    layout.build_id !== graph.build_id || Object.keys(layout.positions).length !== graph.candidates.length ||
-    projection.counts.possible_pairs !== graph.pairs.length ||
-    projection.counts.nodes !== graph.candidates.length) {
-  throw new Error('market field graph and detail projection differ');
+function canonicalEncode(value) {
+  if (Array.isArray(value)) return `[${value.map(canonicalEncode).join(',')}]`;
+  if (value !== null && typeof value === 'object') {
+    return `{${Object.keys(value).sort().map(key =>
+      `${JSON.stringify(key)}:${canonicalEncode(value[key])}`).join(',')}}`;
+  }
+  return JSON.stringify(value);
+}
+
+function verifyGraphDetail(readGraph, detailProjection) {
+  const projectionSha256 = crypto.createHash('sha256')
+    .update(canonicalEncode(detailProjection)).digest('hex');
+  if (projectionSha256 !== readGraph.input_hashes.projection_sha256 ||
+      detailProjection.build_id !== readGraph.input_hashes.projection_build_id ||
+      detailProjection.counts.possible_pairs !== readGraph.pairs.length ||
+      detailProjection.counts.nodes !== readGraph.candidates.length) {
+    throw new Error('market field graph and detail projection differ');
+  }
+}
+
+let graphDetailMismatch = false;
+try {
+  verifyGraphDetail(graph, projection);
+  if (layout.build_id !== graph.build_id || Object.keys(layout.positions).length !== graph.candidates.length) {
+    throw new Error('market field layout and graph differ');
+  }
+} catch {
+  graphDetailMismatch = true;
 }
 
 function response(status, body) {
@@ -214,7 +237,7 @@ function temporalTimeline() {
 }
 
 function temporalFrameId(options) {
-  return createHash('sha256').update(JSON.stringify({ query_version: 1, ...options })).digest('hex');
+  return crypto.createHash('sha256').update(JSON.stringify({ query_version: 1, ...options })).digest('hex');
 }
 
 function temporalFrame(params) {
@@ -239,7 +262,8 @@ function temporalFrame(params) {
     && item.year <= year).map(item => item.year).sort((left, right) => left - right);
   const compareArtifact = projection.artifacts.filter(item => item.source === source && item.year < year)
     .sort((left, right) => right.year - left.year)[0] || null;
-  const compareYear = parameter(params, 'compare_year', compareArtifact ? String(compareArtifact.year) : '');
+  const requestedCompareYear = parameter(params, 'compare_year', compareArtifact ? String(compareArtifact.year) : '');
+  const compareYear = requestedCompareYear === 'none' ? '' : requestedCompareYear;
   if (compareYear && (!/^20(?:20|2[1-6])$/.test(compareYear)
       || !artifactsBySourceYear.has(`${source}:${Number(compareYear)}`)
       || Number(compareYear) >= year)) throw new Error('invalid compare_year');
@@ -260,6 +284,9 @@ function temporalFrame(params) {
   const eligibleObservations = (candidate, years = selectedYears) => candidate.observations.filter(observation =>
     observation.source === source && years.includes(observation.year)
       && (category === 'all' || observation.source_category === category));
+  const availableCategories = [...new Set(candidates.flatMap(candidate => candidate.observations
+    .filter(observation => observation.source === source && selectedYears.includes(observation.year))
+    .map(observation => observation.source_category)))].sort();
   const rowNameMatch = candidate => eligibleObservations(candidate).some(observation =>
     observation.rows.some(row => `${row.name} ${row.description}`.toLocaleLowerCase().includes(queryText)));
   const eligibleName = candidate => eligibleObservations(candidate)[0]?.rows[0]?.name || candidate.name;
@@ -270,7 +297,7 @@ function temporalFrame(params) {
 
   if (!artifact) return response(200, { schema_version: graph.schema_version,
     build_id: graph.build_id, status: 'missing_snapshot', source, year, temporal_mode: mode,
-    frame_id: frameId,
+    frame_id: frameId, active_clock: 'inventory_year', precision: 'year',
     compare_year: comparison?.year ?? null, active_clock: 'inventory_year', precision: 'year',
     nodes: [], edges: [], changes: [], candidate_count: 0, edge_count: 0,
     coverage: { status: 'missing', source, year, source_rows: 0,
@@ -326,7 +353,7 @@ function temporalFrame(params) {
       if (!placements.length) continue;
       totalContextEdges += 1;
       if (contextEdges.length < 2500) contextEdges.push({ left: graph.candidates[left].id,
-        right: graph.candidates[right].id, placements });
+        right: graph.candidates[right].id });
     }
     return response(200, { schema_version: graph.schema_version, build_id: graph.build_id,
     status: 'ready', frame_id: frameId, source, year, temporal_mode: mode, compare_year: comparison?.year ?? null,
@@ -340,13 +367,15 @@ function temporalFrame(params) {
       eligible_candidates: matchingCandidates.length, source_candidates: candidates.filter(candidate =>
         candidate.observations.some(item => item.source === source && selectedYears.includes(item.year))).length },
     filters: { source, category, query: queryText }, suggestions, candidate_count: matchingCandidates.length,
+    available_categories: availableCategories,
     focus: null,
     nodes: matchingCandidates.map(candidate => ({ id: candidate.id, name: eligibleName(candidate),
       position: layout.positions[candidate.id],
       observed_years: [...new Set(eligibleObservations(candidate).map(item => item.year))],
       identity_status: 'unreviewed_candidate_key', frame_presence: 'observed_in_selected_frame' })),
     edges: [], changes: [], context_edges: contextEdges,
-    total_context_edges: totalContextEdges, context_edges_truncated: totalContextEdges > contextEdges.length,
+    total_context_edges: totalContextEdges, context_edge_count: contextEdges.length,
+    context_edges_truncated: totalContextEdges > contextEdges.length,
     limitations: temporalLimitations(mode) });
   }
 
@@ -374,9 +403,9 @@ function temporalFrame(params) {
       comparison_placements: previous, current_unfiltered_placements: currentUnfiltered,
       comparison_unfiltered_placements: previousUnfiltered };
   });
-  const ordered = changes.filter(change => change.status !== 'filtered_out_current'
-    && change.status !== 'filtered_out_previous').sort((left, right) =>
-    left.candidate_id.localeCompare(right.candidate_id));
+  const relevantChanges = changes.filter(change => change.status !== 'filtered_out_current'
+    && change.status !== 'filtered_out_previous');
+  const ordered = changes.slice().sort((left, right) => left.candidate_id.localeCompare(right.candidate_id));
   const visibleChanges = ordered.slice(offset, offset + nodeLimit);
   const visibleIds = new Set([candidateId, ...visibleChanges.map(change => change.candidate_id)]);
   const visibleEdges = visibleChanges.filter(change => change.current_placements.length)
@@ -393,7 +422,7 @@ function temporalFrame(params) {
       const otherId = graph.candidates[otherIndex].id;
       if (id >= otherId || !visibleIds.has(otherId)) continue;
       const placements = pairPlacements(pairIndex, keyMatches);
-      if (placements.length) contextEdges.push({ left: id, right: otherId, placements });
+      if (placements.length) contextEdges.push({ left: id, right: otherId });
     }
   }
   contextEdges.sort((left, right) => left.left.localeCompare(right.left)
@@ -459,14 +488,20 @@ function temporalFrame(params) {
         + candidate.observations.filter(item => item.source === source
           && comparisonYears.includes(item.year)).reduce((sum, item) => sum + item.rows.length, 0), 0) : 0 },
     filters: { source, category, query: queryText }, focus: candidateId,
-    focus_present: focusHasSelectedObservation, candidate_count: matchingCandidates.length,
-    total_neighbors: ordered.length, offset, limit: nodeLimit,
+    available_categories: availableCategories,
+    focus_present: focus.observations.some(observation => observation.source === source
+      && selectedYears.includes(observation.year)),
+    focus_filtered_out: !focusHasSelectedObservation && focus.observations.some(observation =>
+      observation.source === source && selectedYears.includes(observation.year)),
+    candidate_count: matchingCandidates.length,
+    total_neighbors: relevantChanges.length, offset, limit: nodeLimit,
     next_offset: offset + visibleChanges.length < ordered.length ? offset + visibleChanges.length : null,
     truncated: offset + visibleChanges.length < ordered.length,
-    changes: changes.slice(offset, offset + nodeLimit),
+    changes: visibleChanges,
     total_changes: changes.length,
     nodes: [...nodeById.values()], edges: visibleEdges,
     context_edges: contextEdges.slice(0, contextEdgeLimit),
+    context_edge_count: contextEdges.length,
     context_edges_truncated: contextEdges.length > contextEdgeLimit, detail,
     limitations: temporalLimitations(mode) });
 }
@@ -486,6 +521,7 @@ function temporalLimitations(mode) {
 }
 
 function handleMarketField(searchParams) {
+  if (graphDetailMismatch) return response(503, { error: 'market_field_unavailable' });
   try {
     const params = searchParams instanceof URLSearchParams ? searchParams : new URLSearchParams(searchParams);
     const mode = parameter(params, 'mode', 'summary');
@@ -529,3 +565,4 @@ function vercelHandler(request, reply) {
 
 module.exports = vercelHandler;
 module.exports.handleMarketField = handleMarketField;
+module.exports.verifyGraphDetail = verifyGraphDetail;
