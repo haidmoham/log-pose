@@ -2,7 +2,7 @@
 
 - Benchmark: `benchmark-cases-v1`
 - Case manifest SHA-256: `c8f07d0b70686037b7db025ef3950f247239610384f366f42a624e579d85e422`
-- Code commit: `511e7449d51f33ec3388c39c7a58cf3f6ee5c29e`
+- Code commit: `ce5a785c47cc405a83e20d82a316fe7ec64c064d`
 - Run: `offline_deterministic_controls_only`; credentialed models executed: `false`
 - Cases: 20 across 7 companies; semantic labels provisional or blocked: 20
 
@@ -10,9 +10,9 @@
 
 | Control | Answered | Abstained | Coverage | Temporal violations | Calls / tokens / ms | Semantic score |
 | --- | ---: | ---: | ---: | ---: | --- | --- |
-| `capture_aware_exact_span` | 6 | 14 | 0.300 | 0 | 0 / 0 / 0 | not scored |
-| `publication_date_only` | 13 | 7 | 0.650 | 7 | 0 / 0 / 0 | not scored |
-| `supplied_prediction_fixture` | 5 | 15 | 0.250 | 0 | 0 / 0 / 0 | not scored |
+| `capture_aware_exact_span` | 6 | 14 | 0.300 | 0 | 0 / 0 / not measured | not scored |
+| `publication_date_only` | 13 | 7 | 0.650 | 7 | 0 / 0 / not measured | not scored |
+| `supplied_prediction_fixture` | 5 | 15 | 0.250 | 0 | 0 / 0 / not measured | not scored |
 
 ## Case receipts: `capture_aware_exact_span`
 
