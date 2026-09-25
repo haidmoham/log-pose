@@ -3,7 +3,7 @@
 
   function create({ root, state, commitState, openRecord }) {
     const { node, append } = globalScope.LogPoseUI;
-    const fallbackNode = (tag, text, className) => node(tag, text, className);
+    let active = false;
     let timeline = null;
     let timelineError = null;
     let frame = null;
@@ -13,7 +13,8 @@
     let frameKey = '';
     let frameLoading = false;
     let playTimer = null;
-    let queryDraft = state.temporalQuery || '';
+    let committedQuery = state.temporalQuery || '';
+    let queryDraft = committedQuery;
 
     const endpoint = params => `./api/market-field?${new URLSearchParams(params).toString()}`;
     const formatCount = value => Number(value || 0).toLocaleString();
@@ -67,7 +68,7 @@
         params.compare_year = state.temporalCompareYear;
       }
       if (state.temporalCandidate) params.candidate = state.temporalCandidate;
-      if (state.temporalNeighbor) params.neighbor = state.temporalNeighbor;
+      if (state.temporalCandidate && state.temporalNeighbor) params.neighbor = state.temporalNeighbor;
       return params;
     }
 
@@ -390,7 +391,9 @@
         panel.append(node('h4', `Comparison evidence · ${detail.comparison_placements.length}`, 'section-title'));
         detail.comparison_placements.forEach(placement => panel.append(
           placementCard(placement, detail.focus.name, detail.neighbor.name)));
-      } else panel.append(node('p', 'No exact matching placement appears in the comparison evidence.', 'muted'));
+      } else panel.append(node('p', frame.compare_year == null
+        ? 'No comparison is selected for this frame.'
+        : 'No exact matching placement appears in the comparison evidence.', 'muted'));
       panel.append(node('p', 'Inventory year is the active clock. Source commit time is shown separately. Source publication, event time, ingestion time, and review time are unavailable here. Names and candidate groupings remain unresolved leads.', 'caveat'));
       return panel;
     }
@@ -437,6 +440,7 @@
     }
 
     function render() {
+      if (!active) return;
       root.querySelector('.temporal-view-state')?.remove();
       const surface = node('div', '', 'temporal-view-state');
       root.append(surface);
@@ -499,8 +503,21 @@
       }
     }
 
-    function dispose() { stopPlayback(); }
-    return { render, dispose };
+    function activate() {
+      const nextQuery = state.temporalQuery || '';
+      if (nextQuery !== committedQuery) {
+        committedQuery = nextQuery;
+        queryDraft = nextQuery;
+      }
+      active = true;
+      render();
+    }
+
+    function dispose() {
+      active = false;
+      stopPlayback();
+    }
+    return { activate, dispose };
   }
 
   globalScope.LogPoseTemporalTopologyView = { create };

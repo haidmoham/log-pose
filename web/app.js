@@ -216,6 +216,24 @@ function commitState(changes, options = {}) {
   if (options.focus) document.querySelector(options.focus)?.focus();
 }
 
+function openCompanyEvidence(company) {
+  commitState({ view: 'explore', company: company.slug, query: company.name,
+    category: 'all', searchYear: 'all', searchSource: 'all', searchType: 'all',
+    searchUs: 'all' }, { top: true, focus: '#company-detail' });
+}
+
+function openInventoryRecord(recordId) {
+  commitState({ view: 'data', dataFamily: 'inventory', dataQuery: '',
+    dataCompany: 'all', dataYear: 'all', dataRecord: recordId },
+  { top: true, focus: '#data-inspector' });
+}
+
+function openCompanyLead(slug) {
+  commitState({ view: 'explore', company: slug, query: '',
+    searchYear: 'all', searchType: 'pilot', category: 'all' },
+  { top: true, focus: '#company-detail' });
+}
+
 function pinButton(company, className = 'quiet-button') {
   const selected = state.compareSlugs.includes(company.slug);
   const atCapacity = !selected && state.compareSlugs.length >= model.MAX_PINNED;
@@ -261,10 +279,7 @@ function overviewCompanyPanel(company) {
   charts.append(revenue, margins);
   const inspect = node('button', 'inspect dated evidence →', 'text-button');
   inspect.type = 'button';
-  inspect.addEventListener('click', () => commitState({
-    view: 'explore', company: company.slug, query: company.name, category: 'all',
-    searchYear: 'all', searchSource: 'all', searchType: 'all', searchUs: 'all'
-  }, { top: true, focus: '#company-detail' }));
+  inspect.addEventListener('click', () => openCompanyEvidence(company));
   section.append(charts, node('p', 'period-end-year buckets can reflect different fiscal calendars. change compares adjacent periods for the same company; missing values remain gaps.', 'caveat'), inspect);
   return section;
 }
@@ -409,10 +424,7 @@ function compareFacts(companies) {
     ['inspect', company => {
       const button = node('button', 'dated evidence →', 'text-button');
       button.type = 'button';
-      button.addEventListener('click', () => commitState({
-        view: 'explore', company: company.slug, query: company.name, category: 'all',
-        searchYear: 'all', searchSource: 'all', searchType: 'all', searchUs: 'all'
-      }, { top: true, focus: '#company-detail' }));
+      button.addEventListener('click', () => openCompanyEvidence(company));
       return button;
     }]
   ];
@@ -466,9 +478,12 @@ function renderCompare() {
 }
 
 function render() {
-  if (!data || !exploreView || !topologyView || !discoveryTopologyView || !temporalTopologyView || !dataView
-      ) return;
+  if (!data || !exploreView || !topologyView || !discoveryTopologyView || !temporalTopologyView
+      || !dataView) return;
   topologyView.dispose();
+  if (state.view !== 'topology' || state.topologyLayer !== 'temporal') {
+    temporalTopologyView.dispose();
+  }
   tabs.forEach(button => {
     if (button.dataset.view === state.view) button.setAttribute('aria-current', 'page');
     else button.removeAttribute('aria-current');
@@ -482,13 +497,15 @@ function render() {
   else if (state.view === 'overview') renderOverview();
   else if (state.view === 'compare') renderCompare();
   else if (state.view === 'topology') {
-    root.append(title('MARKET ATLAS', state.topologyLayer === 'temporal'
-      ? 'the observed field' : state.topologyLayer === 'field'
-        ? 'all retained overlaps' : 'reviewed relationships', state.topologyLayer === 'temporal'
-      ? 'follow retained source inventories through time. choose a stop, then ask why a shared placement appears here.'
-      : state.topologyLayer === 'field'
-        ? 'inspect the current build’s full candidate universe and exact source-category-year overlaps.'
-        : 'read accepted, source-backed claims on their documented evidence clocks.'));
+    const layerIntroduction = {
+      temporal: ['the observed field',
+        'follow retained source inventories through time. choose a stop, then ask why a shared placement appears here.'],
+      field: ['all retained overlaps',
+        'inspect the current build’s full candidate universe and exact source-category-year overlaps.'],
+      reviewed: ['reviewed relationships',
+        'read accepted, source-backed claims on their documented evidence clocks.']
+    }[state.topologyLayer];
+    root.append(title('MARKET ATLAS', ...layerIntroduction));
     const layers = node('nav', '', 'topology-layer-nav');
     layers.setAttribute('aria-label', 'Market map layers');
     [['temporal', 'through time'],
@@ -502,7 +519,7 @@ function render() {
       layers.append(button);
     });
     root.append(layers);
-    if (state.topologyLayer === 'temporal') temporalTopologyView.render();
+    if (state.topologyLayer === 'temporal') temporalTopologyView.activate();
     else if (state.topologyLayer === 'field') discoveryTopologyView.render();
     else topologyView.render();
   }
@@ -570,24 +587,15 @@ if (legacyStudyTarget) {
     topologyView = window.LogPoseTopology.create({ root, state, data, model, commitState });
     discoveryTopologyView = window.LogPoseDiscoveryTopologyView.create({
       root, state, index: dataIndex, commitState,
-      openRecord: recordId => commitState({ view: 'data', dataFamily: 'inventory',
-        dataQuery: '', dataCompany: 'all', dataYear: 'all', dataRecord: recordId },
-      { top: true, focus: '#data-inspector' }),
-      openCompany: slug => commitState({ view: 'explore', company: slug, query: '',
-        searchYear: 'all', searchType: 'pilot', category: 'all' },
-      { top: true, focus: '#company-detail' })
+      openRecord: openInventoryRecord, openCompany: openCompanyLead
     });
     temporalTopologyView = window.LogPoseTemporalTopologyView.create({
-      root, state, commitState,
-      openRecord: recordId => commitState({ view: 'data', dataFamily: 'inventory',
-        dataQuery: '', dataCompany: 'all', dataYear: 'all', dataRecord: recordId },
-      { top: true, focus: '#data-inspector' })
+      root, state, commitState, openRecord: openInventoryRecord
     });
     dataView = window.LogPoseDataView.create({
       root, state, index: dataIndex, discovery, commitState,
       persistDetail: changes => { Object.assign(state, changes); writeUrl(true); },
-      openCompany: slug => commitState({ view: 'explore', company: slug, query: '',
-        searchYear: 'all', searchType: 'pilot', category: 'all' }, { top: true, focus: '#company-detail' }),
+      openCompany: openCompanyLead,
       openTopology: claimId => commitState({ view: 'topology', topologyLayer: 'reviewed',
         selectedClaim: claimId,
         company: null, topologySourceYear: 'all', topologyCategory: 'all',

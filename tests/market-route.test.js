@@ -354,6 +354,68 @@ test('temporal inventory gaps stay explicit and late frames cannot replace the s
   stale.window.close();
 });
 
+test('temporal route restores search state and discards a neighbor without a focus', async () => {
+  const temporal = async params => {
+    const result = marketFieldApi.handleMarketField(new URLSearchParams(params));
+    return { status: result.status, body: result.body };
+  };
+  const dom = await page('/?view=topology&temporalQuery=Vespa&temporalNeighbor=orphan',
+    null, false, { temporal });
+  const { document, location } = dom.window;
+  await waitFor(() => document.querySelector('.temporal-search input'));
+  assert.equal(document.querySelector('.temporal-search input').value, 'Vespa');
+  assert.equal(new URL(location.href).searchParams.has('temporalNeighbor'), false);
+  await waitFor(() => document.querySelector('.temporal-inspector h3'));
+  assert.match(document.querySelector('.temporal-inspector h3').textContent, /choose a candidate/i);
+  dom.window.close();
+});
+
+test('temporal inspector identifies a frame with no comparison selected', async () => {
+  const focus = '00a2fb1597f507022279';
+  const timeline = marketFieldApi.handleMarketField(new URLSearchParams('mode=timeline'));
+  const focused = marketFieldApi.handleMarketField(new URLSearchParams({
+    mode: 'frame', build_id: timeline.body.build_id, source: 'lfai', year: '2024',
+    candidate: focus, compare_year: 'none'
+  }));
+  const neighbor = focused.body.edges[0].candidate_id;
+  const temporal = async params => {
+    const result = marketFieldApi.handleMarketField(new URLSearchParams(params));
+    return { status: result.status, body: result.body };
+  };
+  const dom = await page(`/?view=topology&temporalCandidate=${focus}`
+    + `&temporalNeighbor=${neighbor}&temporalCompareYear=none`, null, false, { temporal });
+  await waitFor(() => dom.window.document.querySelector('.temporal-evidence-card'));
+  assert.match(dom.window.document.querySelector('.temporal-inspector').textContent,
+    /No comparison is selected for this frame/);
+  dom.window.close();
+});
+
+test('leaving the temporal route stops playback and ignores a late frame paint', async () => {
+  const temporal = async params => {
+    if (params.mode === 'frame') await new Promise(resolve => setTimeout(resolve, 140));
+    const result = marketFieldApi.handleMarketField(new URLSearchParams(params));
+    return { status: result.status, body: result.body };
+  };
+  const dom = await page('/?view=data', null, false, { temporal });
+  const { document } = dom.window;
+  document.querySelector('[data-view="topology"]').click();
+  await waitFor(() => dom.window.__marketFieldRequests.some(request => request.params.mode === 'frame'));
+  document.querySelector('[data-view="data"]').click();
+  await new Promise(resolve => setTimeout(resolve, 180));
+  assert.equal(document.querySelector('.temporal-view-state'), null);
+  assert(document.querySelector('.data-coverage'));
+
+  document.querySelector('[data-view="topology"]').click();
+  await waitFor(() => document.querySelector('.temporal-play'));
+  let clearedTimer = null;
+  dom.window.setInterval = () => 8675;
+  dom.window.clearInterval = timer => { clearedTimer = timer; };
+  document.querySelector('.temporal-play').click();
+  document.querySelector('[data-view="data"]').click();
+  assert.equal(clearedTimer, 8675);
+  dom.window.close();
+});
+
 test('opening a claim map clears filters that would hide the selected claim', async () => {
   const dom = await page('/?view=topology&topologyLayer=reviewed');
   const { document, Event } = dom.window;
