@@ -4,7 +4,8 @@ const pinCount = document.querySelector('#pin-count');
 const model = window.LogPoseResearchModel;
 const { node, append, link, title, metric, table } = window.LogPoseUI;
 const seriesChart = (...args) => window.LogPoseUI.seriesChart(model, ...args);
-const state = { view: 'explore', year: 2024, category: 'all', query: '', company: null,
+const state = { view: 'data', year: 2024, category: 'all', query: '', company: null,
+  dataFamily: 'all', dataQuery: '', dataCompany: 'all', dataYear: 'all', dataRecord: null,
   searchYear: 'all', searchSource: 'all', searchType: 'all', searchUs: 'all',
   inventoryArtifact: 'cncf-2026', inventoryQuery: '',
   selectedCandidate: null, selectedProvider: null, searchLimit: 30, compareSlugs: [],
@@ -12,11 +13,13 @@ const state = { view: 'explore', year: 2024, category: 'all', query: '', company
   topologyListLimit: 40, selectedClaim: null };
 let data;
 let discovery;
+let dataIndex;
 let occurrenceById;
 let identityReviewById;
 let financialIndex;
 let exploreView;
 let topologyView;
+let dataView;
 
 function categoryName(value) {
   return {
@@ -95,6 +98,12 @@ function companyDetail(slug) {
   section.append(append(node('div', '', 'detail-head'),
     append(node('div'), node('p', 'COMPANY RECORD / 2021–2024', 'eyebrow'), node('h3', company.name)),
     close));
+  const openRecords = node('button', 'inspect all retained records →', 'text-button');
+  openRecords.type = 'button';
+  openRecords.addEventListener('click', () => commitState({ view: 'data', dataFamily: 'all',
+    dataCompany: slug, dataYear: 'all', dataQuery: '', dataRecord: null },
+  { top: true, focus: '#data-query' }));
+  section.append(openRecords);
   const locationReview = locationReviewFor(slug);
   if (locationReview) section.append(append(node('div', '', 'location-review'),
     node('p', 'U.S. LOCATION REVIEW / ' + locationReview.source_year, 'eyebrow'),
@@ -119,6 +128,12 @@ function companyDetail(slug) {
         : 'Visible text is available; this page has no reviewed claim in the fixed audit.', 'muted'));
       if (item.status === 'retrieved') card.append(node('p', item.excerpt
         + (item.text_characters > 500 ? '…' : ''), 'excerpt'));
+      const inspectCapture = node('button', 'inspect captured text →', 'text-button');
+      inspectCapture.type = 'button';
+      inspectCapture.addEventListener('click', () => commitState({ view: 'data',
+        dataFamily: 'pages', dataCompany: slug, dataYear: 'all', dataQuery: '',
+        dataRecord: `page:${item.snapshot_id}` }, { top: true, focus: '#data-inspector' }));
+      card.append(inspectCapture);
       if (item.warc_truncated) card.append(node('span', 'WARC body truncated', 'pill warning'));
       const sourceFoot = node('div', '', 'source-foot');
       sourceFoot.append(item.provider === 'wayback'
@@ -134,6 +149,12 @@ function companyDetail(slug) {
       const result = financials(slug, year);
       card.append(node('p', 'SEC period ending ' + (result.periodEnd || 'unavailable')
         + ' · Revenue ' + money(result.revenue), 'year-finance'));
+      const inspectFacts = node('button', 'inspect SEC fact candidates →', 'text-button');
+      inspectFacts.type = 'button';
+      inspectFacts.addEventListener('click', () => commitState({ view: 'data',
+        dataFamily: 'sec', dataCompany: slug, dataYear: String(year),
+        dataQuery: '', dataRecord: null }, { top: true, focus: '#data-query' }));
+      card.append(inspectFacts);
     }
     grid.append(card);
   }
@@ -437,7 +458,7 @@ function renderCompare() {
 }
 
 function render() {
-  if (!data || !exploreView || !topologyView) return;
+  if (!data || !exploreView || !topologyView || !dataView) return;
   topologyView.dispose();
   tabs.forEach(button => {
     if (button.dataset.view === state.view) button.setAttribute('aria-current', 'page');
@@ -446,7 +467,8 @@ function render() {
   root.replaceChildren();
   root.setAttribute('aria-busy', 'false');
   pinCount.textContent = String(state.compareSlugs.length);
-  if (state.view === 'overview') renderOverview();
+  if (state.view === 'data') dataView.render();
+  else if (state.view === 'overview') renderOverview();
   else if (state.view === 'compare') renderCompare();
   else if (state.view === 'topology') topologyView.render();
   else exploreView.render();
@@ -463,7 +485,8 @@ function routeState() {
     .map(company => company.slug));
   const artifacts = ['cncf-2026', ...discovery.artifacts.map(artifact => `${artifact.source}-${artifact.year}`)
     .filter(key => key !== 'cncf-2026')];
-  return model.parseUrlState(location.search, slugs, data.years, artifacts);
+  const pilotSlugs = new Set(data.companies.map(company => company.slug));
+  return model.parseUrlState(location.search, slugs, data.years, artifacts, pilotSlugs);
 }
 
 window.addEventListener('popstate', () => {
@@ -475,15 +498,21 @@ window.addEventListener('popstate', () => {
   render();
 });
 
-Promise.all(['./dashboard.json', './discovery.json'].map(url =>
+Promise.all(['./dashboard.json', './discovery.json', './data/index.json'].map(url =>
   fetch(url).then(response => {
     if (!response.ok) throw new Error(url + ' HTTP ' + response.status);
     return response.json();
   })))
-  .then(([pilot, pulled]) => {
+  .then(([pilot, pulled, researchIndex]) => {
     model.validateExports(pilot, pulled);
+    if (researchIndex.schema_version !== '1.0' || !researchIndex.counts
+        || !Array.isArray(researchIndex.pages) || !Array.isArray(researchIndex.sec)
+        || !Array.isArray(researchIndex.market)) {
+      throw new Error('research index is incomplete');
+    }
     data = pilot;
     discovery = pulled;
+    dataIndex = researchIndex;
     const inventoryYears = pulled.artifacts.map(artifact => artifact.year);
     document.querySelector('#inventory-window').textContent = inventoryYears.length
       ? `${Math.min(...inventoryYears)}–${Math.max(...inventoryYears)}${pulled.artifacts.some(
@@ -499,6 +528,13 @@ Promise.all(['./dashboard.json', './discovery.json'].map(url =>
       money, financials, companyDetail, commitState, writeUrl, pinCount
     });
     topologyView = window.LogPoseTopology.create({ root, state, data, model, commitState });
+    dataView = window.LogPoseDataView.create({
+      root, state, index: dataIndex, discovery, commitState,
+      openCompany: slug => commitState({ view: 'explore', company: slug, query: '',
+        searchYear: 'all', searchType: 'pilot', category: 'all' }, { top: true, focus: '#company-detail' }),
+      openTopology: claimId => commitState({ view: 'topology', selectedClaim: claimId,
+        company: null }, { top: true, focus: '#topology-inspector' })
+    });
     const fromUrl = routeState();
     Object.assign(state, {
       ...fromUrl,

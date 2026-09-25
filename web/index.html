@@ -28,18 +28,19 @@
           </div>
         </div>
         <dl class="desk-status" aria-label="research scope">
-          <div><dt>inventory</dt><dd id="inventory-window">loading</dd></div>
-          <div><dt>cohort</dt><dd>20 selected</dd></div>
-          <div><dt>sources</dt><dd>dated + pinned</dd></div>
+          <div><dt>source window</dt><dd id="inventory-window">loading</dd></div>
+          <div><dt>research mode</dt><dd>inspect / compare</dd></div>
+          <div><dt>evidence</dt><dd>dated + pinned</dd></div>
         </dl>
         <a class="source-link" href="https://github.com/haidmoham/log-pose">source ↗</a>
       </header>
 
       <nav class="tabs" aria-label="research views">
-        <button type="button" data-view="explore" aria-current="page" disabled><span>01</span> market inventory</button>
-        <button type="button" data-view="overview" disabled><span>02</span> company study</button>
+        <button type="button" data-view="data" aria-current="page" disabled><span>01</span> research desk</button>
+        <button type="button" data-view="overview" disabled><span>02</span> companies</button>
         <button type="button" data-view="compare" disabled><span>03</span> compare <output id="pin-count">0</output></button>
         <button type="button" data-view="topology" disabled><span>04</span> relationships</button>
+        <button type="button" data-view="explore" disabled><span>05</span> source inventory</button>
       </nav>
 
       <main id="view" aria-busy="true">
@@ -54,6 +55,7 @@
     <script src="./research-model.js"></script>
     <script src="./console-ui.js"></script>
     <script src="./explore-view.js"></script>
+    <script src="./data-view.js"></script>
     <script src="./topology-webgl.js"></script>
     <script src="./topology-view.js"></script>
     <script src="./app.js"></script>
