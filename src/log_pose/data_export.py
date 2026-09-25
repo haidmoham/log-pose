@@ -46,21 +46,21 @@ def build_data_export(connection, *, repository_root: Path, page_text_limit: int
     with connection.cursor() as cursor:
         cursor.execute("SELECT version FROM schema_migrations ORDER BY version")
         migrations = [row["version"] for row in cursor.fetchall()]
-        cursor.execute("SELECT * FROM warehouse.page_observations ORDER BY company_slug,captured_at,observation_id")
+        cursor.execute("SELECT * FROM silver.page_observations ORDER BY company_slug,captured_at,observation_id")
         page_rows = cursor.fetchall()
-        cursor.execute("SELECT * FROM warehouse.sec_fact_observations ORDER BY cik,end_date,concept_group,fact_id")
+        cursor.execute("SELECT * FROM silver.sec_fact_observations ORDER BY cik,end_date,concept_group,fact_id")
         sec_rows = cursor.fetchall()
-        cursor.execute("SELECT id,provider,source_url,study_year,raw_sha256,parser_version,retrieved_at FROM market_files ORDER BY study_year,id")
+        cursor.execute("SELECT id,provider,source_url,study_year,raw_sha256,parser_version,retrieved_at FROM raw.market_files ORDER BY study_year,id")
         market_sources = cursor.fetchall()
-        cursor.execute("SELECT * FROM warehouse.market_daily_totals ORDER BY file_id,trade_date")
+        cursor.execute("SELECT * FROM gold.market_daily_totals ORDER BY file_id,trade_date")
         daily_rows = cursor.fetchall()
-        cursor.execute("SELECT * FROM market_daily ORDER BY file_id,trade_date,row_number")
+        cursor.execute("SELECT * FROM bronze.market_daily ORDER BY file_id,trade_date,row_number")
         participant_rows = cursor.fetchall()
-        cursor.execute("SELECT raw_sha256 FROM discovery_artifacts ORDER BY raw_sha256")
+        cursor.execute("SELECT raw_sha256 FROM raw.discovery_artifacts ORDER BY raw_sha256")
         stored_artifact_hashes = {row["raw_sha256"] for row in cursor.fetchall()}
-        cursor.execute("SELECT * FROM discovery_inventory_rows ORDER BY id")
+        cursor.execute("SELECT * FROM bronze.discovery_inventory_rows ORDER BY id")
         stored_inventory = {row["id"]: row for row in cursor.fetchall()}
-        cursor.execute("SELECT count(*) AS count FROM discovery_occurrences")
+        cursor.execute("SELECT count(*) AS count FROM bronze.discovery_occurrences")
         stored_occurrence_count = cursor.fetchone()["count"]
     if stored_artifact_hashes != {item["raw_sha256"] for item in discovery["artifacts"]}:
         raise ValueError("discovery database artifacts differ from the pinned index")

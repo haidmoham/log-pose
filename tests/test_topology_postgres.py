@@ -87,6 +87,13 @@ def test_immutable_sources_and_reviewed_temporal_projection(db):
                   rationale="Duration is not established", reviewed_at=rejected_at)
     assert len(reviewed_claims(db, review_cutoff=accepted_at)) == 1
     assert reviewed_claims(db, review_cutoff=rejected_at) == []
+    with db.cursor() as cur:
+        cur.execute("""SELECT decision, review_id, proposed_basis
+            FROM gold.topology_current_review WHERE candidate_id='c1'""")
+        current = cur.fetchone()
+    assert current["decision"] == "needs_evidence"
+    assert current["review_id"] is not None
+    assert current["proposed_basis"] == "source_statement"
 
 
 def test_broad_category_does_not_create_an_edge(db):

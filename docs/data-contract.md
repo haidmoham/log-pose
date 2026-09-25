@@ -1,5 +1,7 @@
 # retained-data catalog
 
+The database also exposes the [medallion layer read path](medallion.md). Each durable domain table has one layer view, while joined observations and current projections have their own read views. These views retain the original IDs and rows; `public` remains the write storage during this first migration. The static catalog below remains the served export and does not change its paths or schema in this step.
+
 the static console reads `web/data/index.json`. all paths in this contract are relative to the served `web/` root. the catalog is compact JSON; partition files load when a user opens a record or source family. the fourteen discovery inventory partitions continue to use their existing contract.
 
 | field | meaning |
