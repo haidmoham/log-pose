@@ -274,6 +274,8 @@ body[data-layer=temporal] .view-heading h2 {
 }
 .temporal-transition-status[data-state="error"] { color: var(--warning); }
 .temporal-limitations { order: 4; }
+.temporal-stop-detail { min-height: 26px; }
+.temporal-stop-detail > .temporal-coverage-note { margin: 0; }
 .temporal-stop-detail strong { min-width: 100px; font-variant-numeric: tabular-nums; }
 .temporal-rail input[type="range"] {
   appearance: none;

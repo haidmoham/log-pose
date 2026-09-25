@@ -8,7 +8,7 @@ the visual direction combines a dark plum workspace, a luminous graph, locally s
 
 ## checked locally on 2026-09-25
 
-- `npm run test:dashboard`: 76 tests passed, including exact temporal joins, accumulated evidence, coverage gaps, filters, reproducible frames, deep links, out-of-order responses, route departure, selected identifiers, and reduced-motion single stepping.
+- `npm run test:dashboard`: 82 tests passed, including exact temporal joins, accumulated evidence, coverage gaps, filters, reproducible frames, deep links, out-of-order responses, route departure, selected identifiers, and reduced-motion single stepping.
 - `node --test tests/deployment-health.test.mjs`: 6 passed after integrating the CI changes from `main` through `33e6274`.
 - `PYTHONPATH=src python3 -m pytest -q tests/test_market_field_graph.py`: 5 passed.
 - `PYTHONPATH=src python3 scripts/check_data_health.py`: 6 checked, 0 failed, 2 explicitly not evaluated: semantic truth and prepared-database reconciliation.
@@ -16,6 +16,20 @@ the visual direction combines a dark plum workspace, a luminous graph, locally s
 - Chrome, explicitly authorized after the in-app browser was unavailable: WebGL rendering, overview → Vespa → Dragonfly, keyboard selection, exact supporting rows and source hash, backward/forward year stepping with unchanged camera and retained selection, a missing 2019 stop, and no captured runtime errors.
 - The actual backward step revealed a classification defect: Dragonfly has no support in either 2023 or its comparator. This now retains the identifier with an explicit unsupported state instead of implying a removal. A regression test covers it.
 - Browser viewport override did not change the measured 1960 px viewport. Narrow-screen visual verification is not claimed. Reduced-motion behavior is tested through the route harness; OS-level media emulation is not claimed.
+
+## motion review
+
+| before | after | why |
+| --- | --- | --- |
+| every scrub rebuilt the route and range | persistent controls (`web/app.js:211`, `web/temporal-topology-view.js:147`) | native dragging and keyboard focus survive asynchronous updates |
+| loading removed the graph and inspector | retain the dated frame; swap accepted evidence together (`web/temporal-topology-view.js:83`, `:514`) | no blank flash or old evidence presented as a new year |
+| a missing frame shortened the page | reserve the desktop frame footprint and stop label (`web/graph-workspace.css:262`) | the time rail stays in one place |
+| ordinary wheel input zoomed the graph | page scroll by default; modified wheel/pinch zoom (`web/temporal-graph.js:241`) | page navigation stays predictable |
+| frequent focus/highlight changes eased | immediate scroll and edge highlights (`web/console.css:53`, `web/temporal-graph.css:20`) | no accumulated delay during repeated actions |
+
+**approve:** no remaining material motion regression found in the reviewed desktop flow. real Chrome dragging reached 2020 from 2025 and reversed to 2025 with the same focused range, camera transform, scroll offset, and rail position. keyboard stepping preserved focus. the final missing-2019 and accepted-2020 rail both measured document y = 1069.96875 px. normal page scrolling was verified without graph zoom.
+
+The route harness covers range identity, rapid reversal and out-of-order responses, retained pending evidence, failed targets and retry, missing stops, route exit, build refresh, terminal inventory failures, and reduced-motion single stepping. Three accepted frames are cached; there is no speculative prefetch or interpolated evidence. Full rendered frame-rate profiling and narrow-screen visual checks remain unclaimed.
 
 ## response measurements
 
