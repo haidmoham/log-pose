@@ -1,0 +1,85 @@
+name: production read health
+
+on:
+  deployment_status:
+  schedule:
+    - cron: '17 11 * * *'
+  workflow_dispatch:
+    inputs:
+      commit_sha:
+        description: Full SHA of the production commit to verify
+        required: true
+        type: string
+      deployment_url:
+        description: Unique Vercel deployment URL from that commit's successful status
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: production-read-health-${{ github.event.deployment.sha || inputs.commit_sha || github.sha }}
+  cancel-in-progress: false
+
+jobs:
+  production-http-smoke:
+    name: production-http-smoke
+    if: >-
+      github.event_name == 'workflow_dispatch' || github.event_name == 'schedule' ||
+      (github.event.deployment_status.state == 'success' &&
+       github.event.deployment.environment == 'Production' &&
+       github.event.deployment.creator.login == 'vercel[bot]')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      EXPECTED_SHA: ${{ github.event_name == 'workflow_dispatch' && inputs.commit_sha || github.event.deployment.sha }}
+      DEPLOYMENT_URL: ${{ github.event_name == 'workflow_dispatch' && inputs.deployment_url || github.event.deployment_status.environment_url }}
+      PRODUCTION_URL: https://logpose.mhaider.dev/
+      ALIAS_URL: https://log-pose-five.vercel.app/
+      REPORT_PATH: /tmp/production-smoke.json
+      BROWSER_REPORT_PATH: /tmp/production-browser.json
+      BASE_URL: https://logpose.mhaider.dev/
+      PLAYWRIGHT_ROOT: /tmp/log-pose-browser
+    steps:
+      - name: Initialize machine-readable receipt
+        run: |
+          printf '{"schema_version":"1.0","status":"not_run"}\n' > "$REPORT_PATH"
+      - uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4.3.0
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Pin scheduled expectation to this checkout
+        if: github.event_name == 'schedule'
+        shell: bash
+        run: |
+          resolved_sha="$(git rev-parse HEAD)"
+          echo "EXPECTED_SHA=$resolved_sha" >> "$GITHUB_ENV"
+          echo "Scheduled read check pinned main commit: $resolved_sha" >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: '24'
+      - name: Verify public alias and domain against the exact deployment commit
+        run: node scripts/check_deployment_health.mjs
+      - name: Install isolated browser smoke runtime
+        run: |
+          npm install --prefix "$PLAYWRIGHT_ROOT" --no-save --no-package-lock playwright@1.63.0
+          "$PLAYWRIGHT_ROOT/node_modules/.bin/playwright" install --with-deps chromium
+      - name: Verify the deployed field and source-row drill in Chromium
+        run: node scripts/check_browser_smoke.cjs
+      - name: Record release evidence
+        if: always()
+        run: |
+          echo '### production read health' >> "$GITHUB_STEP_SUMMARY"
+          echo 'The public project alias and custom domain must serve the exact assets and graph build from the Vercel deployment commit.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'A unique deployment URL may require Vercel SSO; scheduled checks have no unique URL. This limit is recorded separately in the JSON receipt.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'This workflow does not deploy, repair, mutate data, or use production credentials.' >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        if: always()
+        with:
+          name: production-read-health-${{ github.run_id }}
+          path: |
+            /tmp/production-smoke.json
+            /tmp/production-browser.json
+          if-no-files-found: error
+          retention-days: 30

@@ -1,0 +1,122 @@
+name: app and data health
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: app-data-health-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  app-and-data-health:
+    name: app-and-data-health
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    services:
+      postgres:
+        image: postgres:18.6
+        env:
+          POSTGRES_DB: logpose_ci
+          POSTGRES_USER: logpose
+          POSTGRES_PASSWORD: logpose_ci
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U logpose -d logpose_ci"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 12
+    env:
+      LOG_POSE_TEST_DATABASE_URL: postgresql://logpose:logpose_ci@127.0.0.1:5432/logpose_ci
+      PLAYWRIGHT_ROOT: /tmp/log-pose-browser
+    steps:
+      - uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4.3.0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: '24'
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+        with:
+          python-version: '3.13'
+      - name: Install application dependencies
+        run: |
+          npm ci
+          python -m pip install -e '.[test]'
+      - name: Check retained data health
+        shell: bash
+        run: |
+          set -o pipefail
+          python scripts/check_data_health.py | tee "$RUNNER_TEMP/data-health.json"
+      - name: Check deterministic graph artifact
+        run: |
+          npm run build:market-field
+          git diff --exit-code -- api/data/market-field-graph.json
+      - name: Check disposable database encoding
+        shell: bash
+        run: |
+          python - <<'PY'
+          import os
+          import psycopg
+
+          with psycopg.connect(os.environ['LOG_POSE_TEST_DATABASE_URL']) as connection:
+              server = connection.execute('SHOW server_encoding').fetchone()[0]
+              client = connection.execute('SHOW client_encoding').fetchone()[0]
+          if (server, client) != ('UTF8', 'UTF8'):
+              raise SystemExit(f'disposable database requires UTF8 server/client, got {server}/{client}')
+          print('disposable database encoding: UTF8 server and client')
+          PY
+      - name: Run app and fixture tests
+        run: |
+          npm run test:dashboard
+          node --test tests/deployment-health.test.mjs
+          python -m pytest -q tests \
+            --deselect=tests/test_data_export.py::test_catalog_reconciles_retained_database_and_partitions \
+            --junitxml="$RUNNER_TEMP/pytest.xml"
+          python scripts/check_ci_pytest.py "$RUNNER_TEMP/pytest.xml"
+      - name: Install isolated browser smoke runtime
+        run: |
+          npm install --prefix "$PLAYWRIGHT_ROOT" --no-save --no-package-lock playwright@1.63.0
+          "$PLAYWRIGHT_ROOT/node_modules/.bin/playwright" install --with-deps chromium
+      - name: Run browser deep-link and source-row smoke
+        shell: bash
+        env:
+          BASE_URL: http://127.0.0.1:8080/
+          BROWSER_REPORT_PATH: ${{ runner.temp }}/browser-smoke.json
+        run: |
+          node scripts/market_field_dev.js > "$RUNNER_TEMP/preview.log" 2>&1 &
+          preview_pid=$!
+          trap 'kill "$preview_pid" 2>/dev/null || true' EXIT
+          ready=0
+          for attempt in {1..20}; do
+            if curl --fail --silent --show-error \
+              'http://127.0.0.1:8080/api/market-field?mode=summary' -o /dev/null; then
+              ready=1
+              break
+            fi
+            sleep 0.25
+          done
+          test "$ready" = 1
+          node scripts/check_browser_smoke.cjs
+      - name: Record prepared-clone boundary
+        if: always()
+        run: |
+          echo '### data test boundary' >> "$GITHUB_STEP_SUMMARY"
+          echo 'Disposable PostgreSQL fixture tests are required and audited for skips.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'Prepared-clone catalog reconciliation is **not evaluated** in this job. It requires a separately prepared retained-evidence clone; the empty fixture database cannot stand in for it.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'Experimental ML and provisional industry tests are opt-in and outside this application gate.' >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        if: always()
+        with:
+          name: app-and-data-health-reports
+          path: |
+            ${{ runner.temp }}/data-health.json
+            ${{ runner.temp }}/pytest.xml
+            ${{ runner.temp }}/browser-smoke.json
+            ${{ runner.temp }}/preview.log
+          if-no-files-found: warn
+          retention-days: 14
