@@ -74,7 +74,9 @@
       const rect = map.getBoundingClientRect();
       const ratio = Math.min(root.devicePixelRatio || 1, 2);
       canvas.style.width = `${rect.width}px`; canvas.style.height = `${rect.height}px`;
-      canvas.width = Math.round(rect.width * ratio); canvas.height = Math.round(rect.height * ratio);
+      const width = Math.round(rect.width * ratio); const height = Math.round(rect.height * ratio);
+      if (canvas.width !== width) canvas.width = width;
+      if (canvas.height !== height) canvas.height = height;
       gl.viewport(0, 0, canvas.width, canvas.height); gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT);
       gl.uniform2f(locations.viewport, rect.width, rect.height);
       gl.uniform3f(locations.camera, current.camera.x, current.camera.y, current.camera.zoom);
@@ -109,6 +111,7 @@
       }
       geometry(vertices, true);
       scene.classList.add('has-webgl');
+      scene.dataset.renderer = 'webgl';
     }
     return { attach(nextScene, nextMap) {
       scene?.classList.remove('has-webgl'); observer.disconnect();
