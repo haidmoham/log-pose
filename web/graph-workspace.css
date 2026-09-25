@@ -260,6 +260,10 @@ body[data-layer=temporal] .view-heading h2 {
 }
 /* The time control stays mounted; pending evidence never collapses the map. */
 .temporal-frame-content { order: 1; min-width: 0; }
+@media (min-width: 721px) {
+  /* Reserve the graph, its captions, and the bounded inspector above the time rail. */
+  .temporal-frame-content { min-height: max(660px, calc(clamp(440px, 58vh, 650px) + 160px)); }
+}
 .temporal-transition-status {
   order: 3;
   min-height: 24px;
