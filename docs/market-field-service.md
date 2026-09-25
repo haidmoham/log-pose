@@ -32,7 +32,7 @@ cache keys consist of the endpoint, operation, all filter/focus/page parameters,
 
 `npm run dashboard` serves the saved console and the same Node read handler used by Vercel. `npm run dev` retains the Python preview and its optional database reads while exposing the market-field handler. a plain static HTTP server cannot provide the new market-field endpoint.
 
-the graph rebuild runs from retained inputs without network acquisition. see the graph build command in `package.json` and the retained-data rebuild procedure in [data-contract.md](data-contract.md). complete the rebuild before restarting a local server: Node caches its loaded graph for the process lifetime. commit the graph and matching source projection together.
+the graph rebuild runs from retained inputs without network acquisition. run `npm run build:market-field` (Python 3.11 or later) and the retained-data rebuild procedure in [data-contract.md](data-contract.md). complete the rebuild before restarting a local server: Node caches its loaded graph for the process lifetime. commit the graph and matching source projection together.
 
 ## deployment and costs
 
@@ -50,4 +50,7 @@ if the read service is unavailable, the field shows an error with retry. it does
 
 the baseline at `3c5390e` is retained in [issue4/baseline-performance.json](research/issue4/baseline-performance.json). median browser graph preparation was 43.4 ms on desktop and 259.2 ms under throttling. the graph input transferred 4,542,298 bytes including browser-reported HTTP overhead. all initial page resources transferred 10,907,104 bytes; other research catalog traffic is outside this issue's graph migration.
 
-the baseline defines the following practical checks: zero browser `prepare`/full-pair scan calls, initial field reads below 1 MB decoded, and no client source-row transfer before selection. filter and focus measurements include request latency and rendering, so they must be reported separately from removed graph work. the benchmark polls at 100 ms; small timings include observation delay.
+the baseline defines the following practical checks: zero browser `prepare`/full-pair scan calls, initial field reads below 1 MB decoded, no client source-row transfer before selection, and filter/focus completion within 1 s on desktop or 2 s under the defined throttling. pass `--enforce` to the benchmark to check the byte, graph-call, browser-error, and latency budgets. filter and focus measurements include request latency and rendering, so they must be reported separately from removed graph work. the benchmark polls at 100 ms; small timings include observation delay.
+
+
+the local Vercel build passed with CLI 60.0.1. its emitted function uses `nodejs24.x` and includes both the 2 MB graph and the 4.54 MB retained detail projection. executing that bundled handler returned the pinned counts. this verifies local packaging, not production availability.
