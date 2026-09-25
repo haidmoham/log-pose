@@ -35,3 +35,21 @@ test('keyboard inspection and overview navigation dispatch distinct actions', ()
   assert.equal(overview.querySelectorAll('.is-absent').length, 0);
   dom.window.close();
 });
+
+test('ordinary scrolling reaches the page while modified scrolling zooms the graph', () => {
+  const dom = setup();
+  const scene = dom.window.LogPoseTemporalGraph.render(frame);
+  dom.window.document.body.append(scene);
+  const map = scene.querySelector('.constellation-map');
+  const camera = scene.querySelector('.constellation-camera');
+  const before = camera.getAttribute('transform');
+  const ordinary = new dom.window.WheelEvent('wheel', { deltaY: 100, cancelable: true });
+  map.dispatchEvent(ordinary);
+  assert.equal(ordinary.defaultPrevented, false);
+  assert.equal(camera.getAttribute('transform'), before);
+  const zoom = new dom.window.WheelEvent('wheel', { deltaY: 100, ctrlKey: true, cancelable: true });
+  map.dispatchEvent(zoom);
+  assert.equal(zoom.defaultPrevented, true);
+  assert.notEqual(camera.getAttribute('transform'), before);
+  dom.window.close();
+});

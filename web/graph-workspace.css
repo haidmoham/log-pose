@@ -258,3 +258,48 @@ body[data-layer=temporal] .view-heading h2 {
   font-size: clamp(2.6rem, 4.7vw, 4.9rem);
   line-height: 1.02;
 }
+/* The time control stays mounted; pending evidence never collapses the map. */
+.temporal-frame-content { order: 1; min-width: 0; }
+.temporal-transition-status {
+  order: 3;
+  min-height: 24px;
+  margin: 4px 0 0;
+  color: var(--muted);
+  font: 450 var(--type-caption)/1.5 var(--font-interface);
+  font-variant-numeric: tabular-nums;
+}
+.temporal-transition-status[data-state="error"] { color: var(--warning); }
+.temporal-limitations { order: 4; }
+.temporal-stop-detail strong { min-width: 100px; font-variant-numeric: tabular-nums; }
+.temporal-rail input[type="range"] {
+  appearance: none;
+  height: 36px;
+  margin: 0;
+  background: transparent;
+  cursor: ew-resize;
+}
+.temporal-rail input[type="range"]::-webkit-slider-runnable-track {
+  height: 3px;
+  background: var(--rule-strong);
+  border-radius: 3px;
+}
+.temporal-rail input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  margin-top: -6.5px;
+  border: 3px solid var(--paper);
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+.temporal-rail input[type="range"]::-moz-range-track { height: 3px; background: var(--rule-strong); }
+.temporal-rail input[type="range"]::-moz-range-thumb {
+  width: 12px; height: 12px; border: 2px solid var(--paper);
+  border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 1px var(--accent);
+}
+.temporal-rail input[type="range"]:disabled { opacity: .4; cursor: default; }
+@media (max-width: 720px) {
+  .temporal-transition-status { order: 0; }
+  .temporal-rail input[type="range"] { height: 44px; }
+}

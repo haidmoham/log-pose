@@ -16,7 +16,7 @@
 .constellation-map.is-dragging { cursor: grabbing; }
 .constellation-map:focus-visible { outline: 2px solid var(--focus); outline-offset: -3px; }
 .constellation-context line { stroke: #b9a9cf; stroke-width: .65; opacity: .075; vector-effect: non-scaling-stroke; }
-.constellation-thread { stroke: #c8add8; stroke-width: .9; opacity: var(--thread-opacity); vector-effect: non-scaling-stroke; transition: opacity 160ms ease-out; }
+.constellation-thread { stroke: #c8add8; stroke-width: .9; opacity: var(--thread-opacity); vector-effect: non-scaling-stroke; }
 .constellation-thread.is-hovered, .constellation-thread.is-selected { stroke: #ecd19c; opacity: .95; stroke-width: 1.2; }
 .constellation-node { cursor: pointer; outline: none; }
 .constellation-hit { fill: transparent; }
@@ -60,7 +60,6 @@
   .constellation-count span { max-width: 70px; }
   .constellation-note, .constellation-tuning { padding-inline: 16px; }
 }
-@media (prefers-reduced-motion: reduce) { .constellation-thread { transition: none; } }
 .constellation-gpu { position: absolute; top: 0; left: 0; pointer-events: none; }
 .constellation-map { position: relative; }
 .has-webgl .constellation-context, .has-webgl .constellation-threads { visibility: hidden; }

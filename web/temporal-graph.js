@@ -49,7 +49,7 @@
     scene.append(header);
 
     const svg = svgElement('svg', { viewBox: '0 0 1000 680', class: 'constellation-map',
-      role: 'group', tabindex: '0', 'aria-label': 'observation map. drag to pan; plus and minus to zoom; arrow keys to move. select a node to inspect its connection.' });
+      role: 'group', tabindex: '0', 'aria-label': 'observation map. drag to pan; pinch, control-scroll, command-scroll, or plus and minus to zoom; arrow keys to move. select a node to inspect its connection.' });
     const svgTitle = svgElement('title');
     svgTitle.textContent = 'stable candidate positions; distances and brightness are display choices, not evidence strength';
     svg.append(svgTitle);
@@ -176,6 +176,7 @@
       action('+', 'zoom in graph', () => zoomTo(camera.zoom * 1.25)),
       action('↺', 'reset graph view', () => { fitView(); updateCamera(); }));
     footer.append(controls); scene.append(footer);
+    controls.title = 'pinch or ctrl/⌘ + scroll to zoom; plain scrolling moves the page';
     scene.append(element('p', 'constellation-note', (frame.context_edges_truncated ? `${(frame.context_edges || []).length.toLocaleString()} of ${(frame.total_context_edges || 0).toLocaleString()} context connections drawn. ` : '') + 'positions stay fixed through time. spacing, light and line length carry no measure of strength.'));
 
     const tuning = element('details', 'constellation-tuning');
@@ -237,7 +238,12 @@
     });
     function endDrag() { drag = null; svg.classList.remove('is-dragging'); }
     svg.addEventListener('pointerup', endDrag); svg.addEventListener('pointercancel', endDrag);
-    svg.addEventListener('wheel', event => { event.preventDefault(); zoomTo(camera.zoom * Math.exp(-event.deltaY * 0.001)); }, { passive: false });
+    svg.addEventListener('wheel', event => {
+      // Plain scrolling belongs to the page; pinch and modified wheel target the map.
+      if (!event.ctrlKey && !event.metaKey) return;
+      event.preventDefault();
+      zoomTo(camera.zoom * Math.exp(-event.deltaY * 0.001));
+    }, { passive: false });
     svg.addEventListener('keydown', event => {
       if (event.target !== svg) return;
       const steps = { ArrowLeft: [30, 0], ArrowRight: [-30, 0], ArrowUp: [0, 30], ArrowDown: [0, -30] };
