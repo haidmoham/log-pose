@@ -256,7 +256,7 @@ body[data-layer=temporal] .topology-layer-button { font: 550 var(--type-caption)
   .temporal-facets select { font-size: 12px; }
   .temporal-search-form input { font-size: 16px; }
 }
-@font-face { font-family: 'Atlas Slab'; src: url('./fonts/rokkitt-latin.woff2') format('woff2'); font-weight: 100 900; font-display: swap; }
+@font-face { font-family: 'Atlas Slab'; src: url('./fonts/rokkitt-latin.woff2') format('woff2'); font-weight: 400 700; font-display: swap; }
 /* A single expressive slab heading; analytical and interface text remain sans. */
 body[data-layer=temporal] .view-heading h2 {
   font-family: 'Atlas Slab', Rockwell, var(--font-interface);
