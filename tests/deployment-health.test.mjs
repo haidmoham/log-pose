@@ -95,3 +95,20 @@ test('unique deployment probe failure cannot leave a passed release receipt', as
   assert.equal(report.unique_deployment.status, 'failed');
   assert.deepEqual(JSON.parse(readFileSync(reportPath)), report);
 });
+
+
+test('protected unique URL does not mask a failed public origin', async () => {
+  const reportPath = join(mkdtempSync(join(tmpdir(), 'log-pose-stale-public-')), 'report.json');
+  const report = await runHealthCheck({ expectedSha: commitSha,
+    productionUrl: 'https://logpose.mhaider.dev/',
+    aliasUrl: 'https://log-pose-five.vercel.app/',
+    deploymentUrl: 'https://log-pose-fixture.vercel.app/',
+    attempts: 1, intervalMs: 0, reportPath,
+    fetchImpl: fakeFetch({ staleApp: true, protectedUnique: true }) });
+  assert.equal(report.status, 'failed');
+  assert.equal(report.attempts[0].passed, false);
+  assert.equal(report.unique_deployment.status, 'not_evaluated');
+  assert(!report.unique_deployment.reason.includes('were verified'));
+  assert(!report.unique_deployment.reason.includes('domain verified'));
+  assert.deepEqual(JSON.parse(readFileSync(reportPath)), report);
+});

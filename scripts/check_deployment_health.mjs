@@ -190,7 +190,7 @@ export async function runHealthCheck(config) {
     // check; an accessible but mismatched unique deployment fails the release.
     if (!config.deploymentUrl) {
       report.unique_deployment = { status: 'not_evaluated',
-        reason: 'scheduled check has no unique deployment URL; public alias and domain were verified' };
+        reason: 'no unique deployment URL supplied; public-origin results are recorded separately' };
     } else {
       const probe = await (config.fetchImpl || fetch)(new URL('/', config.deploymentUrl), {
         redirect: 'manual', headers: { 'Cache-Control': 'no-cache' },
@@ -207,7 +207,7 @@ export async function runHealthCheck(config) {
       }
       if ([302, 303, 307, 308].includes(probe.status) && vercelSso) {
         report.unique_deployment = { status: 'not_evaluated',
-          reason: 'unique Vercel deployment requires SSO; public alias and domain verified by exact commit bytes' };
+          reason: 'unique Vercel deployment requires SSO; public-origin results are recorded separately' };
       } else if (probe.status === 200) {
         const unique = await verifySite(config.deploymentUrl, expected, config.fetchImpl);
         report.unique_deployment = { status: unique.passed ? 'passed' : 'failed',
