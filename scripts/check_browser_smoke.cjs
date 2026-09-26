@@ -14,7 +14,7 @@ async function verifyMissingBuildRecovery(page, validUrl, layer, report) {
   missingUrl.searchParams.set('build_id', '0'.repeat(64));
   await page.goto(missingUrl.href, { waitUntil: 'domcontentloaded', timeout: 30000 });
   await page.locator('#atlas-retry').waitFor({ state: 'visible', timeout: 30000 });
-  assert.match(await page.locator('#atlas-status').innerText(), /not hosted/);
+  assert.match(await page.locator('#atlas-status').innerText(), /not hosted|snapshot is unavailable/);
   assert.equal(await page.locator('.constellation-node').count(), 0, 'missing build must not render another graph');
   assert.equal(await page.locator('.atlas-claim, .atlas-premise').count(), 0,
     'missing build must not render evidence from another build');
@@ -23,9 +23,11 @@ async function verifyMissingBuildRecovery(page, validUrl, layer, report) {
     return url.pathname === '/api/atlas' && url.searchParams.get('build_id') === '0'.repeat(64);
   }, { timeout: 30000 });
   await page.locator('#atlas-retry').click();
-  assert((await retryResponse).status() >= 400, 'retry must retain the unavailable build selector');
+  const response = await retryResponse;
+  assert.equal(response.status(), 410, 'retry must retain the unavailable build selector');
+  assert.equal((await response.json()).error, 'build_unavailable');
   await page.waitForFunction(() => !document.querySelector('#atlas-retry').hidden
-    && document.querySelector('#atlas-status').textContent.includes('not hosted'));
+    && /not hosted|snapshot is unavailable/.test(document.querySelector('#atlas-status').textContent));
   assert.equal(new URL(page.url()).searchParams.get('build_id'), '0'.repeat(64));
   assert.equal(await page.locator('.constellation-node').count(), 0);
   await page.goBack({ waitUntil: 'domcontentloaded', timeout: 30000 });
