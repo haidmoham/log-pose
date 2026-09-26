@@ -47,13 +47,13 @@ async function one(handle, name, fields) {
     suppressed: result.body.suppressed ?? null, error: result.body.error ?? null };
 }
 
-async function group(handle, workloads, concurrency, rounds) {
+async function group(handle, name, fields, concurrency, rounds) {
   const samples = [];
   const started = performance.now();
   for (let round = 0; round < rounds; round += 1) {
     const requests = [];
     for (let client = 0; client < concurrency; client += 1) {
-      for (const [name, fields] of Object.entries(workloads)) requests.push(one(handle, name, fields));
+      requests.push(one(handle, name, fields));
     }
     samples.push(...await Promise.all(requests));
   }
@@ -86,14 +86,16 @@ async function main() {
   const importReceipt = JSON.parse(fs.readFileSync(argument('--import-receipt'), 'utf8'));
   const manifest = JSON.parse(fs.readFileSync(path.join(fixtureRoot, 'current.json'), 'utf8'));
   const workloads = definitions(manifest, tier);
-  const pool = new Pool({ connectionString: databaseUrl, max: 20,
-    connectionTimeoutMillis: 5_000, idleTimeoutMillis: 10_000 });
+  const pool = new Pool({ connectionString: databaseUrl, max: 4,
+    connectionTimeoutMillis: 2_000, idleTimeoutMillis: 10_000 });
   const handle = createPostgresHandler(pool);
-  const receipt = { receipt_schema: 'atlas-postgres-scale-v1', synthetic: true, tier,
+  const receipt = { receipt_schema: 'atlas-postgres-scale-v2', synthetic: true, tier,
     build_id: manifest.build_id, generator: manifest.generator,
     environment: { node: process.version, platform: process.platform, arch: process.arch,
       cpus: os.cpus().length, memory_bytes: os.totalmem(), postgres: null },
     scope: 'local PostgreSQL representation; no hosted-provider or Railway latency measured',
+    load_model: { workloads: 'one workload at a time', clients: 'simultaneous requests per batch',
+      pool_max: 4, connection_timeout_ms: 2000, matches_runtime_pool: true },
     ranking_semantic: 'distinct supporting placement count descending, then ASCII candidate ID',
     request_budget: { maximum_per_workload: 100, measured_per_workload: 70,
       cold_additional_focus_top_k_100: 1, maximum_actual_per_workload: 71 },
@@ -111,10 +113,9 @@ async function main() {
     receipt.cold_first_request = await one(handle, 'focus_top_k_100', workloads.focus_top_k_100);
     for (const { concurrency, rounds } of [{ concurrency: 1, rounds: 10 },
       { concurrency: 5, rounds: 4 }, { concurrency: 20, rounds: 2 }]) {
-      const measured = await group(handle, workloads, concurrency, rounds);
-      for (const name of Object.keys(workloads)) {
-        receipt.results.push(summarize(measured.samples.filter(sample => sample.workload === name),
-          measured.wall_ms, concurrency));
+      for (const [name, fields] of Object.entries(workloads)) {
+        const measured = await group(handle, name, fields, concurrency, rounds);
+        receipt.results.push(summarize(measured.samples, measured.wall_ms, concurrency));
       }
     }
     const plans = await pool.query(`EXPLAIN (FORMAT JSON) SELECT member.candidate_id,count(*)
@@ -136,4 +137,8 @@ async function main() {
     database_bytes: receipt.database_bytes, results: receipt.results.length })}\n`);
 }
 
-main().catch(error => { process.stderr.write(`${error.stack}\n`); process.exitCode = 1; });
+module.exports = { group };
+
+if (require.main === module) {
+  main().catch(error => { process.stderr.write(`${error.stack}\n`); process.exitCode = 1; });
+}
