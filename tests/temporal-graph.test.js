@@ -294,7 +294,7 @@ test('camera drags suppress transient node emphasis until release without losing
   dom.window.close();
 });
 
-test('node focus emphasis is keyboard-visible and camera dragging prevents text selection', () => {
+test('node focus emphasis is keyboard-visible while graph selection stays disabled outside gesture state', () => {
   // JSDOM treats programmatic focus as keyboard-visible, so check that the
   // stylesheet does not use unconditional :focus for node emphasis.
   assert.doesNotMatch(styleSource, /\.constellation-node:focus(?!-visible)\b/);
@@ -308,10 +308,12 @@ test('node focus emphasis is keyboard-visible and camera dragging prevents text 
   assert(keyboardNode.matches(':focus-visible'));
   assert.equal(dom.window.getComputedStyle(keyboardNode.querySelector('.constellation-core')).fill, '#c76a55');
   const map = scene.querySelector('.constellation-map');
-  assert.notEqual(dom.window.getComputedStyle(map).userSelect, 'none');
-  map.classList.add('is-dragging');
   assert.equal(dom.window.getComputedStyle(map).userSelect, 'none');
   assert.equal(dom.window.getComputedStyle(scene.querySelector('.constellation-label')).userSelect, 'none');
+  const inspectorCopy = dom.window.document.createElement('p');
+  inspectorCopy.textContent = 'Source notes remain selectable';
+  dom.window.document.body.append(inspectorCopy);
+  assert.notEqual(dom.window.getComputedStyle(inspectorCopy).userSelect, 'none');
   dom.window.close();
 });
 

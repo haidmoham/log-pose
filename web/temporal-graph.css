@@ -22,7 +22,7 @@
 .constellation-mode-switch button:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
 .constellation-map { display: block; width: 100%; min-height: 430px; aspect-ratio: 1000 / 680; max-height: 78vh; touch-action: none; cursor: grab; }
 .constellation-map.is-dragging { cursor: grabbing; }
-.constellation-map.is-dragging, .constellation-map.is-dragging * { -webkit-user-select: none; user-select: none; }
+.constellation-map, .constellation-map * { -webkit-user-select: none; user-select: none; }
 .constellation-map:focus-visible { outline: 2px solid var(--focus); outline-offset: -3px; }
 .constellation-context line { stroke: var(--edge-tint, #766889); stroke-width: .65; opacity: .18; vector-effect: non-scaling-stroke; }
 .constellation-context.has-active-neighborhood line { opacity: .025; }

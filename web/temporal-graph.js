@@ -207,7 +207,7 @@
     field.append(hitThreads);
 
     function emphasize(id) {
-      if (id && (drag?.owned || scene.classList.contains('is-orbiting'))) return;
+      if (id && drag?.owned) return;
       hovered = id;
       for (const [key, thread] of threadElements) thread.classList.toggle('is-hovered', key === id);
       const nearby = new Set();
