@@ -54,7 +54,8 @@
       "topology_entities.created_at",
       "topology_entities.pilot_company_id",
       "topology_candidate_evidence.id",
-      "topology_candidate_evidence.added_at"
+      "topology_candidate_evidence.added_at",
+      "topology_reviews.original_row_arrival_at"
     ]
   }
 }

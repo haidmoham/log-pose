@@ -59,19 +59,22 @@ and exclusion of a later filing before its publication cutoff. saved paths are
 research records, not new accepted claims or calibrated model predictions.
 
 the user accepted one attributed dbt/Snowflake integration and approved a scoped
-topology reconstruction. its canonical import is a separate milestone. the
-recovered local database contains inventory only; three retained topology
-source bodies and four published claims/reviews permit partial reconstruction.
-original entity creation and one secondary-evidence arrival remain unknown.
+topology reconstruction. the approved local reconstruction and
+accepted integration are complete in PR #19, which also integrates PR #17 and
+PR #18 for one release candidate. the recovered original database remains
+inventory-only. three retained topology bodies and the four published
+claims/reviews were preserved; the accepted integration is the fifth claim.
+nine original arrivals remain unknown: four entities, one secondary premise,
+and four imported review rows. review decision dates remain intact.
 page, SEC and market raw evidence has not been restored. customer leads,
 product editions, ownership and relationship-validity intervals remain
 unresolved; no new semantic acceptance is inferred.
 
 ## prioritized continuation
 
-1. finish and reconcile the approved topology reconstruction and integration
-   import; preserve every known ID/hash/review and the original-time gaps.
-2. approve and verify the milestone releases at exact deployed commits; retain
+1. finish the combined release-candidate CI gate; local browser and current/old
+   reviewed-build checks pass. keep the reconstruction dump and original store.
+2. approve and verify the combined release at its exact deployed commit; retain
    failed-build/retry/back-navigation checks. signed-in preview access currently
    remains unavailable to Codex's Chrome connection.
 3. measure an S1 browser profile and a bounded mixed-predicate/long-history
@@ -97,3 +100,5 @@ unresolved; no new semantic acceptance is inferred.
 - [complete acceptance audit](research/issue11/completion-audit.md)
 - [database recovery receipt](research/issue11/database-recovery-20260926.json)
 - [approved reconstruction boundary](research/issue11/topology-reconstruction-decision.json)
+
+- [combined candidate and remaining release gates](research/issue11/combined-release-candidate.md)

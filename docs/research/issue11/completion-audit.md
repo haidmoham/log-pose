@@ -203,3 +203,22 @@ invent timestamps, and publication remains reserved.
 PR #18 adds constrained typed traversal as well as reviewed Python reads. its
 final focused checks cover 14 API cases and 11 Python cases, including the
 100-visited-entity boundary and exact saved traversal target binding.
+
+
+## combined release candidate after scoped reconstruction
+
+PR #19 incorporates the feature heads of PR #17 and PR #18. the approved
+reconstruction is complete in a separate local database, with a verified dump
+and the owned PostgreSQL server stopped. the original inventory store is
+unchanged. four legacy claims and reviews retain their exported values; the
+fifth claim records only the already-accepted attributed integration. nine
+original row arrivals remain unknown, including four legacy review arrivals;
+the review decision dates remain separate.
+
+typed traversal, layered Python reads and the real reviewed walkthroughs now
+exist. the combined browser smoke passes eleven checks against the current
+five-claim build; API regression checks retain the old two-claim Snowflake/dbt
+frame. these results supersede the earlier pending implementation entries,
+not their historical receipts. [the combined candidate](combined-release-candidate.md)
+records release checks and the remaining limits. no production publish has
+been approved or performed for this candidate. issue #11 remains incomplete.
