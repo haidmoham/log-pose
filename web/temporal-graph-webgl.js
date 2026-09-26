@@ -21,6 +21,7 @@
       uniform vec2 viewport;
       uniform vec3 camera;
       uniform float pixelRatio;
+      uniform float breath;
       varying vec4 tint;
       void main() {
         float scale = min(viewport.x / 1000.0, viewport.y / 680.0);
@@ -29,100 +30,166 @@
         gl_Position = vec4(pixel.x / viewport.x * 2.0 - 1.0, 1.0 - pixel.y / viewport.y * 2.0, 0.0, 1.0);
         gl_PointSize = size * scale * pixelRatio;
         tint = color;
-      }
-    `);
+      }`);
     const fragment = shader(gl.FRAGMENT_SHADER, `
       precision mediump float;
       uniform bool points;
+      uniform float breath;
       varying vec4 tint;
       void main() {
         float alpha = tint.a;
         if (points) {
           float distance = length(gl_PointCoord - vec2(0.5)) * 2.0;
-          float core = 1.0 - smoothstep(0.27, 0.38, distance);
-          float aura = exp(-distance * distance * 5.0) * 0.17;
-          alpha *= min(1.0, core + aura) * (1.0 - smoothstep(0.8, 1.0, distance));
+          float core = 1.0 - smoothstep(0.16, 0.23, distance);
+          float inner = exp(-distance * distance * 7.5) * (0.24 + breath * 0.035);
+          float outer = exp(-distance * distance * 2.1) * (0.075 + breath * 0.025);
+          alpha *= min(1.0, core + inner + outer) * (1.0 - smoothstep(0.88, 1.0, distance));
         }
         gl_FragColor = vec4(tint.rgb, alpha);
-      }
-    `);
+      }`);
     const program = gl.createProgram(); gl.attachShader(program, vertex); gl.attachShader(program, fragment); gl.linkProgram(program);
     gl.deleteShader(vertex); gl.deleteShader(fragment);
     if (!gl.getProgramParameter(program, gl.LINK_STATUS)) return null;
-    const buffer = gl.createBuffer();
     const locations = { viewport: gl.getUniformLocation(program, 'viewport'), camera: gl.getUniformLocation(program, 'camera'),
-      pixelRatio: gl.getUniformLocation(program, 'pixelRatio'), points: gl.getUniformLocation(program, 'points') };
-    gl.useProgram(program); gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-    for (const [name, count, offset] of [['position', 2, 0], ['color', 4, 2], ['size', 1, 6]]) {
-      const location = gl.getAttribLocation(program, name); gl.enableVertexAttribArray(location);
-      gl.vertexAttribPointer(location, count, gl.FLOAT, false, 28, offset * 4);
-    }
-    gl.enable(gl.BLEND); gl.blendFuncSeparate(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA, gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+      pixelRatio: gl.getUniformLocation(program, 'pixelRatio'), points: gl.getUniformLocation(program, 'points'), breath: gl.getUniformLocation(program, 'breath') };
+    const attributes = ['position', 'color', 'size'].map(name => gl.getAttribLocation(program, name));
+    const lineBuffer = gl.createBuffer();
+    const pointBuffer = gl.createBuffer();
+    gl.useProgram(program);
+    gl.enable(gl.BLEND);
+    gl.blendFuncSeparate(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA, gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
     let scene = null;
     let map = null;
     let current = null;
-    const observer = new ResizeObserver(() => draw());
-    canvas.addEventListener('webglcontextlost', event => { event.preventDefault(); scene?.classList.remove('has-webgl'); current = null; });
-    canvas.addEventListener('webglcontextrestored', () => { renderer = null; scene?.classList.remove('has-webgl'); });
-    function geometry(vertices, points) {
-      gl.uniform1i(locations.points, points ? 1 : 0);
-      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.DYNAMIC_DRAW);
-      gl.drawArrays(points ? gl.POINTS : gl.LINES, 0, vertices.length / 7);
+    let lineCount = 0;
+    let pointCount = 0;
+    let animationFrame = null;
+    let visible = true;
+    let active = true;
+    const observer = root.ResizeObserver ? new root.ResizeObserver(() => draw()) : null;
+    const intersection = root.IntersectionObserver ? new root.IntersectionObserver(entries => {
+      visible = entries[0]?.isIntersecting !== false;
+      updateAnimation();
+      if (visible) draw();
+    }) : null;
+    function bind(buffer) {
+      gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+      for (const [index, count, offset] of [[0, 2, 0], [1, 4, 2], [2, 1, 6]]) {
+        gl.enableVertexAttribArray(attributes[index]);
+        gl.vertexAttribPointer(attributes[index], count, gl.FLOAT, false, 28, offset * 4);
+      }
     }
-    function draw() {
-      if (!current || !map?.isConnected || gl.isContextLost()) return;
-      const rect = map.getBoundingClientRect();
-      const ratio = Math.min(root.devicePixelRatio || 1, 2);
-      canvas.style.width = `${rect.width}px`; canvas.style.height = `${rect.height}px`;
-      const width = Math.round(rect.width * ratio); const height = Math.round(rect.height * ratio);
-      if (canvas.width !== width) canvas.width = width;
-      if (canvas.height !== height) canvas.height = height;
-      gl.viewport(0, 0, canvas.width, canvas.height); gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT);
-      gl.uniform2f(locations.viewport, rect.width, rect.height);
-      gl.uniform3f(locations.camera, current.camera.x, current.camera.y, current.camera.zoom);
-      gl.uniform1f(locations.pixelRatio, ratio);
-      const { frame, positions, selected, hover, threads } = current;
+    function upload(buffer, values) {
+      bind(buffer);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(values), gl.DYNAMIC_DRAW);
+      return values.length / 7;
+    }
+    function appendLine(vertices, positions, left, right, tint) {
+      const a = positions.get(left);
+      const b = positions.get(right);
+      if (!a || !b) return;
+      for (const point of [a, b]) vertices.push(point.x, point.y, ...tint, 1);
+    }
+    function rebuild() {
+      if (!current) return;
+      const { frame, positions, selected, hover, threads, context, tints } = current;
+      const tintFor = id => (tints?.get(id)?.rgb || [127, 158, 184]).map(channel => channel / 255);
+      const nearby = new Set();
+      if (hover) {
+        nearby.add(hover);
+        if (frame.focus && (hover === frame.focus || frame.edges.some(edge => edge.candidate_id === hover))) nearby.add(frame.focus);
+        for (const edge of context ? frame.context_edges || [] : []) {
+          if (edge.left === hover) nearby.add(edge.right);
+          if (edge.right === hover) nearby.add(edge.left);
+        }
+      }
       const lines = [];
-      const addLine = (left, right, tint) => {
-        const a = positions.get(left); const b = positions.get(right);
-        if (!a || !b) return;
-        for (const point of [a, b]) lines.push(point.x, point.y, ...tint, 1);
-      };
-      for (const edge of frame.context_edges || []) {
+      for (const edge of context ? frame.context_edges || [] : []) {
         const active = edge.left === hover || edge.right === hover;
-        addLine(edge.left, edge.right, active ? [.79, .68, .9, .6] : [.71, .63, .8, .055 + threads / 100 * .065]);
+        const tint = tintFor(edge.left);
+        appendLine(lines, positions, edge.left, edge.right, active ? [.96, .75, .45, .74] : [...tint, .04 + threads / 100 * .06]);
       }
       for (const edge of frame.edges) {
         const active = edge.candidate_id === selected || edge.candidate_id === hover;
-        addLine(frame.focus, edge.candidate_id, active ? [.96, .82, .57, .95] : [.77, .66, .85, .08 + threads / 100 * .3]);
+        const tint = tintFor(edge.candidate_id);
+        appendLine(lines, positions, frame.focus, edge.candidate_id, active ? [1, .79, .43, .96] : [...tint, .08 + threads / 100 * .3]);
       }
-      geometry(lines, false);
-      const vertices = [];
+      lineCount = upload(lineBuffer, lines);
+      const points = [];
       const observed = new Set(frame.edges.map(edge => edge.candidate_id));
       for (const node of frame.nodes) {
         const focus = node.id === frame.focus;
         const absent = frame.focus && (focus ? !frame.focus_present : !observed.has(node.id));
-        // Hollow comparison markers are retained in SVG; they must never become luminous observed points.
+        // Hollow comparison markers remain in SVG and never become luminous observed points.
         if (absent) continue;
         const point = positions.get(node.id);
+        if (!point) continue;
         const active = focus || node.id === selected || node.id === hover;
-        const color = active ? [1, .86, .63, 1] : [.77, .71, .86, .92];
-        vertices.push(point.x, point.y, ...color, focus ? 34 : frame.focus ? 24 : 15);
+        const local = nearby.has(node.id);
+        const tint = tintFor(node.id);
+        const color = active ? [1, .82, .49, 1] : local ? [.98, .71, .43, .98] : [...tint, .94];
+        points.push(point.x, point.y, ...color, active ? (focus ? 52 : 42) : local ? 31 : frame.focus ? 27 : 19);
       }
-      geometry(vertices, true);
-      scene.classList.add('has-webgl');
-      scene.dataset.renderer = 'webgl';
+      pointCount = upload(pointBuffer, points);
     }
-    return { attach(nextScene, nextMap) {
-      scene?.classList.remove('has-webgl'); observer.disconnect();
-      scene = nextScene; map = nextMap;
-      scene.insertBefore(canvas, map); observer.observe(map);
-    }, update(value) { current = value; draw(); } };
+    function canAnimate() {
+      return Boolean(active && current?.motion && map?.isConnected && visible
+        && !document.hidden && !gl.isContextLost());
+    }
+    function updateAnimation() {
+      if (canAnimate() && animationFrame === null) animationFrame = root.requestAnimationFrame(animate);
+      if (!canAnimate() && animationFrame !== null) { root.cancelAnimationFrame(animationFrame); animationFrame = null; }
+    }
+    function animate(time) {
+      animationFrame = null;
+      draw(time);
+      updateAnimation();
+    }
+    function draw(time = 0) {
+      if (!active || !current || !map?.isConnected || !visible || gl.isContextLost()) return;
+      const rect = map.getBoundingClientRect(); if (!rect.width || !rect.height) return;
+      const ratio = Math.min(root.devicePixelRatio || 1, 2); canvas.style.width = `${rect.width}px`; canvas.style.height = `${rect.height}px`;
+      const width = Math.round(rect.width * ratio); const height = Math.round(rect.height * ratio);
+      if (canvas.width !== width) canvas.width = width; if (canvas.height !== height) canvas.height = height;
+      gl.viewport(0, 0, canvas.width, canvas.height); gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT);
+      gl.uniform2f(locations.viewport, rect.width, rect.height); gl.uniform3f(locations.camera, current.camera.x, current.camera.y, current.camera.zoom);
+      gl.uniform1f(locations.pixelRatio, ratio);
+      gl.uniform1f(locations.breath, !current.motion ? 0 : (Math.sin(time / 2100) + 1) / 2);
+      gl.uniform1i(locations.points, 0); bind(lineBuffer); gl.drawArrays(gl.LINES, 0, lineCount);
+      gl.uniform1i(locations.points, 1); bind(pointBuffer); gl.drawArrays(gl.POINTS, 0, pointCount);
+      scene.classList.add('has-webgl'); scene.dataset.renderer = 'webgl';
+    }
+    function handleVisibility() { updateAnimation(); if (!document.hidden) draw(); }
+    document.addEventListener('visibilitychange', handleVisibility);
+    canvas.addEventListener('webglcontextlost', event => { event.preventDefault(); scene?.classList.remove('has-webgl'); current = null; updateAnimation(); });
+    function dispose() {
+      current = null;
+      updateAnimation();
+      observer?.disconnect();
+      intersection?.disconnect();
+      document.removeEventListener('visibilitychange', handleVisibility);
+    }
+    canvas.addEventListener('webglcontextrestored', () => {
+      dispose();
+      renderer = null;
+      scene?.classList.remove('has-webgl');
+    });
+    return {
+      attach(nextScene, nextMap) {
+        scene?.classList.remove('has-webgl'); observer?.disconnect(); intersection?.disconnect();
+        scene = nextScene; map = nextMap; visible = true; active = true; scene.insertBefore(canvas, map);
+        observer?.observe(map); intersection?.observe(map); updateAnimation();
+      },
+      setActive(value) {
+        if (active === value) return;
+        active = value;
+        updateAnimation();
+      },
+      update(value) { current = value; rebuild(); draw(); updateAnimation(); }
+    };
   }
   root.LogPoseTemporalGPU = { attach(scene, map) {
-    try { if (!renderer) renderer = create(); }
-    catch { return null; }
-    if (!renderer) return null;
-    renderer.attach(scene, map); return renderer;
+    try { if (!renderer) renderer = create(); } catch { return null; }
+    if (!renderer) return null; renderer.attach(scene, map); return renderer;
   } };
 })(typeof window === 'undefined' ? globalThis : window);

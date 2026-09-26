@@ -219,7 +219,8 @@ function commitState(changes, options = {}) {
   }
   writeUrl(Boolean(options.replace));
   if (options.top) root.scrollIntoView({ block: 'start' });
-  if (options.focus) document.querySelector(options.focus)?.focus();
+  // In-place graph inspection must not pull the page or its sidebar away from the selected node.
+  if (options.focus) document.querySelector(options.focus)?.focus({ preventScroll: staysOnTemporalAtlas });
 }
 
 function openCompanyEvidence(company) {
