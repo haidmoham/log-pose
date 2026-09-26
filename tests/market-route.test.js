@@ -355,6 +355,33 @@ test('temporal inventory gaps stay explicit and late frames cannot replace the s
   stale.window.close();
 });
 
+test('temporal graph selection focuses its inspector without scrolling the workspace', async () => {
+  const temporal = async params => {
+    const result = marketFieldApi.handleMarketField(new URLSearchParams(params));
+    return { status: result.status, body: result.body };
+  };
+  const dom = await page('/?view=topology&temporalSource=lfai&temporalMode=snapshot&temporalYear=2024',
+    null, true, { temporal });
+  const { document, MouseEvent, HTMLElement } = dom.window;
+  const focusRequests = [];
+  const originalFocus = HTMLElement.prototype.focus;
+  HTMLElement.prototype.focus = function focus(options) {
+    focusRequests.push({ id: this.id, preventScroll: options?.preventScroll });
+    originalFocus.call(this, options);
+  };
+  const candidate = document.querySelector('[data-candidate="00a2fb1597f507022279"]');
+  const candidateId = candidate.dataset.candidate;
+  candidate.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+  assert.deepEqual(focusRequests.at(-1), { id: 'temporal-inspector', preventScroll: true });
+  await waitFor(() => document.querySelector('.constellation-node.is-focus')?.dataset.candidate === candidateId);
+  const neighbor = document.querySelector('.constellation-node:not(.is-focus)');
+  assert(neighbor, 'the focused fixture must have a selectable neighbor');
+  neighbor.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+  assert.deepEqual(focusRequests.at(-1), { id: 'temporal-inspector', preventScroll: true });
+  await waitFor(() => document.querySelector('.constellation-node.is-selected')?.dataset.candidate === neighbor.dataset.candidate);
+  dom.window.close();
+});
+
 test('scrubbing keeps the range and dated evidence mounted until the latest frame is ready', async () => {
   const focus = '00a2fb1597f507022279';
   const timeline = marketFieldApi.handleMarketField(new URLSearchParams('mode=timeline'));
