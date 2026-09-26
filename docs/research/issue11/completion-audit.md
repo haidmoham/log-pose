@@ -17,7 +17,7 @@ can be assumed to pass.
 | 2 | `tests/test_atlas_membership.py::test_real_pinned_s0_matches_every_legacy_pair_and_supporting_placement` compares all 47,288 pairs and supporting placements. `tests/atlas-api.test.js` checks focused S0 reads. | supported: 1,240 candidates, 5,964 memberships, fourteen revisions, and the separate 100-item review worklist. |
 | 3 | membership tables index both incidence directions. 1,000/10,000-member fixtures and focused reads avoid mandatory clique construction; exact support ranking and ties have tests. | supported for inventory; the 49,995,000 potential pairs in the giant bucket are not materialized. exact focus still scans a bounded incidence neighborhood. |
 | 4 | SQLite and Postgres query indexed selected rows; public responses and browser caches have byte limits. retained claim bodies are fetched for selected pages. | supported read path. full canonical normalization still reads its input projection; that is a build limitation, not a claim of fully incremental ingestion. |
-| 5 | inventory and reviewed route tests cover late responses, pending frames, disposal, and matching graph/inspector frames. | supported automated cases; exact deployed failure/recovery needs durable coverage beyond the current happy-path browser smoke. |
+| 5 | inventory and reviewed route tests cover late responses, pending frames, disposal, and matching graph/inspector frames. `reviewed-production-browser.json` records a manual public-origin missing-build, retry and back-navigation recovery check. | supported cases; extend the automated deployment smoke beyond its current happy path. |
 | 6 | inventory rejects unsupported clocks and ambiguous revisions. reviewed queries require all supporting/contradicting premise publication dates by cutoff. explicit current-review and present-day identity/layout limitations remain visible. | supported reconstruction contracts. historical relationship validity and operational replay are unavailable in the atlas; do not call these delivered clocks. |
 | 7 | reviewed detail retains scope, direction, typed claims, full premises, reviews, unknowns, and event/reporting/publication times. hypotheses require selection. | supported for four accepted claims. integrations, customer claims and ownership have no accepted slice yet. |
 | 8 | exact taxonomy regions drill to candidate pages and retained records; camera updates do not alter query selectors or saved cohort. | supported chosen design. the requested small comparison of alternative prototypes on real neighborhoods lacks a durable decision receipt with measured interaction cost. |
@@ -28,7 +28,7 @@ can be assumed to pass.
 | 13 | unit tests cover keyboard selection, stable controls/camera, reduced motion, non-color absence text and list fallback; real earlier browser receipts cover selected flows. | partial: new-route touch targeting, emulated media preference, keyboard focus across updates and actual non-GPU fallback need a consolidated browser receipt. a narrow viewport alone is not a touch test. |
 | 14 | required CI creates disposable Postgres, runs database tests, and rejects silent skips. snapshot publication reconciles keys, counts, hashes and references; migrations preserve applied history. | supported automated migration/read-derivative checks. full retained evidence-clone reconciliation remains explicitly unavailable in CI; an empty test database is not a substitute. |
 | 15 | bounded pages/work/bytes/cache/handles, read-only runtime, text rendering and safe-link primitives. acquisition jobs are separate from public queries. | supported public retained slice; hashes are not redistribution permission. authenticated/restricted evidence is not hosted here. no broad private-data access-control claim. |
-| 16 | required CI and production read-health passed for the audited SHA. production receipt checks exact public assets and reviewed build, coherent frame, source drill, and no page errors. | partial release verification: unique production URL was SSO-protected in CI; signed-in PR preview passed previously. Chrome is currently disconnected. production failure/recovery is absent from the retained browser receipt. |
+| 16 | required CI and production read-health passed for the audited SHA. production receipt checks exact public assets and reviewed build, coherent frame, source drill, and no page errors. the fresh manual public-origin receipt adds missing-build/retry/recovery. | partial release verification: unique production URL was SSO-protected in CI; signed-in PR preview passed previously. Chrome is currently disconnected. automated atlas asset hashing and failure coverage remain incomplete. |
 | 17 | PR #16 adds a separately versioned reviewed provider and real typed claim layer through runtime routing and the shared renderer; candidate mappings are explicit. | supported extension demonstration; adding this layer did not rewrite inventory semantics or conflate its clock. |
 | 18 | capacity, browser, Postgres, hobby-cost and evidence-limit reports remain in the repository. | partial until remaining measurements and research walkthroughs have results and a final prioritized frontier report. no unlimited-scale or complete-market claim. |
 
@@ -66,6 +66,37 @@ the production HTTP verifier currently hashes legacy assets and checks the
 legacy field API. the browser verifier adds reviewed deep-link and retained
 claim checks. neither fact should be widened into an automated hash check of
 every atlas asset. the earlier manual atlas asset comparison is separate.
+
+the [manual public-origin receipt](reviewed-production-browser.json) keeps the
+two-claim Snowflake/dbt frame, missing-build state with no rendered claims,
+and recovery to frame
+`73acebb67529aac73ec53ad0b668d98fbbf13dea384460f39620b6079b5d15c9`.
+graph and inspector agree before and after recovery. this bounded UI check
+does not provide a latency distribution or independently hash served assets.
+
+## canonical import environment
+
+the user accepted the integration at its attributed scope; the decision is
+saved in `integration-review-packet.json`. import is still pending. a search
+including Git-ignored files located the retained PostgreSQL 18 cluster in the
+main checkout's `data/postgres/` (140 MiB) and
+`data/logpose-market-2020-2026.dump` (3,006,198 bytes, dated 2026-09-24).
+the first search omitted ignored files and therefore missed them.
+
+no Postgres process was running. `postmaster.opts` records the former executable
+under `/tmp/log-pose-pg18/`, with port 55439; the runtime must be restored before
+read-only inspection and a fresh backup. these filesystem observations locate
+the data but do not prove its database contents or reconciliation. do not use
+the separate synthetic scale cluster as a canonical evidence replacement.
+
+Docker was checked as another possible storage location. stale runtime sockets
+blocked startup; preserving the socket-only directories and recreating them
+allowed startup. Docker had only unrelated existing ODS containers/volumes and
+was stopped again before the browser measurement. no factory reset, volume
+deletion, credential change, evidence recreation, or paid backend occurred.
+the user authorized local/Chrome investigation and excluded desktop control.
+the remaining canonical work is local database verification, backup, scoped
+append-only import, and export reconciliation after the browser run.
 
 ## next work and reserved decisions
 
