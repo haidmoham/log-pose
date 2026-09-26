@@ -64,6 +64,42 @@ def _validate_response(body: dict, parameters: dict) -> None:
             raise AtlasReadError("atlas response lacks immutable build or receipt identity")
     if parameters.get("build_id") and parameters["build_id"] != body["build_id"]:
         raise AtlasReadError("atlas response differs from the requested immutable build")
+    operation = str(parameters.get("mode", "discover"))
+    if body.get("operation") != operation:
+        raise AtlasReadError("atlas response differs from requested operation")
+    if "compare_cutoff" in parameters \
+            and selection.get("compare_cutoff") != str(parameters["compare_cutoff"]):
+        raise AtlasReadError("atlas response differs from requested compare_cutoff")
+    _validate_target_binding(body, parameters, layer)
+
+
+def _validate_target_binding(body: dict, parameters: dict, layer: str) -> None:
+    """Bind saved target selectors to descriptors, independent of build identity."""
+    focus = body.get("focus")
+    if "entity" in parameters:
+        if not isinstance(focus, dict) or focus.get("id") != str(parameters["entity"]):
+            raise AtlasReadError("atlas response differs from requested entity")
+    if "candidate" in parameters:
+        candidate = str(parameters["candidate"])
+        if layer == "reviewed":
+            links = focus.get("candidate_links", []) if isinstance(focus, dict) else []
+            if not any(isinstance(link, dict) and link.get("candidate_id") == candidate
+                       for link in links):
+                raise AtlasReadError("atlas response differs from requested candidate")
+        else:
+            descriptor = focus if isinstance(focus, dict) else body.get("subject")
+            if not isinstance(descriptor, dict) or descriptor.get("id") != candidate:
+                raise AtlasReadError("atlas response differs from requested candidate")
+    if "neighbor" in parameters:
+        descriptor = body.get("neighbor") if layer == "reviewed" else body.get("object")
+        if not isinstance(descriptor, dict) or descriptor.get("id") != str(parameters["neighbor"]):
+            raise AtlasReadError("atlas response differs from requested neighbor")
+    if "claim" in parameters:
+        claims = body.get("claims")
+        if not isinstance(claims, list) or not any(
+                isinstance(claim, dict) and claim.get("id") == str(parameters["claim"])
+                for claim in claims):
+            raise AtlasReadError("atlas response differs from requested claim")
 
 
 def read_atlas(repo_root: Path, parameters: dict[str, object], *,

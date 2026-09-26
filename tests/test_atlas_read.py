@@ -20,11 +20,11 @@ def write_adapter(root: Path, source: str) -> None:
 def response_body():
     return {"schema_version": "1.0", "build_id": "a" * 64, "receipt_id": "b" * 64,
             "selection": {"clock": "inventory_year", "temporal_mode": "snapshot"},
-            "operation": "focus", "edges": []}
+            "operation": "focus", "focus": {"id": "candidate-a"}, "edges": []}
 
 
 def test_read_atlas_passes_encoded_arguments_without_a_shell(tmp_path):
-    body = response_body()
+    body = dict(response_body(), operation="search")
     write_adapter(tmp_path, """
 const params = new URLSearchParams(process.argv[2]);
 process.stdout.write(JSON.stringify({status: 200, body: {
@@ -97,6 +97,8 @@ def test_normal_package_import_does_not_load_experimental_attachment_validator()
 def reviewed_response_body():
     return {"build_id": "c" * 64, "receipt_id": "d" * 64, "frame_id": "e" * 64,
             "versions": {"query": "atlas-reviewed-query-v1"}, "operation": "focus",
+            "focus": {"id": "snowflake", "candidate_links": [
+                {"candidate_id": "candidate-snowflake", "identity_review_id": "identity-review-02"}]},
             "selection": {"clock": "source_publication", "temporal_mode": "published_through",
                           "review_lens": "current_accepted_at_build", "cutoff": "2022-02-24",
                           "basis": "documented", "predicate": "", "direction": "both"}}
@@ -124,9 +126,11 @@ def test_layered_investigation_keeps_independent_builds_and_rejects_mixed_frames
     inventory = dict(response_body(), frame_id="f" * 64, versions={"query": "atlas-query-v1"})
     reviewed = reviewed_response_body()
     reads = [
-        {"layer": "inventory", "request": {"layer": "inventory", "build_id": inventory["build_id"]},
+        {"layer": "inventory", "request": {"layer": "inventory", "mode": "focus",
+                                               "build_id": inventory["build_id"]},
          "response": inventory},
-        {"layer": "reviewed", "request": {"layer": "reviewed", "build_id": reviewed["build_id"],
+        {"layer": "reviewed", "request": {"layer": "reviewed", "mode": "focus",
+                                             "build_id": reviewed["build_id"],
                                            "cutoff": "2022-02-24"}, "response": reviewed}]
     output = tmp_path / "layered.json"
     result = export_layered_investigation(output, question="Which evidence supports each layer?",
@@ -152,6 +156,59 @@ def test_layered_investigation_keeps_independent_builds_and_rejects_mixed_frames
     changed["system_known_replay"] = "verified"
     with pytest.raises(ValueError, match="system-known"):
         validate_layered_investigation(changed)
+
+
+def test_saved_reads_bind_operation_compare_cutoff_and_target_selectors():
+    from copy import deepcopy
+    response = reviewed_response_body()
+    request = {"layer": "reviewed", "mode": "focus", "entity": "snowflake",
+               "candidate": "candidate-snowflake", "cutoff": "2022-02-24",
+               "build_id": response["build_id"]}
+    investigation = {"schema_version": "atlas-layered-investigation-v1",
+        "status": "research_record_not_reviewed_claim", "question": "Question",
+        "interpretation": "Interpretation", "result": "Result", "uncertainty": "Unknown",
+        "next_question": "Next", "omissions": [], "observations": [], "counterevidence": [],
+        "cohort_query": {}, "system_known_replay": "unsupported",
+        "geometry_use": "display_only_not_model_input",
+        "cross_layer_join": "explicit_present_day_navigation_not_inference",
+        "layer_builds": {"reviewed": response["build_id"]},
+        "reads": [{"layer": "reviewed", "request": request, "response": response}]}
+    validate_layered_investigation(investigation)
+
+    swapped = deepcopy(investigation)
+    swapped["reads"][0]["response"]["focus"] = {
+        "id": "datadog", "candidate_links": [{"candidate_id": "candidate-datadog"}]}
+    with pytest.raises(ValueError, match="entity"):
+        validate_layered_investigation(swapped)
+
+    wrong_operation = deepcopy(investigation)
+    wrong_operation["reads"][0]["response"]["operation"] = "explain"
+    with pytest.raises(ValueError, match="operation"):
+        validate_layered_investigation(wrong_operation)
+
+    comparison = deepcopy(investigation)
+    comparison["reads"][0]["request"].update(
+        {"mode": "compare", "compare_cutoff": "2021-12-31"})
+    comparison["reads"][0]["response"]["operation"] = "compare"
+    comparison["reads"][0]["response"]["selection"]["compare_cutoff"] = "2021-12-31"
+    validate_layered_investigation(comparison)
+    comparison["reads"][0]["response"]["selection"]["compare_cutoff"] = "2020-12-31"
+    with pytest.raises(ValueError, match="compare_cutoff"):
+        validate_layered_investigation(comparison)
+
+
+def test_saved_explain_binds_neighbor_and_claim_without_build_dependence():
+    response = reviewed_response_body() | {"operation": "explain",
+        "neighbor": {"id": "dbt-labs"}, "claims": [{"id": "partnership-claim"}]}
+    from log_pose.atlas_read import _validate_response
+    parameters = {"layer": "reviewed", "mode": "explain", "entity": "snowflake",
+                  "neighbor": "dbt-labs", "claim": "partnership-claim",
+                  "cutoff": "2022-02-24"}
+    _validate_response(response, parameters)
+    with pytest.raises(AtlasReadError, match="neighbor"):
+        _validate_response(response, {**parameters, "neighbor": "datadog"})
+    with pytest.raises(AtlasReadError, match="claim"):
+        _validate_response(response, {**parameters, "claim": "other-claim"})
 
 
 def test_real_reviewed_python_read_excludes_later_premises_and_preserves_reviews():
