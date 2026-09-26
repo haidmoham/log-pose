@@ -137,6 +137,33 @@ test('gpu waits for initial population to settle and does not attach to a discar
   dom.window.close();
 });
 
+test('3d camera updates suspend the hidden gpu renderer without rebuilding it', () => {
+  let updates = 0;
+  const active = [];
+  const dom = setup(window => {
+    window.matchMedia = () => ({ matches: true, addEventListener() {} });
+    window.LogPoseTemporalGPU = { attach: () => ({
+      setActive(value) { active.push(value); },
+      update() { updates += 1; }
+    }) };
+  });
+  const scene = dom.window.LogPoseTemporalGraph.render({ ...frame, build_id: 'gpu-3d-suspend' });
+  dom.window.document.body.append(scene);
+  const before3d = updates;
+  scene.querySelector('[aria-label="3d graph"]').click();
+  assert(updates <= before3d + 1);
+  const afterSwitch = updates;
+  const map = scene.querySelector('.constellation-map');
+  map.dispatchEvent(new dom.window.KeyboardEvent('keydown', { key: 'ArrowRight' }));
+  map.dispatchEvent(new dom.window.KeyboardEvent('keydown', { key: 'ArrowLeft' }));
+  assert.equal(updates, afterSwitch);
+  assert.equal(active.at(-1), false);
+  scene.querySelector('[aria-label="2d graph"]').click();
+  assert.equal(active.at(-1), true);
+  assert(updates > afterSwitch);
+  dom.window.close();
+});
+
 test('reduced motion is the initial setting and the explicit control can override it', () => {
   const dom = setup(window => { window.matchMedia = () => ({ matches: true }); });
   const scene = dom.window.LogPoseTemporalGraph.render({ ...frame, build_id: 'motion-preference' });
@@ -233,6 +260,69 @@ test('3d orbit uses viewport-normalized pointer movement', () => {
     return projected;
   }
   assert.equal(projectedAfterDrag(400, 80), projectedAfterDrag(800, 160));
+});
+
+test('3d orbit defers context mesh writes and refreshes hidden context when enabled', () => {
+  const dom = setup(window => {
+    window.matchMedia = () => ({ matches: true });
+    window.requestAnimationFrame = () => 1;
+  });
+  const scene = dom.window.LogPoseTemporalGraph.render({ ...frame, build_id: 'context-orbit-lod',
+    context_edges: [{ left: 'two', right: 'three' }] });
+  dom.window.document.body.append(scene);
+  const line = scene.querySelector('.constellation-context line');
+  const base2d = line.getAttribute('x1');
+  scene.querySelector('[aria-label="3d graph"]').click();
+  const map = scene.querySelector('.constellation-map');
+  map.getBoundingClientRect = () => ({ width: 800, height: 500 });
+  const initial = line.getAttribute('x1');
+  map.dispatchEvent(new dom.window.MouseEvent('pointerdown', { bubbles: true, button: 0,
+    clientX: 100, clientY: 100 }));
+  map.dispatchEvent(new dom.window.MouseEvent('pointermove', { bubbles: true,
+    clientX: 220, clientY: 160 }));
+  assert(scene.classList.contains('is-orbiting'));
+  assert.equal(line.getAttribute('x1'), initial);
+  map.dispatchEvent(new dom.window.MouseEvent('pointerup', { bubbles: true,
+    clientX: 220, clientY: 160 }));
+  assert(!scene.classList.contains('is-orbiting'));
+  const context = scene.querySelector('.constellation-context-control input');
+  context.checked = true;
+  context.dispatchEvent(new dom.window.Event('change'));
+  assert.notEqual(line.getAttribute('x1'), initial);
+  context.checked = false;
+  context.dispatchEvent(new dom.window.Event('change'));
+  scene.querySelector('[aria-label="2d graph"]').click();
+  context.checked = true;
+  context.dispatchEvent(new dom.window.Event('change'));
+  assert.equal(line.getAttribute('x1'), base2d);
+  dom.window.close();
+});
+
+test('motion-on orbit restores the context mesh after damped settling', () => {
+  const frames = [];
+  const dom = setup(window => {
+    window.matchMedia = () => ({ matches: false });
+    window.requestAnimationFrame = callback => { frames.push(callback); return frames.length; };
+  });
+  const scene = dom.window.LogPoseTemporalGraph.render({ ...frame, build_id: 'context-orbit-settle',
+    focus: null, edges: [], context_edges: [{ left: 'two', right: 'three' }] });
+  dom.window.document.body.append(scene);
+  scene.querySelector('[aria-label="3d graph"]').click();
+  const map = scene.querySelector('.constellation-map');
+  map.getBoundingClientRect = () => ({ width: 800, height: 500 });
+  const line = scene.querySelector('.constellation-context line');
+  const initial = line.getAttribute('x1');
+  map.dispatchEvent(new dom.window.MouseEvent('pointerdown', { bubbles: true, button: 0,
+    clientX: 100, clientY: 100 }));
+  map.dispatchEvent(new dom.window.MouseEvent('pointermove', { bubbles: true,
+    clientX: 220, clientY: 160 }));
+  map.dispatchEvent(new dom.window.MouseEvent('pointerup', { bubbles: true,
+    clientX: 220, clientY: 160 }));
+  assert(scene.classList.contains('is-orbiting'));
+  for (let index = 0; frames.length && index < 100; index += 1) frames.shift()((index + 1) * 16.67);
+  assert(!scene.classList.contains('is-orbiting'));
+  assert.notEqual(line.getAttribute('x1'), initial);
+  dom.window.close();
 });
 
 test('a second pointer cannot steal or end the active orbit gesture', () => {

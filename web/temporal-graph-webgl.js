@@ -65,6 +65,7 @@
     let pointCount = 0;
     let animationFrame = null;
     let visible = true;
+    let active = true;
     const observer = root.ResizeObserver ? new root.ResizeObserver(() => draw()) : null;
     const intersection = root.IntersectionObserver ? new root.IntersectionObserver(entries => {
       visible = entries[0]?.isIntersecting !== false;
@@ -132,7 +133,8 @@
       pointCount = upload(pointBuffer, points);
     }
     function canAnimate() {
-      return Boolean(current?.motion && map?.isConnected && visible && !document.hidden && !gl.isContextLost());
+      return Boolean(active && current?.motion && map?.isConnected && visible
+        && !document.hidden && !gl.isContextLost());
     }
     function updateAnimation() {
       if (canAnimate() && animationFrame === null) animationFrame = root.requestAnimationFrame(animate);
@@ -144,7 +146,7 @@
       updateAnimation();
     }
     function draw(time = 0) {
-      if (!current || !map?.isConnected || !visible || gl.isContextLost()) return;
+      if (!active || !current || !map?.isConnected || !visible || gl.isContextLost()) return;
       const rect = map.getBoundingClientRect(); if (!rect.width || !rect.height) return;
       const ratio = Math.min(root.devicePixelRatio || 1, 2); canvas.style.width = `${rect.width}px`; canvas.style.height = `${rect.height}px`;
       const width = Math.round(rect.width * ratio); const height = Math.round(rect.height * ratio);
@@ -175,8 +177,13 @@
     return {
       attach(nextScene, nextMap) {
         scene?.classList.remove('has-webgl'); observer?.disconnect(); intersection?.disconnect();
-        scene = nextScene; map = nextMap; visible = true; scene.insertBefore(canvas, map);
+        scene = nextScene; map = nextMap; visible = true; active = true; scene.insertBefore(canvas, map);
         observer?.observe(map); intersection?.observe(map); updateAnimation();
+      },
+      setActive(value) {
+        if (active === value) return;
+        active = value;
+        updateAnimation();
       },
       update(value) { current = value; rebuild(); draw(); updateAnimation(); }
     };

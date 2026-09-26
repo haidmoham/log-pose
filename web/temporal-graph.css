@@ -97,6 +97,10 @@
 .is-view-3d.has-webgl .constellation-aura { visibility: visible; }
 .is-view-3d.is-context-off .constellation-context { visibility: hidden; }
 .is-view-3d .constellation-visual { opacity: var(--depth-opacity, 1); }
+.is-view-3d.is-orbiting .constellation-context { opacity: 0; }
+@media (prefers-reduced-motion: no-preference) {
+  .is-view-3d .constellation-context { transition: opacity 120ms ease; }
+}
 
 .constellation-edge-hit { stroke: transparent; stroke-width: 12; vector-effect: non-scaling-stroke; pointer-events: stroke; cursor: pointer; }
 

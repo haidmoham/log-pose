@@ -112,12 +112,14 @@
     const centeredSpatialPoint = point => ({ x: point.x - orbitCenter.x,
       y: point.y - orbitCenter.y, z: point.z - orbitCenter.z });
     const positions = new Map();
+    let projectedMode = null;
     function projectPositions() {
       positions.clear();
       for (const node of frame.nodes) {
         positions.set(node.id, viewMode === '3d'
           ? project3d(centeredSpatialPoint(spatialPositions.get(node.id))) : basePositions.get(node.id));
       }
+      projectedMode = viewMode;
     }
     projectPositions();
     function fitView() {
@@ -155,6 +157,7 @@
     const labelNodes = [];
     const contextElements = [];
     const contextVisible = () => !frame.focus || appearance.context;
+    let deferContextProjection = false;
     let hovered = '';
     let gpu = null;
     const peers = svgElement('g', { class: 'constellation-context', 'aria-hidden': 'true' });
@@ -265,13 +268,16 @@
       labelNodes.push({ id: node.id, group, point, name: node.name, priority: isFocus || node.id === selected });
       field.append(group);
     }
-    function applyProjection() {
-      projectPositions();
+    function updateContextProjection() {
       for (const { edge, line } of contextElements) {
         const left = positions.get(edge.left); const right = positions.get(edge.right);
         line.setAttribute('x1', left.x); line.setAttribute('y1', left.y);
         line.setAttribute('x2', right.x); line.setAttribute('y2', right.y);
       }
+    }
+    function applyProjection() {
+      projectPositions();
+      if (!deferContextProjection && contextVisible()) updateContextProjection();
       for (const [id, thread] of threadElements) {
         const left = positions.get(frame.focus); const right = positions.get(id);
         for (const line of [thread, hitThreadElements.get(id)]) {
@@ -291,11 +297,13 @@
           visual.style.removeProperty('--depth-opacity');
         }
       }
-      const paintOrder = viewMode === '3d'
-        ? [...labelNodes].sort((left, right) => Number(left.priority) - Number(right.priority)
-          || right.point.depth - left.point.depth)
-        : labelNodes;
-      for (const record of paintOrder) field.append(record.group);
+      if (!deferContextProjection) {
+        const paintOrder = viewMode === '3d'
+          ? [...labelNodes].sort((left, right) => Number(left.priority) - Number(right.priority)
+            || right.point.depth - left.point.depth)
+          : labelNodes;
+        for (const record of paintOrder) field.append(record.group);
+      }
     }
     function activateMode(mode) {
       if (mode !== '2d' && mode !== '3d') return;
@@ -303,6 +311,8 @@
         root.cancelAnimationFrame(orbitFrame); orbitFrame = null;
         camera3d.yaw = camera3d.targetYaw; camera3d.pitch = camera3d.targetPitch;
       }
+      deferContextProjection = false;
+      scene.classList.remove('is-orbiting');
       emphasize('');
       viewMode = mode; camera = mode === '3d' ? camera3d : camera2d;
       scene.classList.toggle('is-view-3d', mode === '3d');
@@ -376,7 +386,11 @@
     if (frame.focus) {
       const context = element('label', 'constellation-context-control');
       const contextInput = element('input'); contextInput.type = 'checkbox'; contextInput.checked = appearance.context;
-      contextInput.addEventListener('change', () => { appearance.context = contextInput.checked; updateAppearance(); });
+      contextInput.addEventListener('change', () => {
+        appearance.context = contextInput.checked;
+        if (appearance.context) updateContextProjection();
+        updateCamera();
+      });
       context.append(contextInput, element('span', '', 'context connections'));
       tuning.append(context);
     }
@@ -388,6 +402,12 @@
     scene.append(tuning);
 
     function updateGPU() {
+      if (!gpu) return;
+      if (viewMode !== '2d') {
+        gpu.setActive?.(false);
+        return;
+      }
+      gpu.setActive?.(true);
       gpu?.update({ frame, positions, camera, selected, hover: hovered, threads: appearance.threads,
         context: !frame.focus || appearance.context, motion: appearance.motion && viewMode === '2d', tints });
     }
@@ -397,22 +417,42 @@
       if (!appearance.motion) scene.querySelectorAll('.is-entering').forEach(node => node.classList.remove('is-entering'));
       scene.style.setProperty('--thread-opacity', String(0.06 + appearance.threads / 100 * 0.32));
       modeHint.textContent = viewMode === '3d' ? 'drag to orbit · shift-drag to pan' : 'drag to pan';
-      const occupied = [];
-      const order = [...labelNodes].sort((a, b) => Number(b.priority) - Number(a.priority) || a.id.localeCompare(b.id));
+      const occupiedByCell = new Map();
+      const cellSize = 48 / camera.zoom;
+      const order = labelNodes.toSorted((a, b) => Number(b.priority) - Number(a.priority) || a.id.localeCompare(b.id));
       for (const record of order) {
         const width = Math.min(record.name.length, 30) * 8.5 / camera.zoom;
         const box = { x: record.point.x + 12 / camera.zoom, y: record.point.y - 9 / camera.zoom, width, height: 17 / camera.zoom };
-        const overlaps = occupied.some(other => box.x < other.x + other.width && box.x + box.width > other.x
+        const left = Math.floor(box.x / cellSize);
+        const right = Math.floor((box.x + box.width) / cellSize);
+        const top = Math.floor(box.y / cellSize);
+        const bottom = Math.floor((box.y + box.height) / cellSize);
+        const nearby = new Set();
+        for (let x = left; x <= right; x += 1) {
+          for (let y = top; y <= bottom; y += 1) {
+            for (const other of occupiedByCell.get(`${x}:${y}`) || []) nearby.add(other);
+          }
+        }
+        const overlaps = [...nearby].some(other => box.x < other.x + other.width && box.x + box.width > other.x
           && box.y < other.y + other.height && box.y + box.height > other.y);
         const eligible = hash(record.id + ':label') % 100 < appearance.labels;
         const visible = record.priority || (eligible && !overlaps);
         record.group.classList.toggle('has-label', visible);
-        if (visible) occupied.push(box);
+        if (visible) {
+          for (let x = left; x <= right; x += 1) {
+            for (let y = top; y <= bottom; y += 1) {
+              const key = `${x}:${y}`;
+              const boxes = occupiedByCell.get(key) || [];
+              boxes.push(box);
+              occupiedByCell.set(key, boxes);
+            }
+          }
+        }
       }
       updateGPU();
     }
     function updateCamera() {
-      applyProjection();
+      if (viewMode === '3d' || projectedMode !== viewMode) applyProjection();
       field.setAttribute('transform', `translate(${500 + camera.x} ${340 + camera.y}) scale(${camera.zoom}) translate(-500 -340)`);
       for (const record of labelNodes) {
         record.group.querySelector('.constellation-scale').setAttribute('transform', `scale(${1 / camera.zoom})`);
@@ -445,6 +485,8 @@
         if (!appearance.motion || settled) {
           camera3d.yaw = camera3d.targetYaw;
           camera3d.pitch = camera3d.targetPitch;
+          deferContextProjection = false;
+          scene.classList.remove('is-orbiting');
         } else {
           const elapsed = orbitTime === null ? 16.67 : Math.min(50, time - orbitTime);
           const amount = 1 - Math.pow(1 - .24, elapsed / 16.67);
@@ -462,6 +504,11 @@
       if (drag.owned && !cancelled) suppressClick = true;
       drag = null;
       svg.classList.remove('is-dragging');
+      if (!appearance.motion || cancelled) {
+        deferContextProjection = false;
+        scene.classList.remove('is-orbiting');
+        updateCamera();
+      }
     }
     svg.addEventListener('pointerdown', event => {
       if (event.button !== 0 || drag) return;
@@ -469,12 +516,12 @@
       if (viewMode === '2d' && event.target.closest('.constellation-node, .constellation-edge-hit')) return;
       drag = { pointerId: event.pointerId, pointerType: event.pointerType, x: event.clientX, y: event.clientY,
         cameraX: camera.x, cameraY: camera.y, yaw: camera3d.yaw, pitch: camera3d.pitch,
-        pan: viewMode === '2d' || event.shiftKey, owned: viewMode === '2d' };
+        pan: viewMode === '2d' || event.shiftKey, owned: viewMode === '2d', rect: svg.getBoundingClientRect() };
       if (drag.owned) { svg.setPointerCapture?.(event.pointerId); svg.classList.add('is-dragging'); }
     });
     svg.addEventListener('pointermove', event => {
       if (!drag || (drag.pointerId !== undefined && event.pointerId !== undefined && event.pointerId !== drag.pointerId)) return;
-      const rect = svg.getBoundingClientRect();
+      const rect = drag.rect;
       const deltaX = event.clientX - drag.x; const deltaY = event.clientY - drag.y;
       if (!drag.owned) {
         const threshold = drag.pointerType === 'touch' ? 9 : 5;
@@ -486,6 +533,8 @@
         camera.x = drag.cameraX + deltaX * scale;
         camera.y = drag.cameraY + deltaY * scale;
       } else {
+        deferContextProjection = true;
+        scene.classList.add('is-orbiting');
         const orbitScale = Math.PI * .45 / Math.max(1, rect.height);
         camera3d.targetYaw = drag.yaw + deltaX * orbitScale;
         camera3d.targetPitch = Math.max(-1.2, Math.min(1.2, drag.pitch - deltaY * orbitScale));

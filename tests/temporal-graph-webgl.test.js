@@ -27,6 +27,10 @@ test('gpu breathing stops after its map disconnects', () => {
   renderer.update({ frame: { nodes: [{ id: 'one' }], focus: null, edges: [], context_edges: [] },
     positions: new Map([['one', { x: 500, y: 340 }]]), camera: { x: 0, y: 0, zoom: 1 }, selected: '', hover: '', threads: 45, motion: true });
   assert.equal(frames.size, 1);
+  renderer.setActive(false);
+  assert.equal(frames.size, 0);
+  renderer.setActive(true);
+  assert.equal(frames.size, 1);
   scene.remove();
   const callback = frames.values().next().value; frames.clear(); callback(1000);
   assert.equal(frames.size, 0);
