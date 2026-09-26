@@ -1,5 +1,5 @@
 {
-  "schema_version": "topology-reconstruction-receipt-v1",
+  "schema_version": "topology-reconstruction-receipt-v2",
   "status": "scoped_reconstruction_complete_not_published",
   "database": "topology_reconstruction_final",
   "socket": "private Unix socket; path omitted from public deployment contract",
@@ -16,9 +16,10 @@
   },
   "unknown_arrival_records": 9,
   "dump": {
-    "path": "/home/haidm/.cache/log-pose-evidence-recovery-20260926/topology-reconstruction-final.dump",
-    "sha256": "34a1f3e5853e55b97aabfb17d3ffcac353ceede7bdff8f948595ea1ad08fa493",
-    "bytes": 1284078
+    "path": "/home/haidm/.cache/log-pose-evidence-recovery-20260926/topology-reconstruction-final-schema017.dump",
+    "sha256": "c571135655b48022b14fe45be0a3c90c5263f6856cbba8663af30dd080cb19cf",
+    "bytes": 1284334,
+    "preserves_previous_dump": "34a1f3e5853e55b97aabfb17d3ffcac353ceede7bdff8f948595ea1ad08fa493"
   },
   "public_candidate": {
     "catalog_build_id": "7c9b1952f7c0f9c962251c77a57ad4e093a131338bf35fac1b935dbd30f33802",
@@ -57,5 +58,6 @@
       "topology_candidate_evidence.added_at",
       "topology_reviews.original_row_arrival_at"
     ]
-  }
+  },
+  "database_schema_migration": "017_topology_reconstruction_layer_views.sql"
 }
