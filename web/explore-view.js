@@ -179,8 +179,7 @@
 
     function renderSearch() {
       root.append(title('01 / MARKET INVENTORY · 2020–2026', 'explore software sources',
-        'browse pinned source rows, including untagged listings. filter tagged leads below.'),
-      inventoryCoverage(), fullInventoryBrowser());
+        'search dated source listings and open the records behind each lead.'));
 
       const controls = node('div', '', 'search-controls');
       const query = node('input');
@@ -237,6 +236,10 @@
       const results = node('div');
       results.id = 'search-results';
       root.append(results);
+      const sourceArchive = node('details', '', 'desk-disclosure');
+      sourceArchive.append(node('summary', 'browse pinned inventories and coverage'),
+        inventoryCoverage(), fullInventoryBrowser());
+      root.append(sourceArchive);
       updateSearchResults();
     }
 
@@ -430,6 +433,12 @@
     function updateSearchResults() {
       const target = document.querySelector('#search-results');
       target.replaceChildren();
+      if (state.company) {
+        const detail = companyDetail(state.company);
+        detail.id = 'company-detail';
+        detail.tabIndex = -1;
+        target.append(detail);
+      }
       const terms = state.query.toLocaleLowerCase().trim().split(/\s+/).filter(Boolean);
       const hits = ['provider', 'pilot', 'financial', 'financing'].includes(state.searchType) ? []
         : discovery.candidates.map(candidate => ({
@@ -466,7 +475,9 @@
       hits.sort((left, right) => candidateScore(right.candidate, state.query)
         - candidateScore(left.candidate, state.query)
         || left.candidate.name.localeCompare(right.candidate.name));
-      target.append(append(node('div', '', 'search-summary'),
+      const breakdown = node('details', '', 'search-breakdown');
+      breakdown.append(node('summary', 'current result counts by evidence type'));
+      breakdown.append(append(node('div', '', 'search-summary'),
         metric(String(hits.length), 'Directory leads', 'Product or project keys; U.S. evidence varies'),
         metric(String(providers.length), 'Provider leads', 'Reviewed relationships; eligibility open'),
         metric(String(pilots.length), 'Pilot companies', 'Selected and separately sourced'),
@@ -475,7 +486,8 @@
           'With financing news', 'Company announcements; selected events only'),
         metric(String(pilots.filter(hit => locationReviewInSelectedYear(hit.company.slug)?.decision === 'documented_us_base').length),
           'With U.S. base evidence', 'Source year matches selected year')));
-      target.append(searchAggregation(hits, providers, pilots));
+      breakdown.append(searchAggregation(hits, providers, pilots));
+      target.append(breakdown);
       const resultList = node('div', '', 'search-result-list');
       providers.forEach(provider => {
         const button = node('button', state.selectedProvider === provider.id
@@ -549,9 +561,10 @@
       hits.slice(0, state.searchLimit).forEach(hit => {
         const item = hit.candidate;
         const review = identityReviewFor(item);
+        const matchingPaths = new Set(hit.occurrences.map(occurrence =>
+          occurrence.source_category + ' / ' + occurrence.source_subcategory));
         const matchingDescription = hit.occurrences.find(occurrence => occurrence.description)?.description
-          || hit.occurrences.map(occurrence => occurrence.source_category + ' / '
-            + occurrence.source_subcategory).join(' · ');
+          || [...matchingPaths].join(' · ');
         const matchedYears = [...new Set(hit.occurrences.map(occurrence => occurrence.year))].sort();
         const matchedSources = [...new Set(hit.occurrences.map(occurrence => occurrence.source))].sort();
         const matchedTags = [...new Set(hit.occurrences.flatMap(occurrence => occurrence.candidate_tags))];
@@ -594,12 +607,6 @@
         resultList.append(card);
         if (state.selectedCandidate === item.id) resultList.append(candidateDetail(item));
       });
-      if (state.company) {
-        const detail = companyDetail(state.company);
-        detail.id = 'company-detail';
-        detail.tabIndex = -1;
-        target.append(detail);
-      }
       target.append(resultList);
       if (hits.length > state.searchLimit) {
         const more = node('button', 'Show 30 more leads', 'quiet-button');

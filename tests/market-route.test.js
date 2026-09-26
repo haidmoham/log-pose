@@ -563,7 +563,8 @@ test('a build refresh disables old timeline controls until new stops arrive', as
   };
   const dom = await page('/?view=data', null, false, { temporal });
   const { document } = dom.window;
-  document.querySelector('[data-view="topology"]').click();
+  dom.window.history.pushState(null, '', '/?view=topology');
+  dom.window.dispatchEvent(new dom.window.PopStateEvent('popstate'));
   await waitFor(() => timelineRequests === 2);
   assert.equal(document.querySelector('.temporal-controls').hidden, true);
   releaseRefresh();
@@ -614,45 +615,37 @@ test('leaving the temporal route stops playback and ignores a late frame paint',
     const result = marketFieldApi.handleMarketField(new URLSearchParams(params));
     return { status: result.status, body: result.body };
   };
-  const dom = await page('/?view=data', null, false, { temporal });
+  const dom = await page('/?view=topology', null, false, { temporal });
   const { document } = dom.window;
-  document.querySelector('[data-view="topology"]').click();
   await waitFor(() => dom.window.__marketFieldRequests.some(request => request.params.mode === 'frame'));
   document.querySelector('[data-view="data"]').click();
   await new Promise(resolve => setTimeout(resolve, 180));
   assert.equal(document.querySelector('.temporal-view-state'), null);
   assert(document.querySelector('.data-coverage'));
 
-  document.querySelector('[data-view="topology"]').click();
-  await waitFor(() => document.querySelector('.temporal-play'));
-  let clearedTimer = null;
-  dom.window.setInterval = () => 8675;
-  dom.window.clearInterval = timer => { clearedTimer = timer; };
-  document.querySelector('.temporal-play').click();
-  document.querySelector('[data-view="data"]').click();
-  assert.equal(clearedTimer, 8675);
   dom.window.close();
+  const playback = await page('/?view=topology', null, false, { temporal });
+  const playbackDocument = playback.window.document;
+  await waitFor(() => playbackDocument.querySelector('.temporal-play'));
+  let clearedTimer = null;
+  playback.window.setInterval = () => 8675;
+  playback.window.clearInterval = timer => { clearedTimer = timer; };
+  playbackDocument.querySelector('.temporal-play').click();
+  playbackDocument.querySelector('[data-view="data"]').click();
+  assert.equal(clearedTimer, 8675);
+  await new Promise(resolve => setTimeout(resolve, 180));
+  playback.window.close();
 });
 
-test('opening a claim map clears filters that would hide the selected claim', async () => {
-  const dom = await page('/?view=topology&topologyLayer=reviewed');
-  const { document, Event } = dom.window;
-  const status = document.querySelector('[aria-label="Filter claim status"]');
-  status.value = 'documented';
-  status.dispatchEvent(new Event('change', { bubbles: true }));
-  document.querySelector('[data-view="data"]').click();
-  document.querySelector('[aria-label="Record family"]').value = 'topology';
-  document.querySelector('[aria-label="Record family"]').dispatchEvent(new Event('change', { bubbles: true }));
-  const hypothesis = [...document.querySelectorAll('.data-result')].find(button =>
-    button.textContent.includes('hypothesis'));
-  hypothesis.click();
-  document.querySelector('.data-inspector button.text-button:last-child').click();
-  assert.equal(document.querySelector('[aria-label="Filter claim status"]').value, 'all');
-  assert.match(document.querySelector('.topology-claim-detail').textContent, /shared business driver/i);
-  const reopened = await page(dom.window.location.pathname + dom.window.location.search);
-  assert.match(reopened.window.document.querySelector('.topology-claim-detail').textContent,
-    /shared business driver/i);
-  reopened.window.close();
+test('legacy reviewed-map claim link opens its exact retained evidence with scope warning', async () => {
+  const claim = 'dbt-labs-announced-partnership-snowflake-2022';
+  const dom = await page(`/?view=topology&topologyLayer=reviewed&selectedClaim=${claim}`);
+  const { document } = dom.window;
+  await waitFor(() => document.querySelector('#data-inspector .data-inspector-body'));
+  assert.equal(new URL(dom.window.location.href).searchParams.get('dataRecord'), claim);
+  assert.match(document.querySelector('#view').textContent, /former snapshot, date, filters and page cursor are not applied/);
+  assert.match(document.querySelector('#data-inspector').textContent, /deepening their partnership/);
+  assert.equal(document.querySelector('.topology-map'), null);
   dom.window.close();
 });
 
@@ -727,34 +720,25 @@ test('a failed raw partition offers a working retry', async () => {
   dom.window.close();
 });
 
-test('filtered topology WebGL maps each matching claim and lets every shown edge open its evidence', async () => {
-  const dom = await page('/?view=topology&topologyLayer=reviewed', null, true);
-  const { document, Event } = dom.window;
-  document.querySelector('[aria-label="switch to 3d relationship map"]').click();
-  const status = document.querySelector('[aria-label="Filter claim status"]');
-  status.value = 'hypothesis';
-  status.dispatchEvent(new Event('change', { bubbles: true }));
-  await waitFor(() => document.querySelector('.topology-webgl-edge-button'));
-
-  const edges = [...document.querySelectorAll('.topology-webgl-edge-button')];
-  assert.equal(edges.length, 1);
-  assert.equal(edges[0].dataset.claimStatus, 'hypothesis');
-  const hypothesisVertexCount = dom.window.__mockWebglBufferUploads.at(-2);
-  assert(hypothesisVertexCount > 100,
-    'hypothesis draws separated dots instead of a continuous line');
-  assert.match(edges[0].getAttribute('aria-label'), /business driver.*hypothesis/i);
-  assert.match(document.querySelector('.topology-map-coverage').textContent, /Map shows 1 of 1 matching claims/);
-  edges[0].click();
-  await waitFor(() => document.querySelector('.topology-claim-detail'));
-  assert.match(document.querySelector('.topology-claim-detail').textContent,
-    /What remains unknown|shared business driver/i);
-  assert.equal(document.querySelector('.topology-webgl-edge-button').getAttribute('aria-pressed'), 'true');
-
-  status.value = 'documented';
-  status.dispatchEvent(new Event('change', { bubbles: true }));
-  await waitFor(() => document.querySelectorAll('.topology-webgl-edge-button').length === 4);
-  const documentedVertexCount = dom.window.__mockWebglBufferUploads.at(-2);
-  assert(documentedVertexCount > 0, 'documented claims draw as source-stated lines');
+test('compare navigation appears after a pin and empty direct compare offers a company action', async () => {
+  const dom = await page('/?view=compare');
+  const { document } = dom.window;
+  assert.match(document.querySelector('#view').textContent, /pin two or more companies/);
+  document.querySelector('#view button.quiet-button:last-child').click();
+  assert.equal(new URL(dom.window.location.href).searchParams.get('view'), 'overview');
+  assert.equal(document.querySelector('[data-view="compare"]').hidden, true);
+  document.querySelector('[data-pin]').click();
+  assert.equal(document.querySelector('[data-view="compare"]').hidden, false);
+  assert.equal(document.querySelector('#pin-count').textContent, '1');
+  document.querySelector('[data-view="compare"]').click();
+  assert.match(document.querySelector('#view').textContent, /missing evidence is shown as missing/);
+  document.querySelector('.compare-picker-disclosure').open = true;
+  const selectedPin = document.querySelector('.compare-picker-disclosure [aria-pressed="true"]');
+  assert(selectedPin);
+  selectedPin.click();
+  assert.match(document.querySelector('#view').textContent, /pin two or more companies/);
+  document.querySelector('#view button.quiet-button:last-child').click();
+  assert.equal(document.querySelector('[data-view="compare"]').hidden, true);
   dom.window.close();
 });
 

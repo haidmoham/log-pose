@@ -86,9 +86,49 @@ async function main() {
     const sourceRowId = detail.shared_observations[0].subject_rows[0].id;
     const sourceHash = detail.shared_observations[0].artifact_sha256;
     report.checks.push({ name: 'browser-api-build', passed: true, build_id: graph.build_id });
+
+    // The public root is the bounded atlas. Walk one real retained placement
+    // through focus and explanation so this smoke checks the primary journey.
+    const atlasNavigation = await page.goto(baseUrl.href, {
+      waitUntil: 'domcontentloaded', timeout: 30000
+    });
+    assert.equal(atlasNavigation.status(), 200, 'atlas root HTTP status');
+    await page.locator('#atlas-frame-label').waitFor({ state: 'visible', timeout: 30000 });
+    await page.locator('#atlas-regions').click();
+    await page.locator('.atlas-region').first().waitFor({ state: 'visible', timeout: 30000 });
+    await page.locator('.atlas-region').first().click();
+    await page.locator('.atlas-access summary').click();
+    await page.locator('.atlas-candidate-list button').first()
+      .waitFor({ state: 'visible', timeout: 30000 });
+    const focusButton = page.locator('.atlas-candidate-list button').first();
+    const focusId = await focusButton.getAttribute('data-candidate');
+    assert(focusId, 'atlas candidate list did not identify the selected candidate');
+    await focusButton.click();
+    await page.waitForFunction(candidateId =>
+      new URLSearchParams(location.search).get('candidate') === candidateId, focusId,
+    { timeout: 30000 });
+    const neighborButtons = page.locator(`.atlas-candidate-list button:not([data-candidate="${focusId}"])`);
+    await neighborButtons.first().waitFor({ state: 'visible', timeout: 30000 });
+    await neighborButtons.first().click();
+    await page.locator('#atlas-inspector .atlas-premise').first()
+      .waitFor({ state: 'visible', timeout: 30000 });
+    await page.locator('#atlas-inspector .atlas-premise-identifiers summary').first().click();
+    const atlasInspector = await page.locator('#atlas-inspector').innerText();
+    assert.match(atlasInspector, /exact shared placements · unreviewed co-listing/i,
+      'atlas must label inventory overlap as unreviewed co-listing');
+    assert.match(atlasInspector, /[a-f0-9]{64}/, 'atlas premise hash missing');
+    assert(await page.locator('#atlas-inspector .atlas-premise a[href*="view=data"]').count() >= 2,
+      'both retained source rows must be inspectable from the atlas');
+    assert.equal(await page.locator('#atlas-frame-label').getAttribute('data-frame-id'),
+      await page.locator('#atlas-inspector').getAttribute('data-frame-id'),
+      'atlas frame and exact-premise inspector must agree');
+    report.checks.push({ name: 'atlas-root-exact-evidence', passed: true,
+      frame_id: await page.locator('#atlas-frame-label').getAttribute('data-frame-id') });
+
     const deepLink = new URL('/', baseUrl);
     deepLink.search = new URLSearchParams({ view: 'topology', topologyLayer: 'field',
       fieldCandidate: candidate.id, fieldNeighbor: neighbor.id }).toString();
+    deepLink.pathname = '/index.html';
     const navigation = await page.goto(deepLink.href, { waitUntil: 'domcontentloaded', timeout: 30000 });
     assert.equal(navigation.status(), 200, 'deep link HTTP status');
     report.checks.push({ name: 'direct-deep-link', passed: true });
@@ -120,6 +160,7 @@ async function main() {
       candidate: '4d9ade2bfb2aa6cb4afb', neighbor: '0b53be52084e857862ac' }).toString();
     await page.goto(inventoryUrl.href, { waitUntil: 'domcontentloaded', timeout: 30000 });
     await page.locator('#atlas-inspector .atlas-premise').first().waitFor({ state: 'visible', timeout: 30000 });
+    await page.locator('#atlas-inspector .atlas-premise-identifiers summary').first().click();
     assert.equal(await page.locator('.constellation-node').count(), 101, 'top 100 must render 100 neighbors and the focus');
     assert.equal(await page.locator('.atlas-candidate-list button').count(), 100, 'candidate list must match top 100');
     assert.equal(await page.locator('#atlas-frame-label').getAttribute('data-frame-id'),
@@ -132,33 +173,62 @@ async function main() {
     const reviewedManifest = JSON.parse(execFileSync('git', ['show',
       `${commitSha}:api/data/atlas-reviewed/current.json`]));
     const reviewedUrl = new URL('/atlas.html', baseUrl);
-    reviewedUrl.search = new URLSearchParams({ layer: 'reviewed', entity: 'snowflake',
-      neighbor: 'dbt-labs', cutoff: '2022-02-24', build_id: reviewedManifest.build_id }).toString();
+    reviewedUrl.search = new URLSearchParams({ mode: 'focus', candidate: '4d9ade2bfb2aa6cb4afb',
+      neighbor: '0b53be52084e857862ac', source: 'cncf', year: '2024',
+      reviewed_cutoff: '2025-02-20', reviewed_basis: 'documented',
+      reviewed_build_id: reviewedManifest.build_id }).toString();
     await page.goto(reviewedUrl.href, { waitUntil: 'domcontentloaded', timeout: 30000 });
-    await page.locator('#atlas-inspector .atlas-claim').nth(2).waitFor({ state: 'visible', timeout: 30000 });
+    await page.locator('#atlas-inspector .atlas-claim').first().waitFor({ state: 'visible', timeout: 30000 });
+    await page.locator('#atlas-inspector .atlas-claim-audit summary').click();
     const reviewedInspector = await page.locator('#atlas-inspector').innerText();
-    assert(reviewedInspector.includes('announced partnership with'), 'partnership claim missing');
-    assert(reviewedInspector.includes('invested in'), 'financing claim missing');
-    assert(reviewedInspector.includes('integrates with'), 'accepted integration claim missing');
-    assert(reviewedInspector.includes('64694c906f3c8be8b3fd90d88725fe3598a896533adf3123a24dc684610ffece'), 'reviewed source hash missing');
-    assert(reviewedInspector.includes('no reviewed inventory candidate mapping'), 'external entity label missing');
+    assert(reviewedInspector.includes('named competitor of'), 'typed pair claim missing');
+    assert(reviewedInspector.includes('published 2025-02-20'), 'source publication date missing');
+    assert(reviewedInspector.includes('711ee14f238f3e12597a03d889b7d8c29785eee865e1cecd8e20e0578a67facf'), 'reviewed source hash missing');
+    assert(!reviewedInspector.includes('announced partnership with'), 'unrelated pair claim leaked into inspector');
     assert.equal(await page.locator('#atlas-frame-label').getAttribute('data-frame-id'),
-      await page.locator('#atlas-inspector').getAttribute('data-frame-id'), 'reviewed graph and inspector frame');
-    assert.equal(await page.locator('.constellation-node').count(), 2, 'reviewed graph node count');
-    report.checks.push({ name: 'reviewed-claims-deep-link', passed: true, build_id: reviewedManifest.build_id,
-      claims: 3, clock: 'source_publication', review_lens: 'current_accepted_at_build' });
-    await verifyMissingBuildRecovery(page, reviewedUrl, 'reviewed', report);
+      await page.locator('#atlas-inspector').getAttribute('data-frame-id'), 'inventory graph and contextual claims frame');
+    assert.equal(await page.locator('.constellation-map').count(), 1, 'only one atlas graph should render');
+    report.checks.push({ name: 'contextual-reviewed-pair', passed: true, build_id: reviewedManifest.build_id,
+      claims: 1, clock: 'source_publication', review_lens: 'current_accepted_at_build' });
+    const missingReviewed = new URL(reviewedUrl);
+    missingReviewed.searchParams.set('reviewed_build_id', '0'.repeat(64));
+    await page.goto(missingReviewed.href, { waitUntil: 'domcontentloaded', timeout: 30000 });
+    await page.locator('.atlas-relationship-body button').waitFor({ state: 'visible', timeout: 30000 });
+    assert.match(await page.locator('.atlas-relationship-body').innerText(), /not hosted/);
+    assert.equal(await page.locator('.atlas-claim').count(), 0, 'unavailable reviewed build must not show a claim');
+    assert(await page.locator('.constellation-node').count() > 0, 'independent inventory frame should remain usable');
+    report.checks.push({ name: 'independent-reviewed-build-unavailable', passed: true });
+    await page.goto(reviewedUrl.href, { waitUntil: 'domcontentloaded', timeout: 30000 });
+    await page.locator('#atlas-inspector .atlas-claim').first().waitFor({ state: 'visible', timeout: 30000 });
     await page.locator('#atlas-inspector a[href*="dataFamily=topology"]').first().click();
     await page.waitForFunction(() => {
       const params = new URLSearchParams(window.location.search);
       const body = document.querySelector('#data-inspector .data-inspector-body');
-      return params.get('dataRecord') === 'dbt-labs-announced-partnership-snowflake-2022'
+      return params.get('dataRecord') === 'datadog-named-competitor-elastic-log-management-2024'
         && body?.textContent.includes('review history')
-        && body?.querySelector('a[href*="dbt-labs-raises-222m"]');
+        && body?.textContent.includes('log management');
     }, null, { timeout: 30000 });
     report.checks.push({ name: 'reviewed-claim-source-trail', passed: true });
+    const legacyClaim = new URL('/atlas.html', baseUrl);
+    legacyClaim.search = new URLSearchParams({ layer: 'reviewed', mode: 'explain',
+      entity: 'snowflake', claim: 'dbt-labs-announced-partnership-snowflake-2022',
+      cutoff: '2022-02-24', basis: 'documented', build_id: reviewedManifest.build_id }).toString();
+    await page.goto(legacyClaim.href, { waitUntil: 'domcontentloaded', timeout: 30000 });
+    await page.waitForFunction(() => new URLSearchParams(location.search).get('dataRecord')
+      === 'dbt-labs-announced-partnership-snowflake-2022'
+      && document.querySelector('#data-inspector .data-inspector-body')?.textContent.includes('dbt Labs'),
+    null, { timeout: 30000 });
+    assert.equal(new URL(page.url()).pathname, '/index.html', 'legacy exact claim must open retained record');
+    report.checks.push({ name: 'legacy-exact-claim-route', passed: true,
+      claim: 'dbt-labs-announced-partnership-snowflake-2022' });
+    legacyClaim.searchParams.set('build_id', '0'.repeat(64));
+    await page.goto(legacyClaim.href, { waitUntil: 'domcontentloaded', timeout: 30000 });
+    await page.locator('#atlas-retry').waitFor({ state: 'visible', timeout: 30000 });
+    assert.equal(new URL(page.url()).pathname, '/atlas.html', 'unavailable reviewed build must not redirect to current claim');
+    assert.match(await page.locator('#atlas-status').innerText(), /not hosted/);
+    report.checks.push({ name: 'legacy-exact-claim-build-unavailable', passed: true });
     await verifyAccessibleAtlas(browser, inventoryUrl, 'inventory', report);
-    await verifyAccessibleAtlas(browser, reviewedUrl, 'reviewed', report);
+    await verifyAccessibleAtlas(browser, reviewedUrl, 'contextual', report);
     assert.deepEqual(report.page_errors, [], 'uncaught browser errors');
     report.status = 'passed';
   } catch (error) {

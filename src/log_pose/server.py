@@ -15,13 +15,14 @@ WEB_ROOT = Path(__file__).parents[2] / "web"
 STATIC_SUFFIXES = {".html", ".js", ".css", ".json", ".svg", ".woff2", ".txt", ".ico"}
 
 
-def static_asset(path, web_root=WEB_ROOT):
+def static_asset(path, web_root=WEB_ROOT, query=""):
     """Serve the same contained console as the static host, within its web root."""
     decoded = unquote(path)
     if "\x00" in decoded or decoded.startswith("/api/"):
         return None
     root = web_root.resolve()
-    asset = (root / ("index.html" if decoded == "/" else decoded.lstrip("/"))).resolve()
+    root_document = "index.html" if "view" in parse_qs(query) else "atlas.html"
+    asset = (root / (root_document if decoded == "/" else decoded.lstrip("/"))).resolve()
     if not asset.is_relative_to(root) or asset.suffix not in STATIC_SUFFIXES or not asset.is_file():
         return None
     content_type = mimetypes.guess_type(asset.name)[0] or "application/octet-stream"
@@ -34,7 +35,7 @@ def serve(port):
     class Handler(BaseHTTPRequestHandler):
         def do_GET(self):
             path = urlparse(self.path)
-            static = static_asset(path.path)
+            static = static_asset(path.path, query=path.query)
             if static:
                 asset, content_type = static
                 self.respond_bytes(200, asset.read_bytes(), content_type)

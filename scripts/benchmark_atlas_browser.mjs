@@ -95,7 +95,7 @@ async function cdpProfile(page, profile) {
 }
 
 async function tracker(context, page, cdp, counters = null) {
-  const state = { attempts: [], records: [], failures: [], pending: new Set(), encoded: new Map() };
+  const state = { attempts: [], records: [], failures: [], cancellations: [], pending: new Set(), encoded: new Map() };
   const requestUrls = new Map();
   cdp.on('Network.loadingFinished', event => {
     const url = requestUrls.get(event.requestId);
@@ -121,7 +121,13 @@ async function tracker(context, page, cdp, counters = null) {
     }
     return route.continue();
   });
-  page.on('requestfailed', request => state.failures.push({ url: request.url(), error: request.failure()?.errorText || 'request_failed' }));
+  page.on('requestfailed', request => {
+    const failure = { url: request.url(), error: request.failure()?.errorText || 'request_failed' };
+    const url = new URL(request.url());
+    if (failure.error === 'net::ERR_ABORTED' && url.pathname === '/api/atlas'
+        && url.searchParams.get('layer') === 'reviewed') state.cancellations.push(failure);
+    else state.failures.push(failure);
+  });
   page.on('response', response => {
     const pending = (async () => {
       const url = new URL(response.url());
@@ -146,7 +152,8 @@ async function ready(page, layer, expectedCount) {
     const inspector = document.querySelector('#atlas-inspector')?.dataset.frameId;
     const nodes = document.querySelectorAll('.constellation-node').length;
     return scene?.dataset.frameReadyMs && frame && frame === inspector && !document.querySelector('#atlas-status')?.textContent
-      && nodes >= expectedCount && (layer !== 'inventory' || scene.dataset.graphReadyMs);
+      && nodes >= expectedCount && scene.dataset.graphReadyMs
+      && (layer !== 'contextual' || document.querySelector('.atlas-claim'));
   }, { layer, expectedCount }, { timeout: 15000 });
 }
 
@@ -229,21 +236,20 @@ async function measureOne(browser, origin, profile, workload, trial, counters) {
       decodedBytes: initial.resources.reduce((sum, item) => sum + item.decodedBytes, initial.navigation?.decodedBytes || 0),
       includesNavigation: Boolean(initial.navigation) } };
   const beforeFrame = initial.frameId;
-  const updateStarted = await page.evaluate(({ next, layer }) => {
-    const input = document.querySelector(layer === 'reviewed' ? '#atlas-cutoff' : '#atlas-top-k');
-    input.value = layer === 'reviewed' ? '2025-02-20' : String(next);
+  const updateStarted = await page.evaluate(next => {
+    const input = document.querySelector('#atlas-top-k');
+    input.value = String(next);
     input.dispatchEvent(new Event('change', { bubbles: true }));
     return performance.now();
-  }, { next: workload.updateTopK, layer: workload.layer });
-  try { await page.waitForFunction(({ beforeFrame, expectedNodes, layer }) => {
+  }, workload.updateTopK);
+  try { await page.waitForFunction(({ beforeFrame, expectedNodes }) => {
     const label = document.querySelector('#atlas-frame-label');
     const inspector = document.querySelector('#atlas-inspector');
     return label?.dataset.frameId && label.dataset.frameId === inspector?.dataset.frameId
       && document.querySelectorAll('.constellation-node').length >= expectedNodes
       && Number(document.querySelector('#atlas-scene').dataset.frameReadyMs) >= 0
-      && (label.dataset.frameId !== beforeFrame || (layer === 'inventory'
-        && label.textContent.includes(`top ${expectedNodes - 1}`)));
-  }, { beforeFrame, expectedNodes: workload.updateMinimumNodes, layer: workload.layer }, { timeout: 15000 }); }
+      && (label.dataset.frameId !== beforeFrame || label.textContent.includes(`top ${expectedNodes - 1}`));
+  }, { beforeFrame, expectedNodes: workload.updateMinimumNodes }, { timeout: 15000 }); }
   catch (error) {
     const state = await page.evaluate(() => ({ status: document.querySelector('#atlas-status')?.textContent,
       label: document.querySelector('#atlas-frame-label')?.textContent,
@@ -269,7 +275,8 @@ async function measureOne(browser, origin, profile, workload, trial, counters) {
     initial, frameAcceptanceMs, acceptedFrameId: finalFrame, camera,
     transport: { cache: 'disabled', initial: initialTransport,
       compression: [...new Set(requests.records.map(item => item.contentEncoding).filter(Boolean))],
-      apiResponses: api, totalHttpRequests: requests.attempts.length,
+      apiResponses: api, canceledReviewedRequests: requests.cancellations.length,
+      totalHttpRequests: requests.attempts.length,
       totalDecodedBytes: requests.records.reduce((sum, item) => sum + item.decodedBytes, 0),
       resourceTransferBytes: finalResourceTiming.reduce((sum, item) => sum + item.transferBytes, 0),
       missingResponseTransferBytes: requests.records.filter(item => item.transferBytes === null).length,
@@ -319,19 +326,18 @@ async function soak(browser, origin, paths, durationMs, serverPid, browserPid, c
     await page.locator('.atlas-candidate-list button').first().click();
     await page.locator('.atlas-premise').first().waitFor({ timeout: 10000 });
     await requests.settle();
-    await page.goto(new URL(paths.reviewed, origin).href, { waitUntil: 'domcontentloaded' });
-    await ready(page, 'reviewed', 2);
-    const reviewedFrame = await page.locator('#atlas-frame-label').getAttribute('data-frame-id');
-    await page.locator('#atlas-cutoff').fill('2025-02-20');
-    await page.locator('#atlas-cutoff').dispatchEvent('change');
+    await page.goto(new URL(paths.contextual, origin).href, { waitUntil: 'domcontentloaded' });
+    await ready(page, 'contextual', 25);
+    const contextualFrame = await page.locator('#atlas-frame-label').getAttribute('data-frame-id');
+    await page.locator('#atlas-top-k').fill('30');
+    await page.locator('#atlas-top-k').dispatchEvent('change');
     await page.waitForFunction(previous => {
       const label = document.querySelector('#atlas-frame-label');
       return label?.dataset.frameId && label.dataset.frameId !== previous
         && label.dataset.frameId === document.querySelector('#atlas-inspector')?.dataset.frameId
         && !document.querySelector('#atlas-status')?.textContent;
-    }, reviewedFrame);
+    }, contextualFrame);
     await requests.settle();
-    await page.locator('.atlas-candidate-list button').first().click();
     await page.locator('.atlas-claim').first().waitFor({ timeout: 10000 });
     await requests.settle();
     await page.goto(new URL('/index.html', origin).href, { waitUntil: 'networkidle' });
@@ -368,6 +374,7 @@ async function soak(browser, origin, paths, durationMs, serverPid, browserPid, c
   const result = { durationMs: Date.now() - started, cycles: cycle, samples,
     requests: { api: requests.attempts.filter(item => item.api).length, total: requests.attempts.length,
       completed: requests.records.length, failures: requests.failures,
+      canceledReviewedRequests: requests.cancellations.length,
       decodedBytes: requests.records.reduce((sum, item) => sum + item.decodedBytes, 0),
       knownResponseTransferBytes: requests.records.filter(item => item.transferBytes !== null)
         .reduce((sum, item) => sum + item.transferBytes, 0),
@@ -397,7 +404,7 @@ async function main() {
   const server = spawn(process.execPath, ['scripts/market_field_dev.js'], { cwd: root,
     env: { ...process.env, PORT: origin.port }, stdio: ['ignore', 'pipe', 'pipe'] });
   const report = { schemaVersion: '2.0', status: 'failed', startedAt: new Date().toISOString(),
-    question: 'Do bounded real S0 inventory and reviewed frames meet interaction budgets without retained browser-state growth?',
+    question: 'Do bounded inventory frames and contextual reviewed claim reads meet interaction budgets without retained browser-state growth?',
     commit, runtimeState: { dirtyPatchSha256: crypto.createHash('sha256').update(dirtyPatch).digest('hex'),
       untracked, harnessSha256: crypto.createHash('sha256').update(harnessBytes).digest('hex') },
     budgets: BUDGETS, limits: LIMITS, environment: { platform: process.platform,
@@ -429,7 +436,7 @@ async function main() {
     const artifact = JSON.parse(await fs.readFile(path.join(root, `api/data/atlas/${inventory.build_id}.json`))).counts
       ? 'artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8' : '';
     const base = `/atlas.html?mode=focus&build_id=${inventory.build_id}&source=cncf&year=2024&temporal_mode=snapshot&artifact=${artifact}&candidate=4d9ade2bfb2aa6cb4afb`;
-    const reviewedPath = `/atlas.html?layer=reviewed&mode=focus&build_id=${reviewed.build_id}&clock=source_publication&temporal_mode=published_through&cutoff=2022-02-24&basis=documented&predicate=&direction=both&entity=snowflake&top_k=60`;
+    const contextualPath = `${base}&top_k=24&neighbor=0b53be52084e857862ac&reviewed_build_id=${reviewed.build_id}&reviewed_basis=documented`;
     report.builds = { inventory: inventory.build_id, reviewed: reviewed.build_id };
     report.environment.browser = browserVersion;
     report.environment.gpu = {
@@ -446,7 +453,7 @@ async function main() {
     const workloads = [
       { name: 'inventory-top60', layer: 'inventory', path: `${base}&top_k=60`, minimumNodes: 61, updateTopK: 100, updateMinimumNodes: 101 },
       { name: 'inventory-top100', layer: 'inventory', path: `${base}&top_k=100`, minimumNodes: 101, updateTopK: 60, updateMinimumNodes: 61 },
-      { name: 'reviewed', layer: 'reviewed', path: reviewedPath, minimumNodes: 2, updateTopK: 100, updateMinimumNodes: 2 }
+      { name: 'contextual-claim', layer: 'contextual', path: contextualPath, minimumNodes: 25, updateTopK: 30, updateMinimumNodes: 31 }
     ];
     const totalCounter = { value: 0, cap: LIMITS.totalHttp };
     const workloadCounters = Object.fromEntries(workloads.map(workload => [workload.name,
@@ -469,7 +476,7 @@ async function main() {
     assert(Object.values(perWorkload).every(count => count <= LIMITS.apiPerWorkload));
     report.requestCounts = perWorkload;
     if (soakMinutes) report.soak = await soak(browser, origin,
-      { inventory: `${base}&top_k=60`, reviewed: reviewedPath }, soakMinutes * 60 * 1000, server.pid, process.pid,
+      { inventory: `${base}&top_k=60`, contextual: contextualPath }, soakMinutes * 60 * 1000, server.pid, process.pid,
       { total: totalCounter, api: { value: 0, cap: LIMITS.soakApi } });
     const evaluations = report.summaries.map(summary => {
       const budget = BUDGETS[summary.profile];

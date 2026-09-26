@@ -3,8 +3,9 @@
 
 const fs = require('node:fs');
 const path = require('node:path');
-const crypto = require('node:crypto');
 const { DatabaseSync } = require('node:sqlite');
+const { AtlasError, digest, fileDigest, parameterValue, positiveInteger,
+  encodeCursor, decodeCursor, stablePosition } = require('./atlas-protocol.js');
 
 const LIMITS = Object.freeze({ response_bytes: 1024 * 1024, page: 100,
   memberships: 200000, placements: 4096, candidates: 20000,
@@ -18,47 +19,12 @@ const NOTES = [
   'identity keys and display positions are a present-day lens; system-known replay is unsupported.'
 ];
 
-class AtlasError extends Error {
-  constructor(status, code, message) {
-    super(message);
-    this.status = status;
-    this.code = code;
-  }
-}
-
-function digest(value) {
-  return crypto.createHash('sha256').update(JSON.stringify(value)).digest('hex');
-}
-
-function fileDigest(filename) {
-  const hash = crypto.createHash('sha256');
-  const buffer = Buffer.alloc(65536);
-  const descriptor = fs.openSync(filename, 'r');
-  try {
-    let length;
-    while ((length = fs.readSync(descriptor, buffer, 0, buffer.length, null)) > 0) {
-      hash.update(buffer.subarray(0, length));
-    }
-    return hash.digest('hex');
-  } finally { fs.closeSync(descriptor); }
-}
-
 function parameter(params, name, fallback = '') {
-  const values = params.getAll(name);
-  if (values.length > 1) throw new AtlasError(400, 'invalid_request', `repeat parameter: ${name}`);
-  const value = values.length ? values[0] : fallback;
-  if (value.length > (name === 'cursor' ? 2048 : 240)) {
-    throw new AtlasError(400, 'invalid_request', `${name} exceeds its length budget`);
-  }
-  return value;
+  return parameterValue(params, name, fallback, name === 'cursor' ? 2048 : 240);
 }
 
 function integer(params, name, fallback, maximum) {
-  const value = parameter(params, name, String(fallback));
-  if (!/^[1-9]\d*$/.test(value) || Number(value) > maximum) {
-    throw new AtlasError(400, 'invalid_request', `invalid ${name}`);
-  }
-  return Number(value);
+  return positiveInteger(parameter(params, name, String(fallback)), name, maximum);
 }
 
 function selectors(params) {
@@ -96,24 +62,14 @@ function budget() {
   };
 }
 
-function encodeCursor(binding, position) {
-  return Buffer.from(JSON.stringify({ binding, position })).toString('base64url');
-}
-
 function cursorPosition(params, binding, fallback) {
   const value = parameter(params, 'cursor');
   if (!value) return fallback;
-  try {
-    const parsed = JSON.parse(Buffer.from(value, 'base64url').toString('utf8'));
-    if (parsed.binding !== binding) throw new Error('mismatch');
-    if (Number.isInteger(fallback)) {
-      if (!Number.isSafeInteger(parsed.position) || parsed.position < 0
-          || parsed.position > LIMITS.candidates) throw new Error('invalid position');
-    } else if (!/^[a-zA-Z0-9._:-]{1,160}$/.test(parsed.position)) throw new Error('invalid position');
-    return parsed.position;
-  } catch {
-    throw new AtlasError(409, 'cursor_mismatch', 'the cursor belongs to another build, filter or page size');
-  }
+  const validPosition = Number.isInteger(fallback)
+    ? position => Number.isSafeInteger(position) && position >= 0 && position <= LIMITS.candidates
+    : position => /^[a-zA-Z0-9._:-]{1,160}$/.test(position);
+  return decodeCursor(value, binding, validPosition,
+    'the cursor belongs to another build, filter or page size');
 }
 
 function descriptor(row) {
@@ -124,8 +80,7 @@ function descriptor(row) {
 }
 
 function position(id) {
-  const hash = crypto.createHash('sha256').update(`${LAYOUT_VERSION}:${id}`).digest();
-  return { x: hash.readUInt32BE(0) / 0xffffffff, y: hash.readUInt32BE(4) / 0xffffffff };
+  return stablePosition(LAYOUT_VERSION, id);
 }
 
 function explanationParameters(params) {
@@ -302,7 +257,7 @@ function createAtlasHandler(root = path.join(__dirname, 'data/atlas')) {
     artifacts: rows.slice(0, limit).map(row => ({ ...JSON.parse(row.detail_json), artifact_id: row.id })),
     next_cursor: rows.length > limit ? encodeCursor(binding, rows[limit - 1].id) : null,
     layers: [{ id: 'inventory', status: 'unreviewed_inventory_overlap', clock: 'inventory_year' },
-      { id: 'reviewed_claims', status: 'separate_clock', href: '/?view=topology&topologyLayer=reviewed' }] };
+      { id: 'reviewed_claims', status: 'separate_clock', href: '/index.html?view=data&dataFamily=topology' }] };
   }
 
   function focus(store, params, selection, work) {

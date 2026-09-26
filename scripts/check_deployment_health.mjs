@@ -6,14 +6,16 @@ import { writeFileSync } from 'node:fs';
 const PUBLIC_HOST = 'logpose.mhaider.dev';
 const PUBLIC_ALIAS = 'log-pose-five.vercel.app';
 const ASSETS = [
-  ['html', '/', 'web/index.html'],
+  ['html', '/', 'web/atlas.html'],
+  ['console-html', '/index.html', 'web/index.html'],
   ['app', '/app.js', 'web/app.js'],
   ['field-view', '/discovery-topology-view.js', 'web/discovery-topology-view.js'],
   ['dashboard', '/dashboard.json', 'web/dashboard.json'],
   ['catalog', '/data/index.json', 'web/data/index.json'],
   ['atlas-html', '/atlas.html', 'web/atlas.html'],
   ['atlas-view', '/atlas-view.js', 'web/atlas-view.js'],
-  ['atlas-reviewed-view', '/atlas-reviewed-view.js', 'web/atlas-reviewed-view.js'],
+  ['atlas-relationships', '/atlas-relationships.js', 'web/atlas-relationships.js'],
+  ['atlas-client', '/atlas-client.js', 'web/atlas-client.js'],
   ['atlas-model', '/atlas-model.js', 'web/atlas-model.js'],
   ['atlas-style', '/atlas.css', 'web/atlas.css'],
   ['temporal-graph', '/temporal-graph.js', 'web/temporal-graph.js'],
@@ -84,13 +86,13 @@ export async function verifySite(baseUrl, expected, fetchImpl = fetch) {
     }
     return { sha256: actual, bytes: bytes.length };
   })));
-  const deepLink = `/?view=topology&topologyLayer=field&fieldCandidate=${expected.candidate_id}`
+  const deepLink = `/index.html?view=topology&topologyLayer=field&fieldCandidate=${expected.candidate_id}`
     + `&fieldNeighbor=${expected.neighbor_id}`;
   await check('direct-deep-link', async () => {
     const bytes = await readResponse(baseUrl, deepLink, fetchImpl);
     const actual = sha256(bytes);
-    const html = expected.assets.find(asset => asset.name === 'html');
-    if (actual !== html.sha256) throw new Error('deep link serves different HTML from committed root');
+    const html = expected.assets.find(asset => asset.name === 'console-html');
+    if (actual !== html.sha256) throw new Error('console deep link does not serve the committed console HTML');
     return { sha256: actual };
   });
 

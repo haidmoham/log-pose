@@ -26,6 +26,14 @@ async function verifyAccessibleAtlas(browser, url, layer, report) {
   });
   try {
     await page.goto(url.href, { waitUntil: 'domcontentloaded', timeout: 30000 });
+    await page.locator('.atlas-candidate-list button').first().waitFor({ state: 'attached', timeout: 30000 });
+    if (layer === 'contextual') {
+      await page.locator('#atlas-inspector .atlas-claim').first().waitFor({ state: 'visible', timeout: 30000 });
+      assert(await page.locator('#atlas-inspector .atlas-claim a[href*="dataFamily=topology"]').count() > 0,
+        'a selected mapped pair needs a keyboard reachable exact claim trail');
+    }
+    await tabTo(page, '.atlas-access summary');
+    await page.keyboard.press('Enter');
     await page.locator('.atlas-candidate-list button').first().waitFor({ state: 'visible', timeout: 30000 });
     const capabilities = await page.evaluate(() => ({
       reduced_motion: matchMedia('(prefers-reduced-motion: reduce)').matches,
@@ -51,13 +59,13 @@ async function verifyAccessibleAtlas(browser, url, layer, report) {
     }));
     assert(focusStyle.visible && focusStyle.width >= 2, 'keyboard selection needs a visible focus indicator');
     await page.keyboard.press('Enter');
-    const evidenceSelector = layer === 'reviewed' ? '.atlas-claim' : '.atlas-premise';
+    const evidenceSelector = '.atlas-premise';
     await page.locator(`#atlas-inspector ${evidenceSelector}`).first().waitFor({ state: 'visible' });
     assert(await page.locator('.atlas-candidate-list button:first-child')
       .evaluate(element => element === document.activeElement), 'inspection must preserve list focus');
     assert.equal(await page.locator('#atlas-inspector').getAttribute('data-frame-id'), frame);
 
-    const stepControl = layer === 'reviewed' ? '#atlas-next' : '#atlas-previous';
+    const stepControl = '#atlas-previous';
     await tabTo(page, stepControl, 'Shift+Tab');
     await page.keyboard.press('Enter');
     await page.waitForFunction(previous => {
