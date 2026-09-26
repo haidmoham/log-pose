@@ -81,17 +81,18 @@ async function main() {
     reviewedUrl.search = new URLSearchParams({ layer: 'reviewed', entity: 'snowflake',
       neighbor: 'dbt-labs', cutoff: '2022-02-24', build_id: reviewedManifest.build_id }).toString();
     await page.goto(reviewedUrl.href, { waitUntil: 'domcontentloaded', timeout: 30000 });
-    await page.locator('#atlas-inspector .atlas-claim').nth(1).waitFor({ state: 'visible', timeout: 30000 });
+    await page.locator('#atlas-inspector .atlas-claim').nth(2).waitFor({ state: 'visible', timeout: 30000 });
     const reviewedInspector = await page.locator('#atlas-inspector').innerText();
     assert(reviewedInspector.includes('announced partnership with'), 'partnership claim missing');
     assert(reviewedInspector.includes('invested in'), 'financing claim missing');
+    assert(reviewedInspector.includes('integrates with'), 'accepted integration claim missing');
     assert(reviewedInspector.includes('64694c906f3c8be8b3fd90d88725fe3598a896533adf3123a24dc684610ffece'), 'reviewed source hash missing');
     assert(reviewedInspector.includes('no reviewed inventory candidate mapping'), 'external entity label missing');
     assert.equal(await page.locator('#atlas-frame-label').getAttribute('data-frame-id'),
       await page.locator('#atlas-inspector').getAttribute('data-frame-id'), 'reviewed graph and inspector frame');
     assert.equal(await page.locator('.constellation-node').count(), 2, 'reviewed graph node count');
     report.checks.push({ name: 'reviewed-claims-deep-link', passed: true, build_id: reviewedManifest.build_id,
-      claims: 2, clock: 'source_publication', review_lens: 'current_accepted_at_build' });
+      claims: 3, clock: 'source_publication', review_lens: 'current_accepted_at_build' });
     await page.locator('#atlas-inspector a[href*="dataFamily=topology"]').first().click();
     await page.waitForFunction(() => {
       const params = new URLSearchParams(window.location.search);

@@ -13,8 +13,8 @@ ROOT = Path(__file__).parents[1]
 
 def test_real_reviewed_snapshot_preserves_exact_evidence_and_identity_links(tmp_path):
     manifest = build_atlas_reviewed(ROOT, tmp_path)
-    assert manifest["counts"] == {"entities": 4, "candidate_links": 3, "claims": 4,
-                                  "sources": 5, "reviews": 4}
+    assert manifest["counts"] == {"entities": 4, "candidate_links": 3, "claims": 5,
+                                  "sources": 6, "reviews": 5}
     assert manifest["review_lens"] == "current_accepted_at_build"
     database = sqlite3.connect(tmp_path / manifest["database"])
     try:
@@ -27,6 +27,10 @@ def test_real_reviewed_snapshot_preserves_exact_evidence_and_identity_links(tmp_
         assert claim["database_id"] == "seed-claim:datadog-named-competitor-elastic-log-management-2024:929d80cd58d5"
         assert claim["sources"][0]["artifact_sha256"] == "711ee14f238f3e12597a03d889b7d8c29785eee865e1cecd8e20e0578a67facf"
         assert claim["review"]["id"] == 1
+        integration = json.loads(database.execute("SELECT detail_json FROM claim WHERE id=?", (
+            "proposal:dbt-labs-integrates-with-snowflake-products:20260926",)).fetchone()[0])
+        assert integration["predicate"] == "integrates_with"
+        assert integration["valid_from"] is None and integration["valid_to"] is None
     finally:
         database.close()
     assert check_current(tmp_path)["build_id"] == manifest["build_id"]

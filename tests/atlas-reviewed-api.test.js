@@ -19,9 +19,10 @@ test('discover reports the independently versioned accepted lens', () => {
   const response = request('mode=discover');
   assert.equal(response.status, 200);
   assert.equal(response.body.review_lens, 'current_accepted_at_build');
-  assert.equal(response.body.counts.claims, 4);
+  assert.equal(response.body.counts.claims, 5);
   assert.deepEqual(response.body.predicates.map(row => row.id),
-    ['announced_partnership_with', 'invested_in', 'named_competitor_of', 'shared_exposure_hypothesis']);
+    ['announced_partnership_with', 'integrates_with', 'invested_in',
+      'named_competitor_of', 'shared_exposure_hypothesis']);
   assert.equal(response.body.predicates.at(-1).count, 0);
   assert.equal(response.body.predicates.at(-1).total_count, 1);
 });
@@ -47,11 +48,20 @@ test('explain retains multiple typed claims, direction, reviews, and external id
   assert.equal(response.status, 200);
   assert.equal(response.body.neighbor.target_kind, 'reviewed_external_entity');
   assert.deepEqual(response.body.claims.map(claim => claim.predicate),
-    ['announced_partnership_with', 'invested_in']);
-  assert.deepEqual(response.body.claims.map(claim => claim.direction), ['symmetric', 'subject_to_object']);
+    ['announced_partnership_with', 'integrates_with', 'invested_in']);
+  assert.deepEqual(response.body.claims.map(claim => claim.direction),
+    ['symmetric', 'subject_to_object', 'subject_to_object']);
   assert.ok(response.body.claims.every(claim => claim.sources[0].artifact_sha256 && claim.review_history.length === 1));
   assert.equal(response.body.frame_id,
     request('mode=focus&entity=snowflake&cutoff=2022-02-24').body.frame_id);
+});
+
+test('the retained old reviewed build keeps the two-claim snowflake dbt frame', () => {
+  const build = 'bb773ae69b9991bed00afcf39948e66660eb4d5d51b8037be174ef273d30e7e7';
+  const response = request(`mode=explain&entity=snowflake&neighbor=dbt-labs&cutoff=2022-02-24&build_id=${build}`);
+  assert.equal(response.status, 200);
+  assert.deepEqual(response.body.claims.map(claim => claim.predicate),
+    ['announced_partnership_with', 'invested_in']);
 });
 
 test('identity mismatch, unsupported clocks and unknown candidates fail explicitly', () => {

@@ -1,0 +1,60 @@
+{
+  "schema_version": "topology-reconstruction-receipt-v1",
+  "status": "scoped_reconstruction_complete_not_published",
+  "database": "topology_reconstruction_final",
+  "socket": "private Unix socket; path omitted from public deployment contract",
+  "batch_id": "reconstruction:3dc132fb9cd81261",
+  "projection_sha256": "3dc132fb9cd81261c1a1e17cfb52745d21bfedf71565e9b9b9b67b338f80980e",
+  "reconstructed_at": "2026-09-26T12:58:40.610087-04:00",
+  "counts": {
+    "topology_sources": 3,
+    "topology_entities": 4,
+    "topology_candidates": 5,
+    "topology_candidate_evidence": 1,
+    "topology_reviews": 5,
+    "topology_reconstruction_records": 18
+  },
+  "unknown_arrival_records": 9,
+  "dump": {
+    "path": "/home/haidm/.cache/log-pose-evidence-recovery-20260926/topology-reconstruction-final.dump",
+    "sha256": "34a1f3e5853e55b97aabfb17d3ffcac353ceede7bdff8f948595ea1ad08fa493",
+    "bytes": 1284078
+  },
+  "public_candidate": {
+    "catalog_build_id": "7c9b1952f7c0f9c962251c77a57ad4e093a131338bf35fac1b935dbd30f33802",
+    "reviewed_build_id": "710ab7d36a1cca9fc0f55b0c18ba42b963245268f4d614e0089fea2f6cde91bc",
+    "files": {
+      "web/dashboard.json": {
+        "sha256": "43563ad475ae64ce0473879b7cbdbdaedda7e7156a4feae62b13aed83a50159d",
+        "bytes": 221333
+      },
+      "web/data/index.json": {
+        "sha256": "2ea1e81b82ce5c26b0806de3a34700c34979f82060e34a51f8cad1324df13279",
+        "bytes": 231712
+      },
+      "api/data/atlas-reviewed/current.json": {
+        "sha256": "3642834329e5b8c738df351437a50eaf6a5d51844f61c4168c8b71f7d06c60e3",
+        "bytes": 1321
+      },
+      "api/data/atlas-reviewed/710ab7d36a1cca9fc0f55b0c18ba42b963245268f4d614e0089fea2f6cde91bc.sqlite": {
+        "sha256": "aaec2f2ea3d18440c9d78dd7324ffbd9c9eaf2cb4805bee8029b7d934a3a8d5d",
+        "bytes": 98304
+      },
+      "api/data/atlas-reviewed/710ab7d36a1cca9fc0f55b0c18ba42b963245268f4d614e0089fea2f6cde91bc.json": {
+        "sha256": "3642834329e5b8c738df351437a50eaf6a5d51844f61c4168c8b71f7d06c60e3",
+        "bytes": 1321
+      }
+    }
+  },
+  "scope": {
+    "original_cluster_modified": false,
+    "other_evidence_families_reconstructed": false,
+    "production_published": false,
+    "unknown_original_fields": [
+      "topology_entities.created_at",
+      "topology_entities.pilot_company_id",
+      "topology_candidate_evidence.id",
+      "topology_candidate_evidence.added_at"
+    ]
+  }
+}
