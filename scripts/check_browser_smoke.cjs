@@ -121,6 +121,9 @@ async function main() {
       neighbor: 'dbt-labs', cutoff: '2022-02-24', build_id: reviewedManifest.build_id }).toString();
     await page.goto(reviewedUrl.href, { waitUntil: 'domcontentloaded', timeout: 30000 });
     await page.locator('#atlas-inspector .atlas-claim').nth(1).waitFor({ state: 'visible', timeout: 30000 });
+    await page.locator('#atlas-inspector .atlas-source-audit').evaluateAll(items => {
+      items.forEach(item => { item.open = true; });
+    });
     const reviewedInspector = await page.locator('#atlas-inspector').innerText();
     assert(reviewedInspector.includes('announced partnership with'), 'partnership claim missing');
     assert(reviewedInspector.includes('invested in'), 'financing claim missing');

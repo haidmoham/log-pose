@@ -3,12 +3,15 @@ from pathlib import Path
 from log_pose.server import static_asset
 
 
-def test_local_root_uses_console_and_serves_typed_partitions(tmp_path):
+def test_local_root_uses_atlas_and_preserves_console_deep_links(tmp_path):
+    (tmp_path / "atlas.html").write_text("atlas")
     (tmp_path / "index.html").write_text("console")
     (tmp_path / "live-index.html").write_text("legacy")
     (tmp_path / "data").mkdir()
     (tmp_path / "data/index.json").write_text("{}")
-    assert static_asset("/", tmp_path)[0].read_text() == "console"
+    assert static_asset("/", tmp_path)[0].read_text() == "atlas"
+    assert static_asset("/", tmp_path, "view=data&dataRecord=row-1")[0].read_text() == "console"
+    assert static_asset("/index.html", tmp_path)[0].read_text() == "console"
     assert static_asset("/data/index.json", tmp_path)[1] == "application/json; charset=utf-8"
     assert static_asset("/api/companies", tmp_path) is None
 

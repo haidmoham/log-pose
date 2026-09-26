@@ -36,6 +36,8 @@
   let disposed = false;
   let controlTimer = null;
   let densityFrame = null;
+  const featuredCandidate = '4d9ade2bfb2aa6cb4afb';
+  let featuredExample = false;
 
   function status(text, failed = false) {
     byId('atlas-status').textContent = text;
@@ -69,6 +71,9 @@
   }
 
   async function load(fields) {
+    if (fields.candidate !== featuredCandidate || fields.source !== 'cncf' || fields.year !== '2024') {
+      featuredExample = false;
+    }
     const started = performance.now();
     currentRequest = fields;
     const ticket = ++generation;
@@ -139,15 +144,16 @@
     const results = byId('atlas-results');
     const inspector = byId('atlas-inspector');
     scene.replaceChildren(); results.replaceChildren();
-    const label = `${result.selection.source} · ${result.selection.temporal_mode === 'accumulated'
+    const label = `${featuredExample ? 'example neighborhood · ' : ''}${result.selection.source} · ${result.selection.temporal_mode === 'accumulated'
       ? 'observed through' : 'inventory year'} ${result.selection.year} · ${countText(result)}`;
     byId('atlas-frame-label').textContent = label;
     byId('atlas-frame-label').dataset.frameId = result.frame_id;
     inspector.dataset.frameId = result.frame_id;
-    inspector.replaceChildren(node('h3', result.operation === 'focus' ? result.focus.name : 'exact source evidence'),
+    inspector.replaceChildren(node('p', result.operation === 'focus' ? 'selected candidate' : 'how to use this view', 'eyebrow'),
+      node('h3', result.operation === 'focus' ? result.focus.name : 'start with a source'),
       node('p', result.operation === 'focus'
-        ? `${result.focus_status.replaceAll('_', ' ')}. choose a co-listing to inspect both retained rows.`
-        : 'source categories organize this view. shared membership does not establish a company relationship.'));
+        ? `${result.returned} visible co-listings from ${result.count.value} exact neighbors in this source frame. select a connection to inspect its retained rows.`
+        : 'choose a category or search for a candidate. each view stays tied to the source and time shown above.'));
     if (result.operation === 'regions') {
       const grid = node('div', '', 'atlas-region-grid');
       result.regions.forEach(region => {
@@ -162,18 +168,29 @@
     } else if (result.operation === 'search' || result.operation === 'focus') {
       const focused = result.operation === 'focus';
       const candidates = focused ? result.edges.map(edge => edge.candidate) : result.candidates;
-      if (!listOnly) scene.append(root.LogPoseTemporalGraph.render(model.graphFrame(result), {
-        onSelectCandidate: focus, onSelectEdge: inspect, scheduleCamera: true }));
-      else scene.append(node('p', 'list mode · the same selected frame and evidence, without graph rendering.'));
-      results.append(node('p', 'keyboard and list access · the same visible candidates'), renderList(candidates, focused));
+      if (!focused && candidates.length === 0) {
+        scene.append(node('h3', 'no matching candidates in this source frame'),
+          node('p', `${result.selection.source.toUpperCase()} ${result.selection.year} returned no candidates for this search. try another term or browse its categories.`));
+        const browse = node('button', 'browse categories', 'quiet-button');
+        browse.type = 'button'; browse.addEventListener('click', () => load(base('regions')));
+        scene.append(browse);
+        inspector.replaceChildren(node('h3', 'nothing to inspect yet'),
+          node('p', 'this search returned no visible candidates in the selected source frame. broaden the search or change the source revision.'));
+      } else {
+        if (!listOnly) scene.append(root.LogPoseTemporalGraph.render(model.graphFrame(result), {
+          onSelectCandidate: focus, onSelectEdge: inspect, scheduleCamera: true }));
+        else scene.append(node('p', 'list mode · the same selected frame and evidence, without graph rendering.'));
+        results.append(node('p', 'keyboard and list access · the same visible candidates'), renderList(candidates, focused));
+      }
       if (focused) {
+        inspector.append(node('p', 'a co-listing is a shared source placement, not evidence of competition or adoption.', 'atlas-inspector-note'));
         const compare = node('button', 'compare with previous retained year', 'quiet-button');
         compare.type = 'button'; compare.addEventListener('click', comparePrevious);
         inspector.append(compare);
         if (result.focus.identity_review?.pilot_slug) {
           const reviewed = node('a', `reviewed claims for ${result.focus.name} →`, 'atlas-reviewed-navigation');
           reviewed.href = `./atlas.html?${new URLSearchParams({ layer: 'reviewed', candidate: result.focus.id })}`;
-          inspector.append(reviewed, node('p', `identity link ${result.focus.identity_review.id}. opens a separate source-publication frame.`));
+          inspector.append(reviewed, node('p', `explicit identity link ${result.focus.identity_review.id}. reviewed claims use a separate source-publication clock.`));
         }
       }
     } else if (result.operation === 'compare') {
@@ -209,7 +226,7 @@
           node('code', premise.placement.raw_sha256), link('pinned source ↗', premise.artifact.url));
         for (const [role, membership] of [['subject', premise.subject], ['object', premise.object]]) {
           membership.rows.forEach(row => {
-            const route = new URL('./', location.href);
+            const route = new URL('./index.html', location.href);
             route.search = new URLSearchParams({ view: 'data', dataFamily: 'inventory', dataRecord: row.id });
             const sourceLink = node('a', `${role}: ${row.name || row.id} · retained row →`);
             sourceLink.href = route.href;
@@ -227,6 +244,11 @@
       const navigate = node('button', 'focus this neighbor →', 'quiet-button');
       navigate.type = 'button'; navigate.addEventListener('click', () => focus(neighbor));
       inspector.append(navigate, node('p', 'supporting membership is not competition, adoption, revenue or investment.'));
+      if (frame.focus.identity_review?.pilot_slug) {
+        const reviewed = node('a', `reviewed claims for ${frame.focus.name} →`, 'atlas-reviewed-navigation');
+        reviewed.href = `./atlas.html?${new URLSearchParams({ layer: 'reviewed', candidate: frame.focus.id })}`;
+        inspector.append(reviewed);
+      }
       const params = new URLSearchParams(location.search); params.set('neighbor', neighbor);
       if (cursor) params.set('evidence_cursor', cursor);
       else params.delete('evidence_cursor');
@@ -308,7 +330,7 @@
       manifest.artifacts.sort((left, right) => left.source.localeCompare(right.source)
         || left.inventory_year - right.inventory_year);
       manifest.artifacts.forEach(artifact => revisions.add(new Option(
-        `${artifact.source} · ${artifact.inventory_year} · ${(artifact.commit || artifact.artifact_id).slice(0, 8)}`,
+        `${artifact.source.toUpperCase()} · ${artifact.inventory_year}`,
         artifact.artifact_id)));
       const initial = manifest.artifacts.find(item => item.artifact_id === url.get('artifact'))
         || manifest.artifacts.find(item => item.source === (url.get('source') || 'cncf')
@@ -316,16 +338,20 @@
       revisions.value = initial.artifact_id;
       byId('atlas-mode').value = url.get('temporal_mode') === 'accumulated' ? 'accumulated' : 'snapshot';
       byId('atlas-query').value = url.get('query') || '';
-      byId('atlas-top-k').value = /^[1-9]\d?$|^100$/.test(url.get('top_k') || '') ? url.get('top_k') : '60';
+      byId('atlas-top-k').value = /^[1-9]\d?$|^100$/.test(url.get('top_k') || '') ? url.get('top_k') : '24';
       byId('atlas-density').value = byId('atlas-top-k').value;
       byId('atlas-density-value').textContent = `${byId('atlas-top-k').value} connections`;
       byId('atlas-coverage').textContent = `${manifest.counts.candidates.toLocaleString()} inventory candidates · ${manifest.counts.memberships.toLocaleString()} memberships · ${manifest.counts.artifacts} retained revisions. evidence coverage is not a market census.`;
       byId('atlas-version').textContent = `build ${manifest.build_id.slice(0, 12)} · inventory-year clock`;
       byId('atlas-limitations').replaceChildren(...manifest.limitations.map(text => node('li', text)));
-      const mode = url.get('candidate') ? 'focus' : url.get('mode') === 'search' ? 'search' : 'regions';
-      const fields = base(mode);
+      const isFeaturedEntry = !['candidate', 'mode', 'query', 'placement', 'source', 'year', 'artifact', 'temporal_mode']
+        .some(key => url.has(key));
+      const mode = url.get('candidate') || isFeaturedEntry ? 'focus' : url.get('mode') === 'search' ? 'search' : 'regions';
+      const fields = base(mode, isFeaturedEntry ? { candidate: featuredCandidate } : {});
+      featuredExample = isFeaturedEntry;
       for (const key of ['candidate', 'query', 'placement', 'cursor']) if (url.get(key)) fields[key] = url.get(key);
-      const initialFrame = await load(fields);
+      let initialFrame = await load(fields);
+      if (isFeaturedEntry && !initialFrame) initialFrame = await load(base('regions'));
       if (!disposed && initialFrame && displayed === initialFrame && url.get('neighbor') && displayed.operation === 'focus') {
         await inspect(url.get('neighbor'), url.get('evidence_cursor') || '');
       }
@@ -368,7 +394,7 @@
     if (byId('atlas-top-k').checkValidity()) previewDensity(byId('atlas-top-k').value);
   });
   byId('atlas-density-reset').addEventListener('click', () => {
-    previewDensity('60'); byId('atlas-top-k').dispatchEvent(new Event('change'));
+    previewDensity('24'); byId('atlas-top-k').dispatchEvent(new Event('change'));
   });
   byId('atlas-regions').addEventListener('click', () => manifest && load(base('regions')));
   byId('atlas-previous').addEventListener('click', () => manifest && step(-1));

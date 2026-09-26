@@ -35,7 +35,9 @@ http.createServer(async (request, reply) => {
   }
   let pathname;
   try { pathname = decodeURIComponent(url.pathname); } catch { reply.writeHead(400); reply.end(); return; }
-  const relative = pathname === '/' ? 'index.html' : pathname.replace(/^\/+/, '');
+  const relative = pathname === '/'
+    ? (url.searchParams.has('view') ? 'index.html' : 'atlas.html')
+    : pathname.replace(/^\/+/, '');
   const asset = path.resolve(webRoot, relative);
   const extension = path.extname(asset);
   if (!asset.startsWith(webRoot + path.sep) || !mime[extension] || !fs.existsSync(asset) ||

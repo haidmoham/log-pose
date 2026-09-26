@@ -184,7 +184,7 @@ function createPostgresHandler(pool) {
           limitations: NOTES, artifacts: rows.rows.slice(0, limit).map(row => ({ ...row.detail_json, artifact_id: row.id })),
           next_cursor: rows.rows.length > limit ? encodeCursor(binding, rows.rows[limit - 1].id) : null,
           layers: [{ id: 'inventory', status: 'unreviewed_inventory_overlap', clock: 'inventory_year' },
-            { id: 'reviewed_claims', status: 'separate_clock', href: '/?view=topology&topologyLayer=reviewed' }] };
+            { id: 'reviewed_claims', status: 'separate_clock', href: '/atlas.html?layer=reviewed' }] };
       }
 
       async function regions() {

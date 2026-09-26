@@ -75,7 +75,7 @@ test('pending and late responses cannot move the committed graph under a differe
 
 test('byte-bounded cache evicts old entries and disposal prevents a pending paint', async t => {
   const dom = page(t);
-  await waitFor(() => dom.window.document.querySelector('.atlas-region'));
+  await waitFor(() => dom.window.document.querySelector('.constellation-map'));
   const cache = dom.window.LogPoseAtlasModel.createCache(60);
   cache.put('a', { text: 'a'.repeat(20) });
   cache.put('b', { text: 'b'.repeat(20) });
@@ -108,6 +108,27 @@ test('reduced motion skips accepted-frame fades', async t => {
   dom.window.matchMedia = () => ({ matches: true });
   dom.window.Element.prototype.animate = () => { animations += 1; };
   release();
-  await waitFor(() => dom.window.document.querySelector('.atlas-region'));
+  await waitFor(() => dom.window.document.querySelector('.constellation-map'));
   assert.equal(animations, 0);
+});
+
+test('empty entry opens a bounded example while explicit source scope keeps its own frame', async t => {
+  const example = page(t);
+  await waitFor(() => example.window.document.querySelector('.constellation-map'));
+  assert.match(example.window.document.querySelector('#atlas-inspector h3').textContent, /Datadog/);
+  assert.match(example.window.document.querySelector('#atlas-frame-label').textContent, /top 24 by shared placements/);
+  const scoped = page(t, '?source=lfai&year=2024');
+  await waitFor(() => scoped.window.document.querySelector('.atlas-region'));
+  assert.match(scoped.window.document.querySelector('#atlas-frame-label').textContent, /lfai.*2024/);
+  assert.equal(scoped.window.document.querySelector('.constellation-map'), null);
+});
+
+test('empty search gives a scoped next action without drawing an empty graph', async t => {
+  const dom = page(t, '?source=lfai&year=2024&mode=search&query=no-such-candidate-logpose-check');
+  const document = dom.window.document;
+  await waitFor(() => document.querySelector('#atlas-scene h3'));
+  assert.match(document.querySelector('#atlas-scene').textContent, /no matching candidates.*LFAI 2024/s);
+  assert.equal(document.querySelector('.constellation-map'), null);
+  document.querySelector('#atlas-scene button').click();
+  await waitFor(() => document.querySelector('.atlas-region'));
 });

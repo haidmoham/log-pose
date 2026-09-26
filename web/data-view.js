@@ -18,7 +18,7 @@
     let inventoryRecords = null;
     let inventoryError = null;
     let inventoryLoading = false;
-    let resultLimit = 60;
+    let resultLimit = 18;
     let activeRequest = 0;
     const candidateById = new Map(discovery.candidates.map(item => [item.id, item]));
     const identityReviewById = new Map(discovery.identity_reviews.map(item => [item.id, item]));
@@ -179,28 +179,6 @@
       return section;
     }
 
-    function deskToy() {
-      const frame = node('div', '', 'desk-toy');
-      frame.append(node('p', 'PICK A LENS', 'eyebrow'));
-      const cradle = node('div', '', 'desk-toy-cradle');
-      FAMILY_ORDER.forEach((family, index) => {
-        const button = node('button', '', 'desk-toy-pendulum');
-        button.type = 'button';
-        button.title = FAMILY_LABELS[family];
-        button.setAttribute('aria-label', `Inspect ${FAMILY_LABELS[family]}`);
-        button.setAttribute('aria-pressed', String(state.dataFamily === family));
-        button.style.setProperty('--toy-index', String(index));
-        button.append(node('span', '', 'desk-toy-string'),
-          node('span', '', 'desk-toy-ball'),
-          node('span', FAMILY_LABELS[family], 'desk-toy-label'));
-        button.addEventListener('click', () => commitState({ dataFamily: family,
-          dataQuery: '', dataRecord: null }, { focus: '#data-query' }));
-        cradle.append(button);
-      });
-      frame.append(cradle);
-      return frame;
-    }
-
     function controls() {
       const form = node('div', '', 'data-controls');
       const query = node('input');
@@ -212,7 +190,7 @@
       query.addEventListener('input', () => {
         state.dataQuery = query.value.slice(0, 200);
         state.dataRecord = null;
-        resultLimit = 60;
+        resultLimit = 18;
         commitState({}, { focus: '#data-query', replace: true });
       });
       form.append(query);
@@ -558,17 +536,13 @@
       activeRequest++;
       root.append(title('RESEARCH DESK / RETAINED EVIDENCE', 'research the record',
         'Search across source rows, dated page captures, reported facts, market activity, and reviewed relationships. Open a row to inspect it here.'));
-      root.append(deskToy(), coverage());
+      root.append(coverage());
       if (index.exploratory_topology) {
-        const field = index.exploratory_topology;
-        const entry = node('section', '', 'data-field-entry');
-        entry.append(node('p', 'MARKET SOURCE FIELD', 'eyebrow'),
-          node('strong', `${formatCount(field.node_count)} candidates · ${formatCount(field.possible_pair_count)} exact co-listings`),
-          node('p', 'Explore every eligible retained candidate before narrowing by source, year, category, or identity. Co-listings are research leads; reviewed relationship claims stay separate.', 'muted'));
-        const open = node('button', 'explore the full source field →', 'text-button');
+        const entry = node('p', '', 'data-atlas-return');
+        const open = node('button', 'explore the source map →', 'text-button');
         open.type = 'button';
         open.addEventListener('click', openField);
-        entry.append(open);
+        entry.append(open, node('span', 'see retained candidates and exact co-listings in context.'));
         root.append(entry);
       }
       root.append(controls());
@@ -596,7 +570,7 @@
         + (!inventoryRecords && (state.dataFamily === 'all' || state.dataFamily === 'inventory')
           ? ' · loading full inventory index' : ''), 'eyebrow'),
         node('p', fullUniverse
-          ? 'The full retained index is open. Source entries from all five families are interleaved below; filter to narrow the field. Inventory navigation leads are unreviewed unless an identity review is attached.'
+          ? 'Choose a source family or enter a question to narrow this retained index. Inventory leads remain unreviewed unless an identity review is attached.'
           : 'Filters use record metadata. Open a result to read the retained detail.', 'muted'));
       resultList.append(header);
       const selected = hits.find(item => item.id === state.dataRecord);
@@ -610,11 +584,11 @@
         resultList.append(button);
       }
       if (hits.length > resultLimit) {
-        const more = node('button', `show ${Math.min(60, hits.length - resultLimit)} more records`,
+        const more = node('button', `show ${Math.min(18, hits.length - resultLimit)} more records`,
           'quiet-button data-more');
         more.type = 'button';
         more.addEventListener('click', () => {
-          resultLimit += 60;
+          resultLimit += 18;
           commitState({}, { focus: '.data-more' });
         });
         resultList.append(more);
