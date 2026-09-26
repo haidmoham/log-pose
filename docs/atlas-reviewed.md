@@ -13,7 +13,7 @@ PYTHONPATH=src python scripts/build_atlas_reviewed.py
 PYTHONPATH=src python scripts/build_atlas_reviewed.py --check
 ```
 
-The provider exports `createReviewedAtlasHandler(root)`. It accepts `discover`, `search`, `focus`, `explain`, `compare`, and `export`. Parent runtime routing supplies `layer=reviewed` and owns HTTP composition.
+The provider exports `createReviewedAtlasHandler(root)`. It accepts `discover`, `search`, `focus`, `explain`, `compare`, `traverse`, and `export`. Parent runtime routing supplies `layer=reviewed` and owns HTTP composition.
 
 - `clock=source_publication` and `temporal_mode=published_through` are fixed.
 - `cutoff` is empty or an exact `YYYY-MM-DD`. Every supporting or contradicting premise must have a publication date no later than the cutoff.
@@ -22,5 +22,20 @@ The provider exports `createReviewedAtlasHandler(root)`. It accepts `discover`, 
 - `entity` is a reviewed entity slug. `candidate` resolves only through an explicit reviewed link. Supplying both requires them to agree.
 
 Focus pages have neighbor grain and select the first bounded neighbor IDs in ASCII order. This order is a stable selection policy, not relevance or relationship strength. `eligible_claim_count` remains separate. Explain pages retain individual full claims, directions, sources, hashes, clocks, review details, and review history, including multiple predicates on one pair. Compare reports claim-ID availability differences between publication cutoffs; it never reports relationship activity.
+
+Traverse performs one deterministic breadth-first search from `entity` or its
+reviewed `candidate` link to a reviewed `target`. `hops` defaults to two and is
+capped at three. Every hop applies the same publication cutoff, basis,
+predicate and direction relative to the entity being expanded. Neighbor IDs
+and then claim IDs use ASCII order. A found path includes every eligible typed
+claim on each selected hop, including its original direction, retained source
+premises, hashes and review history. The path is navigation through accepted
+claims; it is not a new direct relationship or a cross-clock inference.
+
+Traversal reports `found`, `not_found_within_hop_limit`, or
+`visited_entity_budget_exhausted`. The last two return no path and do not claim
+that a relationship is absent. At most 100 entities are visited. Claim-row,
+time and response limits remain the provider-wide caps; exceeding those limits
+returns the existing explicit budget error.
 
 The provider caps pages at 100, explain pages at 25, selected neighbors at 100, response JSON at 1 MiB, claim work at 200,000 rows, execution at 750 ms, SQLite cache at 8 MiB, and open handles at two. Source publication, described event, reporting period, retrieval, candidate creation, and review time remain distinct. No response asserts validity on a date, current activity, replay, strength, or probability.
