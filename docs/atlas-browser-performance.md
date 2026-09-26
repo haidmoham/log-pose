@@ -1,63 +1,84 @@
-# atlas browser measurements
+# atlas browser performance
 
-the new route loads a bounded frame and fetches retained premise rows on
-selection. top-k defaults to 60, with a tested range of 1–100. camera input is
-coalesced per animation frame; a pan reuses label visibility and changes the
-camera transform. a zoom recomputes label collisions for the bounded frame.
+the reproducible local run passed the frozen S0 interaction and stability
+budgets. it used commit `dd58e0b320207f88e1c6108ae2e8b6d143d0a95f`,
+inventory build `990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5`
+and reviewed build `bb773ae69b9991bed00afcf39948e66660eb4d5d51b8037be174ef273d30e7e7`.
+the inventory frame was `7a7ec70e3c0883408845f73da798c6c6fb74cc6ff2565ab8029ad3c804963f53`;
+the reviewed frame was `73acebb67529aac73ec53ad0b668d98fbbf13dea384460f39620b6079b5d15c9`.
 
-raw samples are in [browser-local.json](research/issue11/browser-local.json).
-those local samples precede integration of PR #12's renderer and shared pure
-research model. retain them as measurements of that earlier state, not the
-final asset size or render cost.
-measurements use the Codex in-app Chromium browser on a Windows host with a
-Ryzen 7 5800X, serving from WSL2. the browser did not expose its version or
-CPU/network throttling controls. these are same-host reloads with a warm
-SQLite process and warm OS cache, not deployed cold starts.
+the raw passing receipt is
+[browser-playwright-s0.json](research/issue11/browser-playwright-s0.json).
+the [frozen protocol](research/issue11/browser-measurement-protocol.md) names
+the question, controls and budgets. two failed receipts remain beside it:
+one records host interference before the soak, and one records the harness
+selection race that the multi-cycle control reproduced and fixed. neither
+failed receipt is evidence for the passing result.
 
-| measurement | 1440 × 1000 | 390 × 844, unthrottled |
-| --- | --- | --- |
-| graph-ready p50 / p95, five reloads | 55.8 / 71.3 ms | 62.2 / 103.6 ms |
-| synchronous render p50 / p95 | 3.6 / 4.0 ms | 3.9 / 5.3 ms |
-| zoom JS work p50 / p95, twenty inputs | 0.6 / 0.9 ms | 0.5 / 0.9 ms |
-| pan JS work p50 / p95, twenty inputs | 0 / 0.1 ms | 0 / 0.1 ms |
+## latency and browser work
 
-the initial decoded HTML, scripts, styles and responses observed by first
-graph-ready total at most 166,060 bytes. the focus response is about 33.7 kB.
-the default Datadog focus draws 61 candidates from 145 eligible neighbors.
-each measured reload had 748 DOM nodes. this is a snapshot count, not a leak
-or long-session stability test. p95 uses the nearest-rank sample; five reloads
-cannot characterize a production latency tail.
+each cell is p50 / p95 from five fresh browser contexts. camera values combine
+100 accepted inputs per workload and profile. the browser cache was disabled;
+the local server and OS page cache were warm.
 
-one later Postgres-backed browser load reached graph-ready in 118.1 ms with
-5.1 ms synchronous render work and 166,739 decoded bytes. the selected Elastic
-edge returned both exact retained rows from the same 2024 artifact. that one
-smoke check is not a Postgres latency distribution.
+| profile and workload | graph ready | warm frame acceptance | zoom JS | pan JS |
+| --- | ---: | ---: | ---: | ---: |
+| desktop, inventory top 60 | 162 / 209 ms | 134 / 156 ms | 0.6 / 0.9 ms | 0 / 0.1 ms |
+| desktop, inventory top 100 | 187 / 194 ms | 149 / 155 ms | 0.4 / 0.5 ms | 0 / 0.1 ms |
+| desktop, reviewed | 130 / 139 ms | 94 / 98 ms | 0.1 / 0.2 ms | 0 / 0.1 ms |
+| constrained, inventory top 60 | 1,003 / 1,019 ms | 530 / 565 ms | 2.9 / 4.2 ms | 0 / 0.6 ms |
+| constrained, inventory top 100 | 1,085 / 1,116 ms | 522 / 532 ms | 1.9 / 3.2 ms | 0.1 / 0.6 ms |
+| constrained, reviewed | 916 / 944 ms | 206 / 206 ms | 0.6 / 1.2 ms | 0 / 0.7 ms |
 
-after integrating PR #12, the protected Vercel preview passed the old-build
-link, top-k 1/reset, exact retained-row navigation, matching frame/inspector
-IDs, missing-build error and recovery checks in the user's authorized Chrome
-session. one warm hosted load reached graph-ready in **356.7 ms**, with **6.9 ms**
-synchronous render work, **244,061 decoded bytes** and **61 candidates**.
-the added pure research model loads no corpus or evidence catalog. preview
-assets and browser conditions differ from the earlier local samples; this is
-not a controlled speed comparison. see [the deployed receipt](research/issue11/deployed-preview.json).
+the constrained profile used 390 × 844, 4× CPU throttling, 80 ms latency and
+1,000,000 bytes/s each way. desktop used 1440 × 1000. the maximum decoded API
+response was 32,821 bytes. initial navigation plus resource timing ranged from
+214,574 to 439,501 decoded bytes and 218,474 to 443,401 transferred bytes.
+local HTTP used no content encoding. inventory top 60 and top 100 both used
+the exact 145-neighbor frame; top 100 rendered 100 neighbors plus the focus.
 
-browser checks exercised source/year changes, the connection slider and exact
-input, reset, keyboard zoom/pan, candidate and edge selection, retained rows,
-list mode and narrow layout. unit checks also cover reduced motion, stale
-responses, route disposal, bounded cache behavior and coherent frame labels.
+## twenty-minute stability run
 
-## remaining performance claims
+the soak ran for 1,200.365 seconds. one warmup and 18 timed cycles committed a
+60→100 density change, changed the inventory year, inspected retained rows,
+changed the reviewed publication cutoff, inspected full claims, then exited to
+the same resting route. all 171 API reads and 1,064 total HTTP requests
+completed. no request or page error occurred.
 
-- the required 4× CPU, 80 ms latency and 1 MB/s profile has not been measured.
-- camera timings measure JavaScript work, not full compositor frames or FPS.
-- the twenty-minute retained-heap/GPU soak has not run.
-- neither local profile proves Railway-to-Vercel latency or a physical phone's
-  performance. retain these gaps until the matching measurements exist.
+eleven two-minute, forced-GC resting samples ended 15,384 bytes below the
+baseline JS heap. DOM node and event-listener counts had zero endpoint growth.
+none of those metrics increased at every sample. peak isolated Chromium RSS
+was 1,019,224,064 bytes; peak local Node/SQLite server RSS was 155,078,656
+bytes. both stayed within the frozen limits.
 
-repeat the fixed route in the raw receipt, reload five times per viewport,
-and read `#atlas-scene`'s `data-graph-ready-ms`, `data-render-ms`, and decoded-byte
-attributes after the graph appears. issue twenty zoom and pan inputs and read
-the graph's `data-camera-frame-ms` after each accepted frame. restore the
-viewport after testing. these attributes are measurement aids, not evidence
-or research-model inputs.
+## interpretation limits
+
+the host was WSL2 on a Ryzen 7 5800X with 16 logical CPUs and about 16 GiB
+available to Linux. Playwright 1.63.0 launched Chromium 153.0.8010.12. the
+headless browser used SwiftShader and reported GPU compositing and WebGL as
+unavailable. GPU memory and compositor completion were not measured. camera
+numbers cover JavaScript accepted-frame work only.
+
+these results establish local real-S0 behavior. they do not establish S1
+browser performance, deployed cold starts, production latency, physical-phone
+performance or hardware-GPU stability. cold browser contexts still shared a
+warm server and OS page cache. the 1 MiB response limit is an API envelope;
+application assets are reported separately.
+
+the first short run also found that top 100 selected 100 neighbors but paged
+only 60. commit `41fff0d` binds the visible focus page limit to `top_k`; its real
+S0 regression renders 101 nodes including the focus. the retained
+[pre-fix receipt](research/issue11/browser-top100-pre-fix.json) records the
+coherent but misleading 60-of-145 frame before that correction.
+
+run the benchmark locally with:
+
+```bash
+PLAYWRIGHT_ROOT=/tmp/playwright-1.63.0 node scripts/benchmark_atlas_browser.mjs \
+  --samples 5 --soak-minutes 20 \
+  --output docs/research/issue11/browser-playwright-s0.json
+```
+
+the harness accepts loopback HTTP only. it owns its browser and local server,
+enforces request, response, RSS, report-size and wall-clock limits, and returns
+a nonzero exit when a measured budget fails.
