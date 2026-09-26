@@ -123,3 +123,22 @@ The Postgres test URL must point to a disposable database. The integration fixtu
 The MLOps builder reads shared retained evidence plus its own source manifest and writes only `experiments/ml/mlops-2024/study.json` and the experimental browser export. Its raw source bodies remain hash-verified. Experimental status does not change the raw → bronze → silver → gold contract: source bodies and acquisition attempts are raw, extracted passages are bronze, reviewed decisions are silver, and study summaries and benchmark scores are gold. These file artifacts are isolated analytical outputs; they are not automatically promoted into the canonical database or reviewed ontology. Promotion requires explicit review and tested integration.
 
 The benchmark runs only through `experiments/ml/benchmark/run.py` with an explicit output directory. Historical scorecards stay preserved; fresh runs write separate receipts. No model training, credentialed inference, or source acquisition runs when opening either interface. See [experimental workspace instructions](../experiments/ml/README.md).
+
+
+## temporal overview display limits
+
+The temporal overview exposes `temporalNodeLimit` (50, 100, 150, 300, or all) and
+`temporalEdgeLimit` (100, 250, 500, 1000, or 2500) in its URL state and timeline
+controls. The browser defaults to 150 nodes and 500 connections. `node_limit`
+and `edge_limit` are bounded API frame parameters and participate in the frame
+identity. Calls that omit both retain the previous full overview contract.
+
+The service ranks nodes by distinct peers in the complete provider/year/category/
+search-filtered slice, with candidate ID breaking ties. It then ranks connections
+among those displayed nodes by exact shared source/year/category placement count,
+with endpoint IDs breaking ties. The two caps do not change retained row coverage,
+eligible candidate counts, total connection counts, stable positions, or evidence
+identities. Counts show displayed versus eligible totals. Rank is a navigation
+choice, not relationship strength or confidence. Search still covers every
+matching candidate. Focused evidence keeps its separate 60-record paging contract;
+the overview controls reappear when the user returns to the source field.

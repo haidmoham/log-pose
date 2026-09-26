@@ -44,7 +44,8 @@
     function selectedFrameKey() {
       return JSON.stringify([timeline?.build_id, state.temporalSource, Number(state.temporalYear),
         state.temporalMode, state.temporalCompareYear, state.temporalCategory, state.temporalQuery,
-        state.temporalCandidate, state.temporalNeighbor, state.temporalOffset]);
+        state.temporalCandidate, state.temporalNeighbor, state.temporalOffset,
+        state.temporalNodeLimit, state.temporalEdgeLimit]);
     }
 
     function loadTimeline() {
@@ -72,6 +73,10 @@
         query: state.temporalQuery || '' };
       params.offset = String(state.temporalOffset || 0);
       params.limit = '60';
+      if (!state.temporalCandidate) {
+        if (state.temporalNodeLimit !== 'all') params.node_limit = state.temporalNodeLimit || '150';
+        params.edge_limit = state.temporalEdgeLimit || '500';
+      }
       if (state.temporalCompareYear && state.temporalCompareYear !== 'auto') {
         params.compare_year = state.temporalCompareYear;
       }
@@ -178,6 +183,27 @@
       category.addEventListener('change', () => change({ temporalCategory: category.value,
         temporalOffset: 0 }));
       const form = append(node('div', '', 'temporal-facets'), source, mode, compare, category);
+      const density = node('fieldset', '', 'temporal-density');
+      density.append(node('legend', 'overview top-k'));
+      const densityInputs = node('div', '', 'temporal-density-inputs');
+      function densitySelect(label, key, values, fallback) {
+        const wrapper = node('label');
+        const select = node('select');
+        select.setAttribute('aria-label', label);
+        for (const value of values) select.add(new Option(value === 'all' ? 'all nodes'
+          : `${Number(value).toLocaleString()}${value === fallback ? ' · medium' : ''}`, value));
+        select.addEventListener('change', () => change({ [key]: select.value, temporalOffset: 0 }));
+        wrapper.append(node('span', label), select);
+        densityInputs.append(wrapper);
+        return select;
+      }
+      const nodeLimit = densitySelect('top-k nodes', 'temporalNodeLimit', ['50', '100', '150', '300', 'all'], '150');
+      const edgeLimit = densitySelect('top-k connections', 'temporalEdgeLimit', ['100', '250', '500', '1000', '2500'], '500');
+      const resetDensity = node('button', 'reset density', 'quiet-button');
+      resetDensity.type = 'button';
+      resetDensity.addEventListener('click', () => change({ temporalNodeLimit: '150', temporalEdgeLimit: '500', temporalOffset: 0 }));
+      densityInputs.append(resetDensity);
+      density.append(densityInputs, node('p', 'nodes: most peer connections · connections: most shared placements. display order, not evidence strength.', 'temporal-density-note'));
       const yearControl = node('input');
       yearControl.type = 'range';
       yearControl.step = '1';
@@ -223,8 +249,8 @@
       const rail = append(node('div', '', 'temporal-rail'), previous, yearControl,
         playback, next);
       const partialNote = node('p', '2026 is a partial-year inventory. Its counts do not cover a complete calendar year.', 'temporal-coverage-note');
-      section.append(head, form, rail, partialNote);
-      return { section, stopDetail, source, mode, compare, category, yearControl,
+      section.append(head, form, density, rail, partialNote);
+      return { section, stopDetail, source, mode, compare, category, density, nodeLimit, edgeLimit, yearControl,
         previous, next, playback, partialNote, compareOptionsKey: '', categoryOptionsKey: '' };
     }
 
@@ -233,6 +259,9 @@
         previous, next, playback, partialNote } = controlRefs;
       const frameStops = currentTimeline();
       const selectedIndex = frameStops.findIndex(item => item.year === Number(state.temporalYear));
+      controlRefs.density.hidden = Boolean(state.temporalCandidate);
+      controlRefs.nodeLimit.value = state.temporalNodeLimit || '150';
+      controlRefs.edgeLimit.value = state.temporalEdgeLimit || '500';
       source.value = state.temporalSource;
       mode.value = state.temporalMode;
       const compareOptionsKey = JSON.stringify([state.temporalSource, state.temporalYear,
@@ -534,6 +563,7 @@
         : `${formatCount(frame.context_edge_count)} of ${formatCount(frame.total_context_edges)} peer connections shown`;
       const coverage = append(node('section', '', 'temporal-frame-summary'),
         node('span', `${formatCount(frame.coverage.selected_rows)} retained rows`, 'temporal-count'),
+        ...(!frame.focus ? [node('span', `${formatCount(frame.nodes.length)} of ${formatCount(frame.candidate_count)} nodes shown`, 'temporal-count')] : []),
         node('span', graphConnections, 'temporal-count'),
         node('span', frame.temporal_mode === 'snapshot'
           ? `compared with ${frame.compare_year || 'no prior retained stop'}`

@@ -373,3 +373,17 @@ test('the atlas defaults to accumulated CNCF evidence and preserves explicit sna
   const serialized = model.toUrlParams({ ...explicit, compareSlugs: [] });
   assert.equal(model.parseUrlState('?' + serialized, new Set(), [2024]).temporalMode, 'snapshot');
 });
+
+
+test('overview top-k defaults and explicit values survive URL round trips', () => {
+  const defaults = model.parseUrlState('', new Set(), [2024]);
+  assert.equal(defaults.temporalNodeLimit, '150');
+  assert.equal(defaults.temporalEdgeLimit, '500');
+  const selected = model.parseUrlState('?view=topology&temporalNodeLimit=all&temporalEdgeLimit=1000', new Set(), [2024]);
+  const restored = model.parseUrlState('?' + model.toUrlParams({ ...selected, compareSlugs: [] }), new Set(), [2024]);
+  assert.equal(restored.temporalNodeLimit, 'all');
+  assert.equal(restored.temporalEdgeLimit, '1000');
+  const invalid = model.parseUrlState('?temporalNodeLimit=-50&temporalEdgeLimit=999999', new Set(), [2024]);
+  assert.equal(invalid.temporalNodeLimit, '150');
+  assert.equal(invalid.temporalEdgeLimit, '500');
+});

@@ -1063,3 +1063,39 @@ test('the home route requests the broader accumulated CNCF field', async () => {
     assert.match(dom.window.document.querySelector('.temporal-frame-summary').textContent, /observed through 2024/);
   } finally { dom.window.close(); }
 });
+
+
+test('visible overview top-k controls update the graph, persist through time, and reset', async () => {
+  const temporal = async params => {
+    const result = marketFieldApi.handleMarketField(new URLSearchParams(params));
+    return { status: result.status, body: result.body };
+  };
+  const dom = await page('/?view=topology&temporalSource=cncf&temporalYear=2024', null, true, { temporal });
+  try {
+    const document = dom.window.document;
+    const nodes = document.querySelector('[aria-label="top-k nodes"]');
+    const edges = document.querySelector('[aria-label="top-k connections"]');
+    assert.equal(nodes.value, '150');
+    assert.equal(edges.value, '500');
+    assert.equal(document.querySelectorAll('.constellation-node').length, 150);
+    assert.match(document.querySelector('.temporal-frame-summary').textContent, /150 of 852 nodes shown/);
+    nodes.value = '50';
+    nodes.dispatchEvent(new dom.window.Event('change'));
+    await waitFor(() => document.querySelectorAll('.constellation-node').length === 50);
+    edges.value = '100';
+    edges.dispatchEvent(new dom.window.Event('change'));
+    await waitFor(() => document.querySelectorAll('.constellation-context line').length === 100);
+    assert.equal(new URL(dom.window.location.href).searchParams.get('temporalNodeLimit'), '50');
+    assert.equal(new URL(dom.window.location.href).searchParams.get('temporalEdgeLimit'), '100');
+    const previousFrame = document.querySelector('.temporal-frame-id').textContent;
+    document.querySelector('.temporal-rail .temporal-step:last-child').click();
+    await waitFor(() => document.querySelector('.temporal-frame-id').textContent !== previousFrame);
+    assert.equal(nodes.value, '50');
+    assert.equal(edges.value, '100');
+    assert.equal(document.querySelectorAll('.constellation-node').length, 50);
+    document.querySelector('.temporal-density button').click();
+    await waitFor(() => document.querySelectorAll('.constellation-node').length === 150);
+    assert.equal(nodes.value, '150');
+    assert.equal(edges.value, '500');
+  } finally { dom.window.close(); }
+});
