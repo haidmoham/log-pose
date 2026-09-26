@@ -2,10 +2,12 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const { JSDOM } = require('jsdom');
 const fs = require('node:fs');
+const modelSource = fs.readFileSync(require.resolve('../web/research-model.js'), 'utf8');
 const source = fs.readFileSync(require.resolve('../web/temporal-graph.js'), 'utf8');
 function setup(configure) {
   const dom = new JSDOM('<!doctype html><body></body>', { runScripts: 'outside-only' });
   configure?.(dom.window);
+  dom.window.eval(modelSource);
   dom.window.eval(source);
   return dom;
 }
@@ -65,12 +67,40 @@ test('hover reveals only the local context neighborhood while preserving absent 
   scene.querySelector('[data-candidate="two"]').dispatchEvent(new dom.window.MouseEvent('pointerenter'));
   const context = scene.querySelector('.constellation-context');
   assert(context.classList.contains('has-active-neighborhood'));
+  assert(!context.querySelector('line').classList.contains('is-nearby'));
+  assert(!scene.querySelector('[data-candidate="three"]').classList.contains('is-nearby'));
+  const contextControl = scene.querySelector('.constellation-context-control input');
+  contextControl.checked = true;
+  contextControl.dispatchEvent(new dom.window.Event('change'));
+  scene.querySelector('[data-candidate="two"]').dispatchEvent(new dom.window.MouseEvent('pointerenter'));
   assert(context.querySelector('line').classList.contains('is-nearby'));
   assert(scene.querySelector('[data-candidate="three"]').classList.contains('is-nearby'));
   assert(scene.querySelector('[data-candidate="three"]').classList.contains('is-absent'));
   scene.querySelector('[data-candidate="two"]').dispatchEvent(new dom.window.MouseEvent('pointerleave'));
   assert(!context.classList.contains('has-active-neighborhood'));
   assert(!scene.querySelector('[data-candidate="three"]').classList.contains('is-nearby'));
+  dom.window.close();
+});
+
+test('2d and 3d views retain independent cameras and mode across temporal renders', () => {
+  const dom = setup(); const api = dom.window.LogPoseTemporalGraph;
+  const selected = [];
+  const first = api.render({ ...frame, build_id: 'spatial-mode' }, { onSelectEdge: id => selected.push(id) });
+  dom.window.document.body.append(first);
+  const initial2d = first.querySelector('.constellation-camera').getAttribute('transform');
+  assert.equal(first.querySelector('[aria-label="2d graph"]').getAttribute('aria-pressed'), 'true');
+  first.querySelector('[aria-label="3d graph"]').click();
+  assert.equal(first.querySelector('[aria-label="3d graph"]').getAttribute('aria-pressed'), 'true');
+  const initial3dNode = first.querySelector('[data-candidate="two"]').getAttribute('transform');
+  first.querySelector('.constellation-map').dispatchEvent(new dom.window.KeyboardEvent('keydown', { key: 'ArrowRight' }));
+  assert.notEqual(first.querySelector('[data-candidate="two"]').getAttribute('transform'), initial3dNode);
+  first.querySelector('[data-candidate="two"]').dispatchEvent(new dom.window.MouseEvent('click'));
+  assert.deepEqual(selected, ['two']);
+  const next = api.render({ ...frame, build_id: 'spatial-mode', year: 2025 }, { selectedEdge: 'two' });
+  assert.equal(next.querySelector('[aria-label="3d graph"]').getAttribute('aria-pressed'), 'true');
+  assert(next.querySelector('[data-candidate="two"]').classList.contains('is-selected'));
+  next.querySelector('[aria-label="2d graph"]').click();
+  assert.equal(next.querySelector('.constellation-camera').getAttribute('transform'), initial2d);
   dom.window.close();
 });
 
@@ -151,4 +181,56 @@ test('focused context connections are opt-in while overview context remains visi
   assert(!overview.classList.contains('is-context-off'));
   assert.equal(overview.querySelector('.constellation-context-control'), null);
   dom.window.close();
+});
+
+test('3d drag owns node gestures only after threshold and suppresses the trailing click', () => {
+  const frames = [];
+  const dom = setup(window => {
+    window.matchMedia = () => ({ matches: true });
+    window.requestAnimationFrame = callback => { frames.push(callback); return frames.length; };
+  });
+  let selected = '';
+  const scene = dom.window.LogPoseTemporalGraph.render({ ...frame, build_id: 'gesture-threshold' },
+    { onSelectEdge: id => { selected = id; } });
+  dom.window.document.body.append(scene);
+  scene.querySelector('[aria-label="3d graph"]').click();
+  const map = scene.querySelector('.constellation-map');
+  map.getBoundingClientRect = () => ({ width: 800, height: 500 });
+  const node = scene.querySelector('[data-candidate="two"]');
+  node.dispatchEvent(new dom.window.MouseEvent('pointerdown', { bubbles: true, button: 0, clientX: 200, clientY: 200 }));
+  map.dispatchEvent(new dom.window.MouseEvent('pointermove', { bubbles: true, clientX: 280, clientY: 230 }));
+  map.dispatchEvent(new dom.window.MouseEvent('pointerup', { bubbles: true, clientX: 280, clientY: 230 }));
+  node.dispatchEvent(new dom.window.MouseEvent('click', { bubbles: true, cancelable: true }));
+  assert.equal(selected, '');
+  while (frames.length) frames.shift()(16.67);
+  node.dispatchEvent(new dom.window.MouseEvent('click', { bubbles: true }));
+  assert.equal(selected, 'two');
+  const afterOrbit = node.getAttribute('transform');
+  map.dispatchEvent(new dom.window.MouseEvent('pointerdown', { bubbles: true, button: 0, clientX: 100, clientY: 100 }));
+  map.dispatchEvent(new dom.window.MouseEvent('pointercancel', { bubbles: true }));
+  map.dispatchEvent(new dom.window.MouseEvent('pointermove', { bubbles: true, clientX: 300, clientY: 300 }));
+  assert.equal(node.getAttribute('transform'), afterOrbit);
+  dom.window.close();
+});
+
+test('3d orbit uses viewport-normalized pointer movement', () => {
+  function projectedAfterDrag(height, delta) {
+    const frames = [];
+    const dom = setup(window => {
+      window.matchMedia = () => ({ matches: true });
+      window.requestAnimationFrame = callback => { frames.push(callback); return frames.length; };
+    });
+    const scene = dom.window.LogPoseTemporalGraph.render({ ...frame, build_id: `normalized-${height}` });
+    dom.window.document.body.append(scene); scene.querySelector('[aria-label="3d graph"]').click();
+    const map = scene.querySelector('.constellation-map');
+    map.getBoundingClientRect = () => ({ width: height * 1.5, height });
+    map.dispatchEvent(new dom.window.MouseEvent('pointerdown', { bubbles: true, button: 0, clientX: 100, clientY: 100 }));
+    map.dispatchEvent(new dom.window.MouseEvent('pointermove', { bubbles: true,
+      clientX: 100 + delta, clientY: 100 + delta / 2 }));
+    while (frames.length) frames.shift()(16.67);
+    const projected = scene.querySelector('[data-candidate="two"]').getAttribute('transform');
+    dom.window.close();
+    return projected;
+  }
+  assert.equal(projectedAfterDrag(400, 80), projectedAfterDrag(800, 160));
 });

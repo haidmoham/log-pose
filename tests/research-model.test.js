@@ -47,6 +47,33 @@ test('chart scale keeps a zero baseline and splits missing periods', () => {
   assert.deepEqual(model.contiguousSegments(scaled.points).map(segment => segment.length), [1, 2]);
 });
 
+test('temporal 3d coordinates are id-stable and orbit changes projection without changing depth source', () => {
+  const anchor = { x: 620, y: 270 };
+  const first = model.temporalSpatialPosition('candidate:one', anchor);
+  const repeated = model.temporalSpatialPosition('candidate:one', anchor);
+  const other = model.temporalSpatialPosition('candidate:two', anchor);
+  assert.deepEqual(first, repeated);
+  assert.notEqual(first.z, other.z);
+  const front = model.projectTemporalPoint(first, -.52, -.28);
+  const orbited = model.projectTemporalPoint(first, .24, -.28);
+  assert.notDeepEqual([front.x, front.y], [orbited.x, orbited.y]);
+  assert(front.scale >= .58 && front.scale <= 1.55);
+  assert(front.opacity >= .52 && front.opacity <= 1);
+});
+
+test('temporal decorative colors are stable, bounded to the shared palette, and varied', () => {
+  const ids = Array.from({ length: 24 }, (_, index) => `candidate:${index}`);
+  const first = ids.map(id => model.temporalDisplayTint(id));
+  const repeated = ids.map(id => model.temporalDisplayTint(id));
+  assert.deepEqual(first, repeated);
+  assert(new Set(first.map(tint => tint.hex)).size >= 4);
+  for (const tint of first) {
+    assert.match(tint.hex, /^#[0-9a-f]{6}$/);
+    assert.equal(tint.rgb.length, 3);
+    assert(tint.rgb.every(channel => channel >= 0 && channel <= 255));
+  }
+});
+
 test('URL state validates routes, years, slugs, duplicates, and pin capacity', () => {
   const slugs = new Set(['a', 'b', 'c', 'd', 'e']);
   const state = model.parseUrlState('?view=compare&year=2023&company=b&pinned=a,b,a,c,d,e,nope', slugs, [2021, 2022, 2023, 2024]);

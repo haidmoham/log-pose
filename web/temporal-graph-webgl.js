@@ -91,7 +91,8 @@
     }
     function rebuild() {
       if (!current) return;
-      const { frame, positions, selected, hover, threads, context } = current;
+      const { frame, positions, selected, hover, threads, context, tints } = current;
+      const tintFor = id => (tints?.get(id)?.rgb || [127, 158, 184]).map(channel => channel / 255);
       const nearby = new Set();
       if (hover) {
         nearby.add(hover);
@@ -104,11 +105,13 @@
       const lines = [];
       for (const edge of context ? frame.context_edges || [] : []) {
         const active = edge.left === hover || edge.right === hover;
-        appendLine(lines, positions, edge.left, edge.right, active ? [.96, .75, .45, .74] : [.66, .57, .74, .045 + threads / 100 * .07]);
+        const tint = tintFor(edge.left);
+        appendLine(lines, positions, edge.left, edge.right, active ? [.96, .75, .45, .74] : [...tint, .04 + threads / 100 * .06]);
       }
       for (const edge of frame.edges) {
         const active = edge.candidate_id === selected || edge.candidate_id === hover;
-        appendLine(lines, positions, frame.focus, edge.candidate_id, active ? [1, .79, .43, .96] : [.75, .61, .82, .08 + threads / 100 * .3]);
+        const tint = tintFor(edge.candidate_id);
+        appendLine(lines, positions, frame.focus, edge.candidate_id, active ? [1, .79, .43, .96] : [...tint, .08 + threads / 100 * .3]);
       }
       lineCount = upload(lineBuffer, lines);
       const points = [];
@@ -122,7 +125,8 @@
         if (!point) continue;
         const active = focus || node.id === selected || node.id === hover;
         const local = nearby.has(node.id);
-        const color = active ? [1, .82, .49, 1] : local ? [.98, .71, .43, .98] : [.75, .65, .83, .9];
+        const tint = tintFor(node.id);
+        const color = active ? [1, .82, .49, 1] : local ? [.98, .71, .43, .98] : [...tint, .94];
         points.push(point.x, point.y, ...color, active ? (focus ? 52 : 42) : local ? 31 : frame.focus ? 27 : 19);
       }
       pointCount = upload(pointBuffer, points);
