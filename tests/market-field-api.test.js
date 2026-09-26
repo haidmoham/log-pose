@@ -289,3 +289,51 @@ test('a retained neighbor with no support in either frame is not a disappearance
   assert.equal(noComparison.detail.status, 'observed_without_comparison');
   assert(noComparison.changes.every(change => change.status === 'observed_without_comparison'));
 });
+
+
+test('overview top-k ranks the complete filtered slice and preserves coverage and edge endpoints', () => {
+  const filters = { source: 'cncf', year: '2024', temporal_mode: 'accumulated' };
+  const full = request('frame', filters).body;
+  const limited = request('frame', { ...filters, node_limit: '150', edge_limit: '500' });
+  assert.equal(limited.status, 200);
+  const frame = limited.body;
+  assert.equal(frame.nodes.length, 150);
+  assert.equal(frame.context_edges.length, 500);
+  assert.equal(frame.candidate_count, full.candidate_count);
+  assert.equal(frame.total_context_edges, full.total_context_edges);
+  assert.deepEqual(frame.coverage, full.coverage);
+  assert(frame.candidates_truncated);
+  assert(frame.context_edges_truncated);
+  const visible = new Set(frame.nodes.map(node => node.id));
+  assert(frame.context_edges.every(edge => visible.has(edge.left) && visible.has(edge.right)));
+  assert.deepEqual(request('frame', { ...filters, node_limit: '150', edge_limit: '500' }).body, frame);
+  const fewerEdges = request('frame', { ...filters, node_limit: '150', edge_limit: '100' }).body;
+  assert.deepEqual(fewerEdges.nodes, frame.nodes);
+  assert.deepEqual(fewerEdges.context_edges, frame.context_edges.slice(0, 100));
+  assert.notEqual(fewerEdges.frame_id, frame.frame_id);
+  const fewerNodes = request('frame', { ...filters, node_limit: '50', edge_limit: '500' }).body;
+  assert.deepEqual(fewerNodes.nodes, frame.nodes.slice(0, 50));
+  assert.notEqual(fewerNodes.frame_id, frame.frame_id);
+
+  // Independently recover the rank from all retained pairs, not the old 2,500-edge response cap.
+  const degrees = new Map();
+  const rankedPairs = [];
+  for (const [left, right, keys] of graph.pairs) {
+    const count = keys.filter(index => graph.keys[index][0] === 'cncf' && graph.keys[index][1] <= 2024).length;
+    if (!count) continue;
+    const a = graph.candidates[left].id;
+    const b = graph.candidates[right].id;
+    degrees.set(a, (degrees.get(a) || 0) + 1);
+    degrees.set(b, (degrees.get(b) || 0) + 1);
+    if (visible.has(a) && visible.has(b)) rankedPairs.push({ left: a, right: b, count });
+  }
+  const expectedIds = full.nodes.toSorted((a, b) => (degrees.get(b.id) || 0) - (degrees.get(a.id) || 0)
+    || a.id.localeCompare(b.id)).slice(0, 150).map(node => node.id);
+  assert.deepEqual(frame.nodes.map(node => node.id), expectedIds);
+  rankedPairs.sort((a, b) => b.count - a.count || a.left.localeCompare(b.left) || a.right.localeCompare(b.right));
+  assert.deepEqual(frame.context_edges, rankedPairs.slice(0, 500).map(({ left, right }) => ({ left, right })));
+  assert.deepEqual(frame.nodes.map(node => node.position), frame.nodes.map(node => full.nodes.find(item => item.id === node.id).position));
+  for (const bad of [{ node_limit: '0' }, { node_limit: '5001' }, { edge_limit: '0' }, { edge_limit: '2501' }, { edge_limit: 'NaN' }]) {
+    assert.equal(request('frame', { ...filters, ...bad }).status, 400);
+  }
+});

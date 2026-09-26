@@ -873,3 +873,16 @@ a:focus-visible {
     overflow-x: auto;
   }
 }
+
+/* The overview caps stay beside the evidence filters, with exact visible values. */
+.temporal-density { min-width: 0; margin: 12px 0 0; padding: 10px 12px; border: 1px solid var(--rule); border-radius: 8px; background: var(--surface); }
+.temporal-density legend { padding: 0 5px; color: var(--ink-soft); font: 11px var(--sans); }
+.temporal-density-inputs { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto; align-items: end; gap: 10px; }
+.temporal-density label { display: grid; min-width: 0; gap: 6px; color: var(--muted); font: 11px var(--sans); }
+.temporal-density select { width: 100%; min-width: 0; min-height: 44px; padding: 0 10px; color: var(--ink); background: var(--surface-raised, #262638); border: 1px solid var(--rule-strong); border-radius: 6px; font: 12px var(--sans); }
+.temporal-density button { min-height: 44px; }
+.temporal-density-note { margin: 9px 0 0; color: var(--muted); font: 10px/1.5 var(--sans); }
+@media (max-width: 600px) {
+  .temporal-density-inputs { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .temporal-density button { grid-column: 1 / -1; justify-self: end; }
+}

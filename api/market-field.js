@@ -245,6 +245,10 @@ function temporalFrame(params) {
   const yearValue = parameter(params, 'year', '');
   const mode = parameter(params, 'temporal_mode', 'snapshot');
   const clock = parameter(params, 'clock', 'inventory_year');
+  const overviewNodeLimit = numberParameter(params, 'node_limit', graph.candidates.length, 5000);
+  const overviewEdgeLimit = numberParameter(params, 'edge_limit', 2500, 2500);
+  if (!overviewNodeLimit || !overviewEdgeLimit) throw new Error('graph limits must be positive');
+  const rankedOverview = params.has('node_limit') || params.has('edge_limit');
   const candidateId = parameter(params, 'candidate', '');
   const neighborId = parameter(params, 'neighbor', '');
   const offset = numberParameter(params, 'offset', 0, graph.candidates.length);
@@ -271,7 +275,8 @@ function temporalFrame(params) {
   const frameId = temporalFrameId({ build_id: graph.build_id, layout_version: layout.layout_version, source, year, mode,
     compare_year: comparison?.year ?? null, category, query: queryText,
     candidate: candidateId || null, neighbor: neighborId || null, offset,
-    limit: numberParameter(params, 'limit', 60, 100) });
+    limit: numberParameter(params, 'limit', 60, 100),
+    node_limit: overviewNodeLimit, edge_limit: overviewEdgeLimit, ranked_overview: rankedOverview });
   const selectedYears = mode === 'snapshot' ? (artifact ? [year] : []) : artifactYears;
   const comparisonYears = mode === 'snapshot'
     ? (comparison ? [Number(compareYear)] : []) : (comparison ? projection.artifacts
@@ -348,17 +353,31 @@ function temporalFrame(params) {
     id: candidate.id, name: eligibleObservations(candidate)[0].rows[0]?.name || candidate.name }));
   if (!focus) {
     const matchedIndices = new Set(matchingCandidates.map(candidate => candidateIndex.get(candidate.id)));
-    const contextEdges = [];
-    let totalContextEdges = 0;
+    const matchingEdges = [];
+    const peerCounts = new Map();
     for (const [left, right, keyIndices] of graph.pairs) {
       if (!matchedIndices.has(left) || !matchedIndices.has(right)) continue;
       const placements = keyIndices.filter(keyIndex => keyMatches(graph.keys[keyIndex]))
         .map(keyIndex => graph.keys[keyIndex]);
       if (!placements.length) continue;
-      totalContextEdges += 1;
-      if (contextEdges.length < 2500) contextEdges.push({ left: graph.candidates[left].id,
-        right: graph.candidates[right].id });
+      const leftId = graph.candidates[left].id;
+      const rightId = graph.candidates[right].id;
+      matchingEdges.push({ left: leftId, right: rightId, placement_count: placements.length });
+      peerCounts.set(leftId, (peerCounts.get(leftId) || 0) + 1);
+      peerCounts.set(rightId, (peerCounts.get(rightId) || 0) + 1);
     }
+    // Rank within the complete filtered slice before applying either display cap.
+    const rankedCandidates = rankedOverview ? matchingCandidates.toSorted((left, right) =>
+      (peerCounts.get(right.id) || 0) - (peerCounts.get(left.id) || 0)
+      || left.id.localeCompare(right.id)) : matchingCandidates;
+    const displayedCandidates = rankedCandidates.slice(0, overviewNodeLimit);
+    const displayedIds = new Set(displayedCandidates.map(candidate => candidate.id));
+    const eligibleEdges = matchingEdges.filter(edge => displayedIds.has(edge.left) && displayedIds.has(edge.right));
+    if (rankedOverview) eligibleEdges.sort((left, right) => right.placement_count - left.placement_count
+      || left.left.localeCompare(right.left) || left.right.localeCompare(right.right));
+    const contextEdges = eligibleEdges.slice(0, overviewEdgeLimit)
+      .map(({ left, right }) => ({ left, right }));
+    const totalContextEdges = matchingEdges.length;
     return response(200, { schema_version: graph.schema_version, build_id: graph.build_id,
     status: 'ready', frame_id: frameId, source, year, temporal_mode: mode, compare_year: comparison?.year ?? null,
     active_clock: 'inventory_year', precision: 'year', artifact: {
@@ -371,7 +390,13 @@ function temporalFrame(params) {
     filters: { source, category, query: queryText }, suggestions, candidate_count: matchingCandidates.length,
     available_categories: availableCategories,
     focus: null,
-    nodes: matchingCandidates.map(candidate => ({ id: candidate.id, name: eligibleName(candidate),
+    display_limits: { nodes: overviewNodeLimit, edges: overviewEdgeLimit,
+      node_order: rankedOverview ? 'peer_count_desc_then_id' : 'name_then_id',
+      edge_order: rankedOverview ? 'placement_count_desc_then_ids' : 'retained_pair_order' },
+    displayed_candidate_count: displayedCandidates.length,
+    candidates_truncated: displayedCandidates.length < matchingCandidates.length,
+    eligible_context_edges: eligibleEdges.length,
+    nodes: displayedCandidates.map(candidate => ({ id: candidate.id, name: eligibleName(candidate),
       position: layout.positions[candidate.id],
       observed_years: [...new Set(eligibleObservations(candidate).map(item => item.year))],
       identity_status: 'unreviewed_candidate_key', frame_presence: 'observed_in_selected_frame' })),
