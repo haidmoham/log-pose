@@ -6,7 +6,11 @@
   const byId = id => document.getElementById(id);
 
   function start() {
-    const cache = model.createCache();
+    const client = root.LogPoseAtlasClient.create({
+      cache: model.createCache(),
+      fallbackMessage: () => 'reviewed claims are unavailable',
+      buildMismatchMessage: 'the reviewed build changed; reload to discover its version'
+    });
     const names = new Map();
     let discovery;
     let displayed;
@@ -67,18 +71,6 @@
       return { layer: 'reviewed', mode, build_id: discovery.build_id, ...selected(), ...extra };
     }
 
-    async function request(parameters, signal) {
-      const key = new URLSearchParams(parameters).toString();
-      const saved = cache.get(key);
-      if (saved) return saved;
-      const response = await fetch(`./api/atlas?${key}`, { signal, headers: { accept: 'application/json' } });
-      const result = await response.json();
-      if (!response.ok) throw new Error(result.message || result.error || 'reviewed claims are unavailable');
-      if (parameters.build_id && result.build_id !== parameters.build_id) throw new Error('the reviewed build changed; reload to discover its version');
-      cache.put(key, result);
-      return result;
-    }
-
     function replaceUrl(parameters) {
       history.replaceState(null, '', `${location.pathname}?${new URLSearchParams(parameters)}`);
     }
@@ -90,7 +82,7 @@
       status('loading the requested claims; the displayed frame keeps its previous cutoff…');
       const started = performance.now();
       try {
-        const result = await request(parameters, controller.signal);
+        const result = await client.request(parameters, controller.signal);
         if (disposed || ticket !== generation) return;
         displayed = result; committedRequest = parameters; inspected = null;
         render(); replaceUrl(parameters); status('');
@@ -268,7 +260,7 @@
         const parameters = { layer: 'reviewed', mode: 'explain', build_id: frame.build_id,
           ...frame.selection, entity: frame.focus.id, neighbor, cursor };
         if (claim) parameters.claim = claim;
-        const evidence = await request(parameters, controller.signal);
+        const evidence = await client.request(parameters, controller.signal);
         if (disposed || ticket !== generation || displayed.frame_id !== frame.frame_id || evidence.frame_id !== frame.frame_id) return;
         inspected = evidence;
         renderEvidence(evidence);
@@ -334,7 +326,7 @@
       try {
         const parameters = { layer: 'reviewed', mode: 'discover' };
         if (url.get('build_id')) parameters.build_id = url.get('build_id');
-        const result = await request(parameters, controller.signal);
+        const result = await client.request(parameters, controller.signal);
         if (disposed || ticket !== generation) return;
         discovery = result;
         predicate.replaceChildren(new Option('all predicates', ''));
@@ -391,7 +383,7 @@
     });
     byId('atlas-export').addEventListener('click', exportInvestigation);
     root.addEventListener('pagehide', () => {
-      disposed = true; generation += 1; controller?.abort(); root.clearTimeout(filterTimer); cache.clear();
+      disposed = true; generation += 1; controller?.abort(); root.clearTimeout(filterTimer); client.clear();
     });
     root.addEventListener('pageshow', event => { if (event.persisted) { disposed = false; initialize(); } });
     initialize();

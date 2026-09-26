@@ -2,8 +2,9 @@
 
 const fs = require('node:fs');
 const path = require('node:path');
-const crypto = require('node:crypto');
 const { DatabaseSync } = require('node:sqlite');
+const { AtlasError, digest, fileDigest, parameterValue, positiveInteger,
+  encodeCursor, decodeCursor, stablePosition } = require('./atlas-protocol.js');
 
 const LIMITS = Object.freeze({ response_bytes: 1024 * 1024, page: 100, claims: 200000,
   milliseconds: 750, cache_kib: 8192, handles: 2 });
@@ -16,37 +17,12 @@ const NOTES = [
   'accepted hypotheses remain untested hypotheses; graph position and order do not encode strength.'
 ];
 
-class ReviewedAtlasError extends Error {
-  constructor(status, code, message) { super(message); this.status = status; this.code = code; }
-}
-function digest(value) { return crypto.createHash('sha256').update(JSON.stringify(value)).digest('hex'); }
-function fileDigest(filename) {
-  const hash = crypto.createHash('sha256');
-  const descriptor = fs.openSync(filename, 'r');
-  const block = Buffer.allocUnsafe(1024 * 1024);
-  try {
-    let bytes;
-    while ((bytes = fs.readSync(descriptor, block, 0, block.length, null)) > 0) {
-      hash.update(block.subarray(0, bytes));
-    }
-  } finally { fs.closeSync(descriptor); }
-  return hash.digest('hex');
-}
+const ReviewedAtlasError = AtlasError;
 function parameter(params, name, fallback = '') {
-  const values = params.getAll(name);
-  if (values.length > 1) throw new ReviewedAtlasError(400, 'invalid_request', `repeat parameter: ${name}`);
-  const value = values.length ? values[0] : fallback;
-  if (value.length > (name.includes('cursor') ? 2048 : 240)) {
-    throw new ReviewedAtlasError(400, 'invalid_request', `${name} exceeds its length budget`);
-  }
-  return value;
+  return parameterValue(params, name, fallback, name.includes('cursor') ? 2048 : 240);
 }
 function integer(params, name, fallback, maximum) {
-  const value = parameter(params, name, String(fallback));
-  if (!/^[1-9]\d*$/.test(value) || Number(value) > maximum) {
-    throw new ReviewedAtlasError(400, 'invalid_request', `invalid ${name}`);
-  }
-  return Number(value);
+  return positiveInteger(parameter(params, name, String(fallback)), name, maximum);
 }
 function validDate(value) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
@@ -76,22 +52,15 @@ function selection(params) {
   if (!['both', 'in', 'out'].includes(direction)) throw new ReviewedAtlasError(400, 'invalid_request', 'invalid direction');
   return { clock, temporal_mode, cutoff, review_lens, basis, predicate: predicate === 'all' ? '' : predicate, direction };
 }
-function encodeCursor(binding, position) {
-  return Buffer.from(JSON.stringify({ binding, position })).toString('base64url');
-}
 function cursorPosition(params, binding) {
   const cursor = parameter(params, 'cursor');
   if (!cursor) return 0;
-  try {
-    const parsed = JSON.parse(Buffer.from(cursor, 'base64url').toString('utf8'));
-    if (parsed.binding !== binding || !Number.isSafeInteger(parsed.position) || parsed.position < 0
-        || parsed.position > LIMITS.claims) throw new Error();
-    return parsed.position;
-  } catch { throw new ReviewedAtlasError(409, 'cursor_mismatch', 'cursor belongs to another build, selection or page'); }
+  return decodeCursor(cursor, binding, position => Number.isSafeInteger(position)
+    && position >= 0 && position <= LIMITS.claims,
+  'cursor belongs to another build, selection or page');
 }
 function position(id, version) {
-  const bytes = crypto.createHash('sha256').update(`${version}:${id}`).digest();
-  return { x: bytes.readUInt32BE(0) / 0xffffffff, y: bytes.readUInt32BE(4) / 0xffffffff };
+  return stablePosition(version, id);
 }
 function where(selectionValue, entityId = null) {
   const clauses = []; const values = [];

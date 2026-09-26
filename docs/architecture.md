@@ -24,11 +24,17 @@ the Python preview delegates to the same Node handler. candidate positions are
 stable, versioned display addresses. top-k ranks exact shared placements and
 fetches retained rows only when an edge is inspected. the selected source,
 revision, inventory-year clock and build govern every accepted frame.
+`api/atlas-protocol.js` owns the shared error, hash, bounded parameter, cursor,
+and stable-position primitives. inventory and reviewed providers retain their
+own selector rules, cursor budgets, work limits, messages, and snapshot policy.
 
 membership normalization lives in `atlas_membership.py`; immutable publication
 and incremental database updates live in `atlas_snapshot.py`. the browser's
-pure frame adaptation and byte cache live in `atlas-model.js`; `atlas-view.js`
-composes controls and requests using `console-ui.js` and `temporal-graph.js`.
+pure frame adaptation and byte cache live in `atlas-model.js`. `atlas-client.js`
+owns query serialization, cache access, JSON transport, HTTP errors, and the
+pinned-build response guard shared by both atlas layers. each view keeps its own
+abort, retry, disposal, URL, accepted-frame, inspector, and rendering lifecycle.
+`atlas-view.js` composes those controls using `console-ui.js` and `temporal-graph.js`.
 see [the query contract](atlas-service.md), [record grains](atlas-membership.md),
 [publication contract](atlas-snapshots.md), and [measured frontier](atlas-scale.md).
 

@@ -24,7 +24,11 @@
   const { node, append, link } = root.LogPoseUI;
   const model = root.LogPoseAtlasModel;
   const byId = id => document.getElementById(id);
-  const cache = model.createCache();
+  const client = root.LogPoseAtlasClient.create({
+    cache: model.createCache(),
+    fallbackMessage: statusCode => `request failed (${statusCode})`,
+    buildMismatchMessage: 'snapshot changed; reload to discover its version'
+  });
   let manifest = null;
   let displayed = null;
   let inspected = null;
@@ -51,19 +55,6 @@
       artifact: temporalMode === 'snapshot' ? artifact.artifact_id : '' };
   }
 
-  async function request(fields, signal) {
-    const params = new URLSearchParams(fields);
-    const key = params.toString();
-    const saved = cache.get(key);
-    if (saved) return saved;
-    const response = await fetch(`./api/atlas?${key}`, { signal, headers: { accept: 'application/json' } });
-    const result = await response.json();
-    if (!response.ok) throw new Error(result.message || result.error || `request failed (${response.status})`);
-    if (fields.build_id && result.build_id !== fields.build_id) throw new Error('snapshot changed; reload to discover its version');
-    cache.put(key, result);
-    return result;
-  }
-
   function replaceUrl(fields) {
     const params = new URLSearchParams(fields);
     params.delete('limit');
@@ -81,7 +72,7 @@
     controller = new AbortController();
     status('loading requested frame; the displayed evidence stays under its prior label…');
     try {
-      const result = await request(fields, controller.signal);
+      const result = await client.request(fields, controller.signal);
       if (disposed || ticket !== generation) return;
       displayed = result;
       committedRequest = fields;
@@ -218,7 +209,7 @@
     const frame = displayed;
     status('loading exact premises…');
     try {
-      const evidence = await request({ mode: 'explain', build_id: frame.build_id, ...frame.selection,
+      const evidence = await client.request({ mode: 'explain', build_id: frame.build_id, ...frame.selection,
         candidate: frame.focus.id, neighbor, cursor }, controller.signal);
       if (disposed || ticket !== generation || displayed.frame_id !== frame.frame_id || evidence.frame_id !== frame.frame_id) return;
       inspected = evidence;
@@ -320,12 +311,12 @@
       const url = new URLSearchParams(location.search);
       const discoveryRequest = { mode: 'discover' };
       if (url.get('build_id')) discoveryRequest.build_id = url.get('build_id');
-      const discovery = await request(discoveryRequest, signal);
+      const discovery = await client.request(discoveryRequest, signal);
       if (disposed || ticket !== generation) return;
       manifest = { ...discovery, artifacts: [...discovery.artifacts] };
       // Discovery itself is paged; no silent loss of a future source revision.
       while (manifest.next_cursor) {
-        const next = await request({ mode: 'discover', build_id: manifest.build_id, cursor: manifest.next_cursor }, signal);
+        const next = await client.request({ mode: 'discover', build_id: manifest.build_id, cursor: manifest.next_cursor }, signal);
         if (disposed || ticket !== generation) return;
         manifest.artifacts.push(...next.artifacts); manifest.next_cursor = next.next_cursor;
         if (manifest.artifacts.length > 1000) throw new Error('source navigation exceeds this interface budget');
@@ -412,7 +403,7 @@
   });
   byId('atlas-export').addEventListener('click', exportInvestigation);
   root.addEventListener('pagehide', () => {
-    disposed = true; generation += 1; controller?.abort(); root.clearTimeout(controlTimer); cache.clear();
+    disposed = true; generation += 1; controller?.abort(); root.clearTimeout(controlTimer); client.clear();
     if (densityFrame !== null) root.cancelAnimationFrame(densityFrame);
   });
   root.addEventListener('pageshow', event => { if (event.persisted) { disposed = false; start(); } });
