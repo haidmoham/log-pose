@@ -110,13 +110,19 @@ def test_maintenance_failure_is_invisible_and_rerun_resumes(atlas_db, tmp_path, 
     changed["nodes"][0]["description"] = "second build"
     second = make_snapshot(tmp_path / "second", changed)
     original_prepare = postgres_module._prepare_serving_tables
+
+    def fail_maintenance(_connection):
+        raise RuntimeError("maintenance failed")
+
     with monkeypatch.context() as patch:
-        patch.setattr(postgres_module, "_prepare_serving_tables",
-                      lambda _connection: (_ for _ in ()).throw(RuntimeError("maintenance failed")))
+        patch.setattr(postgres_module, "_prepare_serving_tables", fail_maintenance)
         with pytest.raises(RuntimeError, match="maintenance failed"):
             publish_atlas_snapshot(atlas_db, tmp_path / "second")
     assert atlas_db.autocommit is False
     with atlas_db.cursor() as cursor:
+        cursor.execute("""SELECT count(*) FROM pg_locks
+            WHERE pid=pg_backend_pid() AND locktype='advisory'""")
+        assert cursor.fetchone()[0] == 0
         cursor.execute("SELECT ready,prepared_at FROM public.atlas_snapshot WHERE build_id=%s",
                        (second["build_id"],))
         assert cursor.fetchone() == (False, None)

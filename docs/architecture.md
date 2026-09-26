@@ -29,7 +29,10 @@ see [the query contract](atlas-service.md), [record grains](atlas-membership.md)
 [publication contract](atlas-snapshots.md), and [measured frontier](atlas-scale.md).
 
 `atlas_postgres.py` validates and streams an immutable snapshot into the additive
-`014_atlas_postgres.sql` schema, then switches its current pointer atomically.
+`014_atlas_postgres.sql` schema. migration `015` gates serving readiness: an
+import commits as unpublished, runs explicit VACUUM/ANALYZE, then reconciles
+again before marking ready and switching the current pointer atomically.
+failed maintenance leaves a resumable build hidden from snapshot discovery.
 `atlas-postgres.js` reads the six `gold.atlas_*` views in a read-only transaction.
 the [Railway service](atlas-railway.md) is optional infrastructure for this
 provider; the frontend remains on Vercel. `atlas_read.py` consumes the same

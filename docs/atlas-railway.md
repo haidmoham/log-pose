@@ -72,9 +72,12 @@ database and republish from the retained files. reconcile build IDs, all row
 counts, exact premise IDs/hashes, top-k order and discovery. test with the
 SELECT-only role as well as the importer role.
 
-the publisher switches `atlas_current` only after reconciliation in the same
-transaction. rerunning the publisher for a retained prior build is the pointer
-rollback path. a failed import keeps the current pointer and prior rows.
+the publisher commits validated imports with `ready=false`, then runs
+VACUUM/ANALYZE before a final reconciliation. readiness and `atlas_current`
+change together in the final transaction. a failed import or maintenance step
+keeps the prior current pointer; a staged build stays hidden from the reader
+and can be resumed by rerunning the command. rerunning the publisher for a
+retained ready build is the pointer rollback path.
 rolling the service code back does not repair evidence or remove new builds.
 restoring the previous Vercel environment setting is a separate operational
 rollback; never fall back silently during a request.
