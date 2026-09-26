@@ -113,6 +113,8 @@ Migration `016` adds the scoped topology-reconstruction provenance seam. It pres
 
 Migration `017` refreshes the lossless silver entity, candidate, and candidate-evidence views after migration `016` appends provenance-clock columns. It also exposes the readiness clocks that migration `015` added to `gold.atlas_snapshot`. PostgreSQL fixes a `SELECT *` view's column list when the view is created, so the additive migration keeps appended columns visible without rewriting an applied migration.
 
+Migration `018` restores `gold.atlas_snapshot` as a readiness-filtered serving projection after the column refresh. It exposes `ready` and `prepared_at` for prepared rows while an unprepared immutable build remains available only in `public` until publication maintenance succeeds.
+
 The [experimental benchmark protocol](../experiments/ml/benchmark/PROTOCOL.md) defines a separate, offline read model over retained artifacts. A versioned case manifest fixes the questions and artifact IDs; evaluator-only answer keys stay outside candidate-visible input. A replay run records its manifest hash, code and control versions, selected evidence IDs, exclusions, and case-level scores. This layer adds no evidence store or migration. Historical availability requires explicit proof from source publication, immutable capture or filing accession, and, for system-known replay, arrival time. Current dashboard selections and review annotations are not historical facts.
 
 ## safe extension seams

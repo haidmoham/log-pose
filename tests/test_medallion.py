@@ -52,7 +52,17 @@ def test_every_domain_table_has_one_lossless_layer_view():
                     cursor.execute(f"SELECT count(*) AS count FROM public.{table_name}")
                     public_count = cursor.fetchone()["count"]
                     cursor.execute(f"SELECT count(*) AS count FROM {layer}.{table_name}")
-                    assert cursor.fetchone()["count"] == public_count
+                    layer_count = cursor.fetchone()["count"]
+                    if layer == "gold" and table_name == "atlas_snapshot":
+                        cursor.execute("SELECT count(*) AS count FROM public.atlas_snapshot WHERE ready")
+                        assert layer_count == cursor.fetchone()["count"]
+                    elif layer == "gold" and table_name == "atlas_current":
+                        cursor.execute("""SELECT count(*) AS count FROM public.atlas_current AS current
+                            JOIN public.atlas_snapshot AS snapshot USING (build_id)
+                            WHERE snapshot.ready""")
+                        assert layer_count == cursor.fetchone()["count"]
+                    else:
+                        assert layer_count == public_count
                     cursor.execute("""SELECT column_name FROM information_schema.columns
                         WHERE table_schema=%s AND table_name=%s ORDER BY ordinal_position""",
                         ("public", table_name))
@@ -77,4 +87,13 @@ def test_every_domain_table_has_one_lossless_layer_view():
             row = cursor.fetchone()
             assert row["original_created_at"] is None
             assert row["reconstruction_arrived_at"] is not None
+
+            cursor.execute("""INSERT INTO public.atlas_snapshot(build_id,manifest,ready)
+                VALUES ('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa','{}'::jsonb,false)""")
+            cursor.execute("""SELECT ready,prepared_at FROM public.atlas_snapshot
+                WHERE build_id='aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'""")
+            assert cursor.fetchone() == {"ready": False, "prepared_at": None}
+            cursor.execute("""SELECT 1 FROM gold.atlas_snapshot
+                WHERE build_id='aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'""")
+            assert cursor.fetchone() is None
             connection.rollback()
