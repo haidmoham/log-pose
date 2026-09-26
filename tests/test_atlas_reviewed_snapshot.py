@@ -1,4 +1,5 @@
 import json
+import shutil
 import sqlite3
 from pathlib import Path
 
@@ -39,8 +40,40 @@ def test_check_rejects_corrupted_database(tmp_path):
         check_current(tmp_path)
 
 
+def test_existing_database_is_validated_before_missing_manifest_can_be_published(tmp_path):
+    manifest = build_atlas_reviewed(ROOT, tmp_path)
+    database = tmp_path / manifest["database"]
+    (tmp_path / "current.json").unlink()
+    (tmp_path / f"{manifest['build_id']}.json").unlink()
+    database.write_bytes(database.read_bytes()[:-16])
+    with pytest.raises((ValueError, sqlite3.DatabaseError)):
+        build_atlas_reviewed(ROOT, tmp_path)
+
+
 def test_rebuild_is_deterministic_and_keeps_immutable_manifest(tmp_path):
     first = build_atlas_reviewed(ROOT, tmp_path)
     second = build_atlas_reviewed(ROOT, tmp_path)
     assert first == second
     assert (tmp_path / f"{first['build_id']}.json").read_bytes() == (tmp_path / "current.json").read_bytes()
+
+
+def test_check_detects_stale_canonical_identity_export(tmp_path):
+    output = tmp_path / "output"
+    build_atlas_reviewed(ROOT, output)
+    repository = tmp_path / "repository"
+    for relative in ("web/data/index.json", "web/data/topology-discovery.json",
+                     "docs/research/topology-source-manifest.json"):
+        destination = repository / relative
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(ROOT / relative, destination)
+    source_root = ROOT / "docs/research/source-artifacts/topology"
+    destination_root = repository / "docs/research/source-artifacts/topology"
+    shutil.copytree(source_root, destination_root)
+    discovery_path = repository / "web/data/topology-discovery.json"
+    discovery = json.loads(discovery_path.read_text())
+    reviewed = next(node for node in discovery["nodes"]
+                    if (node.get("identity_review") or {}).get("pilot_slug") == "datadog")
+    reviewed["identity_review"]["id"] += "-changed"
+    discovery_path.write_text(json.dumps(discovery))
+    with pytest.raises(ValueError, match="stale relative"):
+        check_current(output, repository)

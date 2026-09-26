@@ -2,7 +2,11 @@
 
 const assert = require('node:assert/strict');
 const test = require('node:test');
+const fs = require('node:fs');
+const os = require('node:os');
+const crypto = require('node:crypto');
 const path = require('node:path');
+const { DatabaseSync } = require('node:sqlite');
 const { createReviewedAtlasHandler } = require('../api/atlas-reviewed.js');
 
 const root = path.join(__dirname, '../api/data/atlas-reviewed');
@@ -17,7 +21,9 @@ test('discover reports the independently versioned accepted lens', () => {
   assert.equal(response.body.review_lens, 'current_accepted_at_build');
   assert.equal(response.body.counts.claims, 4);
   assert.deepEqual(response.body.predicates.map(row => row.id),
-    ['announced_partnership_with', 'invested_in', 'named_competitor_of']);
+    ['announced_partnership_with', 'invested_in', 'named_competitor_of', 'shared_exposure_hypothesis']);
+  assert.equal(response.body.predicates.at(-1).count, 0);
+  assert.equal(response.body.predicates.at(-1).total_count, 1);
 });
 
 test('candidate focus uses reviewed identity and hypotheses require opt in', () => {
@@ -55,6 +61,34 @@ test('identity mismatch, unsupported clocks and unknown candidates fail explicit
   assert.equal(request('mode=discover&clock=relationship_validity').body.error, 'unsupported_clock');
 });
 
+test('direction filtering never includes an unrelated symmetric claim', () => {
+  const response = request('mode=focus&entity=elastic&direction=out&basis=all');
+  assert.equal(response.status, 200);
+  assert.equal(response.body.count.value, 0);
+  assert.deepEqual(response.body.edges, []);
+});
+
+test('malformed build paths and unexpected failures do not leak filesystem details', () => {
+  const traversal = request('mode=discover&build_id=../../etc/passwd');
+  assert.equal(traversal.status, 410);
+  assert.equal(traversal.body.error, 'build_unavailable');
+  const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'atlas-reviewed-broken-'));
+  fs.writeFileSync(path.join(temporary, 'current.json'), '{');
+  const handler = createReviewedAtlasHandler(temporary);
+  try {
+    const broken = handler(new URLSearchParams('mode=discover'));
+    assert.equal(broken.status, 500);
+    assert.deepEqual(broken.body, { error: 'reviewed_provider_error', message: 'reviewed provider failed' });
+  } finally { handler.close(); fs.rmSync(temporary, { recursive: true, force: true }); }
+});
+
+test('claim and neighbor must identify the same reviewed pair', () => {
+  const response = request('mode=explain&entity=datadog&neighbor=snowflake'
+    + '&claim=datadog-named-competitor-elastic-log-management-2024&basis=all');
+  assert.equal(response.status, 409);
+  assert.equal(response.body.error, 'claim_neighbor_mismatch');
+});
+
 test('cursor is bound to build, selection and page size', () => {
   const first = request('mode=search&query=&limit=1');
   assert.ok(first.body.next_cursor);
@@ -72,4 +106,31 @@ test('compare reports publication availability and never activity', () => {
     'datadog-named-competitor-elastic-log-management-2024',
     'datadog-snowflake-shared-customer-workload-exposure-hypothesis-2024']);
   assert.match(response.body.caveat, /not relationship activity/);
+  const other = request('mode=compare&entity=datadog&basis=all&compare_cutoff=2025-02-20&cutoff=2025-02-20');
+  assert.notEqual(other.body.frame_id, response.body.frame_id);
+});
+
+test('dense claim work fails before detail materialization', () => {
+  const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'atlas-reviewed-dense-'));
+  fs.cpSync(root, temporary, { recursive: true });
+  const manifestPath = path.join(temporary, 'current.json');
+  const manifest = JSON.parse(fs.readFileSync(manifestPath));
+  const databasePath = path.join(temporary, manifest.database);
+  const database = new DatabaseSync(databasePath);
+  database.exec(`WITH RECURSIVE sequence(value) AS (
+      SELECT 1 UNION ALL SELECT value+1 FROM sequence WHERE value<=200000
+    ) INSERT INTO claim(id,subject_id,object_id,predicate,direction,status,latest_source_date,detail_json)
+      SELECT printf('dense-%06d',value),'datadog','elastic','named_competitor_of',
+        'subject_to_object','documented','2025-02-20','{}' FROM sequence`);
+  database.close();
+  const bytes = fs.readFileSync(databasePath);
+  manifest.database_bytes = bytes.length;
+  manifest.database_sha256 = crypto.createHash('sha256').update(bytes).digest('hex');
+  fs.writeFileSync(manifestPath, JSON.stringify(manifest));
+  const handler = createReviewedAtlasHandler(temporary);
+  try {
+    const response = handler(new URLSearchParams('mode=focus&entity=datadog'));
+    assert.equal(response.status, 422);
+    assert.equal(response.body.error, 'query_budget_exceeded');
+  } finally { handler.close(); fs.rmSync(temporary, { recursive: true, force: true }); }
 });

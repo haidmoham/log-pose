@@ -153,7 +153,7 @@ def validate_snapshot(database_path: Path, logical: dict) -> None:
         connection.close()
 
 
-def build_atlas_reviewed(repository_root: Path, output_root: Path) -> dict:
+def _prepare_model(repository_root: Path) -> tuple[dict, list[dict], list[dict], dict]:
     topology_path = repository_root / "web/data/index.json"
     discovery_path = repository_root / "web/data/topology-discovery.json"
     index = json.loads(topology_path.read_text())
@@ -176,6 +176,11 @@ def build_atlas_reviewed(repository_root: Path, output_root: Path) -> dict:
                                       else "reviewed_external_entity"))
                 for row in sorted(topology["entities"], key=lambda item: item["slug"])]
     logical = _logical(topology, index["build_id"], discovery["build_id"], entities, links)
+    return topology, entities, links, logical
+
+
+def build_atlas_reviewed(repository_root: Path, output_root: Path) -> dict:
+    topology, entities, links, logical = _prepare_model(repository_root)
     output_root.mkdir(parents=True, exist_ok=True)
     with tempfile.NamedTemporaryFile(dir=output_root, prefix=".reviewed-", suffix=".sqlite",
                                      delete=False) as temporary:
@@ -186,6 +191,9 @@ def build_atlas_reviewed(repository_root: Path, output_root: Path) -> dict:
         database_name = f"{logical['build_id']}.sqlite"
         final_database = output_root / database_name
         if final_database.exists():
+            validate_snapshot(final_database, logical)
+            if _sha256(final_database) != _sha256(stage):
+                raise ValueError("immutable reviewed database differs from deterministic rebuild")
             stage.unlink()
         else:
             os.replace(stage, final_database)
@@ -211,7 +219,7 @@ def build_atlas_reviewed(repository_root: Path, output_root: Path) -> dict:
         stage.unlink(missing_ok=True)
 
 
-def check_current(output_root: Path) -> dict:
+def check_current(output_root: Path, repository_root: Path | None = None) -> dict:
     manifest = json.loads((output_root / "current.json").read_text())
     database = output_root / manifest["database"]
     if database.stat().st_size != manifest["database_bytes"] or _sha256(database) != manifest["database_sha256"]:
@@ -219,4 +227,8 @@ def check_current(output_root: Path) -> dict:
     logical = {key: value for key, value in manifest.items()
                if key not in {"database", "database_sha256", "database_bytes"}}
     validate_snapshot(database, logical)
+    if repository_root is not None:
+        _, _, _, expected = _prepare_model(repository_root)
+        if logical != expected:
+            raise ValueError("reviewed snapshot is stale relative to canonical exports")
     return manifest

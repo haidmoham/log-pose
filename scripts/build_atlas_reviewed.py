@@ -9,7 +9,8 @@ def main():
     parser.add_argument("--output", type=Path, default=Path("api/data/atlas-reviewed"))
     parser.add_argument("--check", action="store_true")
     args = parser.parse_args()
-    result = check_current(args.output) if args.check else build_atlas_reviewed(args.repository_root, args.output)
+    result = (check_current(args.output, args.repository_root) if args.check
+              else build_atlas_reviewed(args.repository_root, args.output))
     print(result["build_id"])
 
 
