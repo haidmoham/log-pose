@@ -1,0 +1,98 @@
+{
+  "schema_version": "issue11-human-review-packet-v1",
+  "packet_id": "dbt-snowflake-integration-20260926",
+  "prepared_on": "2026-09-26",
+  "application_commit": "72333464855bd6a8003086a92fe89acc9d02ef34",
+  "status": "human_accepted_pending_canonical_import",
+  "canonical_mutations": false,
+  "review": {
+    "decision": "accept",
+    "reviewer": "user",
+    "recorded_at": "2026-09-26T15:38:50.335653+00:00",
+    "user_response": "accept at this attributed scope",
+    "scope": "The proposed attributed company/workflow integration statement only; retain all stated temporal and product limits.",
+    "rationale": "Explicit user semantic acceptance in this task after presentation of the review packet and its limits. No customer or product identity acceptance was requested or supplied."
+  },
+  "source": {
+    "manifest_id": "dbt-series-d-2022",
+    "source_record_id": "seed-source:dbt-series-d-2022:64694c906f3c8be8b3fd90d88725fe3598a896533adf3123a24dc684610ffece",
+    "artifact_path": "docs/research/source-artifacts/topology/dbt-series-d-2022.html",
+    "artifact_sha256": "64694c906f3c8be8b3fd90d88725fe3598a896533adf3123a24dc684610ffece",
+    "publisher": "dbt Labs",
+    "published_on": "2022-02-24",
+    "retained_page_date_modified": "2024-06-03T22:09:22Z",
+    "archive_capture": null,
+    "historical_limit": "A page obtained in 2026 with a printed 2022 date and 2024 modification metadata does not prove the exact wording was available in 2022.",
+    "source_url": "https://www.getdbt.com/blog/dbt-labs-raises-222m-in-series-d-funding-at-4-2b-valuation-led-by-altimeter-with-participation-from-databricks-and-snowflake"
+  },
+  "proposal": {
+    "local_proposal_id": "proposal:dbt-labs-integrates-with-snowflake-products:20260926",
+    "subject_slug": "dbt-labs",
+    "object_slug": "snowflake",
+    "endpoint_kind": "existing_reviewed_company_identities",
+    "predicate": "integrates_with",
+    "proposed_basis": "source_statement",
+    "direction": "subject_to_object",
+    "scope": "dbt data-transformation workloads with Snowflake products; editions and versions unspecified",
+    "interpretation": "dbt Labs states that dbt transformation workloads had existing integrations with Snowflake products in its announcement bearing publication date 2022-02-24.",
+    "temporal_form": "observed_state",
+    "temporal_basis": "Source describes existing integrations; publication is not the integration start or end and exact in-period availability of the retained wording is unproven.",
+    "event_on": null,
+    "valid_from": null,
+    "valid_to": null,
+    "evidence": {
+      "locator": "Deepened partnerships list item",
+      "normalized_block_selector": "main p, main li",
+      "normalized_block_zero_based_index": 9,
+      "normalization": "BeautifulSoup html.parser; get_text with space separator and strip=True; collapse Unicode whitespace with split/join; hash UTF-8",
+      "normalized_block_sha256": "92b58b54eb65305b4f499e8f6d901d0917bca861e07bfdcc19a08f9e451e70c9",
+      "exact_quote": "existing integrations with AWS, Databricks, Google Cloud, and Snowflake products.",
+      "role": "support"
+    },
+    "unknowns": [
+      "Product edition, version and feature support",
+      "Technical direction of data flow",
+      "Start and end of availability",
+      "Current functionality",
+      "Adoption, customer use, payment and revenue"
+    ],
+    "counterevidence": {
+      "status": "not_independently_searched",
+      "records": []
+    },
+    "review_options": [
+      "accept_at_stated_scope",
+      "reject_with_rationale",
+      "needs_product_evidence"
+    ]
+  },
+  "customer_lead": {
+    "status": "retained_source_mentions_only",
+    "accepted_claim": false,
+    "names": [
+      "JetBlue",
+      "Nasdaq",
+      "Lendlease",
+      "Dunelm",
+      "Canva"
+    ],
+    "locator": "Customer growth list item",
+    "normalized_block_zero_based_index": 7,
+    "normalized_block_sha256": "5ea643989c37f2570b56bed6e243f7b110e3eeee84748cfbc98cd92feaf1aa38",
+    "exact_quote": "accounts including JetBlue, Nasdaq, Lendlease, Dunelm, and Canva.",
+    "blockers": [
+      "No customer predicate in current ontology",
+      "Endpoint identities not reviewed for this claim",
+      "Product/workload and relationship interval unspecified",
+      "No human claim review"
+    ]
+  },
+  "acquisition": {
+    "retained_documents_rechecked": 1,
+    "new_external_documents": 0,
+    "new_accepted_entities": 0,
+    "new_accepted_claims": 0,
+    "program_entity_cap": 25,
+    "program_additional_document_cap": 100
+  }
+}
