@@ -3,6 +3,10 @@
 status: implemented and locally verified; combined CI and production approval
 remain pending. this release does not complete issue #11.
 
+CI run `36258411114` passed retained-data, deterministic-build, immutable-read
+and PostgreSQL atlas checks, then found two stale legacy UI fixture counts.
+those expectations are now corrected; no assertion or gate was removed.
+
 PR #19 includes PR #17 at `fd9d3ff` and PR #18 at `0d4ee9c`, plus the approved
 scoped reconstruction. the integrated application revision is `587ba13`.
 three test files were then updated to assert the accepted additional claim
@@ -27,6 +31,10 @@ across traversal, runtime selection and browser exports.
 - `npm run test:atlas`: 46 passed, zero failed; three PostgreSQL cases are
   skipped locally and must run in the required disposable-database CI job.
 - reviewed Python reads and snapshots: 16 passed.
+- legacy dashboard/route suite: 109 passed after reconciling total record and
+  documented-edge counts for the additional accepted claim.
+- full local Python suite: 125 passed, 25 database-dependent cases skipped, one
+  prepared-clone reconciliation deselected. CI must run the disposable cases.
 - deployment-health regression checks: seven passed.
 - [real browser smoke](browser-combined-s0.json): eleven passed, zero page
   errors; current reviewed evidence/source links, inventory top 100, missing

@@ -213,7 +213,7 @@ test('canonical route searches retained evidence and opens a full page record', 
   const { document, Event } = dom.window;
   assert.match(document.querySelector('#view h2').textContent, /research the record/i);
   assert.match(document.querySelector('.data-coverage').textContent, /18,076/);
-  await waitFor(() => document.querySelector('.data-results-head')?.textContent.includes('18,542 matching records')
+  await waitFor(() => document.querySelector('.data-results-head')?.textContent.includes('18,543 matching records')
     && !document.querySelector('.data-results-head')?.textContent.includes('loading full inventory'));
   const family = document.querySelector('[aria-label="Record family"]');
   family.value = 'pages';
@@ -752,7 +752,7 @@ test('filtered topology WebGL maps each matching claim and lets every shown edge
 
   status.value = 'documented';
   status.dispatchEvent(new Event('change', { bubbles: true }));
-  await waitFor(() => document.querySelectorAll('.topology-webgl-edge-button').length === 3);
+  await waitFor(() => document.querySelectorAll('.topology-webgl-edge-button').length === 4);
   const documentedVertexCount = dom.window.__mockWebglBufferUploads.at(-2);
   assert(documentedVertexCount > 0, 'documented claims draw as source-stated lines');
   dom.window.close();
