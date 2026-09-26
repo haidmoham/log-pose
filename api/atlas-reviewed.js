@@ -217,7 +217,13 @@ function createReviewedAtlasHandler(root = path.join(__dirname, 'data/atlas-revi
           caveat: 'differences are source-publication availability, not relationship activity' };
       } else if (mode === 'export') {
         const focused = focus(store, params, selected); let explained = null;
-        if (params.has('neighbor') || params.has('claim')) explained = explain(store, params, selected);
+        if (params.has('neighbor') || params.has('claim')) {
+          const evidenceParams = new URLSearchParams(params);
+          evidenceParams.set('limit', parameter(params, 'evidence_limit', '10'));
+          evidenceParams.delete('cursor');
+          if (params.has('evidence_cursor')) evidenceParams.set('cursor', parameter(params, 'evidence_cursor'));
+          explained = explain(store, evidenceParams, selected);
+        }
         body = { ...common(store, mode, selected, focused.focus.id), focus: focused, explained };
       } else throw new ReviewedAtlasError(400, 'invalid_request', 'unsupported reviewed operation');
       if (performance.now() - started > LIMITS.milliseconds) throw new ReviewedAtlasError(422, 'query_budget_exceeded', 'narrow reviewed filters');

@@ -44,16 +44,17 @@ def _verify_retained_sources(root: Path, topology: dict) -> None:
                 raise ValueError(f"claim source is absent from retained manifest: {source['id']}")
 
 
-def _logical(topology_path: Path, discovery_path: Path, topology: dict,
+def _logical(topology: dict, data_export_build_id: str, identity_build_id: str,
              entities: list[dict], links: list[dict]) -> dict:
     logical = {
         "schema_version": "1.0",
         "versions": {"snapshot": SNAPSHOT_VERSION, "query": QUERY_VERSION,
                      "layout": LAYOUT_VERSION, "topology": topology["schema_version"]},
-        "input_hashes": {"topology_export_sha256": _sha256(topology_path),
-                         "identity_projection_sha256": _sha256(discovery_path)},
-        "input_builds": {"topology_projection": topology.get("projection"),
-                         "identity_build_id": json.loads(discovery_path.read_text())["build_id"]},
+        "input_hashes": {"topology_projection_sha256": hashlib.sha256(encode(topology)).hexdigest(),
+                         "identity_links_sha256": hashlib.sha256(encode(links)).hexdigest()},
+        "input_builds": {"data_export_build_id": data_export_build_id,
+                         "topology_projection": topology.get("projection"),
+                         "identity_build_id": identity_build_id},
         "review_lens": REVIEW_LENS,
         "clocks": {"query": {"clock": "source_publication",
                               "temporal_mode": "published_through",
@@ -171,7 +172,7 @@ def build_atlas_reviewed(repository_root: Path, output_root: Path) -> dict:
     entities = [dict(row, target_kind=("reviewed_mapped_entity" if row["slug"] in mapped
                                       else "reviewed_external_entity"))
                 for row in sorted(topology["entities"], key=lambda item: item["slug"])]
-    logical = _logical(topology_path, discovery_path, topology, entities, links)
+    logical = _logical(topology, index["build_id"], discovery["build_id"], entities, links)
     output_root.mkdir(parents=True, exist_ok=True)
     with tempfile.NamedTemporaryFile(dir=output_root, prefix=".reviewed-", suffix=".sqlite",
                                      delete=False) as temporary:
