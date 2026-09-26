@@ -382,6 +382,49 @@ test('temporal graph selection focuses its inspector without scrolling the works
   dom.window.close();
 });
 
+test('graph dimensions preserve evidence selection and survive temporal updates', async () => {
+  const candidateId = '00a2fb1597f507022279';
+  const temporal = async params => {
+    const result = marketFieldApi.handleMarketField(new URLSearchParams(params));
+    return { status: result.status, body: result.body };
+  };
+  const dom = await page(`/?view=topology&temporalSource=lfai&temporalMode=snapshot&temporalYear=2024&temporalCandidate=${candidateId}`,
+    null, true, { temporal });
+  const { document, Event, MouseEvent, KeyboardEvent } = dom.window;
+  const switchMode = mode => document.querySelector(`[aria-label="${mode} graph"]`).click();
+  const selectedMode = mode => document.querySelector(`[aria-label="${mode} graph"]`)?.getAttribute('aria-pressed');
+  const originalUrl = dom.window.location.href;
+  switchMode('3d');
+  assert.equal(selectedMode('3d'), 'true');
+  assert.equal(dom.window.location.href, originalUrl);
+  const neighbor = document.querySelector('.constellation-node:not(.is-focus):not(.is-absent)');
+  assert(neighbor, 'the fixture must include a current neighbor');
+  const neighborId = neighbor.dataset.candidate;
+  neighbor.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+  await waitFor(() => document.querySelector('.constellation-node.is-selected')?.dataset.candidate === neighborId);
+  assert.equal(selectedMode('3d'), 'true');
+  const evidence = document.querySelector('.temporal-evidence-card').textContent;
+  const map = document.querySelector('.constellation-map');
+  const selectedNode = document.querySelector('.constellation-node.is-selected');
+  const beforeOrbit = selectedNode.getAttribute('transform');
+  map.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
+  assert.notEqual(selectedNode.getAttribute('transform'), beforeOrbit);
+  assert.equal(document.querySelector('.temporal-evidence-card').textContent, evidence);
+  switchMode('2d');
+  assert.equal(document.querySelector('.temporal-evidence-card').textContent, evidence);
+  assert.equal(new URL(dom.window.location.href).searchParams.get('temporalNeighbor'), neighborId);
+  switchMode('3d');
+  const range = document.querySelector('[aria-label="Scrub retained inventory year"]');
+  const previousFrameId = document.querySelector('.temporal-frame-id').textContent;
+  range.value = '5';
+  range.dispatchEvent(new Event('input', { bubbles: true }));
+  await waitFor(() => new URL(dom.window.location.href).searchParams.get('temporalYear') === '2025'
+    && document.querySelector('.temporal-frame-id')?.textContent !== previousFrameId);
+  assert.equal(selectedMode('3d'), 'true');
+  assert.equal(new URL(dom.window.location.href).searchParams.get('temporalCandidate'), candidateId);
+  dom.window.close();
+});
+
 test('scrubbing keeps the range and dated evidence mounted until the latest frame is ready', async () => {
   const focus = '00a2fb1597f507022279';
   const timeline = marketFieldApi.handleMarketField(new URLSearchParams('mode=timeline'));

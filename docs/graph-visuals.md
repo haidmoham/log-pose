@@ -17,6 +17,12 @@ population adds a brief staggered overshoot around each fixed anchor, settled wi
 - mobile viewport measured 390 × 845, with document width 375 and graph width 313.46 px. zoom worked with no horizontal overflow. this is viewport emulation, not a physical-device claim.
 - the delivered demo is 10.000 seconds, 300 output frames, 1440 × 1000, H.264/yuv420p. representative frames and both cut boundaries were inspected. no audio was requested.
 
+## follow-up: spacing and inspection
+
+focused neighborhoods use a 1.4× closer initial camera while keeping source anchors unchanged. peer context connections are opt-in in a focused neighborhood; direct focus connections remain visible. the overview keeps its context. see `graph-legibility.md` for the display contract.
+
+node selection previously focused the inspector with the browser's default scrolling. a visible-node keyboard reproduction moved the page from about 732 px to 1,686 px. temporal selection now focuses with `preventScroll: true`. the route regression test verifies this for both candidate and connection selection. an actual pointer selection at a 541 × 982 viewport kept `scrollY` at 0 through the asynchronous response and still focused the inspector. automated locator focus can itself scroll a target into view; that is separate from the corrected application focus.
+
 ## demo reproduction
 
 start the saved-export preview:
