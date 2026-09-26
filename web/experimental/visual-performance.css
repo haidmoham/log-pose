@@ -1,0 +1,9 @@
+:root { color-scheme: dark; font-family: system-ui, sans-serif; background: #151620; color: #eef0f7; }
+body { margin: 0; }
+main { max-width: 1100px; margin: auto; padding: 24px; }
+button { min-height: 44px; padding: 8px 14px; }
+pre { min-height: 10rem; padding: 16px; overflow: auto; background: #202230; white-space: pre-wrap; }
+#fixture { width: 1000px; max-width: 100%; }
+#fixture .temporal-constellation { width: 100%; }
+#fixture .constellation-map { width: 100%; height: 680px; }
+#route-fixture { width: 100%; height: 700px; border: 1px solid #3b3e52; }

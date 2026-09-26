@@ -81,6 +81,44 @@
     return { x: turnedX * scale, y: turnedY * scale, depth };
   }
 
+  function stableDisplayHash(text) {
+    let value = 2166136261;
+    for (const character of text) value = Math.imul(value ^ character.charCodeAt(0), 16777619);
+    return value >>> 0;
+  }
+
+  function temporalSpatialPosition(id, point) {
+    return { x: (point.x - 500) * 1.35, y: (point.y - 340) * 1.35,
+      z: (stableDisplayHash(id + ':depth') / 4294967296 - .5) * 520 };
+  }
+
+  const TEMPORAL_DISPLAY_PALETTE = [
+    { hex: '#5fa8d3', rgb: [95, 168, 211] },
+    { hex: '#63c2ad', rgb: [99, 194, 173] },
+    { hex: '#8f8fd6', rgb: [143, 143, 214] },
+    { hex: '#72b6dc', rgb: [114, 182, 220] },
+    { hex: '#72c8b2', rgb: [114, 200, 178] },
+    { hex: '#9c98dc', rgb: [156, 152, 220] },
+    { hex: '#68a9cf', rgb: [104, 169, 207] },
+    { hex: '#dc7f72', rgb: [220, 127, 114] }
+  ];
+
+  function temporalDisplayTint(id) {
+    return TEMPORAL_DISPLAY_PALETTE[stableDisplayHash(id + ':display-tint') % TEMPORAL_DISPLAY_PALETTE.length];
+  }
+
+  function projectTemporalPoint(point, yaw, pitch) {
+    const cosYaw = Math.cos(yaw); const sinYaw = Math.sin(yaw);
+    const cosPitch = Math.cos(pitch); const sinPitch = Math.sin(pitch);
+    const rotatedX = point.x * cosYaw + point.z * sinYaw;
+    const yawDepth = -point.x * sinYaw + point.z * cosYaw;
+    const rotatedY = point.y * cosPitch - yawDepth * sinPitch;
+    const depth = point.y * sinPitch + yawDepth * cosPitch;
+    const perspective = Math.max(.58, Math.min(1.55, 1100 / (1100 + depth)));
+    return { x: 500 + rotatedX * perspective, y: 340 + rotatedY * perspective,
+      depth, scale: perspective, opacity: .52 + Math.min(1, perspective / 1.25) * .48 };
+  }
+
   function topologyGraphSlice(claims, focus = null, maxNodes = 16, maxClaims = 48,
     selectedClaimId = null) {
     const slugs = [...new Set(claims.flatMap(claim => [claim.subject_slug, claim.object_slug]))];
@@ -529,6 +567,9 @@
     topologyPositions,
     topologyPositions3d,
     projectTopologyPoint,
+    temporalSpatialPosition,
+    projectTemporalPoint,
+    temporalDisplayTint,
     topologyGraphSlice,
     topologyPairGroups,
     validateTopology,

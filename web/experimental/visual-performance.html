@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Temporal graph visual performance</title>
+    <link rel="stylesheet" href="../temporal-graph.css" />
+    <link rel="stylesheet" href="./visual-performance.css" />
+  </head>
+  <body>
+    <main>
+      <h1>Temporal graph visual performance</h1>
+      <p>Local opt-in harness. It replays pinned retained frames through the production renderer without changing evidence.</p>
+      <button id="run" type="button">run five trials</button>
+      <pre id="report" aria-live="polite">ready</pre>
+      <div id="fixture" aria-hidden="true"></div>
+      <iframe id="route-fixture" title="whole-site route performance fixture"></iframe>
+    </main>
+    <script src="../research-model.js"></script>
+    <script src="../temporal-graph-webgl.js"></script>
+    <script src="../temporal-graph.js"></script>
+    <script src="./visual-performance.js"></script>
+  </body>
+</html>
