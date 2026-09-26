@@ -6,6 +6,9 @@ coalesced per animation frame; a pan reuses label visibility and changes the
 camera transform. a zoom recomputes label collisions for the bounded frame.
 
 raw samples are in [browser-local.json](research/issue11/browser-local.json).
+those local samples precede integration of PR #12's renderer and shared pure
+research model. retain them as measurements of that earlier state, not the
+final asset size or render cost.
 measurements use the Codex in-app Chromium browser on a Windows host with a
 Ryzen 7 5800X, serving from WSL2. the browser did not expose its version or
 CPU/network throttling controls. these are same-host reloads with a warm
@@ -29,6 +32,15 @@ one later Postgres-backed browser load reached graph-ready in 118.1 ms with
 5.1 ms synchronous render work and 166,739 decoded bytes. the selected Elastic
 edge returned both exact retained rows from the same 2024 artifact. that one
 smoke check is not a Postgres latency distribution.
+
+after integrating PR #12, the protected Vercel preview passed the old-build
+link, top-k 1/reset, exact retained-row navigation, matching frame/inspector
+IDs, missing-build error and recovery checks in the user's authorized Chrome
+session. one warm hosted load reached graph-ready in **356.7 ms**, with **6.9 ms**
+synchronous render work, **244,061 decoded bytes** and **61 candidates**.
+the added pure research model loads no corpus or evidence catalog. preview
+assets and browser conditions differ from the earlier local samples; this is
+not a controlled speed comparison. see [the deployed receipt](research/issue11/deployed-preview.json).
 
 browser checks exercised source/year changes, the connection slider and exact
 input, reset, keyboard zoom/pan, candidate and edge selection, retained rows,

@@ -1,0 +1,45 @@
+{
+  "commit": "8eca3548142b0905405746b5e3157ca3cf5e2335",
+  "deployment": "https://log-pose-3gnzx0djs-zarnab.vercel.app",
+  "github_deployment_id": 6673036455,
+  "browser": "user-authorized Chrome session via browser controls",
+  "provider": "bundled S0 SQLite; Railway is not deployed",
+  "build_id": "969c7f43e62ddc409484bf41b9e3309741fd78199437f1e752732dbaf42204f8",
+  "current_build_id": "990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5",
+  "candidate": "4d9ade2bfb2aa6cb4afb",
+  "neighbor": "0b53be52084e857862ac",
+  "source": "cncf",
+  "inventory_year": 2024,
+  "top_k": 60,
+  "eligible_neighbors": 145,
+  "rendered_candidates": 61,
+  "retained_rows": ["fda6c8c1a7ce4da90ca2", "93fa9d560761f44c577e"],
+  "source_sha256": "f1036cb6b8e9b9ef7647a0203ac349ba308173bf407f79cc8ccd4d4a2e7d46fd",
+  "checks": {
+    "required_ci": "passed",
+    "vercel_deployment": "passed",
+    "current_discovery": "passed",
+    "retained_build_link": "passed",
+    "top_k_one_draws_two_candidates": "passed",
+    "reset_restores_sixty_neighbors": "passed",
+    "inspector_matches_frame_id": "passed",
+    "source_row_deep_link_and_hash": "passed",
+    "unavailable_build_displays_error_without_graph": "passed",
+    "valid_build_recovers_after_error": "passed"
+  },
+  "warm_load_sample": {
+    "graph_ready_ms": 356.7,
+    "frame_ready_ms": 62.7,
+    "synchronous_render_ms": 6.9,
+    "initial_decoded_bytes": 244061,
+    "initial_graph_bytes": 33735,
+    "dom_nodes": 956
+  },
+  "limitations": [
+    "one warm authenticated preview load; not a cold-start or tail-latency distribution",
+    "no CPU/network throttle or twenty-minute memory soak",
+    "static asset byte hashes were not independently retrieved through the protected preview",
+    "direct API-document navigation was blocked by the browser; the missing-build test used the real atlas interface",
+    "this verifies a preview, not a production release or Railway deployment"
+  ]
+}
