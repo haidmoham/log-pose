@@ -1,0 +1,132 @@
+{
+  "build_id": "990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5",
+  "clock": {
+    "name": "inventory_year",
+    "precision": "year"
+  },
+  "cohort_query": {
+    "atlas_query": "Snowflake",
+    "layers": [
+      "inventory",
+      "technology_integrations",
+      "commercial_relationships",
+      "capital"
+    ],
+    "reviewed_source_id": "dbt-series-d-2022"
+  },
+  "counterevidence": [
+    {
+      "detail": "No accepted claim establishes partnership start, present validity, exclusivity, investment amount, ownership percentage, or customer identity.",
+      "status": "scope_limit"
+    }
+  ],
+  "generated_at": "2026-09-26T00:36:31.604346+00:00",
+  "geometry_use": "display_only_not_model_input",
+  "interpretation": "The inventory identifies a Snowflake candidate, while a separately reviewed source supports a dated partnership announcement and Snowflake financing participation involving dbt Labs. Existing-integration wording remains an unreviewed candidate claim.",
+  "next_question": "Should the retained integration passage be proposed as a separate typed claim with endpoint and clock review?",
+  "observations": [
+    {
+      "candidate_id": "9129ab18dfd8c1058038",
+      "identity_review_id": "identity-review-02",
+      "mapping_use": "present_day_navigation_only",
+      "status": "inventory_candidate"
+    },
+    {
+      "claim_id": "dbt-labs-announced-partnership-snowflake-2022",
+      "database_id": "seed-claim:dbt-labs-announced-partnership-snowflake-2022:14301c1bd839",
+      "source_id": "seed-source:dbt-series-d-2022:64694c906f3c8be8b3fd90d88725fe3598a896533adf3123a24dc684610ffece",
+      "status": "accepted_reviewed_claim"
+    },
+    {
+      "claim_id": "snowflake-invested-in-dbt-labs-series-d-2022",
+      "database_id": "seed-claim:snowflake-invested-in-dbt-labs-series-d-2022:14301c1bd839",
+      "source_sha256": "64694c906f3c8be8b3fd90d88725fe3598a896533adf3123a24dc684610ffece",
+      "status": "accepted_reviewed_claim"
+    },
+    {
+      "candidate_predicate": "integrates_with",
+      "source_manifest_id": "dbt-series-d-2022",
+      "status": "source_retained_not_separately_reviewed"
+    }
+  ],
+  "omissions": [
+    "dbt Labs has no matched candidate in this inventory snapshot.",
+    "The atlas API does not overlay reviewed claims into the inventory-year frame.",
+    "The cross-layer slug/candidate join is a present-day research mapping and is not accepted under an inventory-year clock."
+  ],
+  "question": "What can the atlas and retained reviewed layer jointly say about Snowflake and dbt Labs?",
+  "result": "Cross-layer navigation reaches scoped reviewed partnership and capital claims, but the identity/time join is not itself a reviewed historical claim and dbt Labs is absent from this inventory candidate frame.",
+  "schema_version": "atlas-investigation-v1",
+  "selected_pages": [
+    {
+      "build_id": "990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5",
+      "candidates": [
+        {
+          "candidate_tags": [
+            "data_infrastructure"
+          ],
+          "id": "9129ab18dfd8c1058038",
+          "identity_review": {
+            "candidate_ids": [
+              "9129ab18dfd8c1058038"
+            ],
+            "id": "identity-review-02",
+            "item_kind": "company_brand",
+            "pilot_slug": "snowflake",
+            "provider_name": "Snowflake",
+            "provider_relation": "company_offering",
+            "review_note": "The filing describes Snowflake's data platform as a company service.",
+            "source_url": "https://www.sec.gov/Archives/edgar/data/1640147/000164014724000101/snow-20240131.htm",
+            "source_year": 2024
+          },
+          "name": "Snowflake",
+          "position": {
+            "x": 0.5034145488178857,
+            "y": 0.7666429646235525
+          },
+          "record_type": "product_or_project_candidate"
+        }
+      ],
+      "count": {
+        "grain": "matching_candidates",
+        "reason": "paged lookup does not scan the complete matching universe",
+        "status": "unavailable",
+        "value": null
+      },
+      "frame_id": "913ca7182de481c60ad6baa08ec9b1a7070b6fdd19822f161bd0c62e3b8e55cd",
+      "limitations": [
+        "inventory co-listing is an unreviewed lead, not a company relationship.",
+        "inventory years have year precision; missing observations do not establish exits.",
+        "accumulation means previously observed, not continuously valid.",
+        "identity keys and display positions are a present-day lens; system-known replay is unsupported."
+      ],
+      "name": "snowflake_inventory_search",
+      "next_cursor": null,
+      "operation": "search",
+      "receipt_id": "cb98a38d02d9baa41b838173ef4420efc0e61442a64688407c4a9aca93fb65b3",
+      "returned": 1,
+      "schema_version": "1.0",
+      "selection": {
+        "artifact": "",
+        "category": "",
+        "clock": "inventory_year",
+        "source": "",
+        "temporal_mode": "snapshot",
+        "year": ""
+      },
+      "versions": {
+        "layout": "atlas-address-v1",
+        "membership": "1.0",
+        "query": "atlas-query-v1",
+        "snapshot": "atlas-snapshot-v1"
+      },
+      "work": {
+        "elapsed_ms": 1.5442810000000016,
+        "membership_rows_read": 8
+      }
+    }
+  ],
+  "status": "research_record_not_reviewed_claim",
+  "system_known_replay": "unsupported",
+  "uncertainty": "Current relationship status, integration endpoints, and compatible historical identity mapping remain unresolved."
+}

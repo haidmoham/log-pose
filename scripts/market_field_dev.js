@@ -3,7 +3,7 @@
 const http = require('node:http');
 const fs = require('node:fs');
 const path = require('node:path');
-const { handleMarketField } = require('../api/market-field.js');
+const { readAtlas } = require('../api/atlas-runtime.js');
 
 const webRoot = path.resolve(__dirname, '../web');
 const mime = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css',
@@ -11,12 +11,14 @@ const mime = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css
   '.txt': 'text/plain', '.ico': 'image/x-icon' };
 const port = Number(process.env.PORT || 8080);
 
-http.createServer((request, reply) => {
+http.createServer(async (request, reply) => {
   const url = new URL(request.url, 'http://localhost');
-  if (url.pathname === '/api/market-field') {
+  if (url.pathname === '/api/market-field' || url.pathname === '/api/atlas') {
     let result;
     try {
-      result = request.method === 'GET' ? handleMarketField(url.searchParams)
+      const handler = url.pathname === '/api/atlas' ? readAtlas
+        : require('../api/market-field.js').handleMarketField;
+      result = request.method === 'GET' ? await handler(url.searchParams)
         : { status: 405, body: { error: 'method_not_allowed' } };
     } catch {
       result = { status: 503, body: { error: 'market_field_unavailable' } };

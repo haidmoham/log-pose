@@ -1,0 +1,15 @@
+{
+  "receipt_schema": "atlas-sqlite-cold-reference-v1",
+  "synthetic": true,
+  "tier": "s1",
+  "build_id": "b6a634e4da0e40b81b3dcf1cd5b4224146bb3e6f185d9c47b894e662dc98188b",
+  "scope": "first local handler request includes immutable SQLite SHA-256 validation; reference only for Postgres representation comparison",
+  "elapsed_ms": 782.358803,
+  "status": 200,
+  "response_bytes": 32362,
+  "work": {
+    "membership_rows_read": 58025,
+    "elapsed_ms": 56.52422200000001
+  },
+  "error": null
+}

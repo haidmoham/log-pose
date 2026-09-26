@@ -389,7 +389,7 @@
       contextInput.addEventListener('change', () => {
         appearance.context = contextInput.checked;
         if (appearance.context) updateContextProjection();
-        updateCamera();
+        updateAppearance();
       });
       context.append(contextInput, element('span', '', 'context connections'));
       tuning.append(context);
@@ -451,24 +451,40 @@
       }
       updateGPU();
     }
-    function updateCamera() {
-      if (viewMode === '3d' || projectedMode !== viewMode) applyProjection();
+    let previousZoom = null;
+    let previousMode = null;
+    let cameraFrame = null;
+    function drawCamera() {
+      const started = performance.now();
+      const projectionChanged = viewMode === '3d' || projectedMode !== viewMode;
+      if (projectionChanged) applyProjection();
       field.setAttribute('transform', `translate(${500 + camera.x} ${340 + camera.y}) scale(${camera.zoom}) translate(-500 -340)`);
-      for (const record of labelNodes) {
-        record.group.querySelector('.constellation-scale').setAttribute('transform', `scale(${1 / camera.zoom})`);
+      const scaleChanged = camera.zoom !== previousZoom || viewMode !== previousMode;
+      if (scaleChanged) {
+        for (const record of labelNodes) {
+          record.group.querySelector('.constellation-scale').setAttribute('transform', `scale(${1 / camera.zoom})`);
+        }
+        previousZoom = camera.zoom;
+        previousMode = viewMode;
+        zoomText.textContent = `${Math.round(camera.zoom * 100)}%`;
       }
-      zoomText.textContent = `${Math.round(camera.zoom * 100)}%`;
-      updateAppearance();
+      // A 2d pan preserves label collisions; an orbit changes their projected positions.
+      if (scaleChanged || projectionChanged) updateAppearance();
+      else updateGPU();
+      scene.dataset.cameraFrameMs = String(performance.now() - started);
     }
-    function zoomTo(value) { camera.zoom = Math.max(0.65, Math.min(12, value)); updateCamera(); }
-    let cameraUpdateFrame = null;
     function scheduleCameraUpdate() {
-      if (cameraUpdateFrame !== null) return;
-      cameraUpdateFrame = root.requestAnimationFrame(() => {
-        cameraUpdateFrame = null;
-        updateCamera();
+      if (cameraFrame !== null) return;
+      cameraFrame = root.requestAnimationFrame(() => {
+        cameraFrame = null;
+        if (scene.isConnected) drawCamera();
       });
     }
+    function updateCamera() {
+      if (!options.scheduleCamera || !scene.isConnected) drawCamera();
+      else scheduleCameraUpdate();
+    }
+    function zoomTo(value) { camera.zoom = Math.max(0.65, Math.min(12, value)); updateCamera(); }
     let drag = null;
     let suppressClick = false;
     let orbitFrame = null;

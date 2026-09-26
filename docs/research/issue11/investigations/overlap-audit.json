@@ -1,0 +1,384 @@
+{
+  "build_id": "990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5",
+  "clock": {
+    "name": "inventory_year",
+    "precision": "year"
+  },
+  "cohort_query": {
+    "candidate_id": "004c9f6b7ecc1c48c8e4",
+    "neighbor_id": "30e05171b7a1b357ee44",
+    "top_k": 5
+  },
+  "counterevidence": [
+    {
+      "meaning": "The atlas contains no reviewed contradiction record for this inventory overlap.",
+      "records": [],
+      "status": "not_reviewed"
+    }
+  ],
+  "generated_at": "2026-09-26T00:36:31.532476+00:00",
+  "geometry_use": "display_only_not_model_input",
+  "interpretation": "The neighbor exists because both product/project candidates occur in the same exact CNCF category in two pinned artifact revisions.",
+  "next_question": "Can primary product documentation establish a scoped technical relation between the resolved providers, if any?",
+  "observations": [
+    {
+      "category": "CNAI / General Orchestration",
+      "inventory_years": [
+        2024,
+        2025
+      ],
+      "occurrence_ids": [
+        "2a3de0564d73c91e7760",
+        "d452fc72ad99dbe404fa",
+        "585b9c76c32121fd7bfc",
+        "23f77bcff87c594e5c3d"
+      ],
+      "placement_ids": [
+        "placement_2506381a0680a4beca4714a7ece55173a2206e43445d9f58d10f3a3cc7f2924f",
+        "placement_ea4989cd2f79d76b5c68b61c7cd6f8b9e8bfecab3c2f30e1d2593e921d46d430"
+      ],
+      "status": "observed"
+    }
+  ],
+  "omissions": [
+    "No company identity review exists for either candidate.",
+    "No integration, partnership, substitution, adoption, or revenue evidence was queried.",
+    "The focus page is bounded even though this candidate has only three eligible neighbors."
+  ],
+  "question": "Why does Kueue have Kuberay as an atlas neighbor?",
+  "result": "Two exact co-listing premises explain the navigation edge; they do not establish a company or business relationship.",
+  "schema_version": "atlas-investigation-v1",
+  "selected_pages": [
+    {
+      "build_id": "990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5",
+      "count": {
+        "grain": "distinct_neighbor_candidates",
+        "status": "exact",
+        "value": 3
+      },
+      "edges": [
+        {
+          "candidate": {
+            "candidate_tags": [
+              "ai_automation"
+            ],
+            "id": "30e05171b7a1b357ee44",
+            "identity_review": null,
+            "name": "Kuberay",
+            "record_type": "product_or_project_candidate"
+          },
+          "candidate_id": "30e05171b7a1b357ee44",
+          "position": {
+            "x": 0.031015811495253773,
+            "y": 0.002368538408160335
+          },
+          "supporting_placements": 2
+        },
+        {
+          "candidate": {
+            "candidate_tags": [
+              "ai_automation"
+            ],
+            "id": "80366c97d0a478592242",
+            "identity_review": null,
+            "name": "Nivida NeMo",
+            "record_type": "product_or_project_candidate"
+          },
+          "candidate_id": "80366c97d0a478592242",
+          "position": {
+            "x": 0.44192996119193967,
+            "y": 0.10616179884089198
+          },
+          "supporting_placements": 2
+        },
+        {
+          "candidate": {
+            "candidate_tags": [
+              "ai_automation"
+            ],
+            "id": "adbe2dec243c6c26a8f1",
+            "identity_review": null,
+            "name": "Yunikorn",
+            "record_type": "product_or_project_candidate"
+          },
+          "candidate_id": "adbe2dec243c6c26a8f1",
+          "position": {
+            "x": 0.24223964061640194,
+            "y": 0.6640888365600465
+          },
+          "supporting_placements": 2
+        }
+      ],
+      "explanation": {
+        "candidate": "004c9f6b7ecc1c48c8e4",
+        "mode": "explain",
+        "neighbor_parameter": "neighbor",
+        "requires": "same build_id and selection; exact placement IDs and retained rows are paged on demand"
+      },
+      "focus": {
+        "candidate_tags": [
+          "ai_automation"
+        ],
+        "id": "004c9f6b7ecc1c48c8e4",
+        "identity_review": null,
+        "name": "Kueue",
+        "record_type": "product_or_project_candidate"
+      },
+      "focus_status": "observed",
+      "frame_id": "8bbd0a2b3582c3e94d5d582d66d1b7c70c72b835d70c9051fc3d9b7a99a8c618",
+      "layout": {
+        "basis": "stable_hash_address",
+        "meaning": "display only; distance has no economic meaning",
+        "version": "atlas-address-v1"
+      },
+      "limitations": [
+        "inventory co-listing is an unreviewed lead, not a company relationship.",
+        "inventory years have year precision; missing observations do not establish exits.",
+        "accumulation means previously observed, not continuously valid.",
+        "identity keys and display positions are a present-day lens; system-known replay is unsupported."
+      ],
+      "name": "bounded_focus",
+      "next_cursor": null,
+      "operation": "focus",
+      "position": {
+        "x": 0.7969151106190204,
+        "y": 0.15557846733265987
+      },
+      "ranking": {
+        "meaning": "co-listing support only; not economic strength, probability or independent corroboration",
+        "metric": "distinct_supporting_placements",
+        "order": "descending_support_then_candidate_id",
+        "pruned": 0,
+        "selected": 3,
+        "top_k": 5
+      },
+      "receipt_id": "05437aa52b9eb2da937a715272bb8b1a05659455334c26b361aa0871327f54d1",
+      "returned": 3,
+      "schema_version": "1.0",
+      "selection": {
+        "artifact": "",
+        "category": "",
+        "clock": "inventory_year",
+        "source": "",
+        "temporal_mode": "snapshot",
+        "year": ""
+      },
+      "suppressed": 0,
+      "versions": {
+        "layout": "atlas-address-v1",
+        "membership": "1.0",
+        "query": "atlas-query-v1",
+        "snapshot": "atlas-snapshot-v1"
+      },
+      "work": {
+        "elapsed_ms": 1.5535110000000003,
+        "membership_rows_read": 10
+      }
+    },
+    {
+      "build_id": "990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5",
+      "contradictions": {
+        "records": [],
+        "status": "not_reviewed"
+      },
+      "count": {
+        "grain": "shared_exact_placements",
+        "status": "exact",
+        "value": 2
+      },
+      "frame_id": "8bbd0a2b3582c3e94d5d582d66d1b7c70c72b835d70c9051fc3d9b7a99a8c618",
+      "limitations": [
+        "inventory co-listing is an unreviewed lead, not a company relationship.",
+        "inventory years have year precision; missing observations do not establish exits.",
+        "accumulation means previously observed, not continuously valid.",
+        "identity keys and display positions are a present-day lens; system-known replay is unsupported."
+      ],
+      "name": "exact_premises",
+      "next_cursor": null,
+      "object": {
+        "candidate_tags": [
+          "ai_automation"
+        ],
+        "id": "30e05171b7a1b357ee44",
+        "identity_review": null,
+        "name": "Kuberay",
+        "record_type": "product_or_project_candidate"
+      },
+      "operation": "explain",
+      "premises": [
+        {
+          "artifact": {
+            "artifact_path": "docs/research/source-artifacts/discovery/cncf-2024-e4f13c918275.yml",
+            "commit": "e4f13c918275affaefb3dbe1a21a4a8e38ee3842",
+            "committed_at": "2024-12-31T14:58:22Z",
+            "coverage_status": "dated_inventory_snapshot",
+            "id": "artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8",
+            "inventory_year": 2024,
+            "observation_basis": "point_in_time_repository_state",
+            "partition_path": "discovery-inventory/cncf-2024.json",
+            "raw_sha256": "f1036cb6b8e9b9ef7647a0203ac349ba308173bf407f79cc8ccd4d4a2e7d46fd",
+            "repository": "cncf/landscape",
+            "source": "cncf",
+            "url": "https://github.com/cncf/landscape/blob/e4f13c918275affaefb3dbe1a21a4a8e38ee3842/landscape.yml"
+          },
+          "object": {
+            "candidate_id": "30e05171b7a1b357ee44",
+            "id": "membership_fd15d34798dd37609152c0f24b233a14bed2174b54501c02f5a3015608c78566",
+            "occurrence_ids": [
+              "d452fc72ad99dbe404fa"
+            ],
+            "placement_id": "placement_2506381a0680a4beca4714a7ece55173a2206e43445d9f58d10f3a3cc7f2924f",
+            "rows": [
+              {
+                "description": "A toolkit to run Ray applications on Kubernetes",
+                "homepage_url": "https://github.com/ray-project/kuberay",
+                "id": "d452fc72ad99dbe404fa",
+                "name": "Kuberay",
+                "repo_url": "https://github.com/ray-project/kuberay",
+                "source_path": [
+                  10,
+                  0,
+                  0
+                ]
+              }
+            ]
+          },
+          "placement": {
+            "artifact_id": "artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8",
+            "category": "CNAI / General Orchestration",
+            "id": "placement_2506381a0680a4beca4714a7ece55173a2206e43445d9f58d10f3a3cc7f2924f",
+            "inventory_year": 2024,
+            "member_count": 4,
+            "raw_sha256": "f1036cb6b8e9b9ef7647a0203ac349ba308173bf407f79cc8ccd4d4a2e7d46fd",
+            "source": "cncf"
+          },
+          "subject": {
+            "candidate_id": "004c9f6b7ecc1c48c8e4",
+            "id": "membership_2154ea019ef959f613728ddaf3af511175473163ac478ca587c38b9a841e2ba9",
+            "occurrence_ids": [
+              "2a3de0564d73c91e7760"
+            ],
+            "placement_id": "placement_2506381a0680a4beca4714a7ece55173a2206e43445d9f58d10f3a3cc7f2924f",
+            "rows": [
+              {
+                "description": "Cloud-native job queueing system for batch, HPC, AI/ML, and similar applications in a Kubernetes cluster.",
+                "homepage_url": "https://kueue.sigs.k8s.io/",
+                "id": "2a3de0564d73c91e7760",
+                "name": "Kueue",
+                "repo_url": "https://github.com/kubernetes-sigs/kueue",
+                "source_path": [
+                  10,
+                  0,
+                  3
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "artifact": {
+            "artifact_path": "docs/research/source-artifacts/discovery/cncf-2025-1f32900465c9.yml",
+            "commit": "1f32900465c936f9acb4ff77485f58ac28943ffb",
+            "committed_at": "2025-12-17T01:27:26Z",
+            "coverage_status": "dated_inventory_snapshot",
+            "id": "artifact_44fcf328443c77afc6b61b573470faa547b1c1b54c80c7f6f72a7468bb7f7cfe",
+            "inventory_year": 2025,
+            "observation_basis": "point_in_time_repository_state",
+            "partition_path": "discovery-inventory/cncf-2025.json",
+            "raw_sha256": "bec9090cd40a09a8f1bd913cc4d47a5710ce7d3a92ee7091369d54a31d1f677f",
+            "repository": "cncf/landscape",
+            "source": "cncf",
+            "url": "https://github.com/cncf/landscape/blob/1f32900465c936f9acb4ff77485f58ac28943ffb/landscape.yml"
+          },
+          "object": {
+            "candidate_id": "30e05171b7a1b357ee44",
+            "id": "membership_1c112136d865a8585838414383fff63f376dbbd21395945c6d89945ae10c6a48",
+            "occurrence_ids": [
+              "23f77bcff87c594e5c3d"
+            ],
+            "placement_id": "placement_ea4989cd2f79d76b5c68b61c7cd6f8b9e8bfecab3c2f30e1d2593e921d46d430",
+            "rows": [
+              {
+                "description": "A toolkit to run Ray applications on Kubernetes",
+                "homepage_url": "https://github.com/ray-project/kuberay",
+                "id": "23f77bcff87c594e5c3d",
+                "name": "Kuberay",
+                "repo_url": "https://github.com/ray-project/kuberay",
+                "source_path": [
+                  10,
+                  0,
+                  0
+                ]
+              }
+            ]
+          },
+          "placement": {
+            "artifact_id": "artifact_44fcf328443c77afc6b61b573470faa547b1c1b54c80c7f6f72a7468bb7f7cfe",
+            "category": "CNAI / General Orchestration",
+            "id": "placement_ea4989cd2f79d76b5c68b61c7cd6f8b9e8bfecab3c2f30e1d2593e921d46d430",
+            "inventory_year": 2025,
+            "member_count": 4,
+            "raw_sha256": "bec9090cd40a09a8f1bd913cc4d47a5710ce7d3a92ee7091369d54a31d1f677f",
+            "source": "cncf"
+          },
+          "subject": {
+            "candidate_id": "004c9f6b7ecc1c48c8e4",
+            "id": "membership_5f515f5e43ad87490e9716e2a18e52ba9540e15c96956201e2e297591ce81de0",
+            "occurrence_ids": [
+              "585b9c76c32121fd7bfc"
+            ],
+            "placement_id": "placement_ea4989cd2f79d76b5c68b61c7cd6f8b9e8bfecab3c2f30e1d2593e921d46d430",
+            "rows": [
+              {
+                "description": "Cloud-native job queueing system for batch, HPC, AI/ML, and similar applications in a Kubernetes cluster.",
+                "homepage_url": "https://kueue.sigs.k8s.io/",
+                "id": "585b9c76c32121fd7bfc",
+                "name": "Kueue",
+                "repo_url": "https://github.com/kubernetes-sigs/kueue",
+                "source_path": [
+                  10,
+                  0,
+                  3
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "receipt_id": "9afd03be95296f84a3d44b153ce4425c092057cff5e8758b28cfeeb1e5604428",
+      "returned": 2,
+      "schema_version": "1.0",
+      "selection": {
+        "artifact": "",
+        "category": "",
+        "clock": "inventory_year",
+        "source": "",
+        "temporal_mode": "snapshot",
+        "year": ""
+      },
+      "status": "unreviewed_inventory_overlap",
+      "subject": {
+        "candidate_tags": [
+          "ai_automation"
+        ],
+        "id": "004c9f6b7ecc1c48c8e4",
+        "identity_review": null,
+        "name": "Kueue",
+        "record_type": "product_or_project_candidate"
+      },
+      "versions": {
+        "layout": "atlas-address-v1",
+        "membership": "1.0",
+        "query": "atlas-query-v1",
+        "snapshot": "atlas-snapshot-v1"
+      },
+      "work": {
+        "elapsed_ms": 1.246305000000003,
+        "membership_rows_read": 4
+      }
+    }
+  ],
+  "status": "research_record_not_reviewed_claim",
+  "system_known_replay": "unsupported",
+  "uncertainty": "Candidate identity, relationship semantics, and validity outside the two inventory observations are unresolved."
+}

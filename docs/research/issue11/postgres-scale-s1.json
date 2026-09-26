@@ -1,0 +1,5509 @@
+{
+  "receipt_schema": "atlas-postgres-scale-v1",
+  "synthetic": true,
+  "tier": "s1",
+  "build_id": "b6a634e4da0e40b81b3dcf1cd5b4224146bb3e6f185d9c47b894e662dc98188b",
+  "generator": {
+    "candidates": 10000,
+    "categories": 64,
+    "dense": 10000,
+    "memberships": 1000000,
+    "revisions": 32,
+    "seed": 1101,
+    "version": "atlas-scale-v2"
+  },
+  "environment": {
+    "node": "v22.23.1",
+    "platform": "linux",
+    "arch": "x64",
+    "cpus": 16,
+    "memory_bytes": 16716034048,
+    "postgres": "PostgreSQL 18.6 (Ubuntu 18.6-0ubuntu0.26.04.1) on x86_64-pc-linux-gnu, compiled by gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0, 64-bit"
+  },
+  "scope": "local PostgreSQL representation; no hosted-provider or Railway latency measured",
+  "ranking_semantic": "distinct supporting placement count descending, then ASCII candidate ID",
+  "request_budget": {
+    "maximum_per_workload": 100,
+    "measured_per_workload": 70,
+    "cold_additional_focus_top_k_100": 1,
+    "maximum_actual_per_workload": 71
+  },
+  "import": {
+    "result": {
+      "status": "imported",
+      "build_id": "b6a634e4da0e40b81b3dcf1cd5b4224146bb3e6f185d9c47b894e662dc98188b",
+      "counts": {
+        "artifacts": 32,
+        "candidates": 10000,
+        "input_worklist_pairs": 0,
+        "memberships": 1000000,
+        "placements": 2048,
+        "supporting_occurrences": 1000000
+      },
+      "current": true
+    },
+    "import_seconds": 43.45680339200044,
+    "database_bytes": 1186617023,
+    "relations": {
+      "atlas_artifact": 90112,
+      "atlas_artifact_pkey": 16384,
+      "atlas_artifact_source_year": 16384,
+      "atlas_candidate": 8544256,
+      "atlas_candidate_pkey": 1171456,
+      "atlas_candidate_search": 1482752,
+      "atlas_current": 32768,
+      "atlas_current_pkey": 16384,
+      "atlas_membership": 1166639104,
+      "atlas_membership_pkey": 191651840,
+      "atlas_membership_placement_candidate": 344481792,
+      "atlas_placement": 1818624,
+      "atlas_placement_artifact_category": 770048,
+      "atlas_placement_pkey": 360448,
+      "atlas_snapshot": 32768,
+      "atlas_snapshot_pkey": 16384
+    }
+  },
+  "cold_first_request": {
+    "workload": "focus_top_k_100",
+    "elapsed_ms": 788.875142,
+    "status": 422,
+    "response_bytes": 84,
+    "membership_rows_read": null,
+    "returned": null,
+    "exact_eligible": null,
+    "suppressed": null,
+    "error": "query_budget_exceeded"
+  },
+  "results": [
+    {
+      "workload": "focus_top_k_20",
+      "concurrency": 1,
+      "requests": 10,
+      "wall_ms": 7913.378536,
+      "p50_ms": 771.4231,
+      "p95_ms": 917.193649,
+      "max_ms": 917.193649,
+      "raw_samples": [
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 917.193649,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 805.7089110000002,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 776.8807300000003,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 776.1690010000002,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 773.0802319999993,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 768.3112060000003,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 771.4231,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 768.7426059999998,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 771.1902710000004,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 770.3251949999994,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        }
+      ],
+      "response_bytes": {
+        "min": 84,
+        "max": 84
+      },
+      "membership_rows_read": {
+        "min": 0,
+        "max": 0
+      },
+      "statuses": {
+        "422": 10
+      },
+      "returned": [
+        null
+      ],
+      "exact_eligible": [
+        null
+      ],
+      "suppressed": [
+        null
+      ],
+      "errors": [
+        "query_budget_exceeded"
+      ]
+    },
+    {
+      "workload": "focus_top_k_60",
+      "concurrency": 1,
+      "requests": 10,
+      "wall_ms": 7913.378536,
+      "p50_ms": 771.1683150000008,
+      "p95_ms": 849.7046379999999,
+      "max_ms": 849.7046379999999,
+      "raw_samples": [
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 849.7046379999999,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 805.50801,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 776.8418529999999,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 774.919977,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 773.0198279999995,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 768.2526530000005,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 771.1683150000008,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 768.7417569999998,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 771.1312889999999,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 770.5865660000009,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        }
+      ],
+      "response_bytes": {
+        "min": 84,
+        "max": 84
+      },
+      "membership_rows_read": {
+        "min": 0,
+        "max": 0
+      },
+      "statuses": {
+        "422": 10
+      },
+      "returned": [
+        null
+      ],
+      "exact_eligible": [
+        null
+      ],
+      "suppressed": [
+        null
+      ],
+      "errors": [
+        "query_budget_exceeded"
+      ]
+    },
+    {
+      "workload": "focus_top_k_100",
+      "concurrency": 1,
+      "requests": 10,
+      "wall_ms": 7913.378536,
+      "p50_ms": 771.3204670000005,
+      "p95_ms": 916.84162,
+      "max_ms": 916.84162,
+      "raw_samples": [
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 916.84162,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 805.5434319999999,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 776.8492270000002,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 776.0903539999999,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 773.0652839999993,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 768.0711080000001,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 771.3204670000005,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 768.5322590000005,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 771.1770110000007,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 770.6131770000002,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        }
+      ],
+      "response_bytes": {
+        "min": 84,
+        "max": 84
+      },
+      "membership_rows_read": {
+        "min": 0,
+        "max": 0
+      },
+      "statuses": {
+        "422": 10
+      },
+      "returned": [
+        null
+      ],
+      "exact_eligible": [
+        null
+      ],
+      "suppressed": [
+        null
+      ],
+      "errors": [
+        "query_budget_exceeded"
+      ]
+    },
+    {
+      "workload": "focus_dense_accumulated",
+      "concurrency": 1,
+      "requests": 10,
+      "wall_ms": 7913.378536,
+      "p50_ms": 771.114689,
+      "p95_ms": 916.805259,
+      "max_ms": 916.805259,
+      "raw_samples": [
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 916.805259,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 819.3055509999997,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 776.7335189999999,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 774.5043110000006,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 772.7067289999995,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 767.3689869999998,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 771.114689,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 767.7871150000001,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 771.0721169999997,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 769.6147820000006,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        }
+      ],
+      "response_bytes": {
+        "min": 84,
+        "max": 84
+      },
+      "membership_rows_read": {
+        "min": 0,
+        "max": 0
+      },
+      "statuses": {
+        "422": 10
+      },
+      "returned": [
+        null
+      ],
+      "exact_eligible": [
+        null
+      ],
+      "suppressed": [
+        null
+      ],
+      "errors": [
+        "query_budget_exceeded"
+      ]
+    },
+    {
+      "workload": "search",
+      "concurrency": 1,
+      "requests": 10,
+      "wall_ms": 7913.378536,
+      "p50_ms": 9.85218200000054,
+      "p95_ms": 26.847542999999973,
+      "max_ms": 26.847542999999973,
+      "raw_samples": [
+        {
+          "workload": "search",
+          "elapsed_ms": 26.847542999999973,
+          "status": 200,
+          "response_bytes": 15051,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 20.76148000000012,
+          "status": 200,
+          "response_bytes": 15050,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 14.556593000000248,
+          "status": 200,
+          "response_bytes": 15051,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 13.072799999999916,
+          "status": 200,
+          "response_bytes": 15051,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 11.015597999999954,
+          "status": 200,
+          "response_bytes": 15051,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 8.637502000000495,
+          "status": 200,
+          "response_bytes": 15050,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 9.469955000000482,
+          "status": 200,
+          "response_bytes": 15050,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 8.831735000000663,
+          "status": 200,
+          "response_bytes": 15049,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 9.85218200000054,
+          "status": 200,
+          "response_bytes": 15050,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 9.532385000000431,
+          "status": 200,
+          "response_bytes": 15049,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        }
+      ],
+      "response_bytes": {
+        "min": 15049,
+        "max": 15051
+      },
+      "membership_rows_read": {
+        "min": 0,
+        "max": 0
+      },
+      "statuses": {
+        "200": 10
+      },
+      "returned": [
+        60
+      ],
+      "exact_eligible": [
+        null
+      ],
+      "suppressed": [
+        null
+      ],
+      "errors": []
+    },
+    {
+      "workload": "explain",
+      "concurrency": 1,
+      "requests": 10,
+      "wall_ms": 7913.378536,
+      "p50_ms": 33.640425000000505,
+      "p95_ms": 65.37348699999984,
+      "max_ms": 65.37348699999984,
+      "raw_samples": [
+        {
+          "workload": "explain",
+          "elapsed_ms": 44.83073300000001,
+          "status": 200,
+          "response_bytes": 3042,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 65.37348699999984,
+          "status": 200,
+          "response_bytes": 3041,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 36.79762600000004,
+          "status": 200,
+          "response_bytes": 3043,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 34.59065799999962,
+          "status": 200,
+          "response_bytes": 3041,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 32.746745000000374,
+          "status": 200,
+          "response_bytes": 3042,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 27.558006999999634,
+          "status": 200,
+          "response_bytes": 3043,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 33.640425000000505,
+          "status": 200,
+          "response_bytes": 3042,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 29.882047999999486,
+          "status": 200,
+          "response_bytes": 3043,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 30.60968700000012,
+          "status": 200,
+          "response_bytes": 3043,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 34.410885999999664,
+          "status": 200,
+          "response_bytes": 3043,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        }
+      ],
+      "response_bytes": {
+        "min": 3041,
+        "max": 3043
+      },
+      "membership_rows_read": {
+        "min": 0,
+        "max": 0
+      },
+      "statuses": {
+        "200": 10
+      },
+      "returned": [
+        1
+      ],
+      "exact_eligible": [
+        1
+      ],
+      "suppressed": [
+        null
+      ],
+      "errors": []
+    },
+    {
+      "workload": "focus_top_k_20",
+      "concurrency": 5,
+      "requests": 20,
+      "wall_ms": 3356.793013999999,
+      "p50_ms": 787.56934,
+      "p95_ms": 816.6390749999991,
+      "max_ms": 832.8758529999996,
+      "raw_samples": [
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 795.026613,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 795.2660680000008,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 795.7089450000003,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 809.4785350000002,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 832.8758529999996,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 785.9621320000006,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 785.9253509999999,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 786.8053650000002,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 785.8219160000008,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 816.6390749999991,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 783.4057530000009,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 786.0909140000003,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 784.5771089999998,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 785.1745420000007,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 811.9451969999991,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 788.5823200000013,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 787.56934,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 788.3353500000012,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 785.5415589999993,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 812.5732719999996,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        }
+      ],
+      "response_bytes": {
+        "min": 84,
+        "max": 84
+      },
+      "membership_rows_read": {
+        "min": 0,
+        "max": 0
+      },
+      "statuses": {
+        "422": 20
+      },
+      "returned": [
+        null
+      ],
+      "exact_eligible": [
+        null
+      ],
+      "suppressed": [
+        null
+      ],
+      "errors": [
+        "query_budget_exceeded"
+      ]
+    },
+    {
+      "workload": "focus_top_k_60",
+      "concurrency": 5,
+      "requests": 20,
+      "wall_ms": 3356.793013999999,
+      "p50_ms": 786.6861179999996,
+      "p95_ms": 816.6566060000005,
+      "max_ms": 828.984101,
+      "raw_samples": [
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 785.2968610000007,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 794.3058799999999,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 795.2987589999993,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 800.0192490000009,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 828.984101,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 786.636579,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 784.957332,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 784.9395620000014,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 786.3522169999997,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 816.6566060000005,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 785.8060679999999,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 784.5443080000005,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 784.6670830000003,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 785.2844969999987,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 811.9855589999988,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 788.6369909999994,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 786.6861179999996,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 786.7081089999992,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 787.4132440000012,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 812.5072700000001,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        }
+      ],
+      "response_bytes": {
+        "min": 84,
+        "max": 84
+      },
+      "membership_rows_read": {
+        "min": 0,
+        "max": 0
+      },
+      "statuses": {
+        "422": 20
+      },
+      "returned": [
+        null
+      ],
+      "exact_eligible": [
+        null
+      ],
+      "suppressed": [
+        null
+      ],
+      "errors": [
+        "query_budget_exceeded"
+      ]
+    },
+    {
+      "workload": "focus_top_k_100",
+      "concurrency": 5,
+      "requests": 20,
+      "wall_ms": 3356.793013999999,
+      "p50_ms": 787.8790320000007,
+      "p95_ms": 816.5912640000006,
+      "max_ms": 828.9223490000004,
+      "raw_samples": [
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 785.1373739999999,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 794.7679590000007,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 795.7309860000005,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 805.4613979999995,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 828.9223490000004,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 787.8790320000007,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 785.815865999999,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 786.7296020000013,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 788.3310239999992,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 816.5912640000006,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 782.5264690000004,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 784.7363060000007,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 783.2927179999988,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 784.5551779999987,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 811.8811150000001,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 788.5780500000001,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 784.7310679999991,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 785.2972390000014,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 797.0865059999996,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 816.18498,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        }
+      ],
+      "response_bytes": {
+        "min": 84,
+        "max": 84
+      },
+      "membership_rows_read": {
+        "min": 0,
+        "max": 0
+      },
+      "statuses": {
+        "422": 20
+      },
+      "returned": [
+        null
+      ],
+      "exact_eligible": [
+        null
+      ],
+      "suppressed": [
+        null
+      ],
+      "errors": [
+        "query_budget_exceeded"
+      ]
+    },
+    {
+      "workload": "focus_dense_accumulated",
+      "concurrency": 5,
+      "requests": 20,
+      "wall_ms": 3356.793013999999,
+      "p50_ms": 786.7640500000016,
+      "p95_ms": 834.956424,
+      "max_ms": 858.7843699999994,
+      "raw_samples": [
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 783.3377639999999,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 795.2909790000012,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 809.9013270000014,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 824.9149969999999,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 858.7843699999994,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 782.6367809999992,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 786.5142429999996,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 784.9600329999994,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 788.3915359999992,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 834.956424,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 782.3673429999999,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 785.7671659999996,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 782.5147580000012,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 787.4950789999984,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 828.4900390000003,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 786.7640500000016,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 786.621185,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 786.7211989999996,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 788.5373579999996,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 833.217974000001,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        }
+      ],
+      "response_bytes": {
+        "min": 84,
+        "max": 84
+      },
+      "membership_rows_read": {
+        "min": 0,
+        "max": 0
+      },
+      "statuses": {
+        "422": 20
+      },
+      "returned": [
+        null
+      ],
+      "exact_eligible": [
+        null
+      ],
+      "suppressed": [
+        null
+      ],
+      "errors": [
+        "query_budget_exceeded"
+      ]
+    },
+    {
+      "workload": "search",
+      "concurrency": 5,
+      "requests": 20,
+      "wall_ms": 3356.793013999999,
+      "p50_ms": 24.837454000000434,
+      "p95_ms": 785.165062,
+      "max_ms": 787.8757420000002,
+      "raw_samples": [
+        {
+          "workload": "search",
+          "elapsed_ms": 24.837454000000434,
+          "status": 200,
+          "response_bytes": 15051,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 32.730553999999756,
+          "status": 200,
+          "response_bytes": 15050,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 43.1445590000003,
+          "status": 200,
+          "response_bytes": 15050,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 62.336725000001024,
+          "status": 200,
+          "response_bytes": 15049,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 784.39012,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 21.981712999999218,
+          "status": 200,
+          "response_bytes": 15050,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 20.449832999998762,
+          "status": 200,
+          "response_bytes": 15051,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 22.36312800000087,
+          "status": 200,
+          "response_bytes": 15051,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 37.15210699999989,
+          "status": 200,
+          "response_bytes": 15050,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 783.3841100000009,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 18.996626000000106,
+          "status": 200,
+          "response_bytes": 15050,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 18.335669000000053,
+          "status": 200,
+          "response_bytes": 15050,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 18.07216900000094,
+          "status": 200,
+          "response_bytes": 15051,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 35.159270000000106,
+          "status": 200,
+          "response_bytes": 15049,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 785.165062,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 17.827805000000808,
+          "status": 200,
+          "response_bytes": 15051,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 18.008041999999477,
+          "status": 200,
+          "response_bytes": 15051,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 18.902226000000155,
+          "status": 200,
+          "response_bytes": 15051,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 36.23311199999989,
+          "status": 200,
+          "response_bytes": 15051,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 787.8757420000002,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        }
+      ],
+      "response_bytes": {
+        "min": 84,
+        "max": 15051
+      },
+      "membership_rows_read": {
+        "min": 0,
+        "max": 0
+      },
+      "statuses": {
+        "200": 16,
+        "422": 4
+      },
+      "returned": [
+        60,
+        null
+      ],
+      "exact_eligible": [
+        null
+      ],
+      "suppressed": [
+        null
+      ],
+      "errors": [
+        "query_budget_exceeded"
+      ]
+    },
+    {
+      "workload": "explain",
+      "concurrency": 5,
+      "requests": 20,
+      "wall_ms": 3356.793013999999,
+      "p50_ms": 58.6136690000003,
+      "p95_ms": 785.5897380000006,
+      "max_ms": 788.3919420000002,
+      "raw_samples": [
+        {
+          "workload": "explain",
+          "elapsed_ms": 58.6136690000003,
+          "status": 200,
+          "response_bytes": 3042,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 64.37035099999957,
+          "status": 200,
+          "response_bytes": 3042,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 66.43241699999999,
+          "status": 200,
+          "response_bytes": 3042,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 92.30574800000068,
+          "status": 200,
+          "response_bytes": 3042,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 785.5897380000006,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 51.23512000000119,
+          "status": 200,
+          "response_bytes": 3042,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 51.03117099999872,
+          "status": 200,
+          "response_bytes": 3042,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 49.15585900000042,
+          "status": 200,
+          "response_bytes": 3042,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 70.13330099999985,
+          "status": 200,
+          "response_bytes": 3041,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 785.5718369999995,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 46.92943700000069,
+          "status": 200,
+          "response_bytes": 3042,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 47.32225300000027,
+          "status": 200,
+          "response_bytes": 3042,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 46.98545000000013,
+          "status": 200,
+          "response_bytes": 3042,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 61.68030099999851,
+          "status": 200,
+          "response_bytes": 3042,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 785.1982129999997,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 47.389695000001666,
+          "status": 200,
+          "response_bytes": 3042,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 47.48545800000102,
+          "status": 200,
+          "response_bytes": 3042,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 51.3269049999999,
+          "status": 200,
+          "response_bytes": 3043,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 63.30824600000051,
+          "status": 200,
+          "response_bytes": 3042,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 788.3919420000002,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        }
+      ],
+      "response_bytes": {
+        "min": 84,
+        "max": 3043
+      },
+      "membership_rows_read": {
+        "min": 0,
+        "max": 0
+      },
+      "statuses": {
+        "200": 16,
+        "422": 4
+      },
+      "returned": [
+        1,
+        null
+      ],
+      "exact_eligible": [
+        1,
+        null
+      ],
+      "suppressed": [
+        null
+      ],
+      "errors": [
+        "query_budget_exceeded"
+      ]
+    },
+    {
+      "workload": "focus_top_k_20",
+      "concurrency": 20,
+      "requests": 40,
+      "wall_ms": 1678.1288139999997,
+      "p50_ms": 809.7184969999998,
+      "p95_ms": 829.6767240000008,
+      "max_ms": 831.6221530000003,
+      "raw_samples": [
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 791.3045710000006,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 792.4184420000001,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 790.0245009999999,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 790.8269220000002,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 829.6767240000008,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 796.4745430000003,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 798.8087269999996,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 801.3427250000004,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 808.9308459999993,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 805.1367009999994,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 807.0945759999995,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 809.7184969999998,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 812.1508299999987,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 814.3434550000002,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 816.1133320000008,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 819.6368279999988,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 822.2300880000003,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 824.5140570000003,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 826.3829180000012,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 827.7393400000001,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 792.2935070000003,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 797.4727770000009,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 791.7534770000002,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 784.6963260000011,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 819.0402350000004,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 787.9322200000006,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 805.5854229999986,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 799.9619980000007,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 801.006738,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 811.4685800000007,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 806.7712389999997,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 809.9068239999997,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 814.6172150000002,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 815.9239849999994,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 822.7614680000006,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 822.0346599999993,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 825.5649249999988,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 829.2132560000009,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 830.0975400000007,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 831.6221530000003,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        }
+      ],
+      "response_bytes": {
+        "min": 84,
+        "max": 84
+      },
+      "membership_rows_read": {
+        "min": 0,
+        "max": 0
+      },
+      "statuses": {
+        "422": 40
+      },
+      "returned": [
+        null
+      ],
+      "exact_eligible": [
+        null
+      ],
+      "suppressed": [
+        null
+      ],
+      "errors": [
+        "query_budget_exceeded"
+      ]
+    },
+    {
+      "workload": "focus_top_k_60",
+      "concurrency": 20,
+      "requests": 40,
+      "wall_ms": 1678.1288139999997,
+      "p50_ms": 807.1580990000002,
+      "p95_ms": 831.1572510000005,
+      "max_ms": 831.8356019999992,
+      "raw_samples": [
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 792.6793120000002,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 794.1192169999995,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 794.1767600000003,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 790.9432659999984,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 828.8989140000012,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 796.5470170000008,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 799.5608769999999,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 804.3347090000007,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 803.6276620000008,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 805.162311,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 807.1580990000002,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 810.2850889999991,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 818.4883100000006,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 814.4216269999997,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 816.2497270000003,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 819.7673340000001,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 822.8849739999987,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 825.9035199999998,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 826.4134890000005,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 827.7717109999994,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 784.8098200000004,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 783.1223549999995,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 789.9144259999994,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 792.174312000001,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 821.382094999999,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 787.7922850000014,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 795.0512240000007,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 800.0815019999991,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 801.901441,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 803.9509199999993,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 806.904324000001,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 810.0289489999996,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 814.76692,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 816.7169150000009,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 819.1107680000005,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 822.159595000001,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 825.7756329999993,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 831.8356019999992,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 831.1572510000005,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 831.6522649999988,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        }
+      ],
+      "response_bytes": {
+        "min": 84,
+        "max": 84
+      },
+      "membership_rows_read": {
+        "min": 0,
+        "max": 0
+      },
+      "statuses": {
+        "422": 40
+      },
+      "returned": [
+        null
+      ],
+      "exact_eligible": [
+        null
+      ],
+      "suppressed": [
+        null
+      ],
+      "errors": [
+        "query_budget_exceeded"
+      ]
+    },
+    {
+      "workload": "focus_top_k_100",
+      "concurrency": 20,
+      "requests": 40,
+      "wall_ms": 1678.1288139999997,
+      "p50_ms": 808.7916219999988,
+      "p95_ms": 831.6794260000006,
+      "max_ms": 832.9024630000004,
+      "raw_samples": [
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 794.3874070000002,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 789.6051660000012,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 792.4398030000011,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 796.0176659999997,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 832.9024630000004,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 796.6158300000006,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 799.661039999999,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 807.358556000001,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 803.7008350000015,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 805.8108960000009,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 808.7916219999988,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 810.3694419999993,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 812.6105390000012,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 814.4923799999997,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 816.9713919999995,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 821.3413540000001,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 822.9701370000002,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 825.0401959999999,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 826.4436800000003,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 828.067352,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 787.2622599999995,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 791.998705,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 783.7300180000002,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 791.5121330000002,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 823.3056299999989,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 788.5555999999997,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 795.2898430000005,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 800.1769060000006,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 803.5898859999998,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 804.4673899999998,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 807.5722549999991,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 811.1500109999997,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 814.899605999999,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 817.432213,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 819.6472589999994,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 822.9676369999997,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 826.7758110000013,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 830.0400179999997,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 831.9708460000002,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 831.6794260000006,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        }
+      ],
+      "response_bytes": {
+        "min": 84,
+        "max": 84
+      },
+      "membership_rows_read": {
+        "min": 0,
+        "max": 0
+      },
+      "statuses": {
+        "422": 40
+      },
+      "returned": [
+        null
+      ],
+      "exact_eligible": [
+        null
+      ],
+      "suppressed": [
+        null
+      ],
+      "errors": [
+        "query_budget_exceeded"
+      ]
+    },
+    {
+      "workload": "focus_dense_accumulated",
+      "concurrency": 20,
+      "requests": 40,
+      "wall_ms": 1678.1288139999997,
+      "p50_ms": 808.8961249999993,
+      "p95_ms": 831.6800660000008,
+      "max_ms": 844.972980999999,
+      "raw_samples": [
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 796.296346000001,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 796.4457619999994,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 796.2904370000015,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 797.5751060000002,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 844.972980999999,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 797.9312090000003,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 799.7379629999996,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 801.7988119999991,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 803.7717380000013,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 806.8673369999997,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 808.8961249999993,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 810.4619659999989,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 812.7111420000001,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 814.9863999999998,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 818.081064,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 821.415137,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 823.0417199999993,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 825.1074989999997,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 827.1413870000015,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 828.1829770000004,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 782.3875879999996,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 785.3423009999988,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 794.6502779999992,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 794.3632629999993,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 832.5005469999996,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 789.2948909999996,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 795.411207000001,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 800.2736189999996,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 802.4907939999994,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 806.4270660000002,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 807.9186090000003,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 811.5439970000007,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 815.0226609999991,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 817.6300310000006,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 821.781551,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 823.511602999999,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 826.8822349999991,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 830.0617880000009,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 830.5239260000017,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 831.6800660000008,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        }
+      ],
+      "response_bytes": {
+        "min": 84,
+        "max": 84
+      },
+      "membership_rows_read": {
+        "min": 0,
+        "max": 0
+      },
+      "statuses": {
+        "422": 40
+      },
+      "returned": [
+        null
+      ],
+      "exact_eligible": [
+        null
+      ],
+      "suppressed": [
+        null
+      ],
+      "errors": [
+        "query_budget_exceeded"
+      ]
+    },
+    {
+      "workload": "search",
+      "concurrency": 20,
+      "requests": 40,
+      "wall_ms": 1678.1288139999997,
+      "p50_ms": 806.6282079999983,
+      "p95_ms": 830.0758290000012,
+      "max_ms": 831.6815149999984,
+      "raw_samples": [
+        {
+          "workload": "search",
+          "elapsed_ms": 23.724215999998705,
+          "status": 200,
+          "response_bytes": 15050,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 23.424095000000307,
+          "status": 200,
+          "response_bytes": 15050,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 18.91357699999935,
+          "status": 200,
+          "response_bytes": 15051,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 38.56223599999976,
+          "status": 200,
+          "response_bytes": 15051,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 793.0042549999998,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 798.0630950000013,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 800.305096,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 801.9526079999996,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 804.4402730000002,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 806.6282079999983,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 808.978559000001,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 811.1027799999993,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 812.8063860000002,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 815.1859069999991,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 818.1740679999984,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 821.4821589999992,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 823.516388,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 825.1212390000001,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 827.3996669999997,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 828.1876169999996,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 14.972214000001259,
+          "status": 200,
+          "response_bytes": 15051,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 15.043376999999964,
+          "status": 200,
+          "response_bytes": 15051,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 15.32141700000102,
+          "status": 200,
+          "response_bytes": 15051,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 40.35272400000031,
+          "status": 200,
+          "response_bytes": 15051,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 788.944888,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 792.7660450000003,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 797.5323689999987,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 800.3683730000012,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 802.6887220000008,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 806.5468610000007,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 809.0513219999993,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 812.1282189999984,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 815.1186940000007,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 817.7287150000011,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 821.8699240000005,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 824.4382270000006,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 827.5341509999998,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 830.0758290000012,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 830.7087030000002,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 831.6815149999984,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        }
+      ],
+      "response_bytes": {
+        "min": 84,
+        "max": 15051
+      },
+      "membership_rows_read": {
+        "min": 0,
+        "max": 0
+      },
+      "statuses": {
+        "200": 8,
+        "422": 32
+      },
+      "returned": [
+        60,
+        null
+      ],
+      "exact_eligible": [
+        null
+      ],
+      "suppressed": [
+        null
+      ],
+      "errors": [
+        "query_budget_exceeded"
+      ]
+    },
+    {
+      "workload": "explain",
+      "concurrency": 20,
+      "requests": 40,
+      "wall_ms": 1678.1288139999997,
+      "p50_ms": 807.052764,
+      "p95_ms": 830.0880189999989,
+      "max_ms": 831.8146309999993,
+      "raw_samples": [
+        {
+          "workload": "explain",
+          "elapsed_ms": 57.88886300000013,
+          "status": 200,
+          "response_bytes": 3042,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 56.49700900000062,
+          "status": 200,
+          "response_bytes": 3042,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 56.58780200000001,
+          "status": 200,
+          "response_bytes": 3042,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 74.39139699999942,
+          "status": 200,
+          "response_bytes": 3042,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 794.8878429999986,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 798.1369070000001,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 801.2526020000005,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 802.0628930000003,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 805.0661170000003,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 807.052764,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 809.5499909999999,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 812.060367,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 821.0107910000006,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 815.9766670000008,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 819.5379850000008,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 822.0460210000001,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 824.4355230000001,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 828.0841529999998,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 827.7039980000009,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 828.2117679999992,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 50.516944999999396,
+          "status": 200,
+          "response_bytes": 3042,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 54.276732999998785,
+          "status": 200,
+          "response_bytes": 3042,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 50.23270400000001,
+          "status": 200,
+          "response_bytes": 3042,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 66.21097299999929,
+          "status": 200,
+          "response_bytes": 3042,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 788.8230939999994,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 793.1458889999994,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 798.1424079999997,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 800.7029160000002,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 802.7997070000001,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 806.6584939999993,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 809.6219519999995,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 818.5833680000014,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 815.625704,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 820.7496609999998,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 821.9544869999991,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 825.2762799999982,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 828.1039529999998,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 830.0880189999989,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 830.8855000000003,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 831.8146309999993,
+          "status": 422,
+          "response_bytes": 84,
+          "membership_rows_read": null,
+          "returned": null,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": "query_budget_exceeded"
+        }
+      ],
+      "response_bytes": {
+        "min": 84,
+        "max": 3042
+      },
+      "membership_rows_read": {
+        "min": 0,
+        "max": 0
+      },
+      "statuses": {
+        "200": 8,
+        "422": 32
+      },
+      "returned": [
+        1,
+        null
+      ],
+      "exact_eligible": [
+        1,
+        null
+      ],
+      "suppressed": [
+        null
+      ],
+      "errors": [
+        "query_budget_exceeded"
+      ]
+    }
+  ],
+  "query_plans": {
+    "focus_top_k_100": [
+      {
+        "Plan": {
+          "Node Type": "Limit",
+          "Parallel Aware": false,
+          "Async Capable": false,
+          "Startup Cost": 8963.25,
+          "Total Cost": 8963.5,
+          "Plan Rows": 100,
+          "Plan Width": 72,
+          "Disabled": false,
+          "Plans": [
+            {
+              "Node Type": "Sort",
+              "Parent Relationship": "Outer",
+              "Parallel Aware": false,
+              "Async Capable": false,
+              "Startup Cost": 8963.25,
+              "Total Cost": 8963.75,
+              "Plan Rows": 200,
+              "Plan Width": 72,
+              "Disabled": false,
+              "Sort Key": [
+                "(count(*)) DESC",
+                "member.candidate_id COLLATE \"C\""
+              ],
+              "Plans": [
+                {
+                  "Node Type": "Aggregate",
+                  "Strategy": "Hashed",
+                  "Partial Mode": "Simple",
+                  "Parent Relationship": "Outer",
+                  "Parallel Aware": false,
+                  "Async Capable": false,
+                  "Startup Cost": 8953.61,
+                  "Total Cost": 8955.61,
+                  "Plan Rows": 200,
+                  "Plan Width": 72,
+                  "Disabled": false,
+                  "Group Key": [
+                    "member.candidate_id"
+                  ],
+                  "Planned Partitions": 0,
+                  "Plans": [
+                    {
+                      "Node Type": "Hash Join",
+                      "Parent Relationship": "Outer",
+                      "Parallel Aware": false,
+                      "Async Capable": false,
+                      "Join Type": "Inner",
+                      "Startup Cost": 407.37,
+                      "Total Cost": 8475.5,
+                      "Plan Rows": 95622,
+                      "Plan Width": 32,
+                      "Disabled": false,
+                      "Inner Unique": true,
+                      "Hash Cond": "(placement.id = focus_membership.placement_id)",
+                      "Join Filter": "(member.candidate_id <> focus_membership.candidate_id)",
+                      "Plans": [
+                        {
+                          "Node Type": "Nested Loop",
+                          "Parent Relationship": "Outer",
+                          "Parallel Aware": false,
+                          "Async Capable": false,
+                          "Join Type": "Inner",
+                          "Startup Cost": 9.86,
+                          "Total Cost": 8025.16,
+                          "Plan Rows": 19613,
+                          "Plan Width": 128,
+                          "Disabled": false,
+                          "Inner Unique": false,
+                          "Plans": [
+                            {
+                              "Node Type": "Index Only Scan",
+                              "Parent Relationship": "Outer",
+                              "Parallel Aware": false,
+                              "Async Capable": false,
+                              "Scan Direction": "Forward",
+                              "Index Name": "atlas_placement_pkey",
+                              "Relation Name": "atlas_placement",
+                              "Alias": "placement",
+                              "Startup Cost": 0.28,
+                              "Total Cost": 76.63,
+                              "Plan Rows": 20,
+                              "Plan Width": 64,
+                              "Disabled": false,
+                              "Index Cond": "(build_id = 'b6a634e4da0e40b81b3dcf1cd5b4224146bb3e6f185d9c47b894e662dc98188b'::text)"
+                            },
+                            {
+                              "Node Type": "Bitmap Heap Scan",
+                              "Parent Relationship": "Inner",
+                              "Parallel Aware": false,
+                              "Async Capable": false,
+                              "Relation Name": "atlas_membership",
+                              "Alias": "member",
+                              "Startup Cost": 9.58,
+                              "Total Cost": 396.43,
+                              "Plan Rows": 100,
+                              "Plan Width": 96,
+                              "Disabled": false,
+                              "Recheck Cond": "((build_id = 'b6a634e4da0e40b81b3dcf1cd5b4224146bb3e6f185d9c47b894e662dc98188b'::text) AND (placement.id = placement_id))",
+                              "Plans": [
+                                {
+                                  "Node Type": "Bitmap Index Scan",
+                                  "Parent Relationship": "Outer",
+                                  "Parallel Aware": false,
+                                  "Async Capable": false,
+                                  "Index Name": "atlas_membership_placement_candidate",
+                                  "Startup Cost": 0,
+                                  "Total Cost": 9.55,
+                                  "Plan Rows": 100,
+                                  "Plan Width": 0,
+                                  "Disabled": false,
+                                  "Index Cond": "((build_id = 'b6a634e4da0e40b81b3dcf1cd5b4224146bb3e6f185d9c47b894e662dc98188b'::text) AND (placement_id = placement.id))"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "Node Type": "Hash",
+                          "Parent Relationship": "Inner",
+                          "Parallel Aware": false,
+                          "Async Capable": false,
+                          "Startup Cost": 396.26,
+                          "Total Cost": 396.26,
+                          "Plan Rows": 100,
+                          "Plan Width": 96,
+                          "Disabled": false,
+                          "Plans": [
+                            {
+                              "Node Type": "Bitmap Heap Scan",
+                              "Parent Relationship": "Outer",
+                              "Parallel Aware": false,
+                              "Async Capable": false,
+                              "Relation Name": "atlas_membership",
+                              "Alias": "focus_membership",
+                              "Startup Cost": 5.58,
+                              "Total Cost": 396.26,
+                              "Plan Rows": 100,
+                              "Plan Width": 96,
+                              "Disabled": false,
+                              "Recheck Cond": "((build_id = 'b6a634e4da0e40b81b3dcf1cd5b4224146bb3e6f185d9c47b894e662dc98188b'::text) AND (candidate_id = 'candidate-000000'::text))",
+                              "Plans": [
+                                {
+                                  "Node Type": "Bitmap Index Scan",
+                                  "Parent Relationship": "Outer",
+                                  "Parallel Aware": false,
+                                  "Async Capable": false,
+                                  "Index Name": "atlas_membership_pkey",
+                                  "Startup Cost": 0,
+                                  "Total Cost": 5.55,
+                                  "Plan Rows": 100,
+                                  "Plan Width": 0,
+                                  "Disabled": false,
+                                  "Index Cond": "((build_id = 'b6a634e4da0e40b81b3dcf1cd5b4224146bb3e6f185d9c47b894e662dc98188b'::text) AND (candidate_id = 'candidate-000000'::text))"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "database_bytes": 1186617023,
+  "relation_bytes": {
+    "atlas_artifact": 90112,
+    "atlas_artifact_pkey": 16384,
+    "atlas_artifact_source_year": 16384,
+    "atlas_candidate": 8544256,
+    "atlas_candidate_pkey": 1171456,
+    "atlas_candidate_search": 1482752,
+    "atlas_current": 32768,
+    "atlas_current_pkey": 16384,
+    "atlas_membership": 1166639104,
+    "atlas_membership_pkey": 191651840,
+    "atlas_membership_placement_candidate": 344481792,
+    "atlas_placement": 1818624,
+    "atlas_placement_artifact_category": 770048,
+    "atlas_placement_pkey": 360448,
+    "atlas_snapshot": 32768,
+    "atlas_snapshot_pkey": 16384
+  }
+}

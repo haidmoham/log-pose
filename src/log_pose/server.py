@@ -45,14 +45,15 @@ def serve(port):
                 self.respond(503, {"error": "local database unavailable"})
 
         def handle_api(self, path):
-            if path.path == "/api/market-field":
-                script = Path(__file__).parents[2] / "scripts/market_field_request.js"
+            if path.path in {"/api/market-field", "/api/atlas"}:
+                script_name = "atlas_request.js" if path.path == "/api/atlas" else "market_field_request.js"
+                script = Path(__file__).parents[2] / "scripts" / script_name
                 try:
                     result = subprocess.run(["node", str(script), path.query], check=True,
-                                            capture_output=True, text=True)
+                                            capture_output=True, text=True, timeout=10)
                     response = json.loads(result.stdout)
                     self.respond(response["status"], response["body"])
-                except (OSError, subprocess.CalledProcessError, ValueError, KeyError):
+                except (OSError, subprocess.CalledProcessError, subprocess.TimeoutExpired, ValueError, KeyError):
                     self.respond(503, {"error": "market_field_unavailable"})
                 return
             if path.path in ("/api/companies", "/api/overview"):
