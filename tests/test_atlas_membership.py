@@ -78,6 +78,18 @@ def test_artifact_revision_is_part_of_exact_placement_identity():
     with pytest.raises(ValueError, match="ambiguous"):
         build_atlas_membership(ambiguous)
 
+    explicit = copy.deepcopy(ambiguous)
+    explicit["nodes"][0]["observations"][0]["artifact_commit"] = "revision-1"
+    second_observation = observation("b", raw_sha256=repeated_bytes)
+    second_observation["artifact_commit"] = "revision-2"
+    explicit["nodes"].append(candidate("b", [second_observation]))
+    identified = build_atlas_membership(explicit)
+    assert len(identified["placements"]) == 2
+    assert list(iter_exact_pairs(identified)) == []
+    explicit["nodes"][0]["observations"][0]["artifact_commit"] = "not-retained"
+    with pytest.raises(ValueError, match="unknown artifact"):
+        build_atlas_membership(explicit)
+
     second_hash = "d" * 64
     artifacts[1] = artifact(commit="revision-2", raw_sha256=second_hash)
     index = build_atlas_membership(projection([

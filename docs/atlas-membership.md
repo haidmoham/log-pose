@@ -38,8 +38,8 @@ The builder sorts every identity-bearing collection, validates artifact
 lookups and both index directions, and hashes canonical JSON content into
 `build_id`. An observation currently identifies an artifact by source,
 inventory year, and raw SHA-256. The build rejects that reference when it is
-ambiguous across revisions; a future projection must add an explicit artifact
-revision identifier rather than silently merging the revisions.
+ambiguous across revisions. an observation can supply `artifact_id` or
+`artifact_commit` to select an exact revision; mismatching references fail.
 
 `select_candidate_neighborhood` scans only the selected candidate's placements
 and their members. It reports distinct neighbors and every supporting

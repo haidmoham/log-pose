@@ -27,6 +27,20 @@ def _artifact_id(artifact: dict) -> str:
                                 artifact["raw_sha256"], artifact["inventory_year"]])
 
 
+def _observation_artifact(observation: dict, artifacts: list[dict], lookup: dict) -> int:
+    key = (observation["source"], observation["year"], observation["artifact_sha256"])
+    matches = lookup.get(key, [])
+    if observation.get("artifact_id"):
+        matches = [index for index in matches if artifacts[index]["id"] == observation["artifact_id"]]
+    if observation.get("artifact_commit"):
+        matches = [index for index in matches if artifacts[index]["commit"] == observation["artifact_commit"]]
+    if not matches:
+        raise ValueError(f"observation has unknown artifact: {key}")
+    if len(matches) != 1:
+        raise ValueError("observation artifact reference is ambiguous; include an explicit revision identifier")
+    return matches[0]
+
+
 def build_atlas_membership(projection: dict) -> dict:
     """Build a membership-first index without materializing candidate pairs."""
     artifact_rows = sorted(projection["artifacts"], key=lambda row: (
@@ -66,13 +80,8 @@ def build_atlas_membership(projection: dict) -> dict:
     placement_keys = set()
     for node in nodes:
         for observation in node["observations"]:
-            lookup = (observation["source"], observation["year"], observation["artifact_sha256"])
-            matches = observation_artifacts.get(lookup, [])
-            if not matches:
-                raise ValueError(f"observation has unknown artifact: {lookup}")
-            if len(matches) != 1:
-                raise ValueError("observation artifact reference is ambiguous; include an explicit revision identifier")
-            artifact_id = artifacts[matches[0]]["id"]
+            artifact_index = _observation_artifact(observation, artifacts, observation_artifacts)
+            artifact_id = artifacts[artifact_index]["id"]
             placement_keys.add((artifact_id, observation["source_category"]))
 
     placements = []
@@ -98,8 +107,7 @@ def build_atlas_membership(projection: dict) -> dict:
                            if key != "observations"})
         observations_by_placement: dict[int, list[dict]] = defaultdict(list)
         for observation in node["observations"]:
-            lookup = (observation["source"], observation["year"], observation["artifact_sha256"])
-            artifact_index = observation_artifacts[lookup][0]
+            artifact_index = _observation_artifact(observation, artifacts, observation_artifacts)
             key = (artifacts[artifact_index]["id"], observation["source_category"])
             observations_by_placement[placement_indices[key]].append(observation)
 
