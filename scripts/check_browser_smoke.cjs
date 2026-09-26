@@ -61,13 +61,19 @@ async function main() {
     await page.locator('#atlas-regions').click();
     await page.locator('.atlas-region').first().waitFor({ state: 'visible', timeout: 30000 });
     await page.locator('.atlas-region').first().click();
-    await page.locator('.atlas-candidate-list button').first()
-      .waitFor({ state: 'visible', timeout: 30000 });
     await page.locator('.atlas-access summary').click();
-    await page.locator('.atlas-candidate-list button').first().click();
     await page.locator('.atlas-candidate-list button').first()
       .waitFor({ state: 'visible', timeout: 30000 });
-    await page.locator('.atlas-candidate-list button').first().click();
+    const focusButton = page.locator('.atlas-candidate-list button').first();
+    const focusId = await focusButton.getAttribute('data-candidate');
+    assert(focusId, 'atlas candidate list did not identify the selected candidate');
+    await focusButton.click();
+    await page.waitForFunction(candidateId =>
+      new URLSearchParams(location.search).get('candidate') === candidateId, focusId,
+    { timeout: 30000 });
+    const neighborButtons = page.locator(`.atlas-candidate-list button:not([data-candidate="${focusId}"])`);
+    await neighborButtons.first().waitFor({ state: 'visible', timeout: 30000 });
+    await neighborButtons.first().click();
     await page.locator('#atlas-inspector .atlas-premise').first()
       .waitFor({ state: 'visible', timeout: 30000 });
     const atlasInspector = await page.locator('#atlas-inspector').innerText();
