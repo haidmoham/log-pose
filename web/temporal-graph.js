@@ -6,7 +6,9 @@
   let cameraScope = null;
   let populationScope = null;
   let populationPresent = new Set();
-  const appearance = { labels: 40, threads: 45, motion: !root.matchMedia?.('(prefers-reduced-motion: reduce)').matches };
+  const DETAIL_SCALE = 1.4;
+  const appearance = { labels: 32, threads: 45, context: false,
+    motion: !root.matchMedia?.('(prefers-reduced-motion: reduce)').matches };
 
   function hash(text) {
     let value = 2166136261;
@@ -33,6 +35,18 @@
     const node = document.createElementNS(SVG_NS, tag);
     for (const [key, value] of Object.entries(attributes || {})) node.setAttribute(key, String(value));
     return node;
+  }
+
+  function fittedCamera(points, detailScale = 1) {
+    const left = Math.min(...points.map(point => point.x));
+    const right = Math.max(...points.map(point => point.x));
+    const top = Math.min(...points.map(point => point.y));
+    const bottom = Math.max(...points.map(point => point.y));
+    const baseZoom = Math.max(.65, Math.min(8, 680 / Math.max(80, right - left), 440 / Math.max(80, bottom - top)));
+    const zoom = Math.max(.65, Math.min(8, baseZoom * detailScale));
+    return { zoom,
+      x: (500 - (left + right) / 2) * zoom,
+      y: (340 - (top + bottom) / 2) * zoom + 30 };
   }
 
   function render(frame, options = {}) {
@@ -64,13 +78,7 @@
         camera.x = 0; camera.y = 0; camera.zoom = 1;
         return;
       }
-      const left = Math.min(...points.map(point => point.x));
-      const right = Math.max(...points.map(point => point.x));
-      const top = Math.min(...points.map(point => point.y));
-      const bottom = Math.max(...points.map(point => point.y));
-      camera.zoom = Math.max(.65, Math.min(8, 680 / Math.max(80, right - left), 440 / Math.max(80, bottom - top)));
-      camera.x = (500 - (left + right) / 2) * camera.zoom;
-      camera.y = (340 - (top + bottom) / 2) * camera.zoom + 30;
+      Object.assign(camera, fittedCamera(points, DETAIL_SCALE));
     }
     // Fit only when entering a different neighborhood, never when its year changes.
     const scope = `${frame.build_id || ''}:${frame.source || ''}:${frame.focus || ''}`;
@@ -227,7 +235,7 @@
       action('↺', 'reset graph view', () => { fitView(); updateCamera(); }));
     footer.append(controls); scene.append(footer);
     controls.title = 'pinch or ctrl/⌘ + scroll to zoom; plain scrolling moves the page';
-    scene.append(element('p', 'constellation-note', (frame.context_edges_truncated ? `${(frame.context_edges || []).length.toLocaleString()} of ${(frame.total_context_edges || 0).toLocaleString()} context connections drawn. ` : '') + 'positions stay fixed through time. spacing, light and line length carry no measure of strength.'));
+    scene.append(element('p', 'constellation-note', (frame.context_edges_truncated ? `${(frame.context_edges || []).length.toLocaleString()} of ${(frame.total_context_edges || 0).toLocaleString()} context connections loaded. ` : '') + 'positions stay fixed through time. spacing, light and line length carry no measure of strength.'));
 
     const tuning = element('details', 'constellation-tuning');
     tuning.append(element('summary', '', 'view settings'));
@@ -243,6 +251,13 @@
       wrapper.append(text, input, value); return wrapper;
     }
     tuning.append(slider('label density', 'labels', '%'), slider('thread visibility', 'threads', '%'));
+    if (frame.focus) {
+      const context = element('label', 'constellation-context-control');
+      const contextInput = element('input'); contextInput.type = 'checkbox'; contextInput.checked = appearance.context;
+      contextInput.addEventListener('change', () => { appearance.context = contextInput.checked; updateAppearance(); });
+      context.append(contextInput, element('span', '', 'context connections'));
+      tuning.append(context);
+    }
     const motion = element('label', 'constellation-motion-control');
     const motionInput = element('input'); motionInput.type = 'checkbox'; motionInput.checked = appearance.motion;
     motionInput.addEventListener('change', () => { appearance.motion = motionInput.checked; updateAppearance(); });
@@ -251,10 +266,12 @@
     scene.append(tuning);
 
     function updateGPU() {
-      gpu?.update({ frame, positions, camera, selected, hover: hovered, threads: appearance.threads, motion: appearance.motion });
+      gpu?.update({ frame, positions, camera, selected, hover: hovered, threads: appearance.threads,
+        context: !frame.focus || appearance.context, motion: appearance.motion });
     }
     function updateAppearance() {
       scene.classList.toggle('is-motion-off', !appearance.motion);
+      scene.classList.toggle('is-context-off', Boolean(frame.focus) && !appearance.context);
       if (!appearance.motion) scene.querySelectorAll('.is-entering').forEach(node => node.classList.remove('is-entering'));
       scene.style.setProperty('--thread-opacity', String(0.06 + appearance.threads / 100 * 0.32));
       const occupied = [];
@@ -264,7 +281,7 @@
         const box = { x: record.point.x + 12 / camera.zoom, y: record.point.y - 9 / camera.zoom, width, height: 17 / camera.zoom };
         const overlaps = occupied.some(other => box.x < other.x + other.width && box.x + box.width > other.x
           && box.y < other.y + other.height && box.y + box.height > other.y);
-        const eligible = hash(record.id + ':label') % 100 < appearance.labels || camera.zoom >= 1.6;
+        const eligible = hash(record.id + ':label') % 100 < appearance.labels || camera.zoom >= 2.2;
         const visible = record.priority || (eligible && !overlaps);
         record.group.classList.toggle('has-label', visible);
         if (visible) occupied.push(box);
@@ -312,7 +329,7 @@
     updateCamera();
     return scene;
   }
-  const api = { render, position };
+  const api = { render, position, fittedCamera };
   root.LogPoseTemporalGraph = api;
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
 })(typeof window === 'undefined' ? globalThis : window);

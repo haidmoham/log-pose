@@ -91,18 +91,18 @@
     }
     function rebuild() {
       if (!current) return;
-      const { frame, positions, selected, hover, threads } = current;
+      const { frame, positions, selected, hover, threads, context } = current;
       const nearby = new Set();
       if (hover) {
         nearby.add(hover);
         if (frame.focus && (hover === frame.focus || frame.edges.some(edge => edge.candidate_id === hover))) nearby.add(frame.focus);
-        for (const edge of frame.context_edges || []) {
+        for (const edge of context ? frame.context_edges || [] : []) {
           if (edge.left === hover) nearby.add(edge.right);
           if (edge.right === hover) nearby.add(edge.left);
         }
       }
       const lines = [];
-      for (const edge of frame.context_edges || []) {
+      for (const edge of context ? frame.context_edges || [] : []) {
         const active = edge.left === hover || edge.right === hover;
         appendLine(lines, positions, edge.left, edge.right, active ? [.96, .75, .45, .74] : [.66, .57, .74, .045 + threads / 100 * .07]);
       }

@@ -121,3 +121,34 @@ test('reduced motion is the initial setting and the explicit control can overrid
   assert(scene.classList.contains('is-motion-off'));
   dom.window.close();
 });
+
+test('focused fit increases fixed-anchor screen separation by forty percent', () => {
+  const dom = setup();
+  const points = [{ x: 120, y: 120 }, { x: 880, y: 560 }];
+  const base = dom.window.LogPoseTemporalGraph.fittedCamera(points);
+  const focused = dom.window.LogPoseTemporalGraph.fittedCamera(points, 1.4);
+  const mapDistance = Math.hypot(points[1].x - points[0].x, points[1].y - points[0].y);
+  assert.equal(focused.zoom / base.zoom, 1.4);
+  assert.equal(mapDistance * focused.zoom / (mapDistance * base.zoom), 1.4);
+  dom.window.close();
+});
+
+test('focused context connections are opt-in while overview context remains visible', () => {
+  const dom = setup();
+  const focused = dom.window.LogPoseTemporalGraph.render({ ...frame,
+    context_edges: [{ left: 'two', right: 'three' }]
+  });
+  const control = focused.querySelector('.constellation-context-control input');
+  assert.equal(control.checked, false);
+  assert(focused.classList.contains('is-context-off'));
+  assert.equal(focused.querySelectorAll('.constellation-thread').length, 1);
+  control.checked = true;
+  control.dispatchEvent(new dom.window.Event('change'));
+  assert(!focused.classList.contains('is-context-off'));
+  const overview = dom.window.LogPoseTemporalGraph.render({ ...frame, focus: null, edges: [],
+    context_edges: [{ left: 'two', right: 'three' }]
+  });
+  assert(!overview.classList.contains('is-context-off'));
+  assert.equal(overview.querySelector('.constellation-context-control'), null);
+  dom.window.close();
+});
