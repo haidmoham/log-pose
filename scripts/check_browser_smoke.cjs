@@ -5,6 +5,7 @@ const assert = require('node:assert/strict');
 const { execFileSync } = require('node:child_process');
 const { writeFileSync } = require('node:fs');
 const path = require('node:path');
+const { verifyAccessibleAtlas } = require('./check_atlas_accessibility.cjs');
 
 async function verifyMissingBuildRecovery(page, validUrl, layer, report) {
   const validFrame = await page.locator('#atlas-frame-label').getAttribute('data-frame-id');
@@ -66,7 +67,7 @@ async function main() {
     const neighbor = graph.candidates[right];
     report.candidate_id = candidate.id;
     report.neighbor_id = neighbor.id;
-    browser = await chromium.launch({ headless: true });
+    browser = await chromium.launch({ headless: true, args: ['--disable-gpu', '--disable-webgl'] });
     page = await browser.newPage({ viewport: { width: 1365, height: 900 } });
     page.on('pageerror', error => report.page_errors.push(error.message));
     const summaryResponse = await page.request.get(
@@ -155,6 +156,8 @@ async function main() {
         && body?.querySelector('a[href*="dbt-labs-raises-222m"]');
     }, null, { timeout: 30000 });
     report.checks.push({ name: 'reviewed-claim-source-trail', passed: true });
+    await verifyAccessibleAtlas(browser, inventoryUrl, 'inventory', report);
+    await verifyAccessibleAtlas(browser, reviewedUrl, 'reviewed', report);
     assert.deepEqual(report.page_errors, [], 'uncaught browser errors');
     report.status = 'passed';
   } catch (error) {
