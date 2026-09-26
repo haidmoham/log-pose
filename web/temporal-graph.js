@@ -4,7 +4,9 @@
   const SVG_NS = 'http://www.w3.org/2000/svg';
   const camera = { x: 0, y: 0, zoom: 1 };
   let cameraScope = null;
-  const appearance = { labels: 40, threads: 45 };
+  let populationScope = null;
+  let populationPresent = new Set();
+  const appearance = { labels: 40, threads: 45, motion: !root.matchMedia?.('(prefers-reduced-motion: reduce)').matches };
 
   function hash(text) {
     let value = 2166136261;
@@ -73,9 +75,18 @@
     // Fit only when entering a different neighborhood, never when its year changes.
     const scope = `${frame.build_id || ''}:${frame.source || ''}:${frame.focus || ''}`;
     if (scope !== cameraScope) { cameraScope = scope; fitView(); }
+    const present = new Set(frame.focus
+      ? [...frame.edges.map(edge => edge.candidate_id), ...(frame.focus_present ? [frame.focus] : [])]
+      : frame.nodes.map(node => node.id));
+    const entering = new Set(scope === populationScope ? [...present].filter(id => !populationPresent.has(id)) : present);
+    const enteringOrder = new Map(frame.nodes.filter(node => entering.has(node.id)).map((node, index) => [node.id, index]));
+    const enterDelay = id => entering.size < 2 ? 0 : Math.round((enteringOrder.get(id) || 0) / (entering.size - 1) * 240);
+    populationScope = scope;
+    populationPresent = present;
     const changes = new Map((frame.changes || []).map(change => [change.candidate_id, change]));
     const current = new Set(frame.edges.map(edge => edge.candidate_id));
     const labelNodes = [];
+    const contextElements = [];
     let hovered = '';
     let gpu = null;
     const peers = svgElement('g', { class: 'constellation-context', 'aria-hidden': 'true' });
@@ -83,7 +94,10 @@
       const left = positions.get(edge.left);
       const right = positions.get(edge.right);
       if (!left || !right) continue;
-      peers.append(svgElement('line', { x1: left.x, y1: left.y, x2: right.x, y2: right.y }));
+      const line = svgElement('line', { x1: left.x, y1: left.y, x2: right.x, y2: right.y,
+        'data-left': edge.left, 'data-right': edge.right });
+      peers.append(line);
+      contextElements.push({ edge, line });
     }
     field.append(peers);
     const threads = svgElement('g', { class: 'constellation-threads', 'aria-hidden': 'true' });
@@ -94,8 +108,9 @@
         const point = positions.get(edge.candidate_id);
         if (!point) continue;
         const thread = svgElement('line', { x1: origin.x, y1: origin.y, x2: point.x, y2: point.y,
-          class: `constellation-thread${edge.candidate_id === selected ? ' is-selected' : ''}`,
+          class: `constellation-thread${edge.candidate_id === selected ? ' is-selected' : ''}${entering.has(edge.candidate_id) ? ' is-entering' : ''}`,
           'data-neighbor': edge.candidate_id });
+        if (entering.has(edge.candidate_id)) thread.style.setProperty('--enter-delay', `${enterDelay(edge.candidate_id)}ms`);
         threads.append(thread);
         threadElements.set(edge.candidate_id, thread);
       }
@@ -115,7 +130,23 @@
     function emphasize(id) {
       hovered = id;
       for (const [key, thread] of threadElements) thread.classList.toggle('is-hovered', key === id);
-      for (const record of labelNodes) record.group.classList.toggle('is-hovered', record.id === id);
+      const nearby = new Set();
+      if (id) {
+        nearby.add(id);
+        if (frame.focus && (id === frame.focus || threadElements.has(id))) nearby.add(frame.focus);
+        for (const { edge } of contextElements) {
+          if (edge.left === id) nearby.add(edge.right);
+          if (edge.right === id) nearby.add(edge.left);
+        }
+      }
+      peers.classList.toggle('has-active-neighborhood', Boolean(id));
+      for (const { edge, line } of contextElements) {
+        line.classList.toggle('is-nearby', Boolean(id) && (edge.left === id || edge.right === id));
+      }
+      for (const record of labelNodes) {
+        record.group.classList.toggle('is-hovered', record.id === id);
+        record.group.classList.toggle('is-nearby', Boolean(id) && record.id !== id && nearby.has(record.id));
+      }
       updateGPU();
     }
     function inspect(id) {
@@ -135,14 +166,21 @@
       const name = svgElement('title');
       name.textContent = `${node.name} · ${isAbsent ? 'comparison context, not observed in this slice' : 'unreviewed inventory candidate'}`;
       group.append(name);
-      group.append(svgElement('circle', { r: 18, class: 'constellation-hit' }));
-      group.append(svgElement('circle', { r: isFocus ? 22 : 13, class: 'constellation-aura' }));
-      group.append(svgElement('circle', { r: isFocus ? 6 : frame.focus ? 3.8 : 2.2, class: 'constellation-core' }));
-      if (isNew && !isFocus) group.append(svgElement('path', { d: 'M -8 0 L 0 -8 L 8 0 L 0 8 Z', class: 'constellation-new-mark' }));
-      if (isFocus || node.id === selected) group.append(svgElement('circle', { r: 11, class: 'constellation-selection' }));
+      const scale = svgElement('g', { class: 'constellation-scale' });
+      scale.append(svgElement('circle', { r: 18, class: 'constellation-hit' }));
+      const visual = svgElement('g', { class: `constellation-visual${entering.has(node.id) ? ' is-entering' : ''}` });
+      if (entering.has(node.id)) visual.style.setProperty('--enter-delay', `${enterDelay(node.id)}ms`);
+      visual.addEventListener('animationend', event => {
+        if (event.animationName === 'constellation-pop-in') visual.classList.remove('is-entering');
+      });
+      visual.append(svgElement('circle', { r: isFocus ? 34 : 21, class: 'constellation-aura constellation-aura-outer' }));
+      visual.append(svgElement('circle', { r: isFocus ? 22 : 13, class: 'constellation-aura constellation-aura-inner' }));
+      visual.append(svgElement('circle', { r: isFocus ? 6 : frame.focus ? 3.8 : 2.2, class: 'constellation-core' }));
+      if (isNew && !isFocus) visual.append(svgElement('path', { d: 'M -8 0 L 0 -8 L 8 0 L 0 8 Z', class: 'constellation-new-mark' }));
+      if (isFocus || node.id === selected) visual.append(svgElement('circle', { r: 11, class: 'constellation-selection' }));
       const label = svgElement('text', { x: 13, y: 4, class: 'constellation-label' });
       label.textContent = node.name.length > 30 ? node.name.slice(0, 28) + '…' : node.name;
-      group.append(label);
+      scale.append(visual, label); group.append(scale);
       group.addEventListener('pointerenter', () => emphasize(node.id));
       group.addEventListener('pointerleave', () => emphasize(''));
       group.addEventListener('focus', () => emphasize(node.id));
@@ -155,7 +193,19 @@
       field.append(group);
     }
     scene.append(svg);
-    gpu = root.LogPoseTemporalGPU?.attach(scene, svg) || null;
+    function attachGPU() {
+      if (gpu) return;
+      gpu = root.LogPoseTemporalGPU?.attach(scene, svg) || null;
+      updateGPU();
+    }
+    if (!appearance.motion || !entering.size) attachGPU();
+    else root.setTimeout(() => {
+      if (!scene.isConnected) return;
+      if (!document.hidden) attachGPU();
+      else document.addEventListener('visibilitychange', () => {
+        if (scene.isConnected) attachGPU();
+      }, { once: true });
+    }, 1000);
 
     const footer = element('div', 'constellation-footer');
     const legend = element('div', 'constellation-legend');
@@ -193,12 +243,19 @@
       wrapper.append(text, input, value); return wrapper;
     }
     tuning.append(slider('label density', 'labels', '%'), slider('thread visibility', 'threads', '%'));
+    const motion = element('label', 'constellation-motion-control');
+    const motionInput = element('input'); motionInput.type = 'checkbox'; motionInput.checked = appearance.motion;
+    motionInput.addEventListener('change', () => { appearance.motion = motionInput.checked; updateAppearance(); });
+    motion.append(motionInput, element('span', '', 'graph motion'));
+    tuning.append(motion);
     scene.append(tuning);
 
     function updateGPU() {
-      gpu?.update({ frame, positions, camera, selected, hover: hovered, threads: appearance.threads });
+      gpu?.update({ frame, positions, camera, selected, hover: hovered, threads: appearance.threads, motion: appearance.motion });
     }
     function updateAppearance() {
+      scene.classList.toggle('is-motion-off', !appearance.motion);
+      if (!appearance.motion) scene.querySelectorAll('.is-entering').forEach(node => node.classList.remove('is-entering'));
       scene.style.setProperty('--thread-opacity', String(0.06 + appearance.threads / 100 * 0.32));
       const occupied = [];
       const order = [...labelNodes].sort((a, b) => Number(b.priority) - Number(a.priority) || a.id.localeCompare(b.id));
@@ -217,7 +274,7 @@
     function updateCamera() {
       field.setAttribute('transform', `translate(${500 + camera.x} ${340 + camera.y}) scale(${camera.zoom}) translate(-500 -340)`);
       for (const record of labelNodes) {
-        for (const child of record.group.children) child.setAttribute('transform', `scale(${1 / camera.zoom})`);
+        record.group.querySelector('.constellation-scale').setAttribute('transform', `scale(${1 / camera.zoom})`);
       }
       zoomText.textContent = `${Math.round(camera.zoom * 100)}%`;
       updateAppearance();

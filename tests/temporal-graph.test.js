@@ -3,8 +3,9 @@ const assert = require('node:assert/strict');
 const { JSDOM } = require('jsdom');
 const fs = require('node:fs');
 const source = fs.readFileSync(require.resolve('../web/temporal-graph.js'), 'utf8');
-function setup() {
+function setup(configure) {
   const dom = new JSDOM('<!doctype html><body></body>', { runScripts: 'outside-only' });
+  configure?.(dom.window);
   dom.window.eval(source);
   return dom;
 }
@@ -51,5 +52,72 @@ test('ordinary scrolling reaches the page while modified scrolling zooms the gra
   map.dispatchEvent(zoom);
   assert.equal(zoom.defaultPrevented, true);
   assert.notEqual(camera.getAttribute('transform'), before);
+  dom.window.close();
+});
+
+test('hover reveals only the local context neighborhood while preserving absent markers', () => {
+  const dom = setup();
+  const localFrame = { ...frame,
+    context_edges: [{ left: 'two', right: 'three' }]
+  };
+  const scene = dom.window.LogPoseTemporalGraph.render(localFrame);
+  dom.window.document.body.append(scene);
+  scene.querySelector('[data-candidate="two"]').dispatchEvent(new dom.window.MouseEvent('pointerenter'));
+  const context = scene.querySelector('.constellation-context');
+  assert(context.classList.contains('has-active-neighborhood'));
+  assert(context.querySelector('line').classList.contains('is-nearby'));
+  assert(scene.querySelector('[data-candidate="three"]').classList.contains('is-nearby'));
+  assert(scene.querySelector('[data-candidate="three"]').classList.contains('is-absent'));
+  scene.querySelector('[data-candidate="two"]').dispatchEvent(new dom.window.MouseEvent('pointerleave'));
+  assert(!context.classList.contains('has-active-neighborhood'));
+  assert(!scene.querySelector('[data-candidate="three"]').classList.contains('is-nearby'));
+  dom.window.close();
+});
+
+test('population spring does not replay for a settled scope and only marks newly observed nodes', () => {
+  const dom = setup(); const api = dom.window.LogPoseTemporalGraph;
+  const initial = api.render({ ...frame, build_id: 'population-test' });
+  assert(initial.querySelector('[data-candidate="one"] .constellation-visual').classList.contains('is-entering'));
+  assert(initial.querySelector('[data-candidate="two"] .constellation-visual').classList.contains('is-entering'));
+  assert(!initial.querySelector('[data-candidate="three"] .constellation-visual').classList.contains('is-entering'));
+  const selectionOnly = api.render({ ...frame, build_id: 'population-test' }, { selectedEdge: 'two' });
+  assert.equal(selectionOnly.querySelectorAll('.constellation-visual.is-entering').length, 0);
+  const nextFrame = api.render({ ...frame, build_id: 'population-test', edges: [...frame.edges, { candidate_id: 'three' }] });
+  assert.deepEqual([...nextFrame.querySelectorAll('.constellation-visual.is-entering')].map(node => node.closest('.constellation-node').dataset.candidate), ['three']);
+  dom.window.close();
+});
+
+test('gpu waits for initial population to settle and does not attach to a discarded scene', () => {
+  const timers = [];
+  let attachments = 0;
+  const dom = setup(window => {
+    window.setTimeout = callback => { timers.push(callback); return timers.length; };
+    window.LogPoseTemporalGPU = { attach: () => { attachments += 1; return { update() {} }; } };
+    Object.defineProperty(window.document, 'hidden', { configurable: true, value: false });
+  });
+  const first = dom.window.LogPoseTemporalGraph.render({ ...frame, build_id: 'gpu-entry-one' });
+  assert.equal(attachments, 0);
+  dom.window.document.body.append(first);
+  timers.shift()();
+  assert.equal(attachments, 1);
+  const discarded = dom.window.LogPoseTemporalGraph.render({ ...frame, build_id: 'gpu-entry-two' });
+  timers.shift()();
+  assert.equal(discarded.isConnected, false);
+  assert.equal(attachments, 1);
+  dom.window.close();
+});
+
+test('reduced motion is the initial setting and the explicit control can override it', () => {
+  const dom = setup(window => { window.matchMedia = () => ({ matches: true }); });
+  const scene = dom.window.LogPoseTemporalGraph.render({ ...frame, build_id: 'motion-preference' });
+  const control = scene.querySelector('.constellation-motion-control input');
+  assert.equal(control.checked, false);
+  assert(scene.classList.contains('is-motion-off'));
+  control.checked = true;
+  control.dispatchEvent(new dom.window.Event('change'));
+  assert(!scene.classList.contains('is-motion-off'));
+  control.checked = false;
+  control.dispatchEvent(new dom.window.Event('change'));
+  assert(scene.classList.contains('is-motion-off'));
   dom.window.close();
 });
