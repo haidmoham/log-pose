@@ -34,8 +34,10 @@ not measure compositor completion, FPS or GPU memory.
   report: at most 100 MiB. the whole job targets less than 4 GiB RAM and 1 GiB
   disk, within the issue's 30-minute, 8 GiB and 20 GiB local tier.
 
-the 20-minute soak repeats a deterministic inventory focus, density scrub,
-edge inspection, reviewed focus, claim inspection and route exit. every two
+the 20-minute soak repeats a deterministic inventory focus, committed density
+change, inventory-year change, edge inspection, reviewed focus,
+source-publication-cutoff change, claim inspection and route exit. cycles begin
+on a 70-second cadence so the warmup plus timed work stays within 180 API reads. every two
 minutes it returns to the same local lightweight route, settles, forces GC and
 reads CDP heap and `Memory.getDOMCounters` values. final post-GC heap must be
 within both 20 MiB and 15% of baseline. final DOM nodes must be within 50 and

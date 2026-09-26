@@ -94,7 +94,7 @@ async function cdpProfile(page, profile) {
   return cdp;
 }
 
-async function tracker(context, page, cdp, cap = LIMITS.totalHttp, apiCap = LIMITS.apiPerWorkload) {
+async function tracker(context, page, cdp, counters = null) {
   const state = { attempts: [], records: [], failures: [], pending: new Set(), encoded: new Map() };
   const requestUrls = new Map();
   cdp.on('Network.loadingFinished', event => {
@@ -111,8 +111,11 @@ async function tracker(context, page, cdp, cap = LIMITS.totalHttp, apiCap = LIMI
       return route.abort('blockedbyclient');
     }
     state.attempts.push({ url: url.href, api: url.pathname === '/api/atlas' });
-    const apiAttempts = state.attempts.filter(item => item.api).length;
-    if (state.attempts.length > cap || apiAttempts > apiCap) {
+    if (counters) {
+      counters.total.value += 1;
+      if (url.pathname === '/api/atlas') counters.api.value += 1;
+    }
+    if (counters && (counters.total.value > counters.total.cap || counters.api.value > counters.api.cap)) {
       state.failures.push({ url: url.href, error: 'request_cap_exceeded' });
       return route.abort('blockedbyclient');
     }
@@ -176,7 +179,7 @@ async function cameraSamples(page, count = 20) {
   return { zoom, pan };
 }
 
-async function measureOne(browser, origin, profile, workload, trial) {
+async function measureOne(browser, origin, profile, workload, trial, counters) {
   const context = await browser.newContext({ viewport: profile.viewport, serviceWorkers: 'block' });
   const page = await context.newPage();
   const cdp = await cdpProfile(page, profile);
@@ -193,7 +196,7 @@ async function measureOne(browser, origin, profile, workload, trial) {
     };
     requestAnimationFrame(inspect);
   });
-  const requests = await tracker(context, page, cdp);
+  const requests = await tracker(context, page, cdp, counters);
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
   const started = Date.now();
@@ -209,6 +212,8 @@ async function measureOne(browser, origin, profile, workload, trial) {
     inspectorFrameId: document.querySelector('#atlas-inspector').dataset.frameId,
     nodes: document.querySelectorAll('.constellation-node').length,
     domNodes: document.querySelectorAll('*').length,
+    navigation: (() => { const entry = performance.getEntriesByType('navigation')[0]; return entry ? {
+      transferBytes: entry.transferSize, encodedBytes: entry.encodedBodySize, decodedBytes: entry.decodedBodySize } : null; })(),
     resources: performance.getEntriesByType('resource').map(entry => ({ path: new URL(entry.name).pathname,
       transferBytes: entry.transferSize, encodedBytes: entry.encodedBodySize, decodedBytes: entry.decodedBodySize }))
   }));
@@ -219,9 +224,10 @@ async function measureOne(browser, origin, profile, workload, trial) {
     totalDecodedBytes: requests.records.reduce((sum, item) => sum + item.decodedBytes, 0),
     totalTransferBytes: requests.records.reduce((sum, item) => sum + (item.transferBytes || 0), 0),
     apiResponses: requests.records.filter(item => item.api),
-    resourceTiming: { transferBytes: initial.resources.reduce((sum, item) => sum + item.transferBytes, 0),
-      encodedBytes: initial.resources.reduce((sum, item) => sum + item.encodedBytes, 0),
-      decodedBytes: initial.resources.reduce((sum, item) => sum + item.decodedBytes, 0) } };
+    resourceTiming: { transferBytes: initial.resources.reduce((sum, item) => sum + item.transferBytes, initial.navigation?.transferBytes || 0),
+      encodedBytes: initial.resources.reduce((sum, item) => sum + item.encodedBytes, initial.navigation?.encodedBytes || 0),
+      decodedBytes: initial.resources.reduce((sum, item) => sum + item.decodedBytes, initial.navigation?.decodedBytes || 0),
+      includesNavigation: Boolean(initial.navigation) } };
   const beforeFrame = initial.frameId;
   const updateStarted = await page.evaluate(({ next, layer }) => {
     const input = document.querySelector(layer === 'reviewed' ? '#atlas-cutoff' : '#atlas-top-k');
@@ -265,7 +271,8 @@ async function measureOne(browser, origin, profile, workload, trial) {
       compression: [...new Set(requests.records.map(item => item.contentEncoding).filter(Boolean))],
       apiResponses: api, totalHttpRequests: requests.attempts.length,
       totalDecodedBytes: requests.records.reduce((sum, item) => sum + item.decodedBytes, 0),
-      totalTransferBytes: finalResourceTiming.reduce((sum, item) => sum + item.transferBytes, 0),
+      resourceTransferBytes: finalResourceTiming.reduce((sum, item) => sum + item.transferBytes, 0),
+      missingResponseTransferBytes: requests.records.filter(item => item.transferBytes === null).length,
       resourceTiming: finalResourceTiming }, errors };
   await cdp.detach();
   await context.close();
@@ -283,24 +290,47 @@ async function collectMemory(cdp, page, minute, serverPid, browserPid) {
     route: new URL(page.url()).pathname };
 }
 
-async function soak(browser, origin, paths, durationMs, serverPid, browserPid) {
+async function soak(browser, origin, paths, durationMs, serverPid, browserPid, counters) {
   const context = await browser.newContext({ viewport: { width: 1440, height: 1000 }, serviceWorkers: 'block' });
   const page = await context.newPage();
   const cdp = await context.newCDPSession(page);
   await cdp.send('Network.enable');
-  const requests = await tracker(context, page, cdp, LIMITS.totalHttp, LIMITS.soakApi);
+  const requests = await tracker(context, page, cdp, counters);
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
-  async function cycleOnce(cycle) {
+  async function cycleOnce() {
     await page.goto(new URL(paths.inventory, origin).href, { waitUntil: 'domcontentloaded' });
     await ready(page, 'inventory', 61);
     const density = page.locator('#atlas-density');
-    await density.fill(cycle % 2 ? '60' : '100'); await density.dispatchEvent('input');
-    await page.locator('.constellation-edge-hit').first().click({ force: true });
+    await density.fill('100'); await density.dispatchEvent('change');
+    await page.waitForFunction(() => document.querySelectorAll('.constellation-node').length === 101
+      && document.querySelector('#atlas-frame-label')?.textContent.includes('top 100')
+      && !document.querySelector('#atlas-status')?.textContent);
+    await requests.settle();
+    const inventoryFrame = await page.locator('#atlas-frame-label').getAttribute('data-frame-id');
+    await page.locator('#atlas-previous').click();
+    await page.waitForFunction(previous => {
+      const label = document.querySelector('#atlas-frame-label');
+      return label?.dataset.frameId && label.dataset.frameId !== previous
+        && label.dataset.frameId === document.querySelector('#atlas-inspector')?.dataset.frameId
+        && !document.querySelector('#atlas-status')?.textContent;
+    }, inventoryFrame);
+    await requests.settle();
+    await page.locator('.atlas-candidate-list button').first().click();
     await page.locator('.atlas-premise').first().waitFor({ timeout: 10000 });
     await requests.settle();
     await page.goto(new URL(paths.reviewed, origin).href, { waitUntil: 'domcontentloaded' });
     await ready(page, 'reviewed', 2);
+    const reviewedFrame = await page.locator('#atlas-frame-label').getAttribute('data-frame-id');
+    await page.locator('#atlas-cutoff').fill('2025-02-20');
+    await page.locator('#atlas-cutoff').dispatchEvent('change');
+    await page.waitForFunction(previous => {
+      const label = document.querySelector('#atlas-frame-label');
+      return label?.dataset.frameId && label.dataset.frameId !== previous
+        && label.dataset.frameId === document.querySelector('#atlas-inspector')?.dataset.frameId
+        && !document.querySelector('#atlas-status')?.textContent;
+    }, reviewedFrame);
+    await requests.settle();
     await page.locator('.atlas-candidate-list button').first().click();
     await page.locator('.atlas-claim').first().waitFor({ timeout: 10000 });
     await requests.settle();
@@ -309,14 +339,14 @@ async function soak(browser, origin, paths, durationMs, serverPid, browserPid) {
   }
   // Prime one identical route cycle so the before/after resting-route samples
   // have comparable document and code-cache history.
-  await cycleOnce(0);
+  await cycleOnce();
   await page.waitForTimeout(300);
   const samples = [await collectMemory(cdp, page, 0, serverPid, browserPid)];
   const started = Date.now();
   let cycle = 0;
   let nextSample = 2 * 60 * 1000;
   while (Date.now() - started < durationMs) {
-    await cycleOnce(cycle);
+    await cycleOnce();
     cycle += 1;
     const elapsed = Date.now() - started;
     if (elapsed >= nextSample || elapsed >= durationMs) {
@@ -328,7 +358,7 @@ async function soak(browser, origin, paths, durationMs, serverPid, browserPid) {
     const apiCount = requests.attempts.filter(item => item.api).length;
     assert(apiCount <= LIMITS.soakApi, `soak API budget exceeded: ${apiCount}`);
     assert(requests.attempts.length <= LIMITS.totalHttp, `soak HTTP budget exceeded: ${requests.attempts.length}`);
-    const remaining = Math.min(50000 - (Date.now() - started) % 50000,
+    const remaining = Math.min(70000 - (Date.now() - started) % 70000,
       durationMs - (Date.now() - started));
     if (remaining > 0) await page.waitForTimeout(remaining);
   }
@@ -339,7 +369,9 @@ async function soak(browser, origin, paths, durationMs, serverPid, browserPid) {
     requests: { api: requests.attempts.filter(item => item.api).length, total: requests.attempts.length,
       completed: requests.records.length, failures: requests.failures,
       decodedBytes: requests.records.reduce((sum, item) => sum + item.decodedBytes, 0),
-      transferBytes: requests.records.reduce((sum, item) => sum + (item.transferBytes || 0), 0) }, errors,
+      knownResponseTransferBytes: requests.records.filter(item => item.transferBytes !== null)
+        .reduce((sum, item) => sum + item.transferBytes, 0),
+      missingResponseTransferBytes: requests.records.filter(item => item.transferBytes === null).length }, errors,
     evaluation: evaluateStability(samples) };
   await context.close();
   return result;
@@ -416,8 +448,11 @@ async function main() {
       { name: 'inventory-top100', layer: 'inventory', path: `${base}&top_k=100`, minimumNodes: 101, updateTopK: 60, updateMinimumNodes: 61 },
       { name: 'reviewed', layer: 'reviewed', path: reviewedPath, minimumNodes: 2, updateTopK: 100, updateMinimumNodes: 2 }
     ];
+    const totalCounter = { value: 0, cap: LIMITS.totalHttp };
+    const workloadCounters = Object.fromEntries(workloads.map(workload => [workload.name,
+      { total: totalCounter, api: { value: 0, cap: LIMITS.apiPerWorkload } }]));
     for (const profile of profiles) for (const workload of workloads) for (let trial = 1; trial <= samples; trial += 1) {
-      report.measurements.push(await measureOne(browser, origin, profile, workload, trial));
+      report.measurements.push(await measureOne(browser, origin, profile, workload, trial, workloadCounters[workload.name]));
     }
     report.summaries = profiles.flatMap(profile => workloads.map(workload => {
       const selected = report.measurements.filter(item => item.profile === profile.name && item.workload === workload.name);
@@ -434,7 +469,8 @@ async function main() {
     assert(Object.values(perWorkload).every(count => count <= LIMITS.apiPerWorkload));
     report.requestCounts = perWorkload;
     if (soakMinutes) report.soak = await soak(browser, origin,
-      { inventory: `${base}&top_k=60`, reviewed: reviewedPath }, soakMinutes * 60 * 1000, server.pid, process.pid);
+      { inventory: `${base}&top_k=60`, reviewed: reviewedPath }, soakMinutes * 60 * 1000, server.pid, process.pid,
+      { total: totalCounter, api: { value: 0, cap: LIMITS.soakApi } });
     const evaluations = report.summaries.map(summary => {
       const budget = BUDGETS[summary.profile];
       return { profile: summary.profile, workload: summary.workload,
@@ -464,6 +500,7 @@ async function main() {
     await fs.writeFile(output, JSON.stringify(report, null, 2) + '\n');
     const size = (await fs.stat(output)).size;
     assert(size <= LIMITS.outputBytes, `output exceeds ${LIMITS.outputBytes}`);
+    if (report.status === 'failed') process.exitCode = 1;
   }
 }
 
