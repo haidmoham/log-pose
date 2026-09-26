@@ -73,6 +73,18 @@ def test_import_reconciles_rows_search_and_retained_evidence(atlas_db, tmp_path)
         assert "observations" not in cursor.fetchone()[0]
 
 
+def test_validation_rejects_changed_placement_member_count(atlas_db, tmp_path):
+    manifest = make_snapshot(tmp_path)
+    publish_atlas_snapshot(atlas_db, tmp_path)
+    with atlas_db.cursor() as cursor:
+        cursor.execute("""UPDATE public.atlas_placement SET member_count=member_count+1
+            WHERE build_id=%s AND id=(SELECT min(id) FROM public.atlas_placement WHERE build_id=%s)""",
+                       (manifest["build_id"], manifest["build_id"]))
+    atlas_db.commit()
+    with pytest.raises(ValueError, match="member count"):
+        publish_atlas_snapshot(atlas_db, tmp_path)
+
+
 def test_reimport_is_idempotent_and_never_rewrites_build(atlas_db, tmp_path):
     manifest = make_snapshot(tmp_path)
     publish_atlas_snapshot(atlas_db, tmp_path)

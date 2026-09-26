@@ -80,12 +80,14 @@ def validate_postgres_snapshot(connection, manifest: dict) -> None:
         if cursor.fetchone()[0] != manifest["counts"]["candidates"]:
             raise ValueError("stored atlas search index differs from candidate count")
         cursor.execute("""SELECT placement.id FROM public.atlas_placement AS placement
-            LEFT JOIN public.atlas_membership AS membership
-              ON membership.build_id=placement.build_id
-             AND membership.placement_id=placement.id
+            LEFT JOIN (
+                SELECT placement_id,count(*) AS member_count
+                FROM public.atlas_membership WHERE build_id=%s
+                GROUP BY placement_id
+            ) AS membership ON membership.placement_id=placement.id
             WHERE placement.build_id=%s
-            GROUP BY placement.id,placement.member_count
-            HAVING placement.member_count <> count(membership.candidate_id) LIMIT 1""", (build_id,))
+              AND placement.member_count <> coalesce(membership.member_count,0)
+            LIMIT 1""", (build_id, build_id))
         if cursor.fetchone() is not None:
             raise ValueError("stored atlas placement member count differs from memberships")
         cursor.execute("""SELECT coalesce(sum(jsonb_array_length(detail_json->'occurrence_ids')),0)
