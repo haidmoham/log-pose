@@ -80,3 +80,42 @@ Raw receipts:
 - `docs/research/issue11/scale-s1-reads.json`
 - `docs/research/issue11/scale-s2-build.json`
 - `docs/research/issue11/scale-s2-reads.json`
+
+## Compact top-k follow-up
+
+The original receipts above remain unchanged. A second run used the compact
+top-k response contract, which returns support counts and an explain path
+instead of repeating every placement ID on each neighbor. The retained S1 and
+S2 databases, workload counts, client process model, and coordinator API were
+otherwise unchanged.
+
+| Tier and workload | Maximum bytes before | Maximum bytes after | p95 at 1 client before / after | p95 at 20 clients before / after |
+| --- | ---: | ---: | ---: | ---: |
+| S1, k=20 | 140,699 | 8,009 | 92.07 / 68.90 ms | 370.78 / 290.18 ms |
+| S1, k=60 | 410,405 | 20,184 | 91.22 / 47.84 ms | 337.12 / 243.79 ms |
+| S1, k=100 | 668,993 | 32,363 | 117.76 / 56.52 ms | 432.36 / 238.18 ms |
+| S2, k=20 | 140,424 | 8,002 | 58.31 / 66.09 ms | 356.08 / 303.31 ms |
+| S2, k=60 | 411,541 | 20,181 | 72.96 / 64.55 ms | 353.89 / 297.14 ms |
+| S2, k=100 | 673,826 | 32,372 | 83.97 / 75.56 ms | 415.56 / 270.87 ms |
+
+The k=100 byte reduction was about 95%. Membership rows read fell from 68,025
+to 58,025 on S1 and from 80,513 to 70,513 on S2 because focus no longer performs
+the second membership lookup needed to return placement lists. Exact eligible
+neighbor totals stayed 9,999 and 10,967. All 2,100 compact-run requests returned
+200; the earlier single S1 work-budget failure did not recur. Latency improved
+in most cells, but these are two local samples with different cache and host
+conditions. The byte and row-count changes directly reflect the contract;
+latency deltas are observations rather than guaranteed effects.
+
+Compact receipts:
+
+- `docs/research/issue11/scale-s1-reads-compact-topk.json`
+- `docs/research/issue11/scale-s2-reads-compact-topk.json`
+
+The compact response does not solve deployment packaging. [Vercel documents](https://vercel.com/docs/functions/limitations)
+a 250 MB normal uncompressed Node function bundle limit. The 687 MB S1 and 3.43
+GB S2 SQLite files each exceed that limit by themselves, before code or other
+assets. Bundling either fixture in the current Node function is therefore
+blocked. A versioned external artifact/read provider or a smaller partitioned
+deployment would need a separate measured design and authorization; local read
+success is not deployment evidence.
