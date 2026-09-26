@@ -29,15 +29,15 @@
         <h2>explore a connection. trace its source.</h2></div>
         <p>move from a dated source to a candidate, then open the exact records behind a connection.</p></div>
       <form id="atlas-controls" class="atlas-controls">
-        <label>source revision<select id="atlas-revision" required></select></label>
-        <label>observation mode<select id="atlas-mode"><option value="snapshot">selected snapshot</option>
+        <label>source revision<select id="atlas-revision" required disabled></select></label>
+        <label>observation mode<select id="atlas-mode" disabled><option value="snapshot">selected snapshot</option>
           <option value="accumulated">observed through this year</option></select></label>
-        <label>find a candidate<input id="atlas-query" type="search" placeholder="name, description or category" maxlength="200"></label>
-        <button class="quiet-button" type="submit">search</button>
-        <button class="quiet-button" id="atlas-regions" type="button">browse categories</button>
+        <label>find a candidate<input id="atlas-query" type="search" placeholder="name, description or category" maxlength="200" disabled></label>
+        <button class="quiet-button" type="submit" disabled>search</button>
+        <button class="quiet-button" id="atlas-regions" type="button" disabled>browse categories</button>
       </form>
-      <div class="atlas-command-row"><span class="atlas-step-label">move through source time</span><button class="quiet-button" id="atlas-previous" type="button">← previous stop</button>
-        <button class="quiet-button" id="atlas-next" type="button">next stop →</button>
+      <div class="atlas-command-row"><span class="atlas-step-label">move through source time</span><button class="quiet-button" id="atlas-previous" type="button" disabled>← previous stop</button>
+        <button class="quiet-button" id="atlas-next" type="button" disabled>next stop →</button>
         <span id="atlas-status" role="status" aria-live="polite"></span>
         <button class="quiet-button" id="atlas-retry" type="button" hidden>retry</button></div>
       <p id="atlas-frame-label" class="atlas-frame-label"></p>

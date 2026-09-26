@@ -37,6 +37,28 @@ function page(t, query = '', delay = async () => {}) {
   return dom;
 }
 
+test('startup controls wait for discovery and the initial frame before accepting input', async t => {
+  let releaseDiscovery;
+  let releaseFrame;
+  const discovery = new Promise(resolve => { releaseDiscovery = resolve; });
+  const initialFrame = new Promise(resolve => { releaseFrame = resolve; });
+  const dom = page(t, '', async params => {
+    if (params.get('mode') === 'discover') await discovery;
+    if (params.get('mode') === 'focus') await initialFrame;
+  });
+  const document = dom.window.document;
+  const browse = document.getElementById('atlas-regions');
+  assert.equal(browse.disabled, true, 'an early click must not be silently discarded');
+  releaseDiscovery();
+  await waitFor(() => document.querySelector('#atlas-revision option'));
+  assert.equal(browse.disabled, true, 'initial focus must not overwrite a user navigation');
+  releaseFrame();
+  await waitFor(() => !browse.disabled);
+  browse.click();
+  await waitFor(() => document.querySelector('.atlas-region'));
+  assert.equal(new URLSearchParams(dom.window.location.search).get('mode'), 'regions');
+});
+
 test('regions, focused top-k, exact row inspection and list fallback share one frame', async t => {
   const dom = page(t, '?candidate=004c9f6b7ecc1c48c8e4&source=cncf&year=2024&top_k=2');
   const document = dom.window.document;
