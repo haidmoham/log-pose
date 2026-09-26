@@ -127,6 +127,9 @@ def _create_database(path: Path, topology: dict, entities: list[dict], links: li
 
 
 def validate_snapshot(database_path: Path, logical: dict) -> None:
+    unsigned = {key: value for key, value in logical.items() if key != "build_id"}
+    if logical.get("build_id") != hashlib.sha256(encode(unsigned)).hexdigest():
+        raise ValueError("reviewed snapshot logical build ID differs")
     connection = sqlite3.connect(f"file:{database_path}?mode=ro", uri=True)
     try:
         if connection.execute("PRAGMA integrity_check").fetchall() != [("ok",)]:
