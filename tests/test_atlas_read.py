@@ -226,3 +226,32 @@ def test_real_reviewed_python_read_excludes_later_premises_and_preserves_reviews
     assert claims[0]["review_history"]
     assert max(source["source_date"] for source in claims[0]["sources"]) == "2025-02-20"
     assert before["response"]["frame_id"] != after["response"]["frame_id"]
+
+
+def test_real_traverse_and_export_envelopes_bind_targets():
+    root = Path(__file__).resolve().parents[1]
+    traversed = read_atlas_record(root, {"layer": "reviewed", "mode": "traverse",
+        "entity": "snowflake", "target": "dbt-labs", "cutoff": "2022-02-24"})
+    assert traversed["response"]["status"] == "found"
+    assert traversed["response"]["start"]["id"] == "snowflake"
+    assert traversed["response"]["target"]["id"] == "dbt-labs"
+
+    reviewed = read_atlas_record(root, {"layer": "reviewed", "mode": "export",
+        "entity": "snowflake", "neighbor": "dbt-labs", "cutoff": "2022-02-24"})
+    assert reviewed["response"]["focus"]["focus"]["id"] == "snowflake"
+    assert reviewed["response"]["explained"]["neighbor"]["id"] == "dbt-labs"
+
+    inventory = read_atlas_record(root, {"layer": "inventory", "mode": "export",
+        "build_id": "990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5",
+        "candidate": "4d9ade2bfb2aa6cb4afb", "neighbor": "0b53be52084e857862ac",
+        "source": "cncf", "year": "2024", "temporal_mode": "snapshot",
+        "artifact": "artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8"})
+    assert inventory["response"]["neighborhood"]["focus"]["id"] == "4d9ade2bfb2aa6cb4afb"
+    assert inventory["response"]["evidence"]["object"]["id"] == "0b53be52084e857862ac"
+
+    inventory_path = read_atlas_record(root, {"layer": "inventory", "mode": "traverse",
+        "build_id": "990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5",
+        "candidate": "4d9ade2bfb2aa6cb4afb", "target": "0b53be52084e857862ac", "hops": 1,
+        "source": "cncf", "year": "2024", "temporal_mode": "snapshot",
+        "artifact": "artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8"})
+    assert inventory_path["response"]["status"] == "found"

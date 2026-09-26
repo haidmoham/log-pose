@@ -183,6 +183,11 @@ test('traversal reports its visited-entity budget without claiming absence', () 
   fs.writeFileSync(manifestPath, JSON.stringify(manifest));
   const handler = createReviewedAtlasHandler(temporary);
   try {
+    const found = handler(new URLSearchParams(
+      'mode=traverse&entity=datadog&target=fanout-000&hops=1'));
+    assert.equal(found.status, 200);
+    assert.equal(found.body.status, 'found');
+    assert.deepEqual(found.body.path[0].claim_ids, ['fanout-claim-000']);
     const response = handler(new URLSearchParams(
       'mode=traverse&entity=datadog&target=zz-target&hops=1'));
     assert.equal(response.status, 200);

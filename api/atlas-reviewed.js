@@ -265,19 +265,20 @@ function createReviewedAtlasHandler(root = path.join(__dirname, 'data/atlas-revi
     descriptor(store, target);
     const maxHops = integer(params, 'hops', 2, 3);
     const queue = [{ id: start, path: [] }]; const visited = new Set([start]);
+    const found = path => {
+      const materialized = path.map(edge => ({ from: edge.from, to: edge.to,
+        claim_ids: edge.claim_ids, claims: traversalClaims(store, edge.claim_ids, budget) }));
+      const base = common(store, 'traverse', selected, start);
+      base.receipt_id = digest({ build_id: store.manifest.build_id, selection: selected,
+        resolved_entity: start, operation: 'traverse', target, max_hops: maxHops });
+      return { ...base, status: 'found', start: descriptor(store, start), target: descriptor(store, target),
+        path: materialized, hops: materialized.length, visited: visited.size, exhaustive: false,
+        selection_policy: 'breadth_first_neighbor_id_ascii_asc_then_claim_id_ascii_asc',
+        meaning: 'a path groups eligible accepted claims; it does not establish a direct relationship' };
+    };
     while (queue.length) {
       const current = queue.shift();
-      if (current.id === target) {
-        const path = current.path.map(edge => ({ from: edge.from, to: edge.to,
-          claim_ids: edge.claim_ids, claims: traversalClaims(store, edge.claim_ids, budget) }));
-        const base = common(store, 'traverse', selected, start);
-        base.receipt_id = digest({ build_id: store.manifest.build_id, selection: selected,
-          resolved_entity: start, operation: 'traverse', target, max_hops: maxHops });
-        return { ...base, status: 'found', start: descriptor(store, start), target: descriptor(store, target),
-          path, hops: path.length, visited: visited.size, exhaustive: false,
-          selection_policy: 'breadth_first_neighbor_id_ascii_asc_then_claim_id_ascii_asc',
-          meaning: 'a path groups eligible accepted claims; it does not establish a direct relationship' };
-      }
+      if (current.id === target) return found(current.path);
       if (current.path.length === maxHops) continue;
       const filter = where(selected, current.id);
       const rows = boundedMetadata(store,
@@ -290,6 +291,9 @@ function createReviewedAtlasHandler(root = path.join(__dirname, 'data/atlas-revi
       }
       for (const neighbor of [...groups.keys()].sort()) {
         if (visited.has(neighbor)) continue;
+        const nextPath = [...current.path,
+          { from: current.id, to: neighbor, claim_ids: groups.get(neighbor) }];
+        if (neighbor === target) return found(nextPath);
         if (visited.size >= 100) {
           const base = common(store, 'traverse', selected, start);
           base.receipt_id = digest({ build_id: store.manifest.build_id, selection: selected,
@@ -300,8 +304,7 @@ function createReviewedAtlasHandler(root = path.join(__dirname, 'data/atlas-revi
             meaning: 'the bounded search ended without inferring a relationship or reporting absence' };
         }
         visited.add(neighbor);
-        queue.push({ id: neighbor, path: [...current.path,
-          { from: current.id, to: neighbor, claim_ids: groups.get(neighbor) }] });
+        queue.push({ id: neighbor, path: nextPath });
       }
     }
     const base = common(store, 'traverse', selected, start);

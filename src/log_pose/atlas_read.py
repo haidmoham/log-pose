@@ -75,7 +75,32 @@ def _validate_response(body: dict, parameters: dict) -> None:
 
 def _validate_target_binding(body: dict, parameters: dict, layer: str) -> None:
     """Bind saved target selectors to descriptors, independent of build identity."""
-    focus = body.get("focus")
+    operation = str(parameters.get("mode", "discover"))
+    if operation == "traverse" and layer == "reviewed":
+        focus = body.get("start")
+        neighbor_descriptor = None
+        claims = [claim for edge in body.get("path") or [] for claim in edge.get("claims", [])]
+    elif operation == "traverse":
+        path = body.get("path") or []
+        focus = {"id": path[0].get("subject")} if path else None
+        neighbor_descriptor = None
+        claims = []
+    elif operation == "export" and layer == "reviewed":
+        focus_envelope = body.get("focus")
+        focus = focus_envelope.get("focus") if isinstance(focus_envelope, dict) else None
+        evidence = body.get("explained")
+        neighbor_descriptor = evidence.get("neighbor") if isinstance(evidence, dict) else None
+        claims = evidence.get("claims", []) if isinstance(evidence, dict) else []
+    elif operation == "export":
+        focus_envelope = body.get("neighborhood")
+        focus = focus_envelope.get("focus") if isinstance(focus_envelope, dict) else None
+        evidence = body.get("evidence")
+        neighbor_descriptor = evidence.get("object") if isinstance(evidence, dict) else None
+        claims = []
+    else:
+        focus = body.get("focus")
+        neighbor_descriptor = body.get("neighbor") if layer == "reviewed" else body.get("object")
+        claims = body.get("claims", [])
     if "entity" in parameters:
         if not isinstance(focus, dict) or focus.get("id") != str(parameters["entity"]):
             raise AtlasReadError("atlas response differs from requested entity")
@@ -88,18 +113,28 @@ def _validate_target_binding(body: dict, parameters: dict, layer: str) -> None:
                 raise AtlasReadError("atlas response differs from requested candidate")
         else:
             descriptor = focus if isinstance(focus, dict) else body.get("subject")
-            if not isinstance(descriptor, dict) or descriptor.get("id") != candidate:
+            if operation == "traverse" and descriptor is None:
+                pass  # Inventory misses do not return start/target descriptors.
+            elif not isinstance(descriptor, dict) or descriptor.get("id") != candidate:
                 raise AtlasReadError("atlas response differs from requested candidate")
     if "neighbor" in parameters:
-        descriptor = body.get("neighbor") if layer == "reviewed" else body.get("object")
-        if not isinstance(descriptor, dict) or descriptor.get("id") != str(parameters["neighbor"]):
+        if not isinstance(neighbor_descriptor, dict) \
+                or neighbor_descriptor.get("id") != str(parameters["neighbor"]):
             raise AtlasReadError("atlas response differs from requested neighbor")
     if "claim" in parameters:
-        claims = body.get("claims")
         if not isinstance(claims, list) or not any(
                 isinstance(claim, dict) and claim.get("id") == str(parameters["claim"])
                 for claim in claims):
             raise AtlasReadError("atlas response differs from requested claim")
+    if "target" in parameters:
+        if layer == "reviewed":
+            target = body.get("target")
+            target_id = target.get("id") if isinstance(target, dict) else None
+        else:
+            path = body.get("path") or []
+            target_id = path[-1].get("object") if path else None
+        if target_id is not None and target_id != str(parameters["target"]):
+            raise AtlasReadError("atlas response differs from requested target")
 
 
 def read_atlas(repo_root: Path, parameters: dict[str, object], *,
