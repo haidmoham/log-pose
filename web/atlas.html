@@ -3,7 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f3ee">
   <title>log pose · temporal atlas</title>
+  <script>
+    if (location.pathname === '/' && new URLSearchParams(location.search).has('view')) {
+      location.replace(`./index.html${location.search}${location.hash}`);
+    }
+  </script>
   <link rel="icon" href="./favicon.svg">
   <link rel="stylesheet" href="./style.css">
   <link rel="stylesheet" href="./console.css">
@@ -16,41 +22,43 @@
     <header class="site-header">
       <div class="identity"><span class="log-pose-mark" aria-hidden="true"><span></span></span>
         <div><h1 class="identity-name">log pose</h1><p class="identity-note">temporal atlas</p></div></div>
-      <a href="./?view=topology">research console ↗</a>
+      <a href="./index.html?view=data">research desk ↗</a>
     </header>
     <main>
-      <div class="atlas-heading"><div><p class="eyebrow">source regions → neighborhood → evidence</p>
-        <h2>follow the evidence.</h2></div>
-        <p id="atlas-coverage">loading retained source revisions…</p></div>
+      <div class="atlas-heading"><div><p class="eyebrow">a research atlas of retained software evidence</p>
+        <h2>explore a connection. trace its source.</h2></div>
+        <p>move from a dated source to a candidate, then open the exact records behind a connection.</p></div>
       <nav class="atlas-layers" aria-label="evidence layer">
-        <a id="atlas-inventory-link" href="./atlas.html">inventory co-listing</a>
-        <a id="atlas-reviewed-link" href="./atlas.html?layer=reviewed">reviewed claims</a>
-        <span>each layer keeps its own evidence, clock and build.</span>
+        <a id="atlas-inventory-link" href="./atlas.html">inventory map <small>who appears together in a source</small></a>
+        <a id="atlas-reviewed-link" href="./atlas.html?layer=reviewed">reviewed claims <small>what retained claims say</small></a>
       </nav>
       <form id="atlas-controls" class="atlas-controls">
         <label>source revision<select id="atlas-revision" required></select></label>
         <label>observation mode<select id="atlas-mode"><option value="snapshot">selected snapshot</option>
           <option value="accumulated">observed through this year</option></select></label>
         <label>find a candidate<input id="atlas-query" type="search" placeholder="name, description or category" maxlength="200"></label>
-        <label>top connections<input id="atlas-top-k" type="number" min="1" max="100" value="60" step="1"></label>
         <button class="quiet-button" type="submit">search</button>
-        <button class="quiet-button" id="atlas-regions" type="button">source regions</button>
+        <button class="quiet-button" id="atlas-regions" type="button">browse categories</button>
       </form>
-      <div class="atlas-command-row"><button class="quiet-button" id="atlas-previous" type="button">← previous stop</button>
+      <div class="atlas-command-row"><span class="atlas-step-label">move through source time</span><button class="quiet-button" id="atlas-previous" type="button">← previous stop</button>
         <button class="quiet-button" id="atlas-next" type="button">next stop →</button>
-        <button class="quiet-button" id="atlas-list-toggle" type="button" aria-pressed="false">list only</button>
         <span id="atlas-status" role="status" aria-live="polite"></span>
         <button class="quiet-button" id="atlas-retry" type="button" hidden>retry</button></div>
-      <div class="atlas-density"><label for="atlas-density">connection budget</label>
-        <input id="atlas-density" type="range" min="1" max="100" value="60" step="1">
-        <output id="atlas-density-value" for="atlas-density">60 connections</output>
-        <button id="atlas-density-reset" class="quiet-button" type="button">reset</button></div>
       <p id="atlas-frame-label" class="atlas-frame-label"></p>
       <div class="atlas-workspace"><section id="atlas-scene" tabindex="-1" aria-label="atlas view"></section>
-        <aside id="atlas-inspector" aria-label="evidence inspector"><h3>why does this edge exist?</h3>
-          <p>choose a source region, focus a candidate, then select a co-listing.</p></aside></div>
-      <section id="atlas-results" aria-label="synchronized candidate list"></section>
-      <button class="quiet-button" id="atlas-more" type="button" hidden>next page →</button>
+        <aside id="atlas-inspector" aria-label="evidence inspector"><h3>read the map</h3>
+          <p>choose a candidate to see its source neighborhood. select a connection to inspect exact evidence.</p></aside></div>
+      <details class="atlas-access"><summary>browse visible candidates as a list</summary>
+        <button class="quiet-button" id="atlas-list-toggle" type="button" aria-pressed="false">list only</button>
+        <section id="atlas-results" aria-label="synchronized candidate list"></section>
+        <button class="quiet-button" id="atlas-more" type="button" hidden>next page →</button></details>
+      <details class="atlas-view-settings"><summary>view settings</summary><div class="atlas-settings-body">
+        <div class="atlas-density"><label for="atlas-density">connection budget</label>
+          <input id="atlas-density" type="range" min="1" max="100" value="24" step="1">
+          <output id="atlas-density-value" for="atlas-density">24 connections</output>
+          <button id="atlas-density-reset" class="quiet-button" type="button">reset</button></div>
+        <label class="atlas-exact-limit">exact value<input id="atlas-top-k" form="atlas-controls" type="number" min="1" max="100" value="24" step="1"></label>
+      </div></details>
       <details class="atlas-investigation"><summary>save this investigation</summary>
         <label>research question<textarea id="atlas-question" maxlength="2000"></textarea></label>
         <label>observations, interpretation and uncertainty<textarea id="atlas-interpretation" maxlength="8000"></textarea></label>
@@ -58,7 +66,8 @@
         <button class="quiet-button" id="atlas-export" type="button">download evidence manifest</button>
         <p>the export names the selected page, omitted pages, exact source premises and build. interpretation remains your note.</p>
       </details>
-      <details class="atlas-limitations"><summary>coverage and evidence limits</summary><ul id="atlas-limitations"></ul>
+      <details class="atlas-limitations"><summary>coverage and evidence limits</summary>
+        <p id="atlas-coverage">loading retained source revisions…</p><ul id="atlas-limitations"></ul>
         <p>regions are exact source categories. overlapping memberships are not separate companies. positions and distance are display choices.</p>
         <a href="./atlas.html?layer=reviewed">inspect accepted claims on their source-publication clock →</a></details>
     </main>

@@ -86,9 +86,48 @@ async function main() {
     const sourceRowId = detail.shared_observations[0].subject_rows[0].id;
     const sourceHash = detail.shared_observations[0].artifact_sha256;
     report.checks.push({ name: 'browser-api-build', passed: true, build_id: graph.build_id });
+
+    // The public root is the bounded atlas. Walk one real retained placement
+    // through focus and explanation so this smoke checks the primary journey.
+    const atlasNavigation = await page.goto(baseUrl.href, {
+      waitUntil: 'domcontentloaded', timeout: 30000
+    });
+    assert.equal(atlasNavigation.status(), 200, 'atlas root HTTP status');
+    await page.locator('#atlas-frame-label').waitFor({ state: 'visible', timeout: 30000 });
+    await page.locator('#atlas-regions').click();
+    await page.locator('.atlas-region').first().waitFor({ state: 'visible', timeout: 30000 });
+    await page.locator('.atlas-region').first().click();
+    await page.locator('.atlas-access summary').click();
+    await page.locator('.atlas-candidate-list button').first()
+      .waitFor({ state: 'visible', timeout: 30000 });
+    const focusButton = page.locator('.atlas-candidate-list button').first();
+    const focusId = await focusButton.getAttribute('data-candidate');
+    assert(focusId, 'atlas candidate list did not identify the selected candidate');
+    await focusButton.click();
+    await page.waitForFunction(candidateId =>
+      new URLSearchParams(location.search).get('candidate') === candidateId, focusId,
+    { timeout: 30000 });
+    const neighborButtons = page.locator(`.atlas-candidate-list button:not([data-candidate="${focusId}"])`);
+    await neighborButtons.first().waitFor({ state: 'visible', timeout: 30000 });
+    await neighborButtons.first().click();
+    await page.locator('#atlas-inspector .atlas-premise').first()
+      .waitFor({ state: 'visible', timeout: 30000 });
+    const atlasInspector = await page.locator('#atlas-inspector').innerText();
+    assert.match(atlasInspector, /exact shared placements · unreviewed co-listing/i,
+      'atlas must label inventory overlap as unreviewed co-listing');
+    assert.match(atlasInspector, /[a-f0-9]{64}/, 'atlas premise hash missing');
+    assert(await page.locator('#atlas-inspector .atlas-premise a[href*="view=data"]').count() >= 2,
+      'both retained source rows must be inspectable from the atlas');
+    assert.equal(await page.locator('#atlas-frame-label').getAttribute('data-frame-id'),
+      await page.locator('#atlas-inspector').getAttribute('data-frame-id'),
+      'atlas frame and exact-premise inspector must agree');
+    report.checks.push({ name: 'atlas-root-exact-evidence', passed: true,
+      frame_id: await page.locator('#atlas-frame-label').getAttribute('data-frame-id') });
+
     const deepLink = new URL('/', baseUrl);
     deepLink.search = new URLSearchParams({ view: 'topology', topologyLayer: 'field',
       fieldCandidate: candidate.id, fieldNeighbor: neighbor.id }).toString();
+    deepLink.pathname = '/index.html';
     const navigation = await page.goto(deepLink.href, { waitUntil: 'domcontentloaded', timeout: 30000 });
     assert.equal(navigation.status(), 200, 'deep link HTTP status');
     report.checks.push({ name: 'direct-deep-link', passed: true });
@@ -136,6 +175,9 @@ async function main() {
       neighbor: 'dbt-labs', cutoff: '2022-02-24', build_id: reviewedManifest.build_id }).toString();
     await page.goto(reviewedUrl.href, { waitUntil: 'domcontentloaded', timeout: 30000 });
     await page.locator('#atlas-inspector .atlas-claim').nth(2).waitFor({ state: 'visible', timeout: 30000 });
+    await page.locator('#atlas-inspector .atlas-source-audit').evaluateAll(items => {
+      items.forEach(item => { item.open = true; });
+    });
     const reviewedInspector = await page.locator('#atlas-inspector').innerText();
     assert(reviewedInspector.includes('announced partnership with'), 'partnership claim missing');
     assert(reviewedInspector.includes('invested in'), 'financing claim missing');

@@ -1,9 +1,13 @@
 # architecture and extension map
 
-Log Pose serves one research console from retained exports.
+Log Pose opens a bounded atlas at `/` and keeps the full research desk at
+`/index.html`. Both read retained exports. `/atlas.html` remains an atlas URL.
+Legacy `/?view=...` links still open the research desk: the local Node and
+Python servers dispatch them directly, and the static atlas document redirects
+them to `/index.html` with the query and fragment intact.
 
-- `npm run dashboard` serves the read-only research console from saved JSON exports and the bounded market-field read handler. `web/index.html` loads `research-model.js` for validation, deterministic layouts and URL state; `console-ui.js` for DOM and chart primitives; `data-view.js` for full cross-source search and retained-record inspection; `explore-view.js` for source audits; `discovery-topology-view.js` for the full retained field; `temporal-graph.js` and `temporal-topology-view.js` for the server-backed temporal atlas; `topology-view.js` for standalone reviewed claims; and `app.js` for state and route composition. It does not require Postgres.
-- `npm run dev` serves the same `web/index.html`, scripts, styles, and lazy data partitions. It does not migrate the database or fetch new evidence when opening the interface. An explicit `DATABASE_URL` enables the retained read-only `/api/companies` and `/api/overview` endpoints; the console itself does not require Postgres. Static paths are confined to `web/`. `/api/market-field` uses the same precomputed graph query module as the production Node function, without a database connection.
+- `npm run dashboard` serves the atlas at `/` and the read-only research desk at `/index.html` from saved JSON exports and bounded read handlers. The atlas initially focuses a pinned Datadog/CNCF 2024 example with a bounded neighbor page; explicit source or year links keep their own frame. Source regions, search, exact co-listing premises, and reviewed claims remain available through their separate selections. `web/index.html` loads `research-model.js` for validation, deterministic layouts and URL state; `console-ui.js` for DOM and chart primitives; `data-view.js` for full cross-source search and retained-record inspection; `explore-view.js` for source audits; `discovery-topology-view.js` for the full retained field; `temporal-graph.js` and `temporal-topology-view.js` for the server-backed temporal atlas; `topology-view.js` for standalone reviewed claims; and `app.js` for state and route composition. It does not require Postgres.
+- `npm run dev` serves the same atlas, research desk, scripts, styles, and lazy data partitions. It does not migrate the database or fetch new evidence when opening the interface. An explicit `DATABASE_URL` enables the retained read-only `/api/companies` and `/api/overview` endpoints; the desk itself does not require Postgres. Static paths are confined to `web/`. `/api/market-field` uses the same precomputed graph query module as the production Node function, without a database connection.
 - The temporal route reads a versioned pinned artifact timeline and requests one bounded source/year frame at a time. `api/market-field.js` owns frame eligibility, accumulation, exact overlap sets, and deltas. The browser owns selection, evidence inspection, and rendering. The precomputed candidate layout provides stable display addresses; it is not an evidence measure. The optional 3d view derives stable display depth from candidate IDs in `research-model.js` and projects it through the temporal renderer; depth is presentation only and does not change the retained graph.
 - `temporal-graph.js` owns the accessible SVG, fixed hit targets, and bounded population entrance. New observed nodes spring around their fixed anchors; selecting an edge does not replay the population. The GPU attaches after the entrance settles and caches geometry between interaction updates. Its animation loop changes light only and stops when hidden, offscreen, disconnected, or switched off. Reduced motion sets the initial motion control to off; an explicit user choice can enable it. SVG remains the fallback. See [the visual pass and capture procedure](graph-visuals.md).
 - `app.js` activates the temporal view only on the temporal atlas layer and disposes it on route exit. Disposal stops playback; pending responses can fill the view's cache but cannot paint another route. The URL model keeps an edge selection only with its focus candidate, and the search draft follows committed URL changes.
@@ -11,7 +15,7 @@ Log Pose serves one research console from retained exports.
 
 ## data contracts
 
-`web/atlas.html` is the bounded membership-first entry point. it loads only the
+`web/atlas.html` is the bounded membership-first entry point, including at `/`. it loads only the
 atlas model, view and shared DOM/graph primitives; it does not load the console
 catalog or the legacy pair corpus. `/api/atlas` queries immutable gold snapshots
 through `atlas-runtime.js`: bundled SQLite, indexed Postgres, or an HTTPS proxy

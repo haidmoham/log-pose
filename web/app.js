@@ -325,12 +325,15 @@ function overviewRanking(companies, selectedSlug) {
 
 function coverageStrip() {
   const extractable = data.evidence.filter(item => item.status === 'retrieved').length;
-  const panel = node('section', '', 'coverage-strip');
-  panel.append(metric(String(data.companies.length), 'selected companies', 'purposive cohort'),
+  const panel = node('details', '', 'desk-disclosure');
+  panel.append(node('summary', 'selected cohort and source coverage'));
+  const strip = node('div', '', 'coverage-strip');
+  strip.append(metric(String(data.companies.length), 'selected companies', 'purposive cohort'),
     metric(`${extractable} / 80`, 'extractable pages', 'four dated cells each'),
     metric('10', 'public issuers', 'four reported periods'),
     metric(String(discovery.provider_candidates.length), 'provider leads', 'identity reviewed'),
     metric(String(data.reviewed_quotes.length), 'reviewed passages', 'fixed evidence audit'));
+  panel.append(strip);
   return panel;
 }
 

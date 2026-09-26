@@ -6,7 +6,8 @@ import { writeFileSync } from 'node:fs';
 const PUBLIC_HOST = 'logpose.mhaider.dev';
 const PUBLIC_ALIAS = 'log-pose-five.vercel.app';
 const ASSETS = [
-  ['html', '/', 'web/index.html'],
+  ['html', '/', 'web/atlas.html'],
+  ['console-html', '/index.html', 'web/index.html'],
   ['app', '/app.js', 'web/app.js'],
   ['field-view', '/discovery-topology-view.js', 'web/discovery-topology-view.js'],
   ['dashboard', '/dashboard.json', 'web/dashboard.json'],
@@ -84,13 +85,13 @@ export async function verifySite(baseUrl, expected, fetchImpl = fetch) {
     }
     return { sha256: actual, bytes: bytes.length };
   })));
-  const deepLink = `/?view=topology&topologyLayer=field&fieldCandidate=${expected.candidate_id}`
+  const deepLink = `/index.html?view=topology&topologyLayer=field&fieldCandidate=${expected.candidate_id}`
     + `&fieldNeighbor=${expected.neighbor_id}`;
   await check('direct-deep-link', async () => {
     const bytes = await readResponse(baseUrl, deepLink, fetchImpl);
     const actual = sha256(bytes);
-    const html = expected.assets.find(asset => asset.name === 'html');
-    if (actual !== html.sha256) throw new Error('deep link serves different HTML from committed root');
+    const html = expected.assets.find(asset => asset.name === 'console-html');
+    if (actual !== html.sha256) throw new Error('console deep link does not serve the committed console HTML');
     return { sha256: actual };
   });
 

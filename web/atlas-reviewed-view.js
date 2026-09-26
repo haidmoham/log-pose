@@ -41,19 +41,20 @@
     const direction = select('atlas-direction', [['both', 'either direction'], ['out', 'outgoing'], ['in', 'incoming']]);
     const query = node('input'); query.id = 'atlas-query'; query.type = 'search'; query.maxLength = 200;
     query.placeholder = 'reviewed company name';
-    const limit = node('input'); limit.id = 'atlas-top-k'; limit.type = 'number';
-    limit.min = '1'; limit.max = '100'; limit.step = '1'; limit.value = '60';
+    const limit = byId('atlas-top-k'); limit.value = '24';
     const search = node('button', 'search', 'quiet-button'); search.type = 'submit';
     const all = node('button', 'all entities', 'quiet-button'); all.type = 'button';
-    byId('atlas-controls').replaceChildren(label('sources published through', cutoff), label('predicate', predicate),
-      label('claim basis', basis), label('claim direction', direction), label('find an entity', query),
-      label('neighbor limit', limit), search, all);
+    const filters = node('details', '', 'atlas-reviewed-filters');
+    filters.append(node('summary', 'filter claims'), label('predicate', predicate),
+      label('claim basis', basis), label('claim direction', direction));
+    byId('atlas-controls').replaceChildren(label('sources published through', cutoff),
+      label('find an entity', query), search, all, filters);
     document.querySelector('.atlas-density label').textContent = 'neighbor limit';
     byId('atlas-density').setAttribute('aria-label', 'neighbor limit');
     document.querySelector('.atlas-limitations > p').textContent =
       'one visible connection groups claims for navigation. each claim keeps its predicate, direction, scope and premises.';
     const legacy = document.querySelector('.atlas-limitations > a');
-    legacy.href = './?view=topology&topologyLayer=reviewed'; legacy.textContent = 'open the reviewed-claims research console →';
+    legacy.href = './index.html?view=topology&topologyLayer=reviewed'; legacy.textContent = 'open the reviewed-claims research desk →';
     byId('atlas-previous').textContent = '← earlier source date';
     byId('atlas-next').textContent = 'later source date →';
 
@@ -143,7 +144,8 @@
         if (entities.length || focused) {
           if (listOnly) scene.append(node('p', 'list mode · the same eligible entities and claims.'));
           else scene.append(root.LogPoseTemporalGraph.render(model.reviewedGraphFrame(result), {
-            onSelectCandidate: focus, onSelectEdge: inspect, scheduleCamera: true, fitScale: 1 }));
+            onSelectCandidate: focus, onSelectEdge: inspect, scheduleCamera: true, fitScale: 1,
+            showAllLabels: entities.length <= 3 }));
         } else scene.append(node('p', 'no reviewed entities match these filters. this is not evidence that relationships are absent.'));
         const list = node('div', '', 'atlas-candidate-list');
         entities.forEach((entity, index) => {
@@ -197,33 +199,41 @@
         node('h4', `${name(claim.subject_slug)} ${arrow} ${name(claim.object_slug)}`),
         node('strong', claim.predicate.replaceAll('_', ' ')), node('p', claim.interpretation));
       facts(card, [['scope', claim.scope], ['time meaning', claim.temporal_basis],
-        ['event date', claim.event_date], ['valid from / to', `${claim.valid_from || 'unknown'} / ${claim.valid_to || 'unknown'}`],
-        ['unknowns and alternatives', claim.alternative_or_unknown], ['claim id', claim.id],
-        ['database claim id', claim.database_id], ['candidate record created', claim.created_at],
-        ['derivation', `${claim.generator} · ${claim.generator_version}`]]);
+        ['event date', claim.event_date], ['unknowns and alternatives', claim.alternative_or_unknown]]);
+      const audit = node('details', '', 'atlas-claim-audit');
+      audit.append(node('summary', 'claim and review trail'));
+      facts(audit, [['valid from / to', `${claim.valid_from || 'unknown'} / ${claim.valid_to || 'unknown'}`],
+        ['claim id', claim.id], ['database claim id', claim.database_id],
+        ['candidate record created', claim.created_at], ['derivation', `${claim.generator} · ${claim.generator_version}`]]);
       for (const source of claim.sources) {
         const premise = node('section', '', 'atlas-premise');
         premise.append(node('strong', `${source.role} · ${source.title}`), node('p', source.publisher),
           node('p', source.evidence_text));
         if (source.evidence_quote) premise.append(node('blockquote', source.evidence_quote));
-        facts(premise, [['source location', source.evidence_locator], ['published', source.source_date],
+        facts(premise, [['published', source.source_date]]);
+        premise.append(link('source document ↗', source.source_url));
+        const sourceAudit = node('details', '', 'atlas-source-audit');
+        sourceAudit.append(node('summary', 'source record and hash'));
+        facts(sourceAudit, [['source location', source.evidence_locator],
           ['reporting period', `${source.period_start || 'unknown'} → ${source.period_end || 'unknown'}`],
           ['source event date', source.event_date], ['retrieved', source.retrieved_at || source.retrieved_on],
           ['captured', source.captured_at], ['source id', source.id]]);
-        premise.append(node('code', source.artifact_sha256), link('source document ↗', source.source_url));
+        sourceAudit.append(node('code', source.artifact_sha256));
+        premise.append(sourceAudit);
         card.append(premise);
       }
       const review = claim.review;
-      facts(card, [['review decision', `${review.decision} · review ${review.id}`], ['reviewer', review.reviewer],
+      facts(audit, [['review decision', `${review.decision} · review ${review.id}`], ['reviewer', review.reviewer],
         ['review date and precision', `${review.reviewed_at} · ${review.date_precision || 'timestamp precision unspecified'}`],
         ['review rationale', review.rationale]]);
       if (claim.review_history?.length) {
         const history = node('details'); history.append(node('summary', 'retained review history'));
         claim.review_history.forEach(item => history.append(node('p', `${item.decision} · ${item.reviewed_at} · ${item.reviewer}: ${item.rationale}`)));
-        card.append(history);
+        audit.append(history);
       }
+      card.append(audit);
       const trail = node('a', 'open the retained claim and review trail →');
-      trail.href = `./?${new URLSearchParams({ view: 'data', dataFamily: 'topology', dataRecord: claim.id })}`;
+      trail.href = `./index.html?${new URLSearchParams({ view: 'data', dataFamily: 'topology', dataRecord: claim.id })}`;
       card.append(trail);
       return card;
     }
@@ -332,7 +342,7 @@
         cutoff.value = url.get('cutoff') || '';
         predicate.value = url.get('predicate') || '';
         basis.value = url.get('basis') || 'documented'; direction.value = url.get('direction') || 'both';
-        query.value = url.get('query') || ''; limit.value = url.get('top_k') || '60';
+        query.value = url.get('query') || ''; limit.value = url.get('top_k') || '24';
         syncLimit();
         byId('atlas-coverage').textContent = `${result.counts.entities} reviewed entities · ${result.counts.claims} accepted claims in the retained build. hypotheses need explicit selection.`;
         byId('atlas-version').textContent = `build ${result.build_id.slice(0, 12)} · source-publication clock · current accepted reviews`;
@@ -370,7 +380,7 @@
     });
     byId('atlas-density').addEventListener('input', () => { limit.value = byId('atlas-density').value; syncLimit(); });
     byId('atlas-density').addEventListener('change', reloadSelection);
-    byId('atlas-density-reset').addEventListener('click', () => { limit.value = '60'; syncLimit(); reloadSelection(); });
+    byId('atlas-density-reset').addEventListener('click', () => { limit.value = '24'; syncLimit(); reloadSelection(); });
     byId('atlas-previous').addEventListener('click', () => discovery && step(-1));
     byId('atlas-next').addEventListener('click', () => discovery && step(1));
     byId('atlas-more').addEventListener('click', () => load({ ...committedRequest, cursor: displayed.next_cursor }));

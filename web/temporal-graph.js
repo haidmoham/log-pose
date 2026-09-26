@@ -440,7 +440,7 @@
         }
         const overlaps = [...nearby].some(other => box.x < other.x + other.width && box.x + box.width > other.x
           && box.y < other.y + other.height && box.y + box.height > other.y);
-        const eligible = hash(record.id + ':label') % 100 < appearance.labels;
+        const eligible = options.showAllLabels || hash(record.id + ':label') % 100 < appearance.labels;
         const visible = record.priority || (eligible && !overlaps);
         record.group.classList.toggle('has-label', visible);
         if (visible) {

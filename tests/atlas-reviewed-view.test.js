@@ -44,6 +44,7 @@ test('reviewed focus keeps typed claims, exact premises and explicit identity se
   const document = dom.window.document;
   await waitFor(() => document.querySelectorAll('.atlas-claim').length === 3);
   assert.equal(document.querySelectorAll('.constellation-node').length, 2);
+  assert.equal(document.querySelectorAll('.constellation-node.has-label').length, 2);
   assert.match(document.querySelector('#atlas-frame-label').textContent, /source.*2022-02-24.*1 of 1 eligible neighbors/);
   assert.equal(document.querySelector('#atlas-inspector').dataset.frameId,
     document.querySelector('#atlas-frame-label').dataset.frameId);
