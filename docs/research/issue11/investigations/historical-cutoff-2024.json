@@ -1,0 +1,327 @@
+{
+  "build_id": "990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5",
+  "clock": {
+    "name": "inventory_year",
+    "precision": "year"
+  },
+  "cohort_query": {
+    "candidate_id": "004c9f6b7ecc1c48c8e4",
+    "inventory_year": 2024,
+    "mode": "snapshot",
+    "neighbor_id": "30e05171b7a1b357ee44",
+    "source": "cncf"
+  },
+  "counterevidence": [
+    {
+      "inventory_year": 2025,
+      "status": "later_evidence_excluded"
+    },
+    {
+      "detail": "No contradiction or exit review is present.",
+      "status": "not_reviewed"
+    }
+  ],
+  "generated_at": "2026-09-26T00:36:31.716631+00:00",
+  "geometry_use": "display_only_not_model_input",
+  "interpretation": "The 2024 reconstruction contains one exact shared placement. The separately queried 2025 placement is known to the current build but is ineligible at the selected 2024 inventory stop.",
+  "next_question": "What arrival-time records would be required to support a separate system-known replay?",
+  "observations": [
+    {
+      "artifact_id": "artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8",
+      "artifact_sha256": "f1036cb6b8e9b9ef7647a0203ac349ba308173bf407f79cc8ccd4d4a2e7d46fd",
+      "occurrence_ids": [
+        "2a3de0564d73c91e7760",
+        "d452fc72ad99dbe404fa"
+      ],
+      "placement_id": "placement_2506381a0680a4beca4714a7ece55173a2206e43445d9f58d10f3a3cc7f2924f",
+      "status": "eligible_at_2024_stop"
+    }
+  ],
+  "omissions": [
+    {
+      "inventory_year": 2025,
+      "occurrence_ids": [
+        "585b9c76c32121fd7bfc",
+        "23f77bcff87c594e5c3d"
+      ],
+      "placement_id": "placement_ea4989cd2f79d76b5c68b61c7cd6f8b9e8bfecab3c2f30e1d2593e921d46d430",
+      "reason": "later_than_selected_inventory_stop"
+    },
+    "Arrival-time and system-known replay are unavailable.",
+    "No continuous validity is inferred between or after inventory observations."
+  ],
+  "question": "What exact Kueue/Kuberay overlap can be reconstructed at the CNCF 2024 inventory stop, and what later evidence is excluded?",
+  "result": "At the declared 2024 inventory stop, the overlap is supported only by the pinned CNCF 2024 category placement; 2025 rows are explicitly excluded.",
+  "schema_version": "atlas-investigation-v1",
+  "selected_pages": [
+    {
+      "build_id": "990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5",
+      "contradictions": {
+        "records": [],
+        "status": "not_reviewed"
+      },
+      "count": {
+        "grain": "shared_exact_placements",
+        "status": "exact",
+        "value": 1
+      },
+      "frame_id": "66da1ee6177393078c0037075990aedf34f9c58c6851f6b9e81ddea731b057e0",
+      "limitations": [
+        "inventory co-listing is an unreviewed lead, not a company relationship.",
+        "inventory years have year precision; missing observations do not establish exits.",
+        "accumulation means previously observed, not continuously valid.",
+        "identity keys and display positions are a present-day lens; system-known replay is unsupported."
+      ],
+      "name": "selected_2024_reconstruction",
+      "next_cursor": null,
+      "object": {
+        "candidate_tags": [
+          "ai_automation"
+        ],
+        "id": "30e05171b7a1b357ee44",
+        "identity_review": null,
+        "name": "Kuberay",
+        "record_type": "product_or_project_candidate"
+      },
+      "operation": "explain",
+      "premises": [
+        {
+          "artifact": {
+            "artifact_path": "docs/research/source-artifacts/discovery/cncf-2024-e4f13c918275.yml",
+            "commit": "e4f13c918275affaefb3dbe1a21a4a8e38ee3842",
+            "committed_at": "2024-12-31T14:58:22Z",
+            "coverage_status": "dated_inventory_snapshot",
+            "id": "artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8",
+            "inventory_year": 2024,
+            "observation_basis": "point_in_time_repository_state",
+            "partition_path": "discovery-inventory/cncf-2024.json",
+            "raw_sha256": "f1036cb6b8e9b9ef7647a0203ac349ba308173bf407f79cc8ccd4d4a2e7d46fd",
+            "repository": "cncf/landscape",
+            "source": "cncf",
+            "url": "https://github.com/cncf/landscape/blob/e4f13c918275affaefb3dbe1a21a4a8e38ee3842/landscape.yml"
+          },
+          "object": {
+            "candidate_id": "30e05171b7a1b357ee44",
+            "id": "membership_fd15d34798dd37609152c0f24b233a14bed2174b54501c02f5a3015608c78566",
+            "occurrence_ids": [
+              "d452fc72ad99dbe404fa"
+            ],
+            "placement_id": "placement_2506381a0680a4beca4714a7ece55173a2206e43445d9f58d10f3a3cc7f2924f",
+            "rows": [
+              {
+                "description": "A toolkit to run Ray applications on Kubernetes",
+                "homepage_url": "https://github.com/ray-project/kuberay",
+                "id": "d452fc72ad99dbe404fa",
+                "name": "Kuberay",
+                "repo_url": "https://github.com/ray-project/kuberay",
+                "source_path": [
+                  10,
+                  0,
+                  0
+                ]
+              }
+            ]
+          },
+          "placement": {
+            "artifact_id": "artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8",
+            "category": "CNAI / General Orchestration",
+            "id": "placement_2506381a0680a4beca4714a7ece55173a2206e43445d9f58d10f3a3cc7f2924f",
+            "inventory_year": 2024,
+            "member_count": 4,
+            "raw_sha256": "f1036cb6b8e9b9ef7647a0203ac349ba308173bf407f79cc8ccd4d4a2e7d46fd",
+            "source": "cncf"
+          },
+          "subject": {
+            "candidate_id": "004c9f6b7ecc1c48c8e4",
+            "id": "membership_2154ea019ef959f613728ddaf3af511175473163ac478ca587c38b9a841e2ba9",
+            "occurrence_ids": [
+              "2a3de0564d73c91e7760"
+            ],
+            "placement_id": "placement_2506381a0680a4beca4714a7ece55173a2206e43445d9f58d10f3a3cc7f2924f",
+            "rows": [
+              {
+                "description": "Cloud-native job queueing system for batch, HPC, AI/ML, and similar applications in a Kubernetes cluster.",
+                "homepage_url": "https://kueue.sigs.k8s.io/",
+                "id": "2a3de0564d73c91e7760",
+                "name": "Kueue",
+                "repo_url": "https://github.com/kubernetes-sigs/kueue",
+                "source_path": [
+                  10,
+                  0,
+                  3
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "receipt_id": "93ca0a9cc5b072a394561fe104a9b088cbd402b747ef15b3d85ef0392f05179c",
+      "returned": 1,
+      "schema_version": "1.0",
+      "selection": {
+        "artifact": "",
+        "category": "",
+        "clock": "inventory_year",
+        "source": "cncf",
+        "temporal_mode": "snapshot",
+        "year": "2024"
+      },
+      "status": "unreviewed_inventory_overlap",
+      "subject": {
+        "candidate_tags": [
+          "ai_automation"
+        ],
+        "id": "004c9f6b7ecc1c48c8e4",
+        "identity_review": null,
+        "name": "Kueue",
+        "record_type": "product_or_project_candidate"
+      },
+      "versions": {
+        "layout": "atlas-address-v1",
+        "membership": "1.0",
+        "query": "atlas-query-v1",
+        "snapshot": "atlas-snapshot-v1"
+      },
+      "work": {
+        "elapsed_ms": 1.5322909999999972,
+        "membership_rows_read": 4
+      }
+    },
+    {
+      "build_id": "990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5",
+      "contradictions": {
+        "records": [],
+        "status": "not_reviewed"
+      },
+      "count": {
+        "grain": "shared_exact_placements",
+        "status": "exact",
+        "value": 1
+      },
+      "frame_id": "09524bce1d99cd65557f52d5f8641c4ff45850616088a8fbbc4ab41098e731f4",
+      "limitations": [
+        "inventory co-listing is an unreviewed lead, not a company relationship.",
+        "inventory years have year precision; missing observations do not establish exits.",
+        "accumulation means previously observed, not continuously valid.",
+        "identity keys and display positions are a present-day lens; system-known replay is unsupported."
+      ],
+      "name": "later_2025_check_excluded_from_result",
+      "next_cursor": null,
+      "object": {
+        "candidate_tags": [
+          "ai_automation"
+        ],
+        "id": "30e05171b7a1b357ee44",
+        "identity_review": null,
+        "name": "Kuberay",
+        "record_type": "product_or_project_candidate"
+      },
+      "operation": "explain",
+      "premises": [
+        {
+          "artifact": {
+            "artifact_path": "docs/research/source-artifacts/discovery/cncf-2025-1f32900465c9.yml",
+            "commit": "1f32900465c936f9acb4ff77485f58ac28943ffb",
+            "committed_at": "2025-12-17T01:27:26Z",
+            "coverage_status": "dated_inventory_snapshot",
+            "id": "artifact_44fcf328443c77afc6b61b573470faa547b1c1b54c80c7f6f72a7468bb7f7cfe",
+            "inventory_year": 2025,
+            "observation_basis": "point_in_time_repository_state",
+            "partition_path": "discovery-inventory/cncf-2025.json",
+            "raw_sha256": "bec9090cd40a09a8f1bd913cc4d47a5710ce7d3a92ee7091369d54a31d1f677f",
+            "repository": "cncf/landscape",
+            "source": "cncf",
+            "url": "https://github.com/cncf/landscape/blob/1f32900465c936f9acb4ff77485f58ac28943ffb/landscape.yml"
+          },
+          "object": {
+            "candidate_id": "30e05171b7a1b357ee44",
+            "id": "membership_1c112136d865a8585838414383fff63f376dbbd21395945c6d89945ae10c6a48",
+            "occurrence_ids": [
+              "23f77bcff87c594e5c3d"
+            ],
+            "placement_id": "placement_ea4989cd2f79d76b5c68b61c7cd6f8b9e8bfecab3c2f30e1d2593e921d46d430",
+            "rows": [
+              {
+                "description": "A toolkit to run Ray applications on Kubernetes",
+                "homepage_url": "https://github.com/ray-project/kuberay",
+                "id": "23f77bcff87c594e5c3d",
+                "name": "Kuberay",
+                "repo_url": "https://github.com/ray-project/kuberay",
+                "source_path": [
+                  10,
+                  0,
+                  0
+                ]
+              }
+            ]
+          },
+          "placement": {
+            "artifact_id": "artifact_44fcf328443c77afc6b61b573470faa547b1c1b54c80c7f6f72a7468bb7f7cfe",
+            "category": "CNAI / General Orchestration",
+            "id": "placement_ea4989cd2f79d76b5c68b61c7cd6f8b9e8bfecab3c2f30e1d2593e921d46d430",
+            "inventory_year": 2025,
+            "member_count": 4,
+            "raw_sha256": "bec9090cd40a09a8f1bd913cc4d47a5710ce7d3a92ee7091369d54a31d1f677f",
+            "source": "cncf"
+          },
+          "subject": {
+            "candidate_id": "004c9f6b7ecc1c48c8e4",
+            "id": "membership_5f515f5e43ad87490e9716e2a18e52ba9540e15c96956201e2e297591ce81de0",
+            "occurrence_ids": [
+              "585b9c76c32121fd7bfc"
+            ],
+            "placement_id": "placement_ea4989cd2f79d76b5c68b61c7cd6f8b9e8bfecab3c2f30e1d2593e921d46d430",
+            "rows": [
+              {
+                "description": "Cloud-native job queueing system for batch, HPC, AI/ML, and similar applications in a Kubernetes cluster.",
+                "homepage_url": "https://kueue.sigs.k8s.io/",
+                "id": "585b9c76c32121fd7bfc",
+                "name": "Kueue",
+                "repo_url": "https://github.com/kubernetes-sigs/kueue",
+                "source_path": [
+                  10,
+                  0,
+                  3
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "receipt_id": "1a7f68a175ccb7f14159510fd17de7d281c8292f6ac83503686146dba8548323",
+      "returned": 1,
+      "schema_version": "1.0",
+      "selection": {
+        "artifact": "",
+        "category": "",
+        "clock": "inventory_year",
+        "source": "cncf",
+        "temporal_mode": "snapshot",
+        "year": "2025"
+      },
+      "status": "unreviewed_inventory_overlap",
+      "subject": {
+        "candidate_tags": [
+          "ai_automation"
+        ],
+        "id": "004c9f6b7ecc1c48c8e4",
+        "identity_review": null,
+        "name": "Kueue",
+        "record_type": "product_or_project_candidate"
+      },
+      "versions": {
+        "layout": "atlas-address-v1",
+        "membership": "1.0",
+        "query": "atlas-query-v1",
+        "snapshot": "atlas-snapshot-v1"
+      },
+      "work": {
+        "elapsed_ms": 1.6665529999999933,
+        "membership_rows_read": 4
+      }
+    }
+  ],
+  "status": "research_record_not_reviewed_claim",
+  "system_known_replay": "unsupported",
+  "uncertainty": "This is present-day reconstruction from retained artifacts, not proof that the system knew the evidence in 2024 and not proof of relationship validity."
+}
