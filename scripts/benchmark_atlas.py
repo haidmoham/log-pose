@@ -13,7 +13,7 @@ import time
 from pathlib import Path
 
 
-GENERATOR_VERSION = "atlas-scale-v1"
+GENERATOR_VERSION = "atlas-scale-v2"
 TIERS = {
     "test": {"candidates": 200, "memberships": 2_000, "revisions": 8, "categories": 16,
              "dense": 100, "seed": 1100},
@@ -60,28 +60,37 @@ def create_schema(connection: sqlite3.Connection) -> None:
     """)
 
 
-def fixture_identity(parameters: dict) -> tuple[str, dict]:
+def fixture_identity(parameters: dict) -> tuple[str, dict, dict]:
     counts = {"artifacts": parameters["revisions"],
               "placements": parameters["revisions"] * parameters["categories"],
               "candidates": parameters["candidates"], "memberships": parameters["memberships"],
               "supporting_occurrences": parameters["memberships"], "input_worklist_pairs": 0}
-    logical = {"schema_version": "1.0", "synthetic": True,
-               "generator": {"version": GENERATOR_VERSION, **parameters},
-               "versions": {"membership": "synthetic-atlas-scale-v1", "query": "atlas-query-v1",
-                            "layout": "atlas-address-v1", "snapshot": "synthetic-scale-v1"},
-               "clocks": {"inventory": {"field": "inventory_year", "precision": "year"}},
+    logical = {"schema_version": "1.0",
+               "versions": {"membership": "synthetic-atlas-scale-v2", "query": "atlas-query-v1",
+                            "layout": "atlas-address-v1", "snapshot": "synthetic-scale-v2"},
+               "clocks": {"inventory": {"field": "inventory_year", "precision": "year"},
+                          "artifact_revision": {"field": "artifact_id",
+                                                "precision": "immutable_revision"}},
                "counts": counts,
                "input_hashes": {"synthetic_fixture": hashlib.sha256(
                    canonical({"version": GENERATOR_VERSION, **parameters}).encode()).hexdigest()},
-               "limitations": ["Synthetic scale fixture; no row describes a real entity or relationship.",
-                               "Direct streaming writer does not measure canonical Python exporter memory."]}
+               "derivation": {"incremental_status": "not_implemented_for_synthetic_fixture",
+                              "scope": "direct_streaming_scale_fixture",
+                              "recovery": "full_rebuild",
+                              "canonical_evidence_store": False}}
     build_id = hashlib.sha256(canonical(logical).encode()).hexdigest()
-    return build_id, {**logical, "build_id": build_id}
+    logical = {**logical, "build_id": build_id}
+    manifest_fields = {"synthetic": True,
+                       "generator": {"version": GENERATOR_VERSION, **parameters},
+                       "limitations": [
+                           "Synthetic scale fixture; no row describes a real entity or relationship.",
+                           "Direct streaming writer does not measure canonical Python exporter memory."]}
+    return build_id, logical, manifest_fields
 
 
 def build_fixture(output_root: Path, tier: str, *, overwrite: bool = False) -> dict:
     parameters = dict(TIERS[tier])
-    build_id, logical = fixture_identity(parameters)
+    build_id, logical, manifest_fields = fixture_identity(parameters)
     output_root.mkdir(parents=True, exist_ok=True)
     database_path = output_root / f"{build_id}.sqlite"
     manifest_path = output_root / f"{build_id}.json"
@@ -202,7 +211,7 @@ def build_fixture(output_root: Path, tier: str, *, overwrite: bool = False) -> d
     if integrity != "ok" or foreign_keys or actual_memberships != membership_count or member_mismatch:
         raise RuntimeError("synthetic atlas fixture failed integrity reconciliation")
     elapsed = time.perf_counter() - started
-    manifest = {**logical, "database": database_path.name,
+    manifest = {**logical, **manifest_fields, "database": database_path.name,
                 "database_sha256": sha256(database_path),
                 "database_bytes": database_path.stat().st_size}
     manifest_path.write_text(canonical(manifest) + "\n")

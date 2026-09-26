@@ -1,0 +1,63 @@
+{
+  "budget": {
+    "includes": [
+      "retained v1 SQLite fixtures",
+      "v2 SQLite fixtures",
+      "PostgreSQL cluster and WAL"
+    ],
+    "maximum_combined_bytes": 21474836480,
+    "maximum_minutes": 30,
+    "peak_combined_bytes": 19725950925,
+    "result": "stopped_at_cumulative_limit"
+  },
+  "build": {
+    "peak_rss_bytes": 301993984,
+    "seconds": 115.38993297100023,
+    "sqlite_bytes": 3432722432,
+    "status": "complete"
+  },
+  "build_id": "eace35e9fa2ea8627ea8adbf648d803b283961daf15efffc7ff1380f24432623",
+  "generator": {
+    "candidates": 50000,
+    "categories": 128,
+    "dense": 10000,
+    "memberships": 5000000,
+    "revisions": 64,
+    "seed": 1102,
+    "version": "atlas-scale-v2"
+  },
+  "limitations": [
+    "Synthetic records do not describe real entities or relationships.",
+    "An incomplete local import provides no hosted-provider capacity or latency evidence."
+  ],
+  "postgres_import": {
+    "attempts": [
+      {
+        "cleanup": "stale backend later terminated explicitly; server rolled transaction back",
+        "finding": "exact placement member-count reconciliation used an incremental sort over the joined membership rows",
+        "observed_reconciliation_seconds_at_last_sample": 972.438,
+        "status": "client_interrupted_pre_fix"
+      },
+      {
+        "cleanup": "server rolled transaction back",
+        "copy_seconds_observed_at_least": 297.455,
+        "lock_wait_seconds_observed": 227.242,
+        "optimized_reconciliation_seconds_observed_at_least": 175.635,
+        "status": "backend_terminated_at_cumulative_tier_budget"
+      }
+    ],
+    "current_pointer_after_stop": "s1",
+    "optimization": "pre-aggregate exact membership counts by placement_id, then join placements; no validation weakened",
+    "s2_snapshot_rows_after_stop": 0,
+    "status": "not_published_rolled_back"
+  },
+  "reads": {
+    "reason": "S2 cumulative build and import attempts reached the tier budget",
+    "status": "not_run"
+  },
+  "receipt_schema": "atlas-postgres-scale-v1",
+  "scope": "local PostgreSQL representation; no hosted-provider or Railway latency measured",
+  "status": "incomplete_budget_exceeded",
+  "synthetic": true,
+  "tier": "s2"
+}

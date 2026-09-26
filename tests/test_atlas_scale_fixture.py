@@ -3,6 +3,8 @@ import json
 import sqlite3
 from pathlib import Path
 
+from log_pose.atlas_snapshot import validate_snapshot
+
 
 ROOT = Path(__file__).parents[1]
 SPEC = importlib.util.spec_from_file_location(
@@ -16,11 +18,12 @@ def test_synthetic_scale_fixture_has_exact_grains_and_dense_bucket(tmp_path):
     manifest = result["manifest"]
     assert result["status"] == "built"
     assert manifest["synthetic"] is True
-    assert manifest["generator"]["version"] == "atlas-scale-v1"
+    assert manifest["generator"]["version"] == "atlas-scale-v2"
     assert manifest["counts"] == {"artifacts": 8, "placements": 128, "candidates": 200,
                                   "memberships": 2_000, "supporting_occurrences": 2_000,
                                   "input_worklist_pairs": 0}
     assert result["dense_placement_members"] == 100
+    validate_snapshot(tmp_path, manifest)
     database = sqlite3.connect(tmp_path / manifest["database"])
     try:
         assert database.execute("PRAGMA integrity_check").fetchone() == ("ok",)
