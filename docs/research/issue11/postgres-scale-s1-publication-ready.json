@@ -1,0 +1,5454 @@
+{
+  "receipt_schema": "atlas-postgres-scale-v2",
+  "synthetic": true,
+  "tier": "s1",
+  "build_id": "b6a634e4da0e40b81b3dcf1cd5b4224146bb3e6f185d9c47b894e662dc98188b",
+  "generator": {
+    "candidates": 10000,
+    "categories": 64,
+    "dense": 10000,
+    "memberships": 1000000,
+    "revisions": 32,
+    "seed": 1101,
+    "version": "atlas-scale-v2"
+  },
+  "environment": {
+    "node": "v22.23.1",
+    "platform": "linux",
+    "arch": "x64",
+    "cpus": 16,
+    "memory_bytes": 16716034048,
+    "postgres": "PostgreSQL 18.6 (Ubuntu 18.6-0ubuntu0.26.04.1) on x86_64-pc-linux-gnu, compiled by gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0, 64-bit"
+  },
+  "scope": "local PostgreSQL representation; no hosted-provider or Railway latency measured",
+  "load_model": {
+    "workloads": "one workload at a time",
+    "clients": "simultaneous requests per batch",
+    "pool_max": 4,
+    "connection_timeout_ms": 2000,
+    "matches_runtime_pool": true
+  },
+  "ranking_semantic": "distinct supporting placement count descending, then ASCII candidate ID",
+  "request_budget": {
+    "maximum_per_workload": 100,
+    "measured_per_workload": 70,
+    "cold_additional_focus_top_k_100": 1,
+    "maximum_actual_per_workload": 71,
+    "prior_s1_receipt_requests": 421,
+    "this_receipt_requests": 421,
+    "cumulative_s1_receipt_requests": 842
+  },
+  "import": {
+    "result": {
+      "status": "imported",
+      "build_id": "b6a634e4da0e40b81b3dcf1cd5b4224146bb3e6f185d9c47b894e662dc98188b",
+      "counts": {
+        "artifacts": 32,
+        "candidates": 10000,
+        "input_worklist_pairs": 0,
+        "memberships": 1000000,
+        "placements": 2048,
+        "supporting_occurrences": 1000000
+      },
+      "current": true
+    },
+    "import_seconds": 44.16,
+    "database_bytes": 1187387071,
+    "relations": {
+      "atlas_artifact": 98304,
+      "atlas_artifact_pkey": 16384,
+      "atlas_artifact_source_year": 16384,
+      "atlas_candidate": 9265152,
+      "atlas_candidate_pkey": 1171456,
+      "atlas_candidate_search": 2195456,
+      "atlas_current": 32768,
+      "atlas_current_pkey": 16384,
+      "atlas_membership": 1166663680,
+      "atlas_membership_pkey": 191651840,
+      "atlas_membership_placement_candidate": 344481792,
+      "atlas_placement": 1695744,
+      "atlas_placement_artifact_category": 770048,
+      "atlas_placement_pkey": 360448,
+      "atlas_snapshot": 32768,
+      "atlas_snapshot_pkey": 16384
+    },
+    "publication_readiness": {
+      "maintenance": "VACUUM (ANALYZE) before ready/current",
+      "ready_before_first_request": true
+    }
+  },
+  "cold_first_request": {
+    "workload": "focus_top_k_100",
+    "elapsed_ms": 52.981782,
+    "status": 200,
+    "response_bytes": 32368,
+    "membership_rows_read": null,
+    "returned": 100,
+    "exact_eligible": 9999,
+    "suppressed": 9899,
+    "error": null,
+    "cache_state": "first published handler request after import validation and VACUUM (ANALYZE); not OS-cold"
+  },
+  "results": [
+    {
+      "workload": "focus_top_k_20",
+      "concurrency": 1,
+      "requests": 10,
+      "wall_ms": 350.16252000000003,
+      "p50_ms": 34.85583100000002,
+      "p95_ms": 36.030322,
+      "max_ms": 36.030322,
+      "raw_samples": [
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 36.030322,
+          "status": 200,
+          "response_bytes": 8013,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 34.18681699999999,
+          "status": 200,
+          "response_bytes": 8013,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 35.421549999999996,
+          "status": 200,
+          "response_bytes": 8013,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 34.41018299999999,
+          "status": 200,
+          "response_bytes": 8013,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 34.24508000000003,
+          "status": 200,
+          "response_bytes": 8005,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 34.85583100000002,
+          "status": 200,
+          "response_bytes": 8005,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 35.263418,
+          "status": 200,
+          "response_bytes": 8013,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 34.51497599999999,
+          "status": 200,
+          "response_bytes": 8013,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 35.15594999999996,
+          "status": 200,
+          "response_bytes": 8013,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 35.64091400000001,
+          "status": 200,
+          "response_bytes": 8013,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        }
+      ],
+      "response_bytes": {
+        "min": 8005,
+        "max": 8013
+      },
+      "membership_rows_read": {
+        "min": 0,
+        "max": 0
+      },
+      "statuses": {
+        "200": 10
+      },
+      "returned": [
+        20
+      ],
+      "exact_eligible": [
+        9999
+      ],
+      "suppressed": [
+        9979
+      ],
+      "errors": []
+    },
+    {
+      "workload": "focus_top_k_60",
+      "concurrency": 1,
+      "requests": 10,
+      "wall_ms": 365.74593000000004,
+      "p50_ms": 34.970406000000025,
+      "p95_ms": 47.243548999999916,
+      "max_ms": 47.243548999999916,
+      "raw_samples": [
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 34.045376999999974,
+          "status": 200,
+          "response_bytes": 20188,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 34.970406000000025,
+          "status": 200,
+          "response_bytes": 20188,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 33.81311599999992,
+          "status": 200,
+          "response_bytes": 20189,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 37.963661,
+          "status": 200,
+          "response_bytes": 20188,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 35.089930000000095,
+          "status": 200,
+          "response_bytes": 20188,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 34.78303400000004,
+          "status": 200,
+          "response_bytes": 20189,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 34.66051200000004,
+          "status": 200,
+          "response_bytes": 20188,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 36.13650199999995,
+          "status": 200,
+          "response_bytes": 20189,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 36.247990999999956,
+          "status": 200,
+          "response_bytes": 20189,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 47.243548999999916,
+          "status": 200,
+          "response_bytes": 20188,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        }
+      ],
+      "response_bytes": {
+        "min": 20188,
+        "max": 20189
+      },
+      "membership_rows_read": {
+        "min": 0,
+        "max": 0
+      },
+      "statuses": {
+        "200": 10
+      },
+      "returned": [
+        60
+      ],
+      "exact_eligible": [
+        9999
+      ],
+      "suppressed": [
+        9939
+      ],
+      "errors": []
+    },
+    {
+      "workload": "focus_top_k_100",
+      "concurrency": 1,
+      "requests": 10,
+      "wall_ms": 357.22349099999997,
+      "p50_ms": 34.772277999999915,
+      "p95_ms": 38.510979999999904,
+      "max_ms": 38.510979999999904,
+      "raw_samples": [
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 38.510979999999904,
+          "status": 200,
+          "response_bytes": 32368,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 37.204426999999896,
+          "status": 200,
+          "response_bytes": 32367,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 36.64028899999994,
+          "status": 200,
+          "response_bytes": 32367,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 34.54436200000009,
+          "status": 200,
+          "response_bytes": 32367,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 35.048786000000064,
+          "status": 200,
+          "response_bytes": 32368,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 36.26561099999992,
+          "status": 200,
+          "response_bytes": 32367,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 34.59817999999996,
+          "status": 200,
+          "response_bytes": 32367,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 33.969922,
+          "status": 200,
+          "response_bytes": 32367,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 34.51572599999986,
+          "status": 200,
+          "response_bytes": 32368,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 34.772277999999915,
+          "status": 200,
+          "response_bytes": 32367,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        }
+      ],
+      "response_bytes": {
+        "min": 32367,
+        "max": 32368
+      },
+      "membership_rows_read": {
+        "min": 0,
+        "max": 0
+      },
+      "statuses": {
+        "200": 10
+      },
+      "returned": [
+        100
+      ],
+      "exact_eligible": [
+        9999
+      ],
+      "suppressed": [
+        9899
+      ],
+      "errors": []
+    },
+    {
+      "workload": "focus_dense_accumulated",
+      "concurrency": 1,
+      "requests": 10,
+      "wall_ms": 364.56239000000005,
+      "p50_ms": 35.32992599999989,
+      "p95_ms": 40.37085899999988,
+      "max_ms": 40.37085899999988,
+      "raw_samples": [
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 35.00651200000016,
+          "status": 200,
+          "response_bytes": 32387,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 34.21368400000006,
+          "status": 200,
+          "response_bytes": 32387,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 35.386584000000084,
+          "status": 200,
+          "response_bytes": 32386,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 35.32992599999989,
+          "status": 200,
+          "response_bytes": 32386,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 35.66622200000006,
+          "status": 200,
+          "response_bytes": 32386,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 34.59203400000001,
+          "status": 200,
+          "response_bytes": 32386,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 40.37085899999988,
+          "status": 200,
+          "response_bytes": 32387,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 39.86818299999982,
+          "status": 200,
+          "response_bytes": 32386,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 38.23736699999995,
+          "status": 200,
+          "response_bytes": 32386,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 34.71480100000008,
+          "status": 200,
+          "response_bytes": 32387,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        }
+      ],
+      "response_bytes": {
+        "min": 32386,
+        "max": 32387
+      },
+      "membership_rows_read": {
+        "min": 0,
+        "max": 0
+      },
+      "statuses": {
+        "200": 10
+      },
+      "returned": [
+        100
+      ],
+      "exact_eligible": [
+        9999
+      ],
+      "suppressed": [
+        9899
+      ],
+      "errors": []
+    },
+    {
+      "workload": "search",
+      "concurrency": 1,
+      "requests": 10,
+      "wall_ms": 69.16078700000003,
+      "p50_ms": 6.658479999999827,
+      "p95_ms": 8.818724000000202,
+      "max_ms": 8.818724000000202,
+      "raw_samples": [
+        {
+          "workload": "search",
+          "elapsed_ms": 8.818724000000202,
+          "status": 200,
+          "response_bytes": 15050,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 6.299396999999999,
+          "status": 200,
+          "response_bytes": 15050,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 6.086826999999857,
+          "status": 200,
+          "response_bytes": 15050,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 6.920847999999978,
+          "status": 200,
+          "response_bytes": 15050,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 6.623894999999948,
+          "status": 200,
+          "response_bytes": 15050,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 6.304306999999881,
+          "status": 200,
+          "response_bytes": 15050,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 7.193129999999883,
+          "status": 200,
+          "response_bytes": 15050,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 6.739185000000134,
+          "status": 200,
+          "response_bytes": 15050,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 6.94371000000001,
+          "status": 200,
+          "response_bytes": 15050,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 6.658479999999827,
+          "status": 200,
+          "response_bytes": 15050,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        }
+      ],
+      "response_bytes": {
+        "min": 15050,
+        "max": 15050
+      },
+      "membership_rows_read": {
+        "min": 0,
+        "max": 0
+      },
+      "statuses": {
+        "200": 10
+      },
+      "returned": [
+        60
+      ],
+      "exact_eligible": [
+        null
+      ],
+      "suppressed": [
+        null
+      ],
+      "errors": []
+    },
+    {
+      "workload": "explain",
+      "concurrency": 1,
+      "requests": 10,
+      "wall_ms": 27.153289000000086,
+      "p50_ms": 2.641734999999926,
+      "p95_ms": 3.3784209999998893,
+      "max_ms": 3.3784209999998893,
+      "raw_samples": [
+        {
+          "workload": "explain",
+          "elapsed_ms": 3.3784209999998893,
+          "status": 200,
+          "response_bytes": 3043,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 2.7151880000001256,
+          "status": 200,
+          "response_bytes": 3042,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 2.393622999999934,
+          "status": 200,
+          "response_bytes": 3041,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 2.5505330000000868,
+          "status": 200,
+          "response_bytes": 3041,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 2.4945769999999357,
+          "status": 200,
+          "response_bytes": 3042,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 2.641734999999926,
+          "status": 200,
+          "response_bytes": 3042,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 2.7220219999999244,
+          "status": 200,
+          "response_bytes": 3043,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 2.8383320000000367,
+          "status": 200,
+          "response_bytes": 3043,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 2.586520999999948,
+          "status": 200,
+          "response_bytes": 3043,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 2.676189000000022,
+          "status": 200,
+          "response_bytes": 3042,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        }
+      ],
+      "response_bytes": {
+        "min": 3041,
+        "max": 3043
+      },
+      "membership_rows_read": {
+        "min": 0,
+        "max": 0
+      },
+      "statuses": {
+        "200": 10
+      },
+      "returned": [
+        1
+      ],
+      "exact_eligible": [
+        1
+      ],
+      "suppressed": [
+        null
+      ],
+      "errors": []
+    },
+    {
+      "workload": "focus_top_k_20",
+      "concurrency": 5,
+      "requests": 20,
+      "wall_ms": 281.66226099999994,
+      "p50_ms": 35.61560099999997,
+      "p95_ms": 70.51974700000005,
+      "max_ms": 70.55106499999988,
+      "raw_samples": [
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 35.61560099999997,
+          "status": 200,
+          "response_bytes": 8013,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 43.24339299999997,
+          "status": 200,
+          "response_bytes": 8013,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 42.55973300000005,
+          "status": 200,
+          "response_bytes": 8013,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 42.3493840000001,
+          "status": 200,
+          "response_bytes": 8013,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 69.79920600000014,
+          "status": 200,
+          "response_bytes": 8013,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 33.996904000000086,
+          "status": 200,
+          "response_bytes": 8014,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 34.76604700000007,
+          "status": 200,
+          "response_bytes": 8013,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 34.697134000000005,
+          "status": 200,
+          "response_bytes": 8013,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 34.921642999999904,
+          "status": 200,
+          "response_bytes": 8013,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 70.55106499999988,
+          "status": 200,
+          "response_bytes": 8013,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 36.30276700000013,
+          "status": 200,
+          "response_bytes": 8013,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 36.04337599999985,
+          "status": 200,
+          "response_bytes": 8014,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 34.73863899999992,
+          "status": 200,
+          "response_bytes": 8013,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 34.885806,
+          "status": 200,
+          "response_bytes": 8014,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 70.51974700000005,
+          "status": 200,
+          "response_bytes": 8013,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 34.685107000000016,
+          "status": 200,
+          "response_bytes": 8013,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 37.24277799999982,
+          "status": 200,
+          "response_bytes": 8013,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 34.83301400000005,
+          "status": 200,
+          "response_bytes": 8013,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 34.516399999999976,
+          "status": 200,
+          "response_bytes": 8013,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 70.43050700000003,
+          "status": 200,
+          "response_bytes": 8013,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        }
+      ],
+      "response_bytes": {
+        "min": 8013,
+        "max": 8014
+      },
+      "membership_rows_read": {
+        "min": 0,
+        "max": 0
+      },
+      "statuses": {
+        "200": 20
+      },
+      "returned": [
+        20
+      ],
+      "exact_eligible": [
+        9999
+      ],
+      "suppressed": [
+        9979
+      ],
+      "errors": []
+    },
+    {
+      "workload": "focus_top_k_60",
+      "concurrency": 5,
+      "requests": 20,
+      "wall_ms": 306.1781659999999,
+      "p50_ms": 39.120490999999674,
+      "p95_ms": 78.00285899999972,
+      "max_ms": 78.27411099999995,
+      "raw_samples": [
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 39.58822599999985,
+          "status": 200,
+          "response_bytes": 20189,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 42.429976000000124,
+          "status": 200,
+          "response_bytes": 20189,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 37.34782900000005,
+          "status": 200,
+          "response_bytes": 20188,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 37.60830099999998,
+          "status": 200,
+          "response_bytes": 20188,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 78.27411099999995,
+          "status": 200,
+          "response_bytes": 20188,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 45.21349299999997,
+          "status": 200,
+          "response_bytes": 20189,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 39.22489900000005,
+          "status": 200,
+          "response_bytes": 20180,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 44.18968300000006,
+          "status": 200,
+          "response_bytes": 20188,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 39.42054699999994,
+          "status": 200,
+          "response_bytes": 20188,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 76.42746100000022,
+          "status": 200,
+          "response_bytes": 20188,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 36.77226500000006,
+          "status": 200,
+          "response_bytes": 20189,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 38.022419000000355,
+          "status": 200,
+          "response_bytes": 20189,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 38.09828199999993,
+          "status": 200,
+          "response_bytes": 20189,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 35.682096999999885,
+          "status": 200,
+          "response_bytes": 20188,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 72.94276200000013,
+          "status": 200,
+          "response_bytes": 20180,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 37.524816999999985,
+          "status": 200,
+          "response_bytes": 20188,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 39.120490999999674,
+          "status": 200,
+          "response_bytes": 20188,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 35.31031100000018,
+          "status": 200,
+          "response_bytes": 20188,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 35.46967799999993,
+          "status": 200,
+          "response_bytes": 20188,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 78.00285899999972,
+          "status": 200,
+          "response_bytes": 20188,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        }
+      ],
+      "response_bytes": {
+        "min": 20180,
+        "max": 20189
+      },
+      "membership_rows_read": {
+        "min": 0,
+        "max": 0
+      },
+      "statuses": {
+        "200": 20
+      },
+      "returned": [
+        60
+      ],
+      "exact_eligible": [
+        9999
+      ],
+      "suppressed": [
+        9939
+      ],
+      "errors": []
+    },
+    {
+      "workload": "focus_top_k_100",
+      "concurrency": 5,
+      "requests": 20,
+      "wall_ms": 295.2608760000003,
+      "p50_ms": 38.34149699999989,
+      "p95_ms": 74.20440599999984,
+      "max_ms": 75.04896899999994,
+      "raw_samples": [
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 39.60780100000011,
+          "status": 200,
+          "response_bytes": 32368,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 37.191961999999876,
+          "status": 200,
+          "response_bytes": 32367,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 39.85414200000014,
+          "status": 200,
+          "response_bytes": 32367,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 36.88658899999973,
+          "status": 200,
+          "response_bytes": 32367,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 75.04896899999994,
+          "status": 200,
+          "response_bytes": 32367,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 48.46640100000013,
+          "status": 200,
+          "response_bytes": 32368,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 45.64739000000009,
+          "status": 200,
+          "response_bytes": 32368,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 43.58955100000003,
+          "status": 200,
+          "response_bytes": 32368,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 37.61628299999984,
+          "status": 200,
+          "response_bytes": 32368,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 73.34797200000003,
+          "status": 200,
+          "response_bytes": 32366,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 37.326758000000154,
+          "status": 200,
+          "response_bytes": 32368,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 37.4380629999996,
+          "status": 200,
+          "response_bytes": 32367,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 37.722573999999895,
+          "status": 200,
+          "response_bytes": 32367,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 35.45111700000007,
+          "status": 200,
+          "response_bytes": 32368,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 71.848344,
+          "status": 200,
+          "response_bytes": 32367,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 38.1874600000001,
+          "status": 200,
+          "response_bytes": 32367,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 38.34149699999989,
+          "status": 200,
+          "response_bytes": 32367,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 39.58953100000008,
+          "status": 200,
+          "response_bytes": 32368,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 34.76531699999987,
+          "status": 200,
+          "response_bytes": 32368,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 74.20440599999984,
+          "status": 200,
+          "response_bytes": 32367,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        }
+      ],
+      "response_bytes": {
+        "min": 32366,
+        "max": 32368
+      },
+      "membership_rows_read": {
+        "min": 0,
+        "max": 0
+      },
+      "statuses": {
+        "200": 20
+      },
+      "returned": [
+        100
+      ],
+      "exact_eligible": [
+        9999
+      ],
+      "suppressed": [
+        9899
+      ],
+      "errors": []
+    },
+    {
+      "workload": "focus_dense_accumulated",
+      "concurrency": 5,
+      "requests": 20,
+      "wall_ms": 294.4465460000001,
+      "p50_ms": 38.05540800000017,
+      "p95_ms": 75.18867799999998,
+      "max_ms": 75.68375000000015,
+      "raw_samples": [
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 36.60982600000034,
+          "status": 200,
+          "response_bytes": 32378,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 34.18711200000007,
+          "status": 200,
+          "response_bytes": 32387,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 36.7739730000003,
+          "status": 200,
+          "response_bytes": 32386,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 34.61982100000023,
+          "status": 200,
+          "response_bytes": 32386,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 71.20916699999998,
+          "status": 200,
+          "response_bytes": 32386,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 38.05540800000017,
+          "status": 200,
+          "response_bytes": 32386,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 37.90483200000017,
+          "status": 200,
+          "response_bytes": 32387,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 38.22408499999983,
+          "status": 200,
+          "response_bytes": 32386,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 37.677122000000054,
+          "status": 200,
+          "response_bytes": 32386,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 75.18867799999998,
+          "status": 200,
+          "response_bytes": 32386,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 40.879349999999704,
+          "status": 200,
+          "response_bytes": 32386,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 39.22848900000008,
+          "status": 200,
+          "response_bytes": 32386,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 39.02332000000024,
+          "status": 200,
+          "response_bytes": 32387,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 39.649276999999984,
+          "status": 200,
+          "response_bytes": 32386,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 75.68375000000015,
+          "status": 200,
+          "response_bytes": 32386,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 36.38615200000004,
+          "status": 200,
+          "response_bytes": 32386,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 35.847012999999606,
+          "status": 200,
+          "response_bytes": 32386,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 36.06696899999997,
+          "status": 200,
+          "response_bytes": 32387,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 39.95402600000034,
+          "status": 200,
+          "response_bytes": 32386,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 71.57679899999994,
+          "status": 200,
+          "response_bytes": 32386,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        }
+      ],
+      "response_bytes": {
+        "min": 32378,
+        "max": 32387
+      },
+      "membership_rows_read": {
+        "min": 0,
+        "max": 0
+      },
+      "statuses": {
+        "200": 20
+      },
+      "returned": [
+        100
+      ],
+      "exact_eligible": [
+        9999
+      ],
+      "suppressed": [
+        9899
+      ],
+      "errors": []
+    },
+    {
+      "workload": "search",
+      "concurrency": 5,
+      "requests": 20,
+      "wall_ms": 58.47044199999982,
+      "p50_ms": 8.08548299999984,
+      "p95_ms": 14.608848999999736,
+      "max_ms": 16.615359999999782,
+      "raw_samples": [
+        {
+          "workload": "search",
+          "elapsed_ms": 9.040212999999767,
+          "status": 200,
+          "response_bytes": 15051,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 9.242562000000362,
+          "status": 200,
+          "response_bytes": 15049,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 9.071003999999903,
+          "status": 200,
+          "response_bytes": 15050,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 8.850724999999784,
+          "status": 200,
+          "response_bytes": 15050,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 16.615359999999782,
+          "status": 200,
+          "response_bytes": 15051,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 8.28064200000017,
+          "status": 200,
+          "response_bytes": 15050,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 7.522260000000188,
+          "status": 200,
+          "response_bytes": 15051,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 8.08548299999984,
+          "status": 200,
+          "response_bytes": 15050,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 8.305423000000246,
+          "status": 200,
+          "response_bytes": 15050,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 14.608848999999736,
+          "status": 200,
+          "response_bytes": 15051,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 7.447850000000017,
+          "status": 200,
+          "response_bytes": 15050,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 7.554375000000164,
+          "status": 200,
+          "response_bytes": 15050,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 7.77020500000026,
+          "status": 200,
+          "response_bytes": 15050,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 7.61609800000042,
+          "status": 200,
+          "response_bytes": 15049,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 13.741590999999971,
+          "status": 200,
+          "response_bytes": 15050,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 7.142366999999922,
+          "status": 200,
+          "response_bytes": 15050,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 6.970929999999953,
+          "status": 200,
+          "response_bytes": 15050,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 7.323835000000145,
+          "status": 200,
+          "response_bytes": 15051,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 7.171037999999953,
+          "status": 200,
+          "response_bytes": 15051,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 13.082134000000224,
+          "status": 200,
+          "response_bytes": 15051,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        }
+      ],
+      "response_bytes": {
+        "min": 15049,
+        "max": 15051
+      },
+      "membership_rows_read": {
+        "min": 0,
+        "max": 0
+      },
+      "statuses": {
+        "200": 20
+      },
+      "returned": [
+        60
+      ],
+      "exact_eligible": [
+        null
+      ],
+      "suppressed": [
+        null
+      ],
+      "errors": []
+    },
+    {
+      "workload": "explain",
+      "concurrency": 5,
+      "requests": 20,
+      "wall_ms": 22.040054000000055,
+      "p50_ms": 3.553602999999839,
+      "p95_ms": 5.429309999999987,
+      "max_ms": 5.743106999999782,
+      "raw_samples": [
+        {
+          "workload": "explain",
+          "elapsed_ms": 3.3092320000000655,
+          "status": 200,
+          "response_bytes": 3042,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 3.599265000000287,
+          "status": 200,
+          "response_bytes": 3042,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 3.553602999999839,
+          "status": 200,
+          "response_bytes": 3041,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 3.911258000000089,
+          "status": 200,
+          "response_bytes": 3043,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 5.743106999999782,
+          "status": 200,
+          "response_bytes": 3042,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 2.8881750000000466,
+          "status": 200,
+          "response_bytes": 3043,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 3.1486759999997957,
+          "status": 200,
+          "response_bytes": 3043,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 3.547653000000082,
+          "status": 200,
+          "response_bytes": 3043,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 3.796244000000115,
+          "status": 200,
+          "response_bytes": 3042,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 5.322489000000132,
+          "status": 200,
+          "response_bytes": 3042,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 2.707915999999841,
+          "status": 200,
+          "response_bytes": 3043,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 3.751181000000088,
+          "status": 200,
+          "response_bytes": 3042,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 3.1254250000001775,
+          "status": 200,
+          "response_bytes": 3043,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 3.4338269999998374,
+          "status": 200,
+          "response_bytes": 3043,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 5.298428000000058,
+          "status": 200,
+          "response_bytes": 3042,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 2.92469200000005,
+          "status": 200,
+          "response_bytes": 3043,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 3.3406700000000455,
+          "status": 200,
+          "response_bytes": 3043,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 3.9678859999999077,
+          "status": 200,
+          "response_bytes": 3043,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 3.7195660000002135,
+          "status": 200,
+          "response_bytes": 3043,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 5.429309999999987,
+          "status": 200,
+          "response_bytes": 3041,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        }
+      ],
+      "response_bytes": {
+        "min": 3041,
+        "max": 3043
+      },
+      "membership_rows_read": {
+        "min": 0,
+        "max": 0
+      },
+      "statuses": {
+        "200": 20
+      },
+      "returned": [
+        1
+      ],
+      "exact_eligible": [
+        1
+      ],
+      "suppressed": [
+        null
+      ],
+      "errors": []
+    },
+    {
+      "workload": "focus_top_k_20",
+      "concurrency": 20,
+      "requests": 40,
+      "wall_ms": 342.00858300000027,
+      "p50_ms": 104.44260200000008,
+      "p95_ms": 172.84499800000003,
+      "max_ms": 172.9214609999999,
+      "raw_samples": [
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 35.17891000000009,
+          "status": 200,
+          "response_bytes": 8013,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 34.535411999999724,
+          "status": 200,
+          "response_bytes": 8005,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 39.60385600000018,
+          "status": 200,
+          "response_bytes": 8014,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 34.948669000000336,
+          "status": 200,
+          "response_bytes": 8013,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 73.13279000000011,
+          "status": 200,
+          "response_bytes": 8013,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 70.46134900000015,
+          "status": 200,
+          "response_bytes": 8013,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 71.7618849999999,
+          "status": 200,
+          "response_bytes": 8013,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 75.45328399999971,
+          "status": 200,
+          "response_bytes": 8013,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 104.60255800000004,
+          "status": 200,
+          "response_bytes": 8014,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 104.44260200000008,
+          "status": 200,
+          "response_bytes": 8014,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 106.28921199999968,
+          "status": 200,
+          "response_bytes": 8014,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 106.08395300000029,
+          "status": 200,
+          "response_bytes": 8014,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 139.03269799999998,
+          "status": 200,
+          "response_bytes": 8014,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 139.18392399999993,
+          "status": 200,
+          "response_bytes": 8014,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 139.3216699999998,
+          "status": 200,
+          "response_bytes": 8013,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 139.64196400000037,
+          "status": 200,
+          "response_bytes": 8013,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 172.84499800000003,
+          "status": 200,
+          "response_bytes": 8013,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 172.88719899999978,
+          "status": 200,
+          "response_bytes": 8014,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 172.32252500000004,
+          "status": 200,
+          "response_bytes": 8013,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 172.9214609999999,
+          "status": 200,
+          "response_bytes": 8014,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 34.02064599999994,
+          "status": 200,
+          "response_bytes": 8013,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 33.26043299999992,
+          "status": 200,
+          "response_bytes": 8014,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 33.87031900000011,
+          "status": 200,
+          "response_bytes": 8013,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 34.24609499999997,
+          "status": 200,
+          "response_bytes": 8013,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 66.86058999999977,
+          "status": 200,
+          "response_bytes": 8013,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 71.29114100000015,
+          "status": 200,
+          "response_bytes": 8013,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 70.14517099999966,
+          "status": 200,
+          "response_bytes": 8013,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 66.97427400000015,
+          "status": 200,
+          "response_bytes": 8013,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 102.95231400000011,
+          "status": 200,
+          "response_bytes": 8014,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 100.51027899999963,
+          "status": 200,
+          "response_bytes": 8014,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 106.20268399999986,
+          "status": 200,
+          "response_bytes": 8014,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 104.02170899999965,
+          "status": 200,
+          "response_bytes": 8014,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 134.379997,
+          "status": 200,
+          "response_bytes": 8014,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 134.19442900000013,
+          "status": 200,
+          "response_bytes": 8013,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 135.91780300000028,
+          "status": 200,
+          "response_bytes": 8014,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 136.9002559999999,
+          "status": 200,
+          "response_bytes": 8014,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 168.80776000000014,
+          "status": 200,
+          "response_bytes": 8014,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 168.66315399999985,
+          "status": 200,
+          "response_bytes": 8014,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 168.73879699999998,
+          "status": 200,
+          "response_bytes": 8013,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_20",
+          "elapsed_ms": 168.14956200000006,
+          "status": 200,
+          "response_bytes": 8013,
+          "membership_rows_read": null,
+          "returned": 20,
+          "exact_eligible": 9999,
+          "suppressed": 9979,
+          "error": null
+        }
+      ],
+      "response_bytes": {
+        "min": 8005,
+        "max": 8014
+      },
+      "membership_rows_read": {
+        "min": 0,
+        "max": 0
+      },
+      "statuses": {
+        "200": 40
+      },
+      "returned": [
+        20
+      ],
+      "exact_eligible": [
+        9999
+      ],
+      "suppressed": [
+        9979
+      ],
+      "errors": []
+    },
+    {
+      "workload": "focus_top_k_60",
+      "concurrency": 20,
+      "requests": 40,
+      "wall_ms": 359.8900580000004,
+      "p50_ms": 108.27878900000042,
+      "p95_ms": 179.5516819999998,
+      "max_ms": 180.77458499999966,
+      "raw_samples": [
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 34.975974999999835,
+          "status": 200,
+          "response_bytes": 20188,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 34.737125000000106,
+          "status": 200,
+          "response_bytes": 20189,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 34.58525899999995,
+          "status": 200,
+          "response_bytes": 20189,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 37.04823499999975,
+          "status": 200,
+          "response_bytes": 20188,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 71.41897499999959,
+          "status": 200,
+          "response_bytes": 20188,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 75.14120600000024,
+          "status": 200,
+          "response_bytes": 20188,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 70.41065200000003,
+          "status": 200,
+          "response_bytes": 20188,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 71.16753500000004,
+          "status": 200,
+          "response_bytes": 20188,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 106.23869100000002,
+          "status": 200,
+          "response_bytes": 20189,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 106.41371800000024,
+          "status": 200,
+          "response_bytes": 20189,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 105.26816300000019,
+          "status": 200,
+          "response_bytes": 20189,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 108.27878900000042,
+          "status": 200,
+          "response_bytes": 20189,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 142.83304100000032,
+          "status": 200,
+          "response_bytes": 20189,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 142.1379509999997,
+          "status": 200,
+          "response_bytes": 20188,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 142.49567500000012,
+          "status": 200,
+          "response_bytes": 20180,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 142.30424699999958,
+          "status": 200,
+          "response_bytes": 20189,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 178.21163500000011,
+          "status": 200,
+          "response_bytes": 20189,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 178.30382899999995,
+          "status": 200,
+          "response_bytes": 20189,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 178.53379899999982,
+          "status": 200,
+          "response_bytes": 20189,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 178.38695199999984,
+          "status": 200,
+          "response_bytes": 20189,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 33.95033199999989,
+          "status": 200,
+          "response_bytes": 20188,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 43.65326999999979,
+          "status": 200,
+          "response_bytes": 20189,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 40.037734999999884,
+          "status": 200,
+          "response_bytes": 20189,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 39.87602799999968,
+          "status": 200,
+          "response_bytes": 20189,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 70.74772299999995,
+          "status": 200,
+          "response_bytes": 20188,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 77.70369600000004,
+          "status": 200,
+          "response_bytes": 20187,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 76.00553300000001,
+          "status": 200,
+          "response_bytes": 20188,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 76.14179899999999,
+          "status": 200,
+          "response_bytes": 20188,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 108.77912400000014,
+          "status": 200,
+          "response_bytes": 20189,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 112.40411700000004,
+          "status": 200,
+          "response_bytes": 20189,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 110.6310840000001,
+          "status": 200,
+          "response_bytes": 20189,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 111.23934699999973,
+          "status": 200,
+          "response_bytes": 20189,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 145.14177100000006,
+          "status": 200,
+          "response_bytes": 20181,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 145.40492200000017,
+          "status": 200,
+          "response_bytes": 20189,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 145.26357599999983,
+          "status": 200,
+          "response_bytes": 20189,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 146.4919890000001,
+          "status": 200,
+          "response_bytes": 20189,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 180.77458499999966,
+          "status": 200,
+          "response_bytes": 20189,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 179.44252800000004,
+          "status": 200,
+          "response_bytes": 20189,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 179.82224399999996,
+          "status": 200,
+          "response_bytes": 20189,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_60",
+          "elapsed_ms": 179.5516819999998,
+          "status": 200,
+          "response_bytes": 20189,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": 9999,
+          "suppressed": 9939,
+          "error": null
+        }
+      ],
+      "response_bytes": {
+        "min": 20180,
+        "max": 20189
+      },
+      "membership_rows_read": {
+        "min": 0,
+        "max": 0
+      },
+      "statuses": {
+        "200": 40
+      },
+      "returned": [
+        60
+      ],
+      "exact_eligible": [
+        9999
+      ],
+      "suppressed": [
+        9939
+      ],
+      "errors": []
+    },
+    {
+      "workload": "focus_top_k_100",
+      "concurrency": 20,
+      "requests": 40,
+      "wall_ms": 383.62022100000013,
+      "p50_ms": 108.81808300000012,
+      "p95_ms": 186.9350870000003,
+      "max_ms": 196.05213700000013,
+      "raw_samples": [
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 36.40858399999979,
+          "status": 200,
+          "response_bytes": 32367,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 36.75515899999982,
+          "status": 200,
+          "response_bytes": 32368,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 37.07605300000023,
+          "status": 200,
+          "response_bytes": 32368,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 36.543670999999904,
+          "status": 200,
+          "response_bytes": 32367,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 72.58631199999991,
+          "status": 200,
+          "response_bytes": 32367,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 80.54634899999974,
+          "status": 200,
+          "response_bytes": 32367,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 72.97359899999992,
+          "status": 200,
+          "response_bytes": 32367,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 72.24086699999998,
+          "status": 200,
+          "response_bytes": 32367,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 109.02001199999995,
+          "status": 200,
+          "response_bytes": 32360,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 109.32643499999995,
+          "status": 200,
+          "response_bytes": 32360,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 108.81808300000012,
+          "status": 200,
+          "response_bytes": 32368,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 117.76788199999964,
+          "status": 200,
+          "response_bytes": 32368,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 145.45379400000002,
+          "status": 200,
+          "response_bytes": 32368,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 145.6422419999999,
+          "status": 200,
+          "response_bytes": 32368,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 149.10135200000013,
+          "status": 200,
+          "response_bytes": 32360,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 152.65097499999956,
+          "status": 200,
+          "response_bytes": 32367,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 184.832586,
+          "status": 200,
+          "response_bytes": 32368,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 187.0397710000002,
+          "status": 200,
+          "response_bytes": 32368,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 186.9350870000003,
+          "status": 200,
+          "response_bytes": 32368,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 186.81510100000014,
+          "status": 200,
+          "response_bytes": 32368,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 35.44023100000004,
+          "status": 200,
+          "response_bytes": 32367,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 35.729763000000275,
+          "status": 200,
+          "response_bytes": 32367,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 35.22371099999964,
+          "status": 200,
+          "response_bytes": 32368,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 35.03251300000011,
+          "status": 200,
+          "response_bytes": 32368,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 72.26008599999977,
+          "status": 200,
+          "response_bytes": 32366,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 71.0144220000002,
+          "status": 200,
+          "response_bytes": 32367,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 69.89620400000013,
+          "status": 200,
+          "response_bytes": 32367,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 70.84383500000013,
+          "status": 200,
+          "response_bytes": 32367,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 107.79742600000009,
+          "status": 200,
+          "response_bytes": 32368,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 113.8016560000001,
+          "status": 200,
+          "response_bytes": 32368,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 107.29833400000007,
+          "status": 200,
+          "response_bytes": 32368,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 107.493923,
+          "status": 200,
+          "response_bytes": 32368,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 145.44235800000024,
+          "status": 200,
+          "response_bytes": 32368,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 145.63555600000018,
+          "status": 200,
+          "response_bytes": 32368,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 143.38484900000003,
+          "status": 200,
+          "response_bytes": 32368,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 159.8672489999999,
+          "status": 200,
+          "response_bytes": 32368,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 180.76095899999973,
+          "status": 200,
+          "response_bytes": 32367,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 182.7101289999996,
+          "status": 200,
+          "response_bytes": 32367,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 184.73714599999994,
+          "status": 200,
+          "response_bytes": 32368,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_top_k_100",
+          "elapsed_ms": 196.05213700000013,
+          "status": 200,
+          "response_bytes": 32368,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        }
+      ],
+      "response_bytes": {
+        "min": 32360,
+        "max": 32368
+      },
+      "membership_rows_read": {
+        "min": 0,
+        "max": 0
+      },
+      "statuses": {
+        "200": 40
+      },
+      "returned": [
+        100
+      ],
+      "exact_eligible": [
+        9999
+      ],
+      "suppressed": [
+        9899
+      ],
+      "errors": []
+    },
+    {
+      "workload": "focus_dense_accumulated",
+      "concurrency": 20,
+      "requests": 40,
+      "wall_ms": 380.4294700000005,
+      "p50_ms": 111.34289900000022,
+      "p95_ms": 182.52882099999988,
+      "max_ms": 197.45312999999942,
+      "raw_samples": [
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 46.516419999999925,
+          "status": 200,
+          "response_bytes": 32386,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 41.407734000000346,
+          "status": 200,
+          "response_bytes": 32386,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 39.403277000000344,
+          "status": 200,
+          "response_bytes": 32386,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 53.73248400000011,
+          "status": 200,
+          "response_bytes": 32386,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 77.80865099999983,
+          "status": 200,
+          "response_bytes": 32386,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 80.4902860000002,
+          "status": 200,
+          "response_bytes": 32386,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 84.30656100000033,
+          "status": 200,
+          "response_bytes": 32386,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 89.39723099999992,
+          "status": 200,
+          "response_bytes": 32386,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 115.81809799999974,
+          "status": 200,
+          "response_bytes": 32387,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 115.99875500000007,
+          "status": 200,
+          "response_bytes": 32387,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 119.66805400000021,
+          "status": 200,
+          "response_bytes": 32387,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 123.66836600000033,
+          "status": 200,
+          "response_bytes": 32387,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 148.58133899999984,
+          "status": 200,
+          "response_bytes": 32386,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 148.76951800000006,
+          "status": 200,
+          "response_bytes": 32387,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 162.56276199999957,
+          "status": 200,
+          "response_bytes": 32387,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 157.15142700000024,
+          "status": 200,
+          "response_bytes": 32386,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 181.53179800000044,
+          "status": 200,
+          "response_bytes": 32387,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 181.657103,
+          "status": 200,
+          "response_bytes": 32387,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 194.67847400000028,
+          "status": 200,
+          "response_bytes": 32386,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 197.45312999999942,
+          "status": 200,
+          "response_bytes": 32386,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 35.89412099999936,
+          "status": 200,
+          "response_bytes": 32387,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 36.033206000000064,
+          "status": 200,
+          "response_bytes": 32387,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 36.29642699999931,
+          "status": 200,
+          "response_bytes": 32386,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 35.678901000000224,
+          "status": 200,
+          "response_bytes": 32387,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 70.38185599999997,
+          "status": 200,
+          "response_bytes": 32378,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 71.71738199999982,
+          "status": 200,
+          "response_bytes": 32386,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 70.54838199999995,
+          "status": 200,
+          "response_bytes": 32386,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 71.4341800000002,
+          "status": 200,
+          "response_bytes": 32386,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 111.18925300000046,
+          "status": 200,
+          "response_bytes": 32387,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 106.37837599999966,
+          "status": 200,
+          "response_bytes": 32386,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 106.55563299999994,
+          "status": 200,
+          "response_bytes": 32387,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 111.34289900000022,
+          "status": 200,
+          "response_bytes": 32386,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 146.17710499999976,
+          "status": 200,
+          "response_bytes": 32387,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 146.0039080000006,
+          "status": 200,
+          "response_bytes": 32379,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 147.76990399999977,
+          "status": 200,
+          "response_bytes": 32387,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 146.56597200000033,
+          "status": 200,
+          "response_bytes": 32387,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 182.41225699999995,
+          "status": 200,
+          "response_bytes": 32387,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 181.7089960000003,
+          "status": 200,
+          "response_bytes": 32386,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 181.56177900000057,
+          "status": 200,
+          "response_bytes": 32387,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        },
+        {
+          "workload": "focus_dense_accumulated",
+          "elapsed_ms": 182.52882099999988,
+          "status": 200,
+          "response_bytes": 32387,
+          "membership_rows_read": null,
+          "returned": 100,
+          "exact_eligible": 9999,
+          "suppressed": 9899,
+          "error": null
+        }
+      ],
+      "response_bytes": {
+        "min": 32378,
+        "max": 32387
+      },
+      "membership_rows_read": {
+        "min": 0,
+        "max": 0
+      },
+      "statuses": {
+        "200": 40
+      },
+      "returned": [
+        100
+      ],
+      "exact_eligible": [
+        9999
+      ],
+      "suppressed": [
+        9899
+      ],
+      "errors": []
+    },
+    {
+      "workload": "search",
+      "concurrency": 20,
+      "requests": 40,
+      "wall_ms": 73.54766100000052,
+      "p50_ms": 23.12192899999991,
+      "p95_ms": 37.30062699999962,
+      "max_ms": 37.41825200000039,
+      "raw_samples": [
+        {
+          "workload": "search",
+          "elapsed_ms": 7.140750999999909,
+          "status": 200,
+          "response_bytes": 15050,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 6.9867340000000695,
+          "status": 200,
+          "response_bytes": 15050,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 6.817857000000004,
+          "status": 200,
+          "response_bytes": 15050,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 8.235327999999754,
+          "status": 200,
+          "response_bytes": 15049,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 16.330267999999705,
+          "status": 200,
+          "response_bytes": 15050,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 16.430790999999772,
+          "status": 200,
+          "response_bytes": 15051,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 16.597827999999936,
+          "status": 200,
+          "response_bytes": 15050,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 16.209282000000712,
+          "status": 200,
+          "response_bytes": 15051,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 23.12192899999991,
+          "status": 200,
+          "response_bytes": 15051,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 23.223203999999896,
+          "status": 200,
+          "response_bytes": 15051,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 23.00914499999999,
+          "status": 200,
+          "response_bytes": 15050,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 23.369870000000446,
+          "status": 200,
+          "response_bytes": 15051,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 29.339327999999114,
+          "status": 200,
+          "response_bytes": 15051,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 29.219052000000374,
+          "status": 200,
+          "response_bytes": 15050,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 29.437010999999984,
+          "status": 200,
+          "response_bytes": 15050,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 30.39259300000049,
+          "status": 200,
+          "response_bytes": 15051,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 35.27414299999964,
+          "status": 200,
+          "response_bytes": 15050,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 35.81497599999966,
+          "status": 200,
+          "response_bytes": 15051,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 35.703881000000365,
+          "status": 200,
+          "response_bytes": 15051,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 35.87315899999976,
+          "status": 200,
+          "response_bytes": 15050,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 6.902718000000277,
+          "status": 200,
+          "response_bytes": 15049,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 6.612505000000056,
+          "status": 200,
+          "response_bytes": 15050,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 6.715590000000702,
+          "status": 200,
+          "response_bytes": 15050,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 6.439118000000235,
+          "status": 200,
+          "response_bytes": 15050,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 13.224200000000565,
+          "status": 200,
+          "response_bytes": 15051,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 13.659607999999935,
+          "status": 200,
+          "response_bytes": 15051,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 13.359355000000505,
+          "status": 200,
+          "response_bytes": 15051,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 13.495441000000028,
+          "status": 200,
+          "response_bytes": 15051,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 23.399137999999766,
+          "status": 200,
+          "response_bytes": 15051,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 19.44684700000016,
+          "status": 200,
+          "response_bytes": 15050,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 23.12486600000011,
+          "status": 200,
+          "response_bytes": 15051,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 19.59543399999984,
+          "status": 200,
+          "response_bytes": 15051,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 30.035343999999895,
+          "status": 200,
+          "response_bytes": 15051,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 30.434989999999743,
+          "status": 200,
+          "response_bytes": 15051,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 30.25567299999966,
+          "status": 200,
+          "response_bytes": 15051,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 30.145258000000467,
+          "status": 200,
+          "response_bytes": 15051,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 37.209882999999536,
+          "status": 200,
+          "response_bytes": 15050,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 37.30062699999962,
+          "status": 200,
+          "response_bytes": 15050,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 37.41825200000039,
+          "status": 200,
+          "response_bytes": 15050,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "search",
+          "elapsed_ms": 37.359629999999925,
+          "status": 200,
+          "response_bytes": 15051,
+          "membership_rows_read": null,
+          "returned": 60,
+          "exact_eligible": null,
+          "suppressed": null,
+          "error": null
+        }
+      ],
+      "response_bytes": {
+        "min": 15049,
+        "max": 15051
+      },
+      "membership_rows_read": {
+        "min": 0,
+        "max": 0
+      },
+      "statuses": {
+        "200": 40
+      },
+      "returned": [
+        60
+      ],
+      "exact_eligible": [
+        null
+      ],
+      "suppressed": [
+        null
+      ],
+      "errors": []
+    },
+    {
+      "workload": "explain",
+      "concurrency": 20,
+      "requests": 40,
+      "wall_ms": 28.317588999999316,
+      "p50_ms": 8.395352000000457,
+      "p95_ms": 13.808855000000221,
+      "max_ms": 14.288195000000087,
+      "raw_samples": [
+        {
+          "workload": "explain",
+          "elapsed_ms": 3.0553009999994174,
+          "status": 200,
+          "response_bytes": 3043,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 3.1687560000000303,
+          "status": 200,
+          "response_bytes": 3043,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 3.0980639999997948,
+          "status": 200,
+          "response_bytes": 3042,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 3.324754000000212,
+          "status": 200,
+          "response_bytes": 3042,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 5.457320000000436,
+          "status": 200,
+          "response_bytes": 3042,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 5.964685999999347,
+          "status": 200,
+          "response_bytes": 3040,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 6.227998000000298,
+          "status": 200,
+          "response_bytes": 3042,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 6.44308700000056,
+          "status": 200,
+          "response_bytes": 3042,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 7.92464100000052,
+          "status": 200,
+          "response_bytes": 3042,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 8.937595000000329,
+          "status": 200,
+          "response_bytes": 3042,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 8.395352000000457,
+          "status": 200,
+          "response_bytes": 3041,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 9.18132499999956,
+          "status": 200,
+          "response_bytes": 3042,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 10.422467999999753,
+          "status": 200,
+          "response_bytes": 3043,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 10.835735999999997,
+          "status": 200,
+          "response_bytes": 3043,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 11.336057999999866,
+          "status": 200,
+          "response_bytes": 3043,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 11.794108000000051,
+          "status": 200,
+          "response_bytes": 3043,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 12.85952400000042,
+          "status": 200,
+          "response_bytes": 3034,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 13.175368000000162,
+          "status": 200,
+          "response_bytes": 3043,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 13.82805499999995,
+          "status": 200,
+          "response_bytes": 3043,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 14.288195000000087,
+          "status": 200,
+          "response_bytes": 3043,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 2.512257999999747,
+          "status": 200,
+          "response_bytes": 3042,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 2.828992000000653,
+          "status": 200,
+          "response_bytes": 3042,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 2.698026000000027,
+          "status": 200,
+          "response_bytes": 3043,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 3.24521999999979,
+          "status": 200,
+          "response_bytes": 3042,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 4.871106000000509,
+          "status": 200,
+          "response_bytes": 3042,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 5.599691000000348,
+          "status": 200,
+          "response_bytes": 3042,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 5.270167000000583,
+          "status": 200,
+          "response_bytes": 3043,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 5.963816000000406,
+          "status": 200,
+          "response_bytes": 3042,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 7.7005709999994,
+          "status": 200,
+          "response_bytes": 3042,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 7.6271080000005895,
+          "status": 200,
+          "response_bytes": 3042,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 8.813618999999562,
+          "status": 200,
+          "response_bytes": 3042,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 8.437372999999752,
+          "status": 200,
+          "response_bytes": 3041,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 10.150072999999793,
+          "status": 200,
+          "response_bytes": 3042,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 10.4615960000001,
+          "status": 200,
+          "response_bytes": 3042,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 11.381548999999723,
+          "status": 200,
+          "response_bytes": 3043,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 11.521944999999505,
+          "status": 200,
+          "response_bytes": 3043,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 13.06528200000048,
+          "status": 200,
+          "response_bytes": 3042,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 12.835968000000321,
+          "status": 200,
+          "response_bytes": 3042,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 13.74843200000032,
+          "status": 200,
+          "response_bytes": 3043,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        },
+        {
+          "workload": "explain",
+          "elapsed_ms": 13.808855000000221,
+          "status": 200,
+          "response_bytes": 3043,
+          "membership_rows_read": null,
+          "returned": 1,
+          "exact_eligible": 1,
+          "suppressed": null,
+          "error": null
+        }
+      ],
+      "response_bytes": {
+        "min": 3034,
+        "max": 3043
+      },
+      "membership_rows_read": {
+        "min": 0,
+        "max": 0
+      },
+      "statuses": {
+        "200": 40
+      },
+      "returned": [
+        1
+      ],
+      "exact_eligible": [
+        1
+      ],
+      "suppressed": [
+        null
+      ],
+      "errors": []
+    }
+  ],
+  "query_plans": {
+    "focus_top_k_100": [
+      {
+        "Plan": {
+          "Node Type": "Limit",
+          "Parallel Aware": false,
+          "Async Capable": false,
+          "Startup Cost": 8314.09,
+          "Total Cost": 8314.34,
+          "Plan Rows": 100,
+          "Plan Width": 57,
+          "Disabled": false,
+          "Plans": [
+            {
+              "Node Type": "Sort",
+              "Parent Relationship": "Outer",
+              "Parallel Aware": false,
+              "Async Capable": false,
+              "Startup Cost": 8314.09,
+              "Total Cost": 8337.68,
+              "Plan Rows": 9435,
+              "Plan Width": 57,
+              "Disabled": false,
+              "Sort Key": [
+                "(count(*)) DESC",
+                "member.candidate_id COLLATE \"C\""
+              ],
+              "Plans": [
+                {
+                  "Node Type": "Aggregate",
+                  "Strategy": "Hashed",
+                  "Partial Mode": "Simple",
+                  "Parent Relationship": "Outer",
+                  "Parallel Aware": false,
+                  "Async Capable": false,
+                  "Startup Cost": 7859.14,
+                  "Total Cost": 7953.49,
+                  "Plan Rows": 9435,
+                  "Plan Width": 57,
+                  "Disabled": false,
+                  "Group Key": [
+                    "member.candidate_id"
+                  ],
+                  "Planned Partitions": 0,
+                  "Plans": [
+                    {
+                      "Node Type": "Nested Loop",
+                      "Parent Relationship": "Outer",
+                      "Parallel Aware": false,
+                      "Async Capable": false,
+                      "Join Type": "Inner",
+                      "Startup Cost": 20.48,
+                      "Total Cost": 7605.26,
+                      "Plan Rows": 50776,
+                      "Plan Width": 17,
+                      "Disabled": false,
+                      "Inner Unique": false,
+                      "Join Filter": "(member.candidate_id <> focus_membership.candidate_id)",
+                      "Plans": [
+                        {
+                          "Node Type": "Hash Join",
+                          "Parent Relationship": "Outer",
+                          "Parallel Aware": false,
+                          "Async Capable": false,
+                          "Join Type": "Inner",
+                          "Startup Cost": 19.93,
+                          "Total Cost": 114.92,
+                          "Plan Rows": 104,
+                          "Plan Width": 212,
+                          "Disabled": false,
+                          "Inner Unique": true,
+                          "Hash Cond": "(placement.id = focus_membership.placement_id)",
+                          "Plans": [
+                            {
+                              "Node Type": "Seq Scan",
+                              "Parent Relationship": "Outer",
+                              "Parallel Aware": false,
+                              "Async Capable": false,
+                              "Relation Name": "atlas_placement",
+                              "Alias": "placement",
+                              "Startup Cost": 0,
+                              "Total Cost": 89.6,
+                              "Plan Rows": 2048,
+                              "Plan Width": 130,
+                              "Disabled": false,
+                              "Filter": "(build_id = 'b6a634e4da0e40b81b3dcf1cd5b4224146bb3e6f185d9c47b894e662dc98188b'::text)"
+                            },
+                            {
+                              "Node Type": "Hash",
+                              "Parent Relationship": "Inner",
+                              "Parallel Aware": false,
+                              "Async Capable": false,
+                              "Startup Cost": 18.63,
+                              "Total Cost": 18.63,
+                              "Plan Rows": 104,
+                              "Plan Width": 147,
+                              "Disabled": false,
+                              "Plans": [
+                                {
+                                  "Node Type": "Index Only Scan",
+                                  "Parent Relationship": "Outer",
+                                  "Parallel Aware": false,
+                                  "Async Capable": false,
+                                  "Scan Direction": "Forward",
+                                  "Index Name": "atlas_membership_pkey",
+                                  "Relation Name": "atlas_membership",
+                                  "Alias": "focus_membership",
+                                  "Startup Cost": 0.55,
+                                  "Total Cost": 18.63,
+                                  "Plan Rows": 104,
+                                  "Plan Width": 147,
+                                  "Disabled": false,
+                                  "Index Cond": "((build_id = 'b6a634e4da0e40b81b3dcf1cd5b4224146bb3e6f185d9c47b894e662dc98188b'::text) AND (candidate_id = 'candidate-000000'::text))"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "Node Type": "Index Only Scan",
+                          "Parent Relationship": "Inner",
+                          "Parallel Aware": false,
+                          "Async Capable": false,
+                          "Scan Direction": "Forward",
+                          "Index Name": "atlas_membership_placement_candidate",
+                          "Relation Name": "atlas_membership",
+                          "Alias": "member",
+                          "Startup Cost": 0.55,
+                          "Total Cost": 65.92,
+                          "Plan Rows": 488,
+                          "Plan Width": 147,
+                          "Disabled": false,
+                          "Index Cond": "((build_id = 'b6a634e4da0e40b81b3dcf1cd5b4224146bb3e6f185d9c47b894e662dc98188b'::text) AND (placement_id = placement.id))"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "database_bytes": 1187387071,
+  "relation_bytes": {
+    "atlas_artifact": 98304,
+    "atlas_artifact_pkey": 16384,
+    "atlas_artifact_source_year": 16384,
+    "atlas_candidate": 9265152,
+    "atlas_candidate_pkey": 1171456,
+    "atlas_candidate_search": 2195456,
+    "atlas_current": 32768,
+    "atlas_current_pkey": 16384,
+    "atlas_membership": 1166663680,
+    "atlas_membership_pkey": 191651840,
+    "atlas_membership_placement_candidate": 344481792,
+    "atlas_placement": 1695744,
+    "atlas_placement_artifact_category": 770048,
+    "atlas_placement_pkey": 360448,
+    "atlas_snapshot": 32768,
+    "atlas_snapshot_pkey": 16384
+  }
+}
