@@ -4,7 +4,7 @@ This profile compares reference commit `5d6eca7` with the visual-performance cha
 
 ## Fixture and method
 
-- Browser: Chrome 153 in the Codex in-app browser, visible and foreground.
+- Browser: Chrome 153 in the Codex in-app browser, with the benchmark tab active and its document visible.
 - Host: AMD Ryzen 7 5800X, 31.9 GB memory.
 - Browser viewport: 1440 × 1000 CSS pixels at device pixel ratio 1.
 - Graph fixture: 1000 × 680 CSS pixels.
@@ -29,7 +29,7 @@ The harness measures synchronous render time, pointer-handler CPU time, consecut
 | GPU updates, median trial | 68 | 12 | 82% fewer |
 | maximum observed long task | 408 ms | 263 ms | 36% lower |
 
-All 115 sampled dense orbit intervals still exceeded 20 ms. The optimized overview is meaningfully faster, but it does not sustain 60 frames per second at this density. The remaining cost is primarily projecting and writing 852 SVG node positions while the 3d camera moves.
+All 115 sampled dense orbit intervals still exceeded 20 ms. The optimized overview is meaningfully faster, but it does not sustain 60 frames per second at this density. The remaining SVG node updates are a likely bottleneck; this profile does not separately measure browser paint, layout, and compositing costs.
 
 The evidence, companies, and sources routes received one same-origin iframe load-and-scroll smoke profile per report. Companies and sources stayed near one refresh interval while scrolling. Evidence had one 176.7 ms baseline outlier; the optimized smoke did not repeat it. One pass cannot establish a route-level improvement, so these observations are regression coverage rather than a performance claim.
 
