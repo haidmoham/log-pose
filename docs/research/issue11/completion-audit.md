@@ -24,7 +24,7 @@ can be assumed to pass.
 | 9 | `layer-evidence-review.md`, source manifest, three retained topology bodies, fourteen inventory artifacts, and the four-claim reviewed layer. | partial: competition/workflow, partnership, capital participation and observation history exist. the user accepted the scoped integration proposal; canonical import remains pending. named-customer source mentions were found, but need a predicate and reviews; ownership and relationship validity remain unsupported. |
 | 10 | browser saves selected inventory/reviewed pages and notes. `src/log_pose/atlas_read.py` validates bounded inventory research exports. three retained investigations and the isolated experimental attachment validator exist. | partial: Python adapter still accepts only inventory-year pages; the isolated attachment validator has its own generic provenance contract. cross-layer receipt predates the reviewed API, and historical receipt excludes later inventory rows, not a later filing/review/premise through the reviewed route. add reproducible reviewed-read walkthroughs. |
 | 11 | S1/S2 synthetic SQLite build/read receipts; corrected S1 Postgres publication and concurrency measurements; S2 Postgres import time-limit receipt. | partial: the final S0 constrained browser profile and twenty-minute soak pass in `browser-playwright-s0.json`. no S1 browser profile or hosted large-fixture latency proof. current fixtures model memberships, not mixed predicates/long claim histories. S2 Postgres remains incomplete after the declared 30-minute budget. |
-| 12 | tests cover duplicate rows, dense buckets, same-year revisions, corrections, immutable publication/rollback, cursor mismatch, cache bounds and route disposal. topology database tests cover review reversals and additional premises. | partial: do not substitute these unit cases for an S1 mixed-history benchmark. large SQLite first-open checksum cost is outside the old scale query timings; measure it explicitly before making a cold-start claim. |
+| 12 | tests cover duplicate rows, dense buckets, same-year revisions, corrections, immutable publication/rollback, cursor mismatch, cache bounds and route disposal. topology database tests cover review reversals and additional premises. | partial: do not substitute these unit cases for an S1 mixed-history benchmark. large SQLite checksum cost is outside the old warm timings. one later S1 first-handler request including checksum validation took 782.36 ms; no cold-start distribution or hosted measurement exists. |
 | 13 | unit tests cover keyboard selection, stable controls/camera, reduced motion, non-color absence text and list fallback; real earlier browser receipts cover selected flows. | partial: new-route touch targeting, emulated media preference, keyboard focus across updates and actual non-GPU fallback need a consolidated browser receipt. a narrow viewport alone is not a touch test. |
 | 14 | required CI creates disposable Postgres, runs database tests, and rejects silent skips. snapshot publication reconciles keys, counts, hashes and references; migrations preserve applied history. | supported automated migration/read-derivative checks. full retained evidence-clone reconciliation remains explicitly unavailable in CI; an empty test database is not a substitute. |
 | 15 | bounded pages/work/bytes/cache/handles, read-only runtime, text rendering and safe-link primitives. acquisition jobs are separate from public queries. | supported public retained slice; hashes are not redistribution permission. authenticated/restricted evidence is not hosted here. no broad private-data access-control claim. |
@@ -178,3 +178,28 @@ four accepted claims and four reviews are recoverable at their exported scope.
 original entity creation times and the secondary-premise row ID/arrival are not.
 the plan preserves those unknowns and separates reconstruction arrival; no
 canonical data, published projection or review was changed.
+
+
+## verified access paths and approved reconstruction
+
+[the browser accessibility receipt](browser-accessibility-s0.json) passes eleven
+smoke checks on `df22ccb`, including both atlas layers at 390x844 with touch
+emulation, reduced motion, GPU/WebGL disabled, keyboard navigation to the list,
+a visible focus indicator, retained focus after inspection and a committed time
+change, and a minimum 44px selected list touch target. SVG and the list work
+without WebGL; accepted-frame Web Animations and active CSS animations are
+absent under the reduced-motion preference. no page errors occurred. this is
+a bounded emulation check, not a physical-device or screen-reader audit.
+
+The full repository `npm run lint` still reports pre-existing legacy findings
+(20 errors and eight warnings). the two changed browser scripts pass targeted
+Oxlint with zero findings; required CI is a separate gate and is not bypassed.
+
+[the reconstruction decision](topology-reconstruction-decision.json) records
+the user's approval of the scoped plan. implementation now proceeds in an
+isolated checkout/database. unknown historical metadata is not permission to
+invent timestamps, and publication remains reserved.
+
+PR #18 adds constrained typed traversal as well as reviewed Python reads. its
+final focused checks cover 14 API cases and 11 Python cases, including the
+100-visited-entity boundary and exact saved traversal target binding.

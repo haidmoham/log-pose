@@ -29,6 +29,8 @@ Vercel's existing Git integration publishes `main`. CI does not run a second dep
 
 check the public project alias and the custom domain separately. the unique Vercel deployment URL is also checked when accessible; SSO protection stays enabled and is reported as `not_evaluated` when it prevents this unauthenticated read. a successful deployment event alone does not prove that either public alias serves its bytes. daily checks pin `main` once at the start of the run and retain that expected commit throughout the check. a newer deployment superseding the event is a distinct condition, not evidence that old bytes were successfully served. keep finite retry limits for propagation and transient errors, then fail visibly. never retry forever or silently switch the expected commit to whatever happens to be live.
 
+the HTTP check hashes the atlas HTML, both route implementations, shared model/UI/renderer scripts, and their styles against the selected commit. the browser check exercises the pinned inventory top-100 deep link, reviewed claims and their source trail. for both atlas layers, it also requests an unavailable build, retries the same selector, and returns through browser history to the original graph/inspector frame. these checks do not measure production latency or GPU memory.
+
 the smoke report and CI test reports are retained as run artifacts. a green workflow means those checks passed for that commit at that time. it is not an uptime guarantee, an automatic freshness claim, or a claim that every research statement is true.
 
 ## when a check fails

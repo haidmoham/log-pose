@@ -5,6 +5,42 @@ const assert = require('node:assert/strict');
 const { execFileSync } = require('node:child_process');
 const { writeFileSync } = require('node:fs');
 const path = require('node:path');
+const { verifyAccessibleAtlas } = require('./check_atlas_accessibility.cjs');
+
+async function verifyMissingBuildRecovery(page, validUrl, layer, report) {
+  const validFrame = await page.locator('#atlas-frame-label').getAttribute('data-frame-id');
+  assert(validFrame, 'valid atlas frame is required before recovery check');
+  const validNodes = await page.locator('.constellation-node').count();
+  const missingUrl = new URL(validUrl);
+  missingUrl.searchParams.set('build_id', '0'.repeat(64));
+  await page.goto(missingUrl.href, { waitUntil: 'domcontentloaded', timeout: 30000 });
+  await page.locator('#atlas-retry').waitFor({ state: 'visible', timeout: 30000 });
+  assert.match(await page.locator('#atlas-status').innerText(), /not hosted|snapshot is unavailable/);
+  assert.equal(await page.locator('.constellation-node').count(), 0, 'missing build must not render another graph');
+  assert.equal(await page.locator('.atlas-claim, .atlas-premise').count(), 0,
+    'missing build must not render evidence from another build');
+  const retryResponse = page.waitForResponse(response => {
+    const url = new URL(response.url());
+    return url.pathname === '/api/atlas' && url.searchParams.get('build_id') === '0'.repeat(64);
+  }, { timeout: 30000 });
+  await page.locator('#atlas-retry').click();
+  const response = await retryResponse;
+  assert.equal(response.status(), 410, 'retry must retain the unavailable build selector');
+  assert.equal((await response.json()).error, 'build_unavailable');
+  await page.waitForFunction(() => !document.querySelector('#atlas-retry').hidden
+    && /not hosted|snapshot is unavailable/.test(document.querySelector('#atlas-status').textContent));
+  assert.equal(new URL(page.url()).searchParams.get('build_id'), '0'.repeat(64));
+  assert.equal(await page.locator('.constellation-node').count(), 0);
+  await page.goBack({ waitUntil: 'domcontentloaded', timeout: 30000 });
+  await page.waitForFunction(({ frame, nodes }) =>
+    document.querySelector('#atlas-frame-label')?.dataset.frameId === frame
+      && document.querySelector('#atlas-inspector')?.dataset.frameId === frame
+      && document.querySelectorAll('.constellation-node').length === nodes
+      && !document.querySelector('#atlas-status')?.textContent,
+  { frame: validFrame, nodes: validNodes }, { timeout: 30000 });
+  report.checks.push({ name: `${layer}-missing-build-retry-recovery`, passed: true,
+    recovered_frame_id: validFrame, nodes: validNodes });
+}
 
 async function main() {
   const report = { schema_version: '1.0', status: 'failed',
@@ -31,7 +67,7 @@ async function main() {
     const neighbor = graph.candidates[right];
     report.candidate_id = candidate.id;
     report.neighbor_id = neighbor.id;
-    browser = await chromium.launch({ headless: true });
+    browser = await chromium.launch({ headless: true, args: ['--disable-gpu', '--disable-webgl'] });
     page = await browser.newPage({ viewport: { width: 1365, height: 900 } });
     page.on('pageerror', error => report.page_errors.push(error.message));
     const summaryResponse = await page.request.get(
@@ -75,6 +111,24 @@ async function main() {
     }, { rowId: sourceRowId, hash: sourceHash }, { timeout: 30000 });
     report.checks.push({ name: 'source-row-drill', passed: true,
       source_row_id: sourceRowId, artifact_sha256: sourceHash });
+    const inventoryManifest = JSON.parse(execFileSync('git', ['show',
+      `${commitSha}:api/data/atlas/current.json`]));
+    const inventoryUrl = new URL('/atlas.html', baseUrl);
+    inventoryUrl.search = new URLSearchParams({ mode: 'focus', build_id: inventoryManifest.build_id,
+      source: 'cncf', year: '2024', temporal_mode: 'snapshot', top_k: '100',
+      artifact: 'artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8',
+      candidate: '4d9ade2bfb2aa6cb4afb', neighbor: '0b53be52084e857862ac' }).toString();
+    await page.goto(inventoryUrl.href, { waitUntil: 'domcontentloaded', timeout: 30000 });
+    await page.locator('#atlas-inspector .atlas-premise').first().waitFor({ state: 'visible', timeout: 30000 });
+    assert.equal(await page.locator('.constellation-node').count(), 101, 'top 100 must render 100 neighbors and the focus');
+    assert.equal(await page.locator('.atlas-candidate-list button').count(), 100, 'candidate list must match top 100');
+    assert.equal(await page.locator('#atlas-frame-label').getAttribute('data-frame-id'),
+      await page.locator('#atlas-inspector').getAttribute('data-frame-id'), 'inventory graph and inspector frame');
+    assert((await page.locator('#atlas-inspector').innerText()).includes(
+      'f1036cb6b8e9b9ef7647a0203ac349ba308173bf407f79cc8ccd4d4a2e7d46fd'), 'inventory source hash missing');
+    report.checks.push({ name: 'inventory-top100-deep-link', passed: true,
+      build_id: inventoryManifest.build_id, nodes: 101, neighbors: 100 });
+    await verifyMissingBuildRecovery(page, inventoryUrl, 'inventory', report);
     const reviewedManifest = JSON.parse(execFileSync('git', ['show',
       `${commitSha}:api/data/atlas-reviewed/current.json`]));
     const reviewedUrl = new URL('/atlas.html', baseUrl);
@@ -93,6 +147,7 @@ async function main() {
     assert.equal(await page.locator('.constellation-node').count(), 2, 'reviewed graph node count');
     report.checks.push({ name: 'reviewed-claims-deep-link', passed: true, build_id: reviewedManifest.build_id,
       claims: 3, clock: 'source_publication', review_lens: 'current_accepted_at_build' });
+    await verifyMissingBuildRecovery(page, reviewedUrl, 'reviewed', report);
     await page.locator('#atlas-inspector a[href*="dataFamily=topology"]').first().click();
     await page.waitForFunction(() => {
       const params = new URLSearchParams(window.location.search);
@@ -102,6 +157,8 @@ async function main() {
         && body?.querySelector('a[href*="dbt-labs-raises-222m"]');
     }, null, { timeout: 30000 });
     report.checks.push({ name: 'reviewed-claim-source-trail', passed: true });
+    await verifyAccessibleAtlas(browser, inventoryUrl, 'inventory', report);
+    await verifyAccessibleAtlas(browser, reviewedUrl, 'reviewed', report);
     assert.deepEqual(report.page_errors, [], 'uncaught browser errors');
     report.status = 'passed';
   } catch (error) {

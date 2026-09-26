@@ -1,0 +1,81 @@
+{
+  "recorded_at": "2026-09-26T16:33:43.439900+00:00",
+  "status": "partial_database_verified_full_evidence_unavailable",
+  "source_cluster": "data/postgres",
+  "source_cluster_files": 1851,
+  "original_files_unchanged": true,
+  "copy_manifest_sha256": "9bacbadddd936784f8d651d866df1d4e430ee4d71a515f9a60a0f4cf2530ad02",
+  "runtime": "PostgreSQL 18.6, official Ubuntu resolute packages extracted locally without system install",
+  "packages": [
+    {
+      "file": "libpq5_18.6-0ubuntu0.26.04.1_amd64.deb",
+      "sha256": "7e9199f54290b04a28e9f136207624ca30b0988d613159977fd84e8b4467e0a4"
+    },
+    {
+      "file": "liburing2_2.14-1_amd64.deb",
+      "sha256": "c0f1ed55d2eaa6e5d1224513b787c71348c6ab983e9c4178a417a7ffac3a8a00"
+    },
+    {
+      "file": "postgresql-18_18.6-0ubuntu0.26.04.1_amd64.deb",
+      "sha256": "0536716204dee9152dee758c252936ba41c93b7330395f8abb0c5b86558aa658"
+    },
+    {
+      "file": "postgresql-client-18_18.6-0ubuntu0.26.04.1_amd64.deb",
+      "sha256": "c46d1ace8f7d84a9648c63b566fff799b7ee3281db46ef6e7b99baf0fd7bd2e4"
+    }
+  ],
+  "network_binding": "private Unix socket only; TCP disabled",
+  "inspection_transaction_default": "read_only",
+  "auth_changes": false,
+  "original_cluster_started": false,
+  "original_database_mutations": false,
+  "canonical_review_appended": false,
+  "saved_dump": "data/logpose-market-2020-2026.dump",
+  "saved_dump_sha256": "f14905a292d2dfea1674f740b47030e3cebdede48da636c0afba4719d222918c",
+  "saved_dump_restore": "success into separate local database; same partial counts",
+  "recovered_counts": {
+    "companies": 0,
+    "discovery_artifacts": 14,
+    "discovery_inventory_rows": 18076,
+    "discovery_occurrences": 6096,
+    "ingestion_attempts": 0,
+    "market_daily": 0,
+    "market_files": 0,
+    "schema_migrations": 12,
+    "sec_artifacts": 0,
+    "sec_companyfacts": 0,
+    "sec_financial_facts": 0,
+    "snapshots": 0,
+    "sources": 0,
+    "topology_acquisition_jobs": 0,
+    "topology_candidate_evidence": 0,
+    "topology_candidates": 0,
+    "topology_eligibility_reviews": 0,
+    "topology_entities": 0,
+    "topology_entity_aliases": 0,
+    "topology_graph_builds": 0,
+    "topology_reviews": 0,
+    "topology_sources": 0
+  },
+  "fresh_partial_backup": {
+    "path": "~/.cache/log-pose-evidence-recovery-20260926/logpose-market-inventory-only-20260926.dump",
+    "bytes": 3006198,
+    "sha256": "77107831042eb5ab2dc2441cf0a2f72cd335d39f3fe8c008a5b7256e370d557d",
+    "scope": "inventory-only database; not a full retained evidence backup"
+  },
+  "source_search": {
+    "locations": [
+      "project checkouts including Git-ignored files",
+      "WSL cache and local share",
+      "WSL temporary files",
+      "standard local PostgreSQL directories",
+      "Windows Downloads, Documents and Desktop"
+    ],
+    "full_evidence_backups_found": 0,
+    "additional_cluster": "separate synthetic scale data, not canonical evidence",
+    "docker": "checked previously; unrelated ODS resources only; stopped"
+  },
+  "remaining_gap": "89 retained page snapshots, SEC and market raw evidence, and existing canonical topology source/proposal/review records were not present in recovered databases.",
+  "safe_next_step": "locate a fuller backup or prepare an explicitly scoped reconstruction proposal that preserves known IDs/hashes and records missing provenance; do not run a full rebuild from this partial database",
+  "owned_recovery_server": "stopped"
+}
