@@ -28,6 +28,13 @@
   const featuredCandidate = '4d9ade2bfb2aa6cb4afb';
   let featuredExample = false;
 
+  function setStartupPending(pending) {
+    const controls = document.querySelectorAll('#atlas-controls input, #atlas-controls select, #atlas-controls button, '
+      + '#atlas-previous, #atlas-next, #atlas-density, #atlas-top-k, #atlas-density-reset');
+    for (const control of controls) control.disabled = pending;
+    byId('atlas-controls').setAttribute('aria-busy', String(pending));
+  }
+
   function status(text, failed = false) {
     byId('atlas-status').textContent = text;
     byId('atlas-retry').hidden = !failed;
@@ -337,6 +344,8 @@
   }
 
   async function start() {
+    setStartupPending(true);
+    status('loading retained sources…');
     const ticket = ++generation;
     controller?.abort();
     controller = new AbortController();
@@ -392,6 +401,8 @@
       }
     } catch (error) {
       if (!disposed && ticket === generation && error.name !== 'AbortError') status(error.message, true);
+    } finally {
+      if (!disposed && manifest) setStartupPending(false);
     }
   }
 
