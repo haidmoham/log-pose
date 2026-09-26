@@ -8,7 +8,9 @@ The row grains are one candidate summary, one immutable source artifact, one art
 
 The importer validates the SQLite byte count, SHA-256, logical build ID, foreign keys, row counts, search index, membership rows, and occurrence totals before it connects those rows to the Postgres pointer. It streams ordered SQLite rows into bounded COPY batches inside one transaction. Candidate search source text passes through a temporary table and becomes a Postgres `simple`-configuration `tsvector`. It does not load the global projection or generate candidate pairs.
 
-An existing build is reusable only when its stored JSONB manifest exactly equals the validated immutable manifest and all reconciliation checks pass. Published build rows are never updated. Old builds remain addressable. The singleton `public.atlas_current` pointer changes only after the imported or reused build passes validation; an exception rolls back both rows and pointer changes.
+New builds commit first with `ready=false`, so gold snapshot discovery and exact build requests cannot see them. A session advisory lock serializes publication. The publisher runs `VACUUM (ANALYZE)` outside a transaction to prepare statistics and visibility maps for bounded index-only reads. Vacuum skips old all-visible pages. The publisher then revalidates only the target build and, in one short transaction, marks it ready and optionally changes `atlas_current`. A maintenance failure leaves a complete but unready build that a rerun resumes. Existing builds from migration 014 remain ready; their first publisher rerun performs maintenance and records `prepared_at` without taking them offline.
+
+An existing build is reusable only when its stored JSONB manifest exactly equals the validated immutable manifest and all reconciliation checks pass. Published evidence rows are never updated. Old ready builds remain addressable. The singleton `public.atlas_current` pointer changes only after maintenance and final reconciliation; a failed staged build does not replace it.
 
 Run migration and import with an administrator connection supplied only through the environment:
 

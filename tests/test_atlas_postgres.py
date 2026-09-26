@@ -8,6 +8,7 @@ from pathlib import Path
 import psycopg
 import pytest
 
+import log_pose.atlas_postgres as postgres_module
 from log_pose.atlas_postgres import load_manifest, publish_atlas_snapshot
 from log_pose.atlas_snapshot import build_atlas_snapshot
 from log_pose.storage import migrate
@@ -100,6 +101,83 @@ def test_reimport_is_idempotent_and_never_rewrites_build(atlas_db, tmp_path):
         cursor.execute("SELECT manifest->>'tampered' FROM public.atlas_snapshot WHERE build_id=%s",
                        (manifest["build_id"],))
         assert cursor.fetchone()[0] == "true"
+
+
+def test_maintenance_failure_is_invisible_and_rerun_resumes(atlas_db, tmp_path, monkeypatch):
+    first = make_snapshot(tmp_path / "first")
+    publish_atlas_snapshot(atlas_db, tmp_path / "first")
+    changed = copy.deepcopy(fixture_projection())
+    changed["nodes"][0]["description"] = "second build"
+    second = make_snapshot(tmp_path / "second", changed)
+    original_prepare = postgres_module._prepare_serving_tables
+    with monkeypatch.context() as patch:
+        patch.setattr(postgres_module, "_prepare_serving_tables",
+                      lambda _connection: (_ for _ in ()).throw(RuntimeError("maintenance failed")))
+        with pytest.raises(RuntimeError, match="maintenance failed"):
+            publish_atlas_snapshot(atlas_db, tmp_path / "second")
+    assert atlas_db.autocommit is False
+    with atlas_db.cursor() as cursor:
+        cursor.execute("SELECT ready,prepared_at FROM public.atlas_snapshot WHERE build_id=%s",
+                       (second["build_id"],))
+        assert cursor.fetchone() == (False, None)
+        cursor.execute("SELECT count(*) FROM gold.atlas_snapshot WHERE build_id=%s",
+                       (second["build_id"],))
+        assert cursor.fetchone()[0] == 0
+        cursor.execute("SELECT build_id FROM gold.atlas_current WHERE singleton")
+        assert cursor.fetchone()[0] == first["build_id"]
+
+    monkeypatch.setattr(postgres_module, "_prepare_serving_tables", original_prepare)
+    resumed = publish_atlas_snapshot(atlas_db, tmp_path / "second")
+    assert resumed["status"] == "resumed_staged_build"
+    with atlas_db.cursor() as cursor:
+        cursor.execute("SELECT ready,prepared_at IS NOT NULL FROM public.atlas_snapshot WHERE build_id=%s",
+                       (second["build_id"],))
+        assert cursor.fetchone() == (True, True)
+        cursor.execute("SELECT build_id FROM gold.atlas_current WHERE singleton")
+        assert cursor.fetchone()[0] == second["build_id"]
+
+
+def test_existing_ready_build_is_prepared_then_can_be_selected_again(atlas_db, tmp_path, monkeypatch):
+    first_root = tmp_path / "first"
+    first = make_snapshot(first_root)
+    publish_atlas_snapshot(atlas_db, first_root)
+    changed = copy.deepcopy(fixture_projection())
+    changed["nodes"][1]["description"] = "new current"
+    second_root = tmp_path / "second"
+    second = make_snapshot(second_root, changed)
+    publish_atlas_snapshot(atlas_db, second_root)
+    with atlas_db.cursor() as cursor:
+        cursor.execute("UPDATE public.atlas_snapshot SET prepared_at=NULL WHERE build_id=%s",
+                       (first["build_id"],))
+    atlas_db.commit()
+    calls = []
+    original_prepare = postgres_module._prepare_serving_tables
+
+    def record_prepare(connection):
+        calls.append("prepare")
+        original_prepare(connection)
+
+    monkeypatch.setattr(postgres_module, "_prepare_serving_tables", record_prepare)
+    result = publish_atlas_snapshot(atlas_db, first_root)
+    assert result["status"] == "prepared_existing_build"
+    assert calls == ["prepare"]
+    with atlas_db.cursor() as cursor:
+        cursor.execute("SELECT build_id FROM gold.atlas_current WHERE singleton")
+        assert cursor.fetchone()[0] == first["build_id"]
+        cursor.execute("SELECT ready,prepared_at IS NOT NULL FROM public.atlas_snapshot WHERE build_id=%s",
+                       (first["build_id"],))
+        assert cursor.fetchone() == (True, True)
+        cursor.execute("SELECT count(*) FROM gold.atlas_snapshot WHERE build_id=%s",
+                       (second["build_id"],))
+        assert cursor.fetchone()[0] == 1
+
+
+def test_publisher_restores_caller_autocommit(atlas_db, tmp_path):
+    make_snapshot(tmp_path)
+    atlas_db.commit()
+    atlas_db.autocommit = True
+    publish_atlas_snapshot(atlas_db, tmp_path, publish_current=False)
+    assert atlas_db.autocommit is True
 
 
 def test_failed_import_preserves_old_build_and_current_pointer(atlas_db, tmp_path):

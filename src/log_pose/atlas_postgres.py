@@ -20,6 +20,7 @@ TABLE_COUNTS = {
     "atlas_placement": "placements",
     "atlas_membership": "memberships",
 }
+PUBLICATION_LOCK = "log-pose-atlas-publication-v1"
 
 
 def load_manifest(snapshot_root: Path, build_id: str | None = None) -> dict:
@@ -96,6 +97,32 @@ def validate_postgres_snapshot(connection, manifest: dict) -> None:
             raise ValueError("stored atlas occurrence count differs from immutable manifest")
 
 
+def _prepare_serving_tables(connection) -> None:
+    """Establish statistics and visibility maps required by bounded reads."""
+    previous_autocommit = connection.autocommit
+    connection.autocommit = True
+    try:
+        with connection.cursor() as cursor:
+            # VACUUM skips old all-visible pages. The session publication lock
+            # ensures only one staged build requests shared-table maintenance.
+            cursor.execute("""VACUUM (ANALYZE) public.atlas_candidate,
+                public.atlas_artifact,public.atlas_placement,public.atlas_membership""")
+    finally:
+        connection.autocommit = previous_autocommit
+
+
+def _release_publication_lock(connection, original_autocommit: bool) -> None:
+    """Release the session lock even when a publication transaction failed."""
+    try:
+        if not connection.autocommit:
+            connection.rollback()
+        connection.autocommit = True
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT pg_advisory_unlock(hashtext(%s))", (PUBLICATION_LOCK,))
+    finally:
+        connection.autocommit = original_autocommit
+
+
 def publish_atlas_snapshot(connection, snapshot_root: Path, *, build_id: str | None = None,
                            batch_size: int = 2_000, publish_current: bool = True) -> dict:
     """Import one immutable snapshot and move the current pointer after validation."""
@@ -105,18 +132,31 @@ def publish_atlas_snapshot(connection, snapshot_root: Path, *, build_id: str | N
     build_id = manifest["build_id"]
     database_path = snapshot_root / manifest["database"]
 
+    original_autocommit = connection.autocommit
+    lock_acquired = False
     try:
+        if original_autocommit:
+            connection.autocommit = False
         with connection.cursor(row_factory=tuple_row) as cursor:
-            cursor.execute("SELECT manifest FROM public.atlas_snapshot WHERE build_id=%s FOR UPDATE",
+            cursor.execute("SELECT pg_advisory_lock(hashtext(%s))", (PUBLICATION_LOCK,))
+        connection.commit()
+        lock_acquired = True
+
+        with connection.cursor(row_factory=tuple_row) as cursor:
+            cursor.execute("""SELECT manifest,ready,prepared_at
+                FROM public.atlas_snapshot WHERE build_id=%s FOR UPDATE""",
                            (build_id,))
             existing = cursor.fetchone()
             if existing is not None:
                 if existing[0] != manifest:
                     raise ValueError("published build ID already has a different manifest")
                 validate_postgres_snapshot(connection, manifest)
-                status = "existing_immutable_build"
+                ready, prepared_at = existing[1], existing[2]
+                status = ("existing_immutable_build" if ready and prepared_at is not None
+                          else "prepared_existing_build" if ready else "resumed_staged_build")
             else:
-                cursor.execute("INSERT INTO public.atlas_snapshot(build_id,manifest) VALUES (%s,%s)",
+                cursor.execute("""INSERT INTO public.atlas_snapshot(build_id,manifest,ready)
+                    VALUES (%s,%s,false)""",
                                (build_id, Jsonb(manifest)))
                 database = sqlite3.connect(f"file:{database_path}?mode=ro", uri=True)
                 try:
@@ -152,14 +192,35 @@ def publish_atlas_snapshot(connection, snapshot_root: Path, *, build_id: str | N
                     database.close()
                 validate_postgres_snapshot(connection, manifest)
                 status = "imported"
+        connection.commit()
 
+        needs_preparation = existing is None or prepared_at is None
+        if needs_preparation:
+            _prepare_serving_tables(connection)
+
+        # Maintenance runs outside a transaction. Reconcile the one target
+        # again before readiness and the pointer become visible together.
+        if needs_preparation:
+            validate_postgres_snapshot(connection, manifest)
+        with connection.cursor() as cursor:
+            cursor.execute("""UPDATE public.atlas_snapshot
+                SET ready=true,prepared_at=coalesce(prepared_at,now())
+                WHERE build_id=%s""", (build_id,))
             if publish_current:
                 cursor.execute("""INSERT INTO public.atlas_current(singleton,build_id)
                     VALUES (true,%s) ON CONFLICT (singleton)
                     DO UPDATE SET build_id=excluded.build_id""", (build_id,))
         connection.commit()
     except Exception:
-        connection.rollback()
+        if not connection.closed:
+            if connection.autocommit:
+                connection.autocommit = False
+            connection.rollback()
         raise
+    finally:
+        if lock_acquired and not connection.closed:
+            _release_publication_lock(connection, original_autocommit)
+        elif not connection.closed:
+            connection.autocommit = original_autocommit
     return {"status": status, "build_id": build_id, "counts": manifest["counts"],
             "current": publish_current}
