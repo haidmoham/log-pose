@@ -162,6 +162,7 @@
     const contextVisible = () => !frame.focus || appearance.context;
     let deferContextProjection = false;
     let hovered = '';
+    let drag = null;
     let gpu = null;
     const peers = svgElement('g', { class: 'constellation-context', 'aria-hidden': 'true' });
     for (const edge of frame.context_edges || []) {
@@ -206,6 +207,7 @@
     field.append(hitThreads);
 
     function emphasize(id) {
+      if (id && (drag?.owned || scene.classList.contains('is-orbiting'))) return;
       hovered = id;
       for (const [key, thread] of threadElements) thread.classList.toggle('is-hovered', key === id);
       const nearby = new Set();
@@ -490,7 +492,6 @@
       else scheduleCameraUpdate();
     }
     function zoomTo(value) { camera.zoom = Math.max(0.65, Math.min(12, value)); updateCamera(); }
-    let drag = null;
     let suppressClick = false;
     let orbitFrame = null;
     let orbitTime = null;
@@ -540,7 +541,11 @@
       drag = { pointerId: event.pointerId, pointerType: event.pointerType, x: event.clientX, y: event.clientY,
         cameraX: camera.x, cameraY: camera.y, yaw: camera3d.yaw, pitch: camera3d.pitch,
         pan: viewMode === '2d' || event.shiftKey || panButton, owned: viewMode === '2d', rect: svg.getBoundingClientRect() };
-      if (drag.owned) { svg.setPointerCapture?.(event.pointerId); svg.classList.add('is-dragging'); }
+      if (drag.owned) {
+        emphasize('');
+        svg.setPointerCapture?.(event.pointerId);
+        svg.classList.add('is-dragging');
+      }
     });
     svg.addEventListener('pointermove', event => {
       if (!drag || (drag.pointerId !== undefined && event.pointerId !== undefined && event.pointerId !== drag.pointerId)) return;

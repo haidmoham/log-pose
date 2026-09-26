@@ -4,9 +4,13 @@ const { JSDOM } = require('jsdom');
 const fs = require('node:fs');
 const modelSource = fs.readFileSync(require.resolve('../web/research-model.js'), 'utf8');
 const source = fs.readFileSync(require.resolve('../web/temporal-graph.js'), 'utf8');
+const styleSource = fs.readFileSync(require.resolve('../web/temporal-graph.css'), 'utf8');
 function setup(configure) {
   const dom = new JSDOM('<!doctype html><body></body>', { runScripts: 'outside-only' });
   configure?.(dom.window);
+  const style = dom.window.document.createElement('style');
+  style.textContent = styleSource;
+  dom.window.document.head.append(style);
   dom.window.eval(modelSource);
   dom.window.eval(source);
   return dom;
@@ -237,6 +241,77 @@ test('3d drag owns node gestures only after threshold and suppresses the trailin
   map.dispatchEvent(new dom.window.MouseEvent('pointercancel', { bubbles: true }));
   map.dispatchEvent(new dom.window.MouseEvent('pointermove', { bubbles: true, clientX: 300, clientY: 300 }));
   assert.equal(node.getAttribute('transform'), afterOrbit);
+  dom.window.close();
+});
+
+test('camera drags suppress transient node emphasis until release without losing selection', () => {
+  const frames = [];
+  const dom = setup(window => {
+    window.matchMedia = () => ({ matches: true });
+    window.requestAnimationFrame = callback => { frames.push(callback); return frames.length; };
+  });
+  const flushFrames = () => { while (frames.length) frames.shift()(16.67); };
+  const scene = dom.window.LogPoseTemporalGraph.render(frame, { selectedEdge: 'two' });
+  dom.window.document.body.append(scene);
+  const map = scene.querySelector('.constellation-map');
+  const selected = scene.querySelector('[data-candidate="two"]');
+  const hovered = scene.querySelector('[data-candidate="three"]');
+  map.getBoundingClientRect = () => ({ width: 1000, height: 600 });
+  const pointer = (type, overrides = {}) => {
+    const event = new dom.window.MouseEvent(type, { bubbles: true, cancelable: true,
+      button: 0, clientX: 100, clientY: 100, ...overrides });
+    Object.defineProperty(event, 'pointerId', { value: 1 });
+    return event;
+  };
+
+  map.dispatchEvent(pointer('pointerdown'));
+  hovered.dispatchEvent(pointer('pointerenter'));
+  assert(!hovered.classList.contains('is-hovered'), '2d pan must suppress pointer emphasis');
+  assert(selected.classList.contains('is-selected'), 'selected styling must persist during pan');
+  map.dispatchEvent(pointer('pointercancel'));
+  flushFrames();
+  hovered.dispatchEvent(pointer('pointerenter'));
+  assert(hovered.classList.contains('is-hovered'), 'hover must resume after cancelled pan');
+  hovered.dispatchEvent(pointer('pointerleave'));
+
+  scene.querySelector('[aria-label="3d graph"]').click();
+  flushFrames();
+  for (const gesture of [{ shiftKey: true }, {}]) {
+    selected.dispatchEvent(pointer('pointerdown', { clientX: 100, clientY: 100, ...gesture }));
+    selected.focus();
+    assert(selected.classList.contains('is-hovered'), 'keyboard focus remains an active node focus');
+    map.dispatchEvent(pointer('pointermove', { clientX: 130, clientY: 130, ...gesture }));
+    hovered.dispatchEvent(pointer('pointerenter', { clientX: 130, clientY: 130 }));
+    assert(!hovered.classList.contains('is-hovered'), '3d pan and orbit must suppress pointer emphasis');
+    assert(!selected.classList.contains('is-hovered'), '3d drag clears transient node emphasis');
+    assert(selected.classList.contains('is-selected'), 'selected styling must persist during 3d gestures');
+    map.dispatchEvent(pointer('pointerup', { clientX: 130, clientY: 130, ...gesture }));
+    flushFrames();
+    hovered.dispatchEvent(pointer('pointerenter', { clientX: 130, clientY: 130 }));
+    assert(hovered.classList.contains('is-hovered'), 'hover must resume after a 3d gesture');
+    hovered.dispatchEvent(pointer('pointerleave'));
+  }
+  dom.window.close();
+});
+
+test('node focus emphasis is keyboard-visible and camera dragging prevents text selection', () => {
+  // JSDOM treats programmatic focus as keyboard-visible, so check that the
+  // stylesheet does not use unconditional :focus for node emphasis.
+  assert.doesNotMatch(styleSource, /\.constellation-node:focus(?!-visible)\b/);
+  assert.match(styleSource, /\.constellation-node:focus-visible[^{}]*\.constellation-core/);
+
+  const dom = setup();
+  const scene = dom.window.LogPoseTemporalGraph.render({ ...frame, focus: null, edges: [] });
+  dom.window.document.body.append(scene);
+  const keyboardNode = scene.querySelector('[data-candidate="three"]');
+  keyboardNode.focus();
+  assert(keyboardNode.matches(':focus-visible'));
+  assert.equal(dom.window.getComputedStyle(keyboardNode.querySelector('.constellation-core')).fill, '#c76a55');
+  const map = scene.querySelector('.constellation-map');
+  assert.notEqual(dom.window.getComputedStyle(map).userSelect, 'none');
+  map.classList.add('is-dragging');
+  assert.equal(dom.window.getComputedStyle(map).userSelect, 'none');
+  assert.equal(dom.window.getComputedStyle(scene.querySelector('.constellation-label')).userSelect, 'none');
   dom.window.close();
 });
 
