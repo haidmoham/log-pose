@@ -6,6 +6,7 @@ from pathlib import Path
 
 import pytest
 
+import log_pose.atlas_snapshot as snapshot_module
 from log_pose.atlas_snapshot import (
     build_atlas_snapshot,
     publish_current,
@@ -145,7 +146,7 @@ def test_manifest_binds_versions_and_logical_content(tmp_path):
                                     "layout": "atlas-address-v1",
                                     "snapshot": "atlas-snapshot-v1"}
     assert manifest["clocks"]["inventory"]["precision"] == "year"
-    assert manifest["derivation"]["incremental_status"] == "not_implemented"
+    assert manifest["derivation"]["incremental_status"] == "sqlite_partition_updates_supported"
     logical = {key: manifest[key] for key in (
         "schema_version", "counts", "input_hashes", "versions", "clocks", "derivation")}
     digest = hashlib.sha256(json.dumps(logical, ensure_ascii=False, sort_keys=True,
@@ -162,3 +163,85 @@ def test_real_projection_builds_and_reconciles(tmp_path):
     assert manifest["counts"]["memberships"] == 5_964
     assert manifest["counts"]["input_worklist_pairs"] == 100
     validate_snapshot(tmp_path, manifest)
+
+
+def semantic_rows(root, manifest):
+    database = sqlite3.connect(root / manifest["database"])
+    try:
+        return {table: database.execute(f"SELECT * FROM {table} ORDER BY 1,2").fetchall()
+                for table in ("candidate", "candidate_search", "artifact", "placement",
+                              "membership", "metadata")}
+    finally:
+        database.close()
+
+
+def append_revision(projection):
+    added = copy.deepcopy(projection["artifacts"][0])
+    added.update({"year": 2025, "commit": "revision-2", "commit_at": "2025-04-01T00:00:00Z",
+                  "raw_sha256": "b" * 64, "artifact_path": "source/revision-2.json",
+                  "partition_path": "inventory/revision-2.json"})
+    projection["artifacts"].append(added)
+    observation = copy.deepcopy(projection["nodes"][0]["observations"][0])
+    observation.update({"year": 2025, "artifact_sha256": "b" * 64,
+                        "partition_path": "inventory/revision-2.json",
+                        "occurrence_ids": ["row-alpha-2025"]})
+    observation["rows"][0].update({"id": "row-alpha-2025", "source_path": [2, 5]})
+    projection["nodes"][0]["observations"].append(observation)
+    projection["nodes"][0]["occurrence_ids"].append("row-alpha-2025")
+
+
+def change_evidence_row(projection):
+    projection["nodes"][0]["observations"][0]["rows"][0]["description"] = "corrected evidence"
+
+
+def remove_membership(projection):
+    projection["nodes"][2]["observations"] = []
+    projection["nodes"][2]["occurrence_ids"] = []
+
+
+def replace_candidate_id(projection):
+    candidate = projection["nodes"][2]
+    candidate.update({"id": "delta", "candidate_id": "delta", "name": "Delta"})
+    candidate["occurrence_ids"] = ["row-delta"]
+    observation = candidate["observations"][0]
+    observation["occurrence_ids"] = ["row-delta"]
+    observation["rows"][0].update({"id": "row-delta", "name": "delta"})
+
+
+@pytest.mark.parametrize("mutate", [append_revision, change_evidence_row, remove_membership,
+                                    replace_candidate_id])
+def test_incremental_snapshot_is_semantically_equal_to_full_rebuild(tmp_path, mutate):
+    incremental_root = tmp_path / "incremental"
+    full_root = tmp_path / "full"
+    prior, _ = build_atlas_snapshot(fixture_projection(), incremental_root)
+    changed = fixture_projection()
+    mutate(changed)
+    incremental, status = build_atlas_snapshot(
+        changed, incremental_root, incremental_from=prior["build_id"])
+    full, full_status = build_atlas_snapshot(changed, full_root)
+    assert status == "incremental_update"
+    assert full_status == "full_rebuild"
+    assert incremental["build_id"] == full["build_id"]
+    assert {key: value for key, value in incremental.items()
+            if not key.startswith("database_") and key != "database"} == {
+                key: value for key, value in full.items()
+                if not key.startswith("database_") and key != "database"}
+    assert semantic_rows(incremental_root, incremental) == semantic_rows(full_root, full)
+    assert (incremental_root / prior["database"]).is_file()
+    validate_snapshot(incremental_root, incremental)
+
+
+def test_incremental_failure_preserves_current_pointer(tmp_path, monkeypatch):
+    prior, _ = build_atlas_snapshot(fixture_projection(), tmp_path)
+    before = (tmp_path / "current.json").read_bytes()
+    changed = fixture_projection()
+    change_evidence_row(changed)
+
+    def fail_update(*_args, **_kwargs):
+        raise RuntimeError("injected incremental failure")
+
+    monkeypatch.setattr(snapshot_module, "_update_database", fail_update)
+    with pytest.raises(RuntimeError, match="injected"):
+        build_atlas_snapshot(changed, tmp_path, incremental_from=prior["build_id"])
+    assert (tmp_path / "current.json").read_bytes() == before
+    assert json.loads(before)["build_id"] == prior["build_id"]

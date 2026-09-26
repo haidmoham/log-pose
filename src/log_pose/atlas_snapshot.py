@@ -5,6 +5,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import shutil
 import sqlite3
 import tempfile
 from pathlib import Path
@@ -39,8 +40,9 @@ def _logical_manifest(membership: dict) -> dict:
                      "layout": LAYOUT_VERSION, "snapshot": SNAPSHOT_VERSION},
         "clocks": {"inventory": {"field": "inventory_year", "precision": "year"},
                    "artifact_revision": {"field": "artifact_id", "precision": "immutable_revision"}},
-        "derivation": {"incremental_status": "not_implemented",
-                       "strategy": "reuse_exact_snapshot_else_full_rebuild",
+        "derivation": {"incremental_status": "sqlite_partition_updates_supported",
+                       "scope": "full_membership_normalization_then_changed_sqlite_rows",
+                       "recovery": "full_rebuild",
                        "canonical_evidence_store": False},
     }
     logical["build_id"] = hashlib.sha256(encode(logical)).hexdigest()
@@ -130,6 +132,110 @@ def _create_database(path: Path, membership: dict, logical: dict) -> None:
         connection.execute("INSERT INTO metadata VALUES (?,?)", ("manifest", _json(logical)))
         connection.commit()
         connection.execute("VACUUM")
+    finally:
+        connection.close()
+
+
+def _candidate_rows(membership: dict) -> list[tuple[str, str, str, str]]:
+    placement_categories = {
+        placement_index: placement["source_category"]
+        for placement_index, placement in enumerate(membership["placements"])
+    }
+    rows = []
+    for candidate_index, candidate in enumerate(membership["candidates"]):
+        categories = sorted({placement_categories[placement_index]
+                             for placement_index in
+                             membership["candidate_placement_indices"][candidate_index]})
+        search_fields = [candidate.get("name", ""), candidate.get("description", ""),
+                         *candidate.get("candidate_tags", []), *categories]
+        rows.append((candidate["id"], candidate["name"], _json(candidate),
+                     "\n".join(str(value) for value in search_fields if value)))
+    return rows
+
+
+def _snapshot_rows(membership: dict) -> tuple[dict, dict, dict]:
+    artifacts = {artifact["id"]: (artifact["source"], artifact["inventory_year"],
+                                  artifact["raw_sha256"], _json(artifact))
+                 for artifact in membership["artifacts"]}
+    placements = {}
+    for placement_index, placement in enumerate(membership["placements"]):
+        artifact_id = membership["artifacts"][placement["artifact_index"]]["id"]
+        placements[placement["id"]] = (artifact_id, placement["source_category"],
+                                        len(membership["placement_members"][placement_index]))
+    memberships = {}
+    for row in membership["memberships"]:
+        candidate_id = membership["candidates"][row["candidate_index"]]["id"]
+        placement_id = membership["placements"][row["placement_index"]]["id"]
+        detail = {"id": row["id"], "candidate_id": candidate_id,
+                  "placement_id": placement_id, "occurrence_ids": row["occurrence_ids"],
+                  "rows": row["rows"]}
+        memberships[(candidate_id, placement_id)] = _json(detail)
+    return artifacts, placements, memberships
+
+
+def _update_database(path: Path, membership: dict, logical: dict) -> dict:
+    """Update changed serving rows after the complete membership model is normalized."""
+    artifacts, placements, memberships = _snapshot_rows(membership)
+    candidates = _candidate_rows(membership)
+    connection = sqlite3.connect(path)
+    try:
+        connection.execute("PRAGMA foreign_keys=OFF")
+        existing_memberships = {(row[0], row[1]): row[2] for row in connection.execute(
+            "SELECT candidate_id,placement_id,detail_json FROM membership")}
+        removed_memberships = existing_memberships.keys() - memberships.keys()
+        changed_memberships = {key for key, detail in memberships.items()
+                               if existing_memberships.get(key) != detail}
+        connection.executemany("DELETE FROM membership WHERE candidate_id=? AND placement_id=?",
+                               sorted(removed_memberships))
+        connection.executemany("""INSERT INTO membership(candidate_id,placement_id,detail_json)
+            VALUES(?,?,?) ON CONFLICT(candidate_id,placement_id)
+            DO UPDATE SET detail_json=excluded.detail_json""",
+            ((candidate_id, placement_id, memberships[(candidate_id, placement_id)])
+             for candidate_id, placement_id in sorted(changed_memberships)))
+
+        existing_placements = {row[0]: row[1:] for row in connection.execute(
+            "SELECT id,artifact_id,category,member_count FROM placement")}
+        removed_placements = existing_placements.keys() - placements.keys()
+        changed_placements = {identifier for identifier, row in placements.items()
+                              if existing_placements.get(identifier) != row}
+        connection.executemany("DELETE FROM placement WHERE id=?",
+                               ((identifier,) for identifier in sorted(removed_placements)))
+        connection.executemany("""INSERT INTO placement(id,artifact_id,category,member_count)
+            VALUES(?,?,?,?) ON CONFLICT(id) DO UPDATE SET artifact_id=excluded.artifact_id,
+            category=excluded.category,member_count=excluded.member_count""",
+            ((identifier, *placements[identifier]) for identifier in sorted(changed_placements)))
+
+        existing_artifacts = {row[0]: row[1:] for row in connection.execute(
+            "SELECT id,source,inventory_year,raw_sha256,detail_json FROM artifact")}
+        removed_artifacts = existing_artifacts.keys() - artifacts.keys()
+        changed_artifacts = {identifier for identifier, row in artifacts.items()
+                             if existing_artifacts.get(identifier) != row}
+        connection.executemany("DELETE FROM artifact WHERE id=?",
+                               ((identifier,) for identifier in sorted(removed_artifacts)))
+        connection.executemany("""INSERT INTO artifact(id,source,inventory_year,raw_sha256,detail_json)
+            VALUES(?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET source=excluded.source,
+            inventory_year=excluded.inventory_year,raw_sha256=excluded.raw_sha256,
+            detail_json=excluded.detail_json""",
+            ((identifier, *artifacts[identifier]) for identifier in sorted(changed_artifacts)))
+
+        # Rebuilding these small tables gives candidate and FTS rows identical,
+        # sorted rowids even when the candidate ID set changes.
+        connection.execute("DELETE FROM candidate_search")
+        connection.execute("DELETE FROM candidate")
+        connection.executemany("INSERT INTO candidate(id,name,summary_json) VALUES(?,?,?)",
+                               ((identifier, name, summary) for identifier, name, summary, _ in candidates))
+        connection.executemany("INSERT INTO candidate_search(id,text) VALUES(?,?)",
+                               ((identifier, search) for identifier, _, _, search in candidates))
+        connection.execute("UPDATE metadata SET value=? WHERE key='manifest'", (_json(logical),))
+        connection.commit()
+        connection.execute("PRAGMA foreign_keys=ON")
+        return {"memberships_removed": len(removed_memberships),
+                "memberships_changed": len(changed_memberships),
+                "placements_removed": len(removed_placements),
+                "placements_changed": len(changed_placements),
+                "artifacts_removed": len(removed_artifacts),
+                "artifacts_changed": len(changed_artifacts),
+                "candidates_rebuilt": len(candidates)}
     finally:
         connection.close()
 
@@ -236,7 +342,8 @@ def rollback_snapshot(output_root: Path, build_id: str) -> dict:
     return manifest
 
 
-def build_atlas_snapshot(projection: dict, output_root: Path, *, publish: bool = True) -> tuple[dict, str]:
+def build_atlas_snapshot(projection: dict, output_root: Path, *, publish: bool = True,
+                         incremental_from: str | None = None) -> tuple[dict, str]:
     """Build, validate, and optionally publish one immutable atlas snapshot."""
     output_root.mkdir(parents=True, exist_ok=True)
     membership = build_atlas_membership(projection)
@@ -262,7 +369,20 @@ def build_atlas_snapshot(projection: dict, output_root: Path, *, publish: bool =
     temporary_database = Path(temporary_name)
     temporary_database.unlink()
     try:
-        _create_database(temporary_database, membership, logical)
+        if incremental_from:
+            prior_manifest_path = output_root / f"{incremental_from}.json"
+            if not prior_manifest_path.is_file():
+                raise ValueError("incremental source manifest is missing")
+            prior_manifest = json.loads(prior_manifest_path.read_bytes())
+            if prior_manifest.get("build_id") != incremental_from:
+                raise ValueError("incremental source manifest has a different build identifier")
+            validate_snapshot(output_root, prior_manifest)
+            shutil.copy2(output_root / prior_manifest["database"], temporary_database)
+            _update_database(temporary_database, membership, logical)
+            status = "incremental_update"
+        else:
+            _create_database(temporary_database, membership, logical)
+            status = "full_rebuild"
         validate_database(temporary_database, logical)
         os.replace(temporary_database, database_path)
         manifest = {**logical, "database": database_path.name,
@@ -272,7 +392,7 @@ def build_atlas_snapshot(projection: dict, output_root: Path, *, publish: bool =
         _atomic_json(manifest_path, manifest)
         if publish:
             publish_current(output_root, manifest)
-        return manifest, "full_rebuild"
+        return manifest, status
     except Exception:
         # A database without its immutable manifest was never published and
         # would otherwise block a clean retry of this exact logical build.

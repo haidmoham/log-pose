@@ -48,9 +48,21 @@ evidence.
 
 ## Rebuild boundary
 
-An unchanged, already validated immutable snapshot is reused. Changed logical
-input currently receives a tested full rebuild. The manifest marks partitioned
-incremental updates as `not_implemented`; it does not claim that copying an old
-database is incremental derivation. Candidate and placement IDs, table keys,
-and the logical manifest are the extension seam for later partition-level
-replacement and full-build equivalence checks.
+An unchanged, already validated immutable snapshot is reused. Full rebuild is
+the default and recovery path. `--incremental-from <build_id>` validates and
+copies an earlier immutable SQLite file to staging, then updates only changed or
+removed artifact, placement, and membership rows. It retains the earlier files.
+Candidate and FTS tables are small, so the incremental path rebuilds them in
+sorted candidate-ID order. This preserves their shared row IDs when candidates
+are added, removed, or renamed.
+
+Incremental execution still reads and normalizes the complete membership input.
+It reduces SQLite row replacement and publication work; it is not incremental
+source acquisition or incremental Python normalization. The logical manifest
+describes this supported scope without recording which execution strategy ran,
+so a full rebuild and incremental update of the same evidence have the same
+build ID. Their SQLite byte hashes may differ. Tests compare all serving-table
+rows, metadata, references, and counts for append-revision, evidence-correction,
+membership-removal, and candidate-ID-change cases. Publication still occurs
+only after complete validation, and an incremental failure leaves the previous
+`current.json` pointer unchanged.
