@@ -39,7 +39,7 @@ test('keyboard inspection and overview navigation dispatch distinct actions', ()
   dom.window.close();
 });
 
-test('ordinary scrolling reaches the page while modified scrolling zooms the graph', () => {
+test('ordinary and modified wheel input zoom the graph', () => {
   const dom = setup();
   const scene = dom.window.LogPoseTemporalGraph.render(frame);
   dom.window.document.body.append(scene);
@@ -48,8 +48,8 @@ test('ordinary scrolling reaches the page while modified scrolling zooms the gra
   const before = camera.getAttribute('transform');
   const ordinary = new dom.window.WheelEvent('wheel', { deltaY: 100, cancelable: true });
   map.dispatchEvent(ordinary);
-  assert.equal(ordinary.defaultPrevented, false);
-  assert.equal(camera.getAttribute('transform'), before);
+  assert.equal(ordinary.defaultPrevented, true);
+  assert.notEqual(camera.getAttribute('transform'), before);
   const zoom = new dom.window.WheelEvent('wheel', { deltaY: 100, ctrlKey: true, cancelable: true });
   map.dispatchEvent(zoom);
   assert.equal(zoom.defaultPrevented, true);
@@ -354,5 +354,47 @@ test('a second pointer cannot steal or end the active orbit gesture', () => {
   const releasedPosition = point.getAttribute('transform');
   pointer('pointermove', 1, 350);
   assert.equal(point.getAttribute('transform'), releasedPosition);
+  dom.window.close();
+});
+
+for (const gesture of [{ button: 0, shiftKey: true }, { button: 1 }, { button: 2 }]) {
+  test(`3d pan translates without rotating for button ${gesture.button}`, () => {
+    const frames = [];
+    const dom = setup(window => { window.requestAnimationFrame = callback => { frames.push(callback); return frames.length; }; });
+    const scene = dom.window.LogPoseTemporalGraph.render(frame);
+    dom.window.document.body.append(scene);
+    scene.querySelector('[aria-label="3d graph"]').click();
+    const map = scene.querySelector('.constellation-map');
+    map.getBoundingClientRect = () => ({ width: 1000, height: 600 });
+    const camera = scene.querySelector('.constellation-camera');
+    const node = scene.querySelector('[data-candidate="two"]');
+    const before = camera.getAttribute('transform');
+    const projection = node.getAttribute('transform');
+    for (const [type, x, y] of [['pointerdown', 100, 100], ['pointermove', 180, 140], ['pointerup', 180, 140]]) {
+      map.dispatchEvent(new dom.window.MouseEvent(type, { bubbles: true, cancelable: true, ...gesture, clientX: x, clientY: y }));
+    }
+    while (frames.length) frames.shift()(16.67);
+    assert.notEqual(camera.getAttribute('transform'), before);
+    assert.equal(node.getAttribute('transform'), projection);
+    map.dispatchEvent(new dom.window.KeyboardEvent('keydown', { key: '0' }));
+    assert.equal(camera.getAttribute('transform'), before);
+    dom.window.close();
+  });
+}
+
+test('3d wheel supports line deltas and clamps extreme zoom', () => {
+  const dom = setup();
+  const scene = dom.window.LogPoseTemporalGraph.render(frame);
+  dom.window.document.body.append(scene);
+  scene.querySelector('[aria-label="3d graph"]').click();
+  const map = scene.querySelector('.constellation-map');
+  const camera = scene.querySelector('.constellation-camera');
+  const before = camera.getAttribute('transform');
+  map.dispatchEvent(new dom.window.WheelEvent('wheel', { deltaY: -3, deltaMode: 1 }));
+  assert.notEqual(camera.getAttribute('transform'), before);
+  map.dispatchEvent(new dom.window.WheelEvent('wheel', { deltaY: -1e6 }));
+  assert.match(camera.getAttribute('transform'), /scale\(12\)/);
+  map.dispatchEvent(new dom.window.WheelEvent('wheel', { deltaY: 1e6 }));
+  assert.match(camera.getAttribute('transform'), /scale\(0.65\)/);
   dom.window.close();
 });
