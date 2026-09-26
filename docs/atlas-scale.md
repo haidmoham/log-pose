@@ -115,7 +115,9 @@ Compact receipts:
 The compact response does not solve deployment packaging. [Vercel documents](https://vercel.com/docs/functions/limitations)
 a 250 MB normal uncompressed Node function bundle limit. The 687 MB S1 and 3.43
 GB S2 SQLite files each exceed that limit by themselves, before code or other
-assets. Bundling either fixture in the current Node function is therefore
-blocked. A versioned external artifact/read provider or a smaller partitioned
-deployment would need a separate measured design and authorization; local read
-success is not deployment evidence.
+assets. Neither fits the standard bundle configuration. Vercel now also
+documents a 5 GB Large Functions beta for eligible Fluid Compute projects; this
+project has not enabled or measured it. A versioned external reader, partitioned
+deployment, or beta package would need separate deployment measurements. Local
+read success is not deployment evidence. The user chose to retain the small
+bundled SQLite backend; see [the hobby cost decision](atlas-backend-cost.md).

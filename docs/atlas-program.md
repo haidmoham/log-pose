@@ -75,10 +75,11 @@ avoid compulsory global pair expansion. the legacy materialized graph remains
 the small-data parity oracle and compatibility path.
 
 S0 reuses the file-export deployment. measured S1/S2 SQLite files exceed the
-Vercel bundle limit, so an indexed Postgres provider now serves the same bounded
-contract without loading the corpus into Node. the user authorized Railway as
-the Postgres hosting choice. its deployment is prepared separately from the
-Vercel frontend, with running cost and release approval still explicit.
+standard Vercel bundle limit; the new 5 GB Large Functions beta remains untested.
+an indexed Postgres provider also implements the bounded contract without
+loading the corpus into Node. the user withdrew Railway deployment approval
+and chose to retain bundled SQLite to avoid a database bill. no Railway service
+was deployed. see [the hobby backend decision](atlas-backend-cost.md).
 Node's built-in SQLite remains the local/offline parity path; its API is still
 experimental in Node 22/24. [Node SQLite API](https://nodejs.org/docs/latest-v24.x/api/sqlite.html)
 and [Vercel function limits](https://vercel.com/docs/functions/limitations)
@@ -108,10 +109,14 @@ the epic stays open. the following are still incomplete:
 - M5: three reproducible investigations cover overlap, retained cross-layer
   evidence, and historical reconstruction. they expose unresolved identity and
   system-known eligibility instead of manufacturing a complete cross-layer UI.
-- M6: deployed Railway measurements, the constrained-device profile, a
-  twenty-minute memory soak, and hosted backup/restore verification remain.
-- a second real typed relation/visual layer is not yet integrated through the
-  atlas renderer. the inventory mode explicitly rejects unsupported layers.
+- M6: a constrained-device profile and a twenty-minute memory soak remain.
+  remote database deployment and hosted backup/restore are deferred by the
+  user's cost decision. large-fixture hosted latency remains unmeasured.
+- the reviewed layer now exposes the four already accepted claims through the
+  atlas renderer, with a separate publication cutoff and current-review lens.
+  competition, partnership and financing claims retain typed premises; the
+  shared-exposure hypothesis needs explicit selection. this adds no accepted
+  claims, external documents, relationship-validity query or operational replay.
 
 the reviewable milestone must not close issue #11 or imply that all its
 acceptance criteria passed. required PR checks and exact deployment checks

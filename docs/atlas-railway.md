@@ -12,6 +12,10 @@ response cap, one replica, and a proposed 256 MiB / 0.5 vCPU container limit.
 the Vercel proxy times out after three seconds. failures return an explicit
 unavailable response; they never substitute a different build or provider.
 
+the user withdrew Railway deployment approval on 2026-09-25 to avoid recurring
+hobby-project costs and chose to keep SQLite. do not apply this plan without new
+authorization. see [the backend decision and free alternatives](atlas-backend-cost.md).
+
 the private Railway project exists. no database, read-service deployment or
 Vercel proxy setting has been applied. the checked-in S0 SQLite snapshots still
 serve the preview without cloud database credentials. large scale receipts
