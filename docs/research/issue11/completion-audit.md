@@ -22,7 +22,7 @@ can be assumed to pass.
 | 7 | reviewed detail retains scope, direction, typed claims, full premises, reviews, unknowns, and event/reporting/publication times. hypotheses require selection. | supported for four accepted claims. integrations, customer claims and ownership have no accepted slice yet. |
 | 8 | exact taxonomy regions drill to candidate pages and retained records; camera updates do not alter query selectors or saved cohort. | supported chosen design. the requested small comparison of alternative prototypes on real neighborhoods lacks a durable decision receipt with measured interaction cost. |
 | 9 | `layer-evidence-review.md`, source manifest, three retained topology bodies, fourteen inventory artifacts, and the four-claim reviewed layer. | partial: competition/workflow, partnership, capital participation and observation history exist. the user accepted the scoped integration proposal; canonical import remains pending. named-customer source mentions were found, but need a predicate and reviews; ownership and relationship validity remain unsupported. |
-| 10 | browser saves selected inventory/reviewed pages and notes. `src/log_pose/atlas_read.py` validates bounded inventory research exports. three retained investigations and the isolated experimental attachment validator exist. | partial: Python adapter and validator still accept only inventory-year pages. cross-layer receipt predates the reviewed API, and historical receipt excludes later inventory rows, not a later filing/review/premise through the reviewed route. add reproducible reviewed-read walkthroughs. |
+| 10 | browser saves selected inventory/reviewed pages and notes. `src/log_pose/atlas_read.py` validates bounded inventory research exports. three retained investigations and the isolated experimental attachment validator exist. | partial: Python adapter still accepts only inventory-year pages; the isolated attachment validator has its own generic provenance contract. cross-layer receipt predates the reviewed API, and historical receipt excludes later inventory rows, not a later filing/review/premise through the reviewed route. add reproducible reviewed-read walkthroughs. |
 | 11 | S1/S2 synthetic SQLite build/read receipts; corrected S1 Postgres publication and concurrency measurements; S2 Postgres import time-limit receipt. | partial: S0 constrained browser profile and soak are being measured separately. no S1 browser profile or hosted large-fixture latency proof. current fixtures model memberships, not mixed predicates/long claim histories. S2 Postgres remains incomplete after the declared 30-minute budget. |
 | 12 | tests cover duplicate rows, dense buckets, same-year revisions, corrections, immutable publication/rollback, cursor mismatch, cache bounds and route disposal. topology database tests cover review reversals and additional premises. | partial: do not substitute these unit cases for an S1 mixed-history benchmark. large SQLite first-open checksum cost is outside the old scale query timings; measure it explicitly before making a cold-start claim. |
 | 13 | unit tests cover keyboard selection, stable controls/camera, reduced motion, non-color absence text and list fallback; real earlier browser receipts cover selected flows. | partial: new-route touch targeting, emulated media preference, keyboard focus across updates and actual non-GPU fallback need a consolidated browser receipt. a narrow viewport alone is not a touch test. |
@@ -122,6 +122,15 @@ the follow-up implementation adds exact-commit atlas asset hashes to the HTTP
 check, a real inventory top-100 browser assertion, and unavailable-build,
 retry and history-recovery assertions for both atlas layers. the benchmark's
 small contract test now joins `test:atlas` in the required CI job. focused
-checker tests pass locally. the expanded browser checks still need CI and
-post-merge deployment verification; this does not retroactively widen the
+checker tests pass locally. the expanded browser checks passed CI run 36254562378 on commit `986d129`;
+post-merge deployment verification remains pending; this does not retroactively widen the
 older production receipts above.
+
+PR #18 independently extends the Python adapter to reviewed reads and retains
+fresh cross-layer and publication-cutoff investigations. seven focused tests
+pass, including the actual later-filing exclusion. these read-only records
+preserve current review semantics and explicitly reject system-known replay;
+they do not implement historical review filtering or canonical acceptance.
+the Node CLI already routes both providers through `atlas-runtime.js`; only the
+Python adapter needed the corresponding clock contract. publication of the new
+research support is pending its required checks and approval.
