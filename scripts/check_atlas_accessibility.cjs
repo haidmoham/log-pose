@@ -26,6 +26,9 @@ async function verifyAccessibleAtlas(browser, url, layer, report) {
   });
   try {
     await page.goto(url.href, { waitUntil: 'domcontentloaded', timeout: 30000 });
+    await page.locator('.atlas-candidate-list button').first().waitFor({ state: 'attached', timeout: 30000 });
+    await tabTo(page, '.atlas-access summary');
+    await page.keyboard.press('Enter');
     await page.locator('.atlas-candidate-list button').first().waitFor({ state: 'visible', timeout: 30000 });
     const capabilities = await page.evaluate(() => ({
       reduced_motion: matchMedia('(prefers-reduced-motion: reduce)').matches,
