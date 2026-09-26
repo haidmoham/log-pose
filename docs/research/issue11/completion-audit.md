@@ -178,3 +178,28 @@ four accepted claims and four reviews are recoverable at their exported scope.
 original entity creation times and the secondary-premise row ID/arrival are not.
 the plan preserves those unknowns and separates reconstruction arrival; no
 canonical data, published projection or review was changed.
+
+
+## verified access paths and approved reconstruction
+
+[the browser accessibility receipt](browser-accessibility-s0.json) passes eleven
+smoke checks on `df22ccb`, including both atlas layers at 390x844 with touch
+emulation, reduced motion, GPU/WebGL disabled, keyboard navigation to the list,
+a visible focus indicator, retained focus after inspection and a committed time
+change, and a minimum 44px selected list touch target. SVG and the list work
+without WebGL; accepted-frame Web Animations and active CSS animations are
+absent under the reduced-motion preference. no page errors occurred. this is
+a bounded emulation check, not a physical-device or screen-reader audit.
+
+The full repository `npm run lint` still reports pre-existing legacy findings
+(20 errors and eight warnings). the two changed browser scripts pass targeted
+Oxlint with zero findings; required CI is a separate gate and is not bypassed.
+
+[the reconstruction decision](topology-reconstruction-decision.json) records
+the user's approval of the scoped plan. implementation now proceeds in an
+isolated checkout/database. unknown historical metadata is not permission to
+invent timestamps, and publication remains reserved.
+
+PR #18 adds constrained typed traversal as well as reviewed Python reads. its
+final focused checks cover 14 API cases and 11 Python cases, including the
+100-visited-entity boundary and exact saved traversal target binding.
