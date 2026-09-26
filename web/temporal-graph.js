@@ -95,7 +95,7 @@
     scene.append(modeSwitch);
 
     const svg = svgElement('svg', { viewBox: '0 0 1000 680', class: 'constellation-map',
-      role: 'group', tabindex: '0', 'aria-label': 'observation map. drag to pan; pinch, control-scroll, command-scroll, or plus and minus to zoom; arrow keys to move. select a node to inspect its connection.' });
+      role: 'group', tabindex: '0', 'aria-label': 'observation map. drag to pan; mouse wheel, pinch, or plus and minus to zoom; arrow keys to move. select a node to inspect its connection.' });
     const svgTitle = svgElement('title');
     svgTitle.textContent = 'stable candidate positions; distances and brightness are display choices, not evidence strength';
     svg.append(svgTitle);
@@ -318,8 +318,8 @@
       scene.classList.toggle('is-view-3d', mode === '3d');
       for (const [key, button] of modeButtons) button.setAttribute('aria-pressed', String(key === mode));
       svg.setAttribute('aria-label', mode === '3d'
-        ? 'three dimensional observation map. drag or use arrow keys to orbit; shift-drag or shift-arrow to pan; control-scroll, command-scroll, plus, or minus to zoom.'
-        : 'observation map. drag to pan; pinch, control-scroll, command-scroll, or plus and minus to zoom; arrow keys to move. select a node to inspect its connection.');
+        ? 'three dimensional observation map. drag or use arrow keys to orbit; shift-drag, middle-drag, right-drag, or shift-arrow to pan; mouse wheel, plus, or minus to zoom.'
+        : 'observation map. drag to pan; mouse wheel, pinch, or plus and minus to zoom; arrow keys to move. select a node to inspect its connection.');
       if (mode === '2d' && scene.isConnected) attachGPU();
       updateCamera();
     }
@@ -416,7 +416,7 @@
       scene.classList.toggle('is-context-off', Boolean(frame.focus) && !appearance.context);
       if (!appearance.motion) scene.querySelectorAll('.is-entering').forEach(node => node.classList.remove('is-entering'));
       scene.style.setProperty('--thread-opacity', String(0.06 + appearance.threads / 100 * 0.32));
-      modeHint.textContent = viewMode === '3d' ? 'drag to orbit · shift-drag to pan' : 'drag to pan';
+      modeHint.textContent = viewMode === '3d' ? 'drag to orbit · shift-drag or right-drag to pan · scroll to zoom' : 'drag to pan · scroll to zoom';
       const occupiedByCell = new Map();
       const cellSize = 48 / camera.zoom;
       const order = labelNodes.toSorted((a, b) => Number(b.priority) - Number(a.priority) || a.id.localeCompare(b.id));
@@ -527,12 +527,14 @@
       }
     }
     svg.addEventListener('pointerdown', event => {
-      if (event.button !== 0 || drag) return;
+      const panButton = viewMode === '3d' && (event.button === 1 || event.button === 2);
+      if ((event.button !== 0 && !panButton) || drag) return;
+      if (panButton) event.preventDefault();
       suppressClick = false;
       if (viewMode === '2d' && event.target.closest('.constellation-node, .constellation-edge-hit')) return;
       drag = { pointerId: event.pointerId, pointerType: event.pointerType, x: event.clientX, y: event.clientY,
         cameraX: camera.x, cameraY: camera.y, yaw: camera3d.yaw, pitch: camera3d.pitch,
-        pan: viewMode === '2d' || event.shiftKey, owned: viewMode === '2d', rect: svg.getBoundingClientRect() };
+        pan: viewMode === '2d' || event.shiftKey || panButton, owned: viewMode === '2d', rect: svg.getBoundingClientRect() };
       if (drag.owned) { svg.setPointerCapture?.(event.pointerId); svg.classList.add('is-dragging'); }
     });
     svg.addEventListener('pointermove', event => {
@@ -566,11 +568,15 @@
       if (!suppressClick) return;
       suppressClick = false; event.preventDefault(); event.stopImmediatePropagation();
     }, true);
+    svg.addEventListener('contextmenu', event => {
+      if (viewMode === '3d') event.preventDefault();
+    });
     svg.addEventListener('wheel', event => {
-      // Plain scrolling belongs to the page; pinch and modified wheel target the map.
-      if (!event.ctrlKey && !event.metaKey) return;
       event.preventDefault();
-      zoomTo(camera.zoom * Math.exp(-event.deltaY * 0.001));
+      // Wheel deltas may be pixels, lines, or pages.
+      const deltaUnit = event.deltaMode === 1 ? 16
+        : event.deltaMode === 2 ? svg.getBoundingClientRect().height : 1;
+      zoomTo(camera.zoom * Math.exp(-event.deltaY * deltaUnit * 0.001));
     }, { passive: false });
     svg.addEventListener('keydown', event => {
       if (event.target !== svg) return;
