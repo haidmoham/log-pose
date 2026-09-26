@@ -15,6 +15,22 @@ function parameters(mode, fields = {}) {
   return new URLSearchParams({ mode, ...fields });
 }
 
+test('a failed rollback discards the connection instead of pooling its transaction', async () => {
+  let discarded = false;
+  const client = {
+    async query(statement) {
+      if (statement === 'ROLLBACK' || (statement.text && statement.text.includes('gold.atlas_current'))) {
+        throw new Error('connection ended');
+      }
+      return { rows: [] };
+    },
+    release(discard) { discarded = discard; }
+  };
+  const handler = createPostgresHandler({ connect: async () => client, end: async () => {} });
+  assert.equal((await handler(parameters('discover'))).status, 503);
+  assert.equal(discarded, true);
+});
+
 integration('postgres S0 matches exact sqlite top-k, paging and evidence contracts', async t => {
   const pool = new Pool({ connectionString: databaseUrl, max: 2 });
   const postgres = createPostgresHandler(pool);
@@ -151,7 +167,10 @@ integration('dense 10,000-member placement returns exact deterministic top-k wit
   assert.deepEqual(result.body.edges.slice(0, 3).map(edge => edge.candidate_id),
     ['dense-00001', 'dense-00002', 'dense-00003']);
   assert(result.body.edges.every(edge => edge.supporting_placements === 1));
-  assert(result.body.work.membership_rows_read <= 10000);
+  assert(result.body.work.membership_rows_estimate <= 20001);
+  const direct = await handler(parameters('traverse', { build_id: buildId,
+    candidate: 'dense-00000', target: 'dense-00001', source: 'synthetic', year: '2024' }));
+  assert.equal(direct.body.status, 'found');
 });
 
 test('query timeout rolls back and releases the checked-out client', async () => {

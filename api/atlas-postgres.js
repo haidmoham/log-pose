@@ -3,7 +3,7 @@
 
 const { LIMITS, protocol } = require('./atlas.js');
 const { AtlasError, digest, parameter, integer, selectors, encodeCursor, cursorPosition,
-  descriptor, position, QUERY_VERSION, LAYOUT_VERSION, NOTES } = protocol;
+  descriptor, position, explanationParameters, QUERY_VERSION, LAYOUT_VERSION, NOTES } = protocol;
 
 const OPERATIONS = ['discover', 'search', 'regions', 'focus', 'explain', 'compare', 'traverse', 'export'];
 
@@ -30,6 +30,7 @@ function createPostgresHandler(pool) {
   async function handle(searchParams) {
     let client;
     let transaction = false;
+    let discardClient = false;
     const started = performance.now();
     let membershipRows = 0;
     function checkBudget(add = 0) {
@@ -128,7 +129,9 @@ function createPostgresHandler(pool) {
         if (placementCount > LIMITS.placements) {
           throw new AtlasError(422, 'query_budget_exceeded', 'candidate history exceeds the interactive placement budget');
         }
-        checkBudget(scanned);
+        // Count and ranked-page queries each visit this incidence set. This is
+        // a conservative row estimate, not PostgreSQL EXPLAIN execution data.
+        checkBudget(2 * scanned + placementCount);
         const neighborValues = [buildId, id];
         const neighborScope = selectionSql(selected, 'a', neighborValues);
         const countValues = [...neighborValues, LIMITS.candidates + 1];
@@ -281,14 +284,14 @@ function createPostgresHandler(pool) {
           layout: { version: LAYOUT_VERSION, basis: 'stable_hash_address', meaning: 'display only; distance has no economic meaning' } };
       }
 
-      async function explain() {
+      async function explain(evidenceParams = params) {
         const left = parameter(params, 'candidate');
         const right = parameter(params, 'neighbor');
         const subject = await candidate(left);
         const object = await candidate(right);
-        const limit = integer(params, 'limit', 10, 25);
+        const limit = integer(evidenceParams, 'limit', 10, 25);
         const binding = digest([buildId, 'explain', selection, left, right, limit]);
-        const offset = cursorPosition(params, binding, 0);
+        const offset = cursorPosition(evidenceParams, binding, 0);
         const values = [buildId, left, right];
         const scope = selectionSql(selection, 'a', values);
         const countResult = await query(`SELECT count(*)::int AS count,
@@ -302,7 +305,7 @@ function createPostgresHandler(pool) {
             AND object_membership.candidate_id=$3${scope}`, values);
         const total = countResult.rows[0].count;
         if (total > LIMITS.placements) throw new AtlasError(422, 'query_budget_exceeded', 'shared history exceeds the interactive placement budget');
-        checkBudget(countResult.rows[0].membership_rows);
+        checkBudget(4 * total);
         values.push(limit, offset);
         const result = await query(`SELECT p.*,a.source,a.inventory_year,a.raw_sha256,
             a.detail_json AS artifact,subject_membership.detail_json AS subject,
@@ -375,6 +378,10 @@ function createPostgresHandler(pool) {
           const adjacent = await neighborhood(current.id, selection,
             { limit: 101, offset: 0, includePlacementIds: true });
           for (const edge of adjacent.rows) {
+            if (edge.candidate_id === target) return { operation: 'traverse', status: 'found',
+              path: [...current.path, { subject: current.id, object: target,
+                predicate: 'exact_inventory_colisting', placement_ids: edge.placement_ids }],
+              visited: visited.size, meaning: 'a path through premises does not establish a direct relationship' };
             if (visited.has(edge.candidate_id)) continue;
             if (visited.size >= 100) return { operation: 'traverse', status: 'node_budget_reached',
               path: null, visited: visited.size, exhaustive: false };
@@ -390,13 +397,13 @@ function createPostgresHandler(pool) {
       const operations = { discover, search, regions, focus, explain, compare, traverse };
       const result = operation === 'export'
         ? { operation: 'export', status: 'selected_page_export', neighborhood: await focus(),
-          evidence: parameter(params, 'neighbor') ? await explain() : null,
+          evidence: parameter(params, 'neighbor') ? await explain(explanationParameters(params)) : null,
           scope: 'one selected page; continuation cursors identify omitted pages' }
         : await operations[operation]();
       const body = { schema_version: '1.0', build_id: buildId, versions: manifest.versions, selection,
         frame_id: digest([buildId, QUERY_VERSION, selection, parameter(params, 'candidate')]),
         receipt_id: digest([buildId, [...params].sort()]), limitations: NOTES, ...result,
-        work: { membership_rows_read: membershipRows, elapsed_ms: performance.now() - started } };
+        work: { membership_rows_estimate: membershipRows, elapsed_ms: performance.now() - started } };
       if (Buffer.byteLength(JSON.stringify(body)) > LIMITS.response_bytes) {
         throw new AtlasError(413, 'response_too_large', 'request a smaller page; evidence was not silently truncated');
       }
@@ -406,7 +413,7 @@ function createPostgresHandler(pool) {
       return { status: 200, body };
     } catch (error) {
       if (transaction && client) {
-        try { await client.query('ROLLBACK'); } catch { /* release will discard a broken transaction */ }
+        try { await client.query('ROLLBACK'); } catch { discardClient = true; }
         transaction = false;
       }
       if (error instanceof AtlasError) return { status: error.status, body: { error: error.code, message: error.message } };
@@ -414,9 +421,10 @@ function createPostgresHandler(pool) {
       return { status: 503, body: { error: 'atlas_unavailable', message: 'snapshot could not be read; retry or use retained evidence' } };
     } finally {
       if (transaction && client) {
-        try { await client.query('ROLLBACK'); } catch { /* client is released below */ }
+        try { await client.query('ROLLBACK'); } catch { discardClient = true; }
       }
-      client?.release();
+      // A failed rollback must not return an open transaction to the shared pool.
+      client?.release(discardClient);
     }
   }
 

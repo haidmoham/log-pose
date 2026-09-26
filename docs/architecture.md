@@ -10,6 +10,31 @@ Log Pose serves one research console from retained exports.
 
 ## data contracts
 
+`web/atlas.html` is the bounded membership-first entry point. it loads only the
+atlas model, view and shared DOM/graph primitives; it does not load the console
+catalog or the legacy pair corpus. `/api/atlas` queries immutable gold snapshots
+through `atlas-runtime.js`: bundled SQLite, indexed Postgres, or an HTTPS proxy
+to the same Postgres reader. the Postgres evidence core remains canonical.
+the Python preview delegates to the same Node handler. candidate positions are
+stable, versioned display addresses. top-k ranks exact shared placements and
+fetches retained rows only when an edge is inspected. the selected source,
+revision, inventory-year clock and build govern every accepted frame.
+
+membership normalization lives in `atlas_membership.py`; immutable publication
+and incremental database updates live in `atlas_snapshot.py`. the browser's
+pure frame adaptation and byte cache live in `atlas-model.js`; `atlas-view.js`
+composes controls and requests using `console-ui.js` and `temporal-graph.js`.
+see [the query contract](atlas-service.md), [record grains](atlas-membership.md),
+[publication contract](atlas-snapshots.md), and [measured frontier](atlas-scale.md).
+
+`atlas_postgres.py` validates and streams an immutable snapshot into the additive
+`014_atlas_postgres.sql` schema, then switches its current pointer atomically.
+`atlas-postgres.js` reads the six `gold.atlas_*` views in a read-only transaction.
+the [Railway service](atlas-railway.md) is optional infrastructure for this
+provider; the frontend remains on Vercel. `atlas_read.py` consumes the same
+bounded contract for saved investigations. experimental model attachments live
+under `experiments/ml/atlas/` and never load during ordinary application startup.
+
 The database remains the durable evidence store. Migration `007_warehouse_views.sql` adds read-only observation views. Migration `013_medallion_read_layers.sql` starts a medallion-inspired read path across **raw → bronze → silver → gold**. It exposes every domain table, including topology evidence, identity, candidates, reviews, and graph builds, through one named layer. The existing `public` tables remain the canonical write storage in this first step. The layer views do not copy or relabel records, change IDs, or move foreign keys. New consumers can use the layer paths while existing ingestion and exports continue to work. A later physical move must update all writers, SQL migrations, foreign keys, and test fixtures together; this migration does not claim that move has happened.
 
 [The layer contract](medallion.md) lists every relation's grain, key, clocks, and provenance and defines the next migration boundary.

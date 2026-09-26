@@ -214,13 +214,31 @@
       }
       updateGPU();
     }
-    function updateCamera() {
+    let previousZoom = null;
+    let cameraFrame = null;
+    function drawCamera() {
+      const started = performance.now();
       field.setAttribute('transform', `translate(${500 + camera.x} ${340 + camera.y}) scale(${camera.zoom}) translate(-500 -340)`);
-      for (const record of labelNodes) {
-        for (const child of record.group.children) child.setAttribute('transform', `scale(${1 / camera.zoom})`);
+      // Panning does not change label collisions or inverse-size glyphs.
+      if (camera.zoom !== previousZoom) {
+        for (const record of labelNodes) {
+          for (const child of record.group.children) child.setAttribute('transform', `scale(${1 / camera.zoom})`);
+        }
+        previousZoom = camera.zoom;
+        zoomText.textContent = `${Math.round(camera.zoom * 100)}%`;
+        updateAppearance();
+      } else {
+        updateGPU();
       }
-      zoomText.textContent = `${Math.round(camera.zoom * 100)}%`;
-      updateAppearance();
+      scene.dataset.cameraFrameMs = String(performance.now() - started);
+    }
+    function updateCamera() {
+      if (!options.scheduleCamera || !scene.isConnected) { drawCamera(); return; }
+      if (cameraFrame !== null) return;
+      cameraFrame = root.requestAnimationFrame(() => {
+        cameraFrame = null;
+        if (scene.isConnected) drawCamera();
+      });
     }
     function zoomTo(value) { camera.zoom = Math.max(0.65, Math.min(12, value)); updateCamera(); }
     let drag = null;

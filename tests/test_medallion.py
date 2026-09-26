@@ -24,7 +24,8 @@ LAYER_TABLES = {
         "topology_eligibility_reviews", "topology_candidates",
         "topology_candidate_evidence", "topology_reviews",
     },
-    "gold": {"topology_graph_builds"},
+    "gold": {"topology_graph_builds", "atlas_snapshot", "atlas_current",
+             "atlas_candidate", "atlas_artifact", "atlas_placement", "atlas_membership"},
 }
 
 

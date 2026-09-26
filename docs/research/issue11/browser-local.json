@@ -1,0 +1,651 @@
+{
+  "browser": "Codex in-app Chromium (version not exposed)",
+  "hardware": "Windows host; service in WSL2 Ubuntu, Ryzen 7 5800X, 16 logical CPUs, 16 GiB WSL RAM",
+  "route": "http://localhost:8091/atlas.html?mode=focus&build_id=969c7f43e62ddc409484bf41b9e3309741fd78199437f1e752732dbaf42204f8&source=cncf&year=2024&temporal_mode=snapshot&artifact=artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8&top_k=60&candidate=4d9ade2bfb2aa6cb4afb",
+  "conditions": "same-host reloads; no compression or CPU/network throttle; warm server and OS page cache; graph-ready sampled at first accepted requestAnimationFrame",
+  "limitations": [
+    "not a deployed cold start",
+    "narrow viewport is not the required 4x CPU/80ms/1MBps profile",
+    "no 20-minute retained heap/GPU soak",
+    "camera time measures JS draw work, not complete compositor frame"
+  ],
+  "samples": [
+    {
+      "kind": "zoom",
+      "profile": "desktop-1440x1000",
+      "sample": 1,
+      "cameraMs": "0.8999999985098839"
+    },
+    {
+      "kind": "zoom",
+      "profile": "desktop-1440x1000",
+      "sample": 2,
+      "cameraMs": "0.6999999992549419"
+    },
+    {
+      "kind": "zoom",
+      "profile": "desktop-1440x1000",
+      "sample": 3,
+      "cameraMs": "0.6999999992549419"
+    },
+    {
+      "kind": "zoom",
+      "profile": "desktop-1440x1000",
+      "sample": 4,
+      "cameraMs": "0.6999999992549419"
+    },
+    {
+      "kind": "zoom",
+      "profile": "desktop-1440x1000",
+      "sample": 5,
+      "cameraMs": "0.5"
+    },
+    {
+      "kind": "zoom",
+      "profile": "desktop-1440x1000",
+      "sample": 6,
+      "cameraMs": "0.7000000029802322"
+    },
+    {
+      "kind": "zoom",
+      "profile": "desktop-1440x1000",
+      "sample": 7,
+      "cameraMs": "0.6000000014901161"
+    },
+    {
+      "kind": "zoom",
+      "profile": "desktop-1440x1000",
+      "sample": 8,
+      "cameraMs": "0.8999999985098839"
+    },
+    {
+      "kind": "zoom",
+      "profile": "desktop-1440x1000",
+      "sample": 9,
+      "cameraMs": "0.6000000014901161"
+    },
+    {
+      "kind": "zoom",
+      "profile": "desktop-1440x1000",
+      "sample": 10,
+      "cameraMs": "0.5999999977648258"
+    },
+    {
+      "kind": "zoom",
+      "profile": "desktop-1440x1000",
+      "sample": 11,
+      "cameraMs": "0.5"
+    },
+    {
+      "kind": "zoom",
+      "profile": "desktop-1440x1000",
+      "sample": 12,
+      "cameraMs": "0.7000000029802322"
+    },
+    {
+      "kind": "zoom",
+      "profile": "desktop-1440x1000",
+      "sample": 13,
+      "cameraMs": "0.5"
+    },
+    {
+      "kind": "zoom",
+      "profile": "desktop-1440x1000",
+      "sample": 14,
+      "cameraMs": "0.5"
+    },
+    {
+      "kind": "zoom",
+      "profile": "desktop-1440x1000",
+      "sample": 15,
+      "cameraMs": "0.5"
+    },
+    {
+      "kind": "zoom",
+      "profile": "desktop-1440x1000",
+      "sample": 16,
+      "cameraMs": "0.3999999985098839"
+    },
+    {
+      "kind": "zoom",
+      "profile": "desktop-1440x1000",
+      "sample": 17,
+      "cameraMs": "0.5"
+    },
+    {
+      "kind": "zoom",
+      "profile": "desktop-1440x1000",
+      "sample": 18,
+      "cameraMs": "0.5"
+    },
+    {
+      "kind": "zoom",
+      "profile": "desktop-1440x1000",
+      "sample": 19,
+      "cameraMs": "0.7999999970197678"
+    },
+    {
+      "kind": "zoom",
+      "profile": "desktop-1440x1000",
+      "sample": 20,
+      "cameraMs": "0.5"
+    },
+    {
+      "kind": "zoom",
+      "profile": "narrow-390x844-unthrottled",
+      "sample": 1,
+      "cameraMs": "0.5"
+    },
+    {
+      "kind": "zoom",
+      "profile": "narrow-390x844-unthrottled",
+      "sample": 2,
+      "cameraMs": "0.8999999985098839"
+    },
+    {
+      "kind": "zoom",
+      "profile": "narrow-390x844-unthrottled",
+      "sample": 3,
+      "cameraMs": "0.7999999970197678"
+    },
+    {
+      "kind": "zoom",
+      "profile": "narrow-390x844-unthrottled",
+      "sample": 4,
+      "cameraMs": "0.5999999977648258"
+    },
+    {
+      "kind": "zoom",
+      "profile": "narrow-390x844-unthrottled",
+      "sample": 5,
+      "cameraMs": "0.5"
+    },
+    {
+      "kind": "zoom",
+      "profile": "narrow-390x844-unthrottled",
+      "sample": 6,
+      "cameraMs": "0.5"
+    },
+    {
+      "kind": "zoom",
+      "profile": "narrow-390x844-unthrottled",
+      "sample": 7,
+      "cameraMs": "0.5999999977648258"
+    },
+    {
+      "kind": "zoom",
+      "profile": "narrow-390x844-unthrottled",
+      "sample": 8,
+      "cameraMs": "0.6000000014901161"
+    },
+    {
+      "kind": "zoom",
+      "profile": "narrow-390x844-unthrottled",
+      "sample": 9,
+      "cameraMs": "0.6000000014901161"
+    },
+    {
+      "kind": "zoom",
+      "profile": "narrow-390x844-unthrottled",
+      "sample": 10,
+      "cameraMs": "0.6000000014901161"
+    },
+    {
+      "kind": "zoom",
+      "profile": "narrow-390x844-unthrottled",
+      "sample": 11,
+      "cameraMs": "0.5"
+    },
+    {
+      "kind": "zoom",
+      "profile": "narrow-390x844-unthrottled",
+      "sample": 12,
+      "cameraMs": "0.5"
+    },
+    {
+      "kind": "zoom",
+      "profile": "narrow-390x844-unthrottled",
+      "sample": 13,
+      "cameraMs": "0.5"
+    },
+    {
+      "kind": "zoom",
+      "profile": "narrow-390x844-unthrottled",
+      "sample": 14,
+      "cameraMs": "0.5"
+    },
+    {
+      "kind": "zoom",
+      "profile": "narrow-390x844-unthrottled",
+      "sample": 15,
+      "cameraMs": "0.5"
+    },
+    {
+      "kind": "zoom",
+      "profile": "narrow-390x844-unthrottled",
+      "sample": 16,
+      "cameraMs": "0.5"
+    },
+    {
+      "kind": "zoom",
+      "profile": "narrow-390x844-unthrottled",
+      "sample": 17,
+      "cameraMs": "0.4000000022351742"
+    },
+    {
+      "kind": "zoom",
+      "profile": "narrow-390x844-unthrottled",
+      "sample": 18,
+      "cameraMs": "0.6000000014901161"
+    },
+    {
+      "kind": "zoom",
+      "profile": "narrow-390x844-unthrottled",
+      "sample": 19,
+      "cameraMs": "0.8999999985098839"
+    },
+    {
+      "kind": "zoom",
+      "profile": "narrow-390x844-unthrottled",
+      "sample": 20,
+      "cameraMs": "0.6000000014901161"
+    },
+    {
+      "kind": "reload",
+      "profile": "desktop-1440x1000",
+      "sample": 1,
+      "dom": 748,
+      "nodes": 61,
+      "scene": {
+        "frameReadyMs": "11.599999997764826",
+        "graphReadyMs": "62.899999998509884",
+        "initialDecodedBytes": "166059",
+        "initialGraphBytes": "33735",
+        "renderMs": "3.599999997764826"
+      }
+    },
+    {
+      "kind": "reload",
+      "profile": "desktop-1440x1000",
+      "sample": 2,
+      "dom": 748,
+      "nodes": 61,
+      "scene": {
+        "frameReadyMs": "11",
+        "graphReadyMs": "55.400000002235174",
+        "initialDecodedBytes": "166059",
+        "initialGraphBytes": "33735",
+        "renderMs": "3.300000000745058"
+      }
+    },
+    {
+      "kind": "reload",
+      "profile": "desktop-1440x1000",
+      "sample": 3,
+      "dom": 748,
+      "nodes": 61,
+      "scene": {
+        "frameReadyMs": "12.300000000745058",
+        "graphReadyMs": "54.899999998509884",
+        "initialDecodedBytes": "166059",
+        "initialGraphBytes": "33735",
+        "renderMs": "3.300000000745058"
+      }
+    },
+    {
+      "kind": "reload",
+      "profile": "desktop-1440x1000",
+      "sample": 4,
+      "dom": 748,
+      "nodes": 61,
+      "scene": {
+        "frameReadyMs": "11.199999999254942",
+        "graphReadyMs": "71.30000000074506",
+        "initialDecodedBytes": "166059",
+        "initialGraphBytes": "33735",
+        "renderMs": "4"
+      }
+    },
+    {
+      "kind": "reload",
+      "profile": "desktop-1440x1000",
+      "sample": 5,
+      "dom": 748,
+      "nodes": 61,
+      "scene": {
+        "frameReadyMs": "12.599999997764826",
+        "graphReadyMs": "55.80000000074506",
+        "initialDecodedBytes": "165480",
+        "initialGraphBytes": "33736",
+        "renderMs": "3.599999997764826"
+      }
+    },
+    {
+      "kind": "reload",
+      "profile": "narrow-390x844-unthrottled",
+      "sample": 1,
+      "dom": 748,
+      "nodes": 61,
+      "scene": {
+        "frameReadyMs": "26",
+        "graphReadyMs": "103.60000000149012",
+        "initialDecodedBytes": "166057",
+        "initialGraphBytes": "33733",
+        "renderMs": "3.899999998509884"
+      }
+    },
+    {
+      "kind": "reload",
+      "profile": "narrow-390x844-unthrottled",
+      "sample": 2,
+      "dom": 748,
+      "nodes": 61,
+      "scene": {
+        "frameReadyMs": "16.199999999254942",
+        "graphReadyMs": "62.19999999925494",
+        "initialDecodedBytes": "166059",
+        "initialGraphBytes": "33735",
+        "renderMs": "5.300000000745058"
+      }
+    },
+    {
+      "kind": "reload",
+      "profile": "narrow-390x844-unthrottled",
+      "sample": 3,
+      "dom": 748,
+      "nodes": 61,
+      "scene": {
+        "frameReadyMs": "13.300000000745058",
+        "graphReadyMs": "58",
+        "initialDecodedBytes": "166060",
+        "initialGraphBytes": "33736",
+        "renderMs": "3.900000002235174"
+      }
+    },
+    {
+      "kind": "reload",
+      "profile": "narrow-390x844-unthrottled",
+      "sample": 4,
+      "dom": 748,
+      "nodes": 61,
+      "scene": {
+        "frameReadyMs": "11.399999998509884",
+        "graphReadyMs": "60.30000000074506",
+        "initialDecodedBytes": "166059",
+        "initialGraphBytes": "33735",
+        "renderMs": "3.199999999254942"
+      }
+    },
+    {
+      "kind": "reload",
+      "profile": "narrow-390x844-unthrottled",
+      "sample": 5,
+      "dom": 748,
+      "nodes": 61,
+      "scene": {
+        "frameReadyMs": "25.899999998509884",
+        "graphReadyMs": "75",
+        "initialDecodedBytes": "166058",
+        "initialGraphBytes": "33734",
+        "renderMs": "3.100000001490116"
+      }
+    },
+    {
+      "kind": "pan",
+      "profile": "desktop-1440x1000",
+      "sample": 1,
+      "cameraMs": "0"
+    },
+    {
+      "kind": "pan",
+      "profile": "desktop-1440x1000",
+      "sample": 2,
+      "cameraMs": "0"
+    },
+    {
+      "kind": "pan",
+      "profile": "desktop-1440x1000",
+      "sample": 3,
+      "cameraMs": "0.10000000149011612"
+    },
+    {
+      "kind": "pan",
+      "profile": "desktop-1440x1000",
+      "sample": 4,
+      "cameraMs": "0"
+    },
+    {
+      "kind": "pan",
+      "profile": "desktop-1440x1000",
+      "sample": 5,
+      "cameraMs": "0"
+    },
+    {
+      "kind": "pan",
+      "profile": "desktop-1440x1000",
+      "sample": 6,
+      "cameraMs": "0.10000000149011612"
+    },
+    {
+      "kind": "pan",
+      "profile": "desktop-1440x1000",
+      "sample": 7,
+      "cameraMs": "0.10000000149011612"
+    },
+    {
+      "kind": "pan",
+      "profile": "desktop-1440x1000",
+      "sample": 8,
+      "cameraMs": "0"
+    },
+    {
+      "kind": "pan",
+      "profile": "desktop-1440x1000",
+      "sample": 9,
+      "cameraMs": "0.09999999776482582"
+    },
+    {
+      "kind": "pan",
+      "profile": "desktop-1440x1000",
+      "sample": 10,
+      "cameraMs": "0"
+    },
+    {
+      "kind": "pan",
+      "profile": "desktop-1440x1000",
+      "sample": 11,
+      "cameraMs": "0"
+    },
+    {
+      "kind": "pan",
+      "profile": "desktop-1440x1000",
+      "sample": 12,
+      "cameraMs": "0.10000000149011612"
+    },
+    {
+      "kind": "pan",
+      "profile": "desktop-1440x1000",
+      "sample": 13,
+      "cameraMs": "0"
+    },
+    {
+      "kind": "pan",
+      "profile": "desktop-1440x1000",
+      "sample": 14,
+      "cameraMs": "0.09999999776482582"
+    },
+    {
+      "kind": "pan",
+      "profile": "desktop-1440x1000",
+      "sample": 15,
+      "cameraMs": "0"
+    },
+    {
+      "kind": "pan",
+      "profile": "desktop-1440x1000",
+      "sample": 16,
+      "cameraMs": "0"
+    },
+    {
+      "kind": "pan",
+      "profile": "desktop-1440x1000",
+      "sample": 17,
+      "cameraMs": "0"
+    },
+    {
+      "kind": "pan",
+      "profile": "desktop-1440x1000",
+      "sample": 18,
+      "cameraMs": "0"
+    },
+    {
+      "kind": "pan",
+      "profile": "desktop-1440x1000",
+      "sample": 19,
+      "cameraMs": "0"
+    },
+    {
+      "kind": "pan",
+      "profile": "desktop-1440x1000",
+      "sample": 20,
+      "cameraMs": "0"
+    },
+    {
+      "kind": "pan",
+      "profile": "narrow-390x844-unthrottled",
+      "sample": 1,
+      "cameraMs": "0.10000000149011612"
+    },
+    {
+      "kind": "pan",
+      "profile": "narrow-390x844-unthrottled",
+      "sample": 2,
+      "cameraMs": "0"
+    },
+    {
+      "kind": "pan",
+      "profile": "narrow-390x844-unthrottled",
+      "sample": 3,
+      "cameraMs": "0"
+    },
+    {
+      "kind": "pan",
+      "profile": "narrow-390x844-unthrottled",
+      "sample": 4,
+      "cameraMs": "0.10000000149011612"
+    },
+    {
+      "kind": "pan",
+      "profile": "narrow-390x844-unthrottled",
+      "sample": 5,
+      "cameraMs": "0"
+    },
+    {
+      "kind": "pan",
+      "profile": "narrow-390x844-unthrottled",
+      "sample": 6,
+      "cameraMs": "0"
+    },
+    {
+      "kind": "pan",
+      "profile": "narrow-390x844-unthrottled",
+      "sample": 7,
+      "cameraMs": "0"
+    },
+    {
+      "kind": "pan",
+      "profile": "narrow-390x844-unthrottled",
+      "sample": 8,
+      "cameraMs": "0"
+    },
+    {
+      "kind": "pan",
+      "profile": "narrow-390x844-unthrottled",
+      "sample": 9,
+      "cameraMs": "0"
+    },
+    {
+      "kind": "pan",
+      "profile": "narrow-390x844-unthrottled",
+      "sample": 10,
+      "cameraMs": "0"
+    },
+    {
+      "kind": "pan",
+      "profile": "narrow-390x844-unthrottled",
+      "sample": 11,
+      "cameraMs": "0.10000000149011612"
+    },
+    {
+      "kind": "pan",
+      "profile": "narrow-390x844-unthrottled",
+      "sample": 12,
+      "cameraMs": "0.10000000149011612"
+    },
+    {
+      "kind": "pan",
+      "profile": "narrow-390x844-unthrottled",
+      "sample": 13,
+      "cameraMs": "0"
+    },
+    {
+      "kind": "pan",
+      "profile": "narrow-390x844-unthrottled",
+      "sample": 14,
+      "cameraMs": "0.10000000149011612"
+    },
+    {
+      "kind": "pan",
+      "profile": "narrow-390x844-unthrottled",
+      "sample": 15,
+      "cameraMs": "0"
+    },
+    {
+      "kind": "pan",
+      "profile": "narrow-390x844-unthrottled",
+      "sample": 16,
+      "cameraMs": "0"
+    },
+    {
+      "kind": "pan",
+      "profile": "narrow-390x844-unthrottled",
+      "sample": 17,
+      "cameraMs": "0"
+    },
+    {
+      "kind": "pan",
+      "profile": "narrow-390x844-unthrottled",
+      "sample": 18,
+      "cameraMs": "0"
+    },
+    {
+      "kind": "pan",
+      "profile": "narrow-390x844-unthrottled",
+      "sample": 19,
+      "cameraMs": "0"
+    },
+    {
+      "kind": "pan",
+      "profile": "narrow-390x844-unthrottled",
+      "sample": 20,
+      "cameraMs": "0"
+    }
+  ],
+  "postgres_smoke": {
+    "route_build": "969c7f43e62ddc409484bf41b9e3309741fd78199437f1e752732dbaf42204f8",
+    "candidate": "4d9ade2bfb2aa6cb4afb",
+    "top_k": 60,
+    "eligible_neighbors": 145,
+    "graph_ready_ms": 118.1,
+    "frame_ready_ms": 25.6,
+    "render_ms": 5.1,
+    "initial_decoded_bytes": 166739,
+    "initial_graph_bytes": 33741,
+    "condition": "one same-host PostgreSQL18.6 load, no throttle, not a latency distribution",
+    "inspected_neighbor": "0b53be52084e857862ac",
+    "retained_rows": [
+      "fda6c8c1a7ce4da90ca2",
+      "93fa9d560761f44c577e"
+    ]
+  }
+}
