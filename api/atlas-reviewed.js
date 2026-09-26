@@ -293,7 +293,6 @@ function createReviewedAtlasHandler(root = path.join(__dirname, 'data/atlas-revi
         if (visited.has(neighbor)) continue;
         const nextPath = [...current.path,
           { from: current.id, to: neighbor, claim_ids: groups.get(neighbor) }];
-        if (neighbor === target) return found(nextPath);
         if (visited.size >= 100) {
           const base = common(store, 'traverse', selected, start);
           base.receipt_id = digest({ build_id: store.manifest.build_id, selection: selected,
@@ -304,6 +303,7 @@ function createReviewedAtlasHandler(root = path.join(__dirname, 'data/atlas-revi
             meaning: 'the bounded search ended without inferring a relationship or reporting absence' };
         }
         visited.add(neighbor);
+        if (neighbor === target) return found(nextPath);
         queue.push({ id: neighbor, path: nextPath });
       }
     }

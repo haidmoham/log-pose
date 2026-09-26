@@ -188,6 +188,16 @@ test('traversal reports its visited-entity budget without claiming absence', () 
     assert.equal(found.status, 200);
     assert.equal(found.body.status, 'found');
     assert.deepEqual(found.body.path[0].claim_ids, ['fanout-claim-000']);
+    // The retained elastic neighbor sorts before the synthetic fanout.
+    assert.equal(found.body.visited, 3);
+    const boundary = handler(new URLSearchParams(
+      'mode=traverse&entity=datadog&target=fanout-097&hops=1'));
+    assert.equal(boundary.body.status, 'found');
+    assert.equal(boundary.body.visited, 100);
+    const pastBoundary = handler(new URLSearchParams(
+      'mode=traverse&entity=datadog&target=fanout-098&hops=1'));
+    assert.equal(pastBoundary.body.status, 'visited_entity_budget_exhausted');
+    assert.equal(pastBoundary.body.visited, 100);
     const response = handler(new URLSearchParams(
       'mode=traverse&entity=datadog&target=zz-target&hops=1'));
     assert.equal(response.status, 200);

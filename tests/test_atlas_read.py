@@ -211,6 +211,23 @@ def test_saved_explain_binds_neighbor_and_claim_without_build_dependence():
         _validate_response(response, {**parameters, "claim": "other-claim"})
 
 
+def test_saved_reviewed_traverse_requires_the_exact_target_descriptor():
+    from copy import deepcopy
+    from log_pose.atlas_read import _validate_response
+    response = reviewed_response_body() | {"operation": "traverse",
+        "start": {"id": "snowflake", "candidate_links": []},
+        "target": {"id": "dbt-labs", "candidate_links": []}, "path": []}
+    parameters = {"layer": "reviewed", "mode": "traverse", "entity": "snowflake",
+                  "target": "dbt-labs", "cutoff": "2022-02-24"}
+    _validate_response(response, parameters)
+    missing = deepcopy(response); missing.pop("target")
+    with pytest.raises(AtlasReadError, match="lacks requested target"):
+        _validate_response(missing, parameters)
+    changed = deepcopy(response); changed["target"]["id"] = "datadog"
+    with pytest.raises(AtlasReadError, match="differs from requested target"):
+        _validate_response(changed, parameters)
+
+
 def test_real_reviewed_python_read_excludes_later_premises_and_preserves_reviews():
     root = Path(__file__).resolve().parents[1]
     parameters = {"layer": "reviewed", "mode": "explain", "entity": "datadog",

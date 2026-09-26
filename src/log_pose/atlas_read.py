@@ -130,6 +130,8 @@ def _validate_target_binding(body: dict, parameters: dict, layer: str) -> None:
         if layer == "reviewed":
             target = body.get("target")
             target_id = target.get("id") if isinstance(target, dict) else None
+            if target_id is None:
+                raise AtlasReadError("atlas response lacks requested target")
         else:
             path = body.get("path") or []
             target_id = path[-1].get("object") if path else None
