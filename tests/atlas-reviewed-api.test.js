@@ -129,9 +129,10 @@ test('typed traversal is cycle safe, deterministic and retains exact evidence', 
   assert.deepEqual(first.body.path, second.body.path);
   assert.deepEqual(first.body.path[0].claim_ids, [
     'dbt-labs-announced-partnership-snowflake-2022',
+    'proposal:dbt-labs-integrates-with-snowflake-products:20260926',
     'snowflake-invested-in-dbt-labs-series-d-2022']);
   assert.deepEqual(first.body.path[0].claims.map(claim => claim.direction),
-    ['symmetric', 'subject_to_object']);
+    ['symmetric', 'subject_to_object', 'subject_to_object']);
   assert.ok(first.body.path[0].claims.every(claim => claim.sources[0].artifact_sha256
     && claim.review_history.length === 1));
   const entities = [first.body.start.id, ...first.body.path.map(edge => edge.to)];
