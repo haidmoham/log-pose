@@ -5,7 +5,10 @@ from pathlib import Path
 
 import pytest
 
-from log_pose.atlas_read import AtlasReadError, export_investigation, read_atlas
+from log_pose.atlas_read import (
+    AtlasReadError, export_investigation, read_atlas, read_atlas_record,
+    export_layered_investigation, validate_layered_investigation,
+)
 
 
 def write_adapter(root: Path, source: str) -> None:
@@ -89,3 +92,80 @@ def test_normal_package_import_does_not_load_experimental_attachment_validator()
          "assert 'experiments.ml.atlas.validator' not in sys.modules"],
         check=False, capture_output=True, text=True)
     assert completed.returncode == 0, completed.stderr
+
+
+def reviewed_response_body():
+    return {"build_id": "c" * 64, "receipt_id": "d" * 64, "frame_id": "e" * 64,
+            "versions": {"query": "atlas-reviewed-query-v1"}, "operation": "focus",
+            "selection": {"clock": "source_publication", "temporal_mode": "published_through",
+                          "review_lens": "current_accepted_at_build", "cutoff": "2022-02-24",
+                          "basis": "documented", "predicate": "", "direction": "both"}}
+
+
+def test_reviewed_read_pins_its_build_and_current_review_lens(tmp_path):
+    body = reviewed_response_body()
+    write_adapter(tmp_path, "process.stdout.write(" + json.dumps(json.dumps({"status": 200, "body": body})) + ");")
+    record = read_atlas_record(tmp_path, {"layer": "reviewed", "mode": "focus", "cutoff": "2022-02-24"})
+    assert record["request"]["build_id"] == body["build_id"]
+    assert record["request"]["review_lens"] == "current_accepted_at_build"
+    assert record["response"] == body
+    with pytest.raises(AtlasReadError, match="immutable build"):
+        read_atlas(tmp_path, {"layer": "reviewed", "cutoff": "2022-02-24", "build_id": "f" * 64})
+    with pytest.raises(AtlasReadError, match="cutoff"):
+        read_atlas(tmp_path, {"layer": "reviewed", "cutoff": "2021-01-01"})
+    for extra in ({"clock": "inventory_year"}, {"review_cutoff": "2022-02-24"},
+                  {"year": 2022}, {"valid_at": "2022-02-24"}, {"review_lens": "as_known_then"}):
+        with pytest.raises(AtlasReadError):
+            read_atlas(tmp_path, {"layer": "reviewed", **extra})
+
+
+def test_layered_investigation_keeps_independent_builds_and_rejects_mixed_frames(tmp_path):
+    from copy import deepcopy
+    inventory = dict(response_body(), frame_id="f" * 64, versions={"query": "atlas-query-v1"})
+    reviewed = reviewed_response_body()
+    reads = [
+        {"layer": "inventory", "request": {"layer": "inventory", "build_id": inventory["build_id"]},
+         "response": inventory},
+        {"layer": "reviewed", "request": {"layer": "reviewed", "build_id": reviewed["build_id"],
+                                           "cutoff": "2022-02-24"}, "response": reviewed}]
+    output = tmp_path / "layered.json"
+    result = export_layered_investigation(output, question="Which evidence supports each layer?",
+        cohort_query={"entity": "snowflake"}, reads=reads, omissions=["unreviewed identity joins"],
+        observations=[], interpretation="The layers retain distinct evidence semantics.",
+        counterevidence=[], result="Separate versioned frames.", uncertainty="Historical wording is unproven.",
+        next_question="Which premise dates exclude a claim?")
+    assert json.loads(output.read_text()) == result
+    assert result["layer_builds"] == {"inventory": "a" * 64, "reviewed": "c" * 64}
+    assert "clock" not in result
+    assert result["system_known_replay"] == "unsupported"
+    for field, value, message in (("build_id", "a" * 64, "immutable build"),
+                                  ("frame_id", "", "frame identity")):
+        changed = deepcopy(result)
+        changed["reads"][1]["response"][field] = value
+        with pytest.raises(ValueError, match=message):
+            validate_layered_investigation(changed)
+    changed = deepcopy(result)
+    changed["reads"][1]["response"]["selection"]["cutoff"] = "2025-02-20"
+    with pytest.raises(ValueError, match="cutoff"):
+        validate_layered_investigation(changed)
+    changed = deepcopy(result)
+    changed["system_known_replay"] = "verified"
+    with pytest.raises(ValueError, match="system-known"):
+        validate_layered_investigation(changed)
+
+
+def test_real_reviewed_python_read_excludes_later_premises_and_preserves_reviews():
+    root = Path(__file__).resolve().parents[1]
+    parameters = {"layer": "reviewed", "mode": "explain", "entity": "datadog",
+                  "neighbor": "snowflake", "basis": "hypothesis", "cutoff": "2024-12-31"}
+    before = read_atlas_record(root, parameters)
+    after = read_atlas_record(root, {**parameters, "cutoff": "2025-02-20",
+                                    "build_id": before["response"]["build_id"]})
+    assert before["response"]["claims"] == []
+    claims = after["response"]["claims"]
+    assert len(claims) == 1
+    assert claims[0]["predicate"] == "shared_exposure_hypothesis"
+    assert len(claims[0]["sources"]) == 2
+    assert claims[0]["review_history"]
+    assert max(source["source_date"] for source in claims[0]["sources"]) == "2025-02-20"
+    assert before["response"]["frame_id"] != after["response"]["frame_id"]

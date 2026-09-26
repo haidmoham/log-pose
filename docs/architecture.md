@@ -50,7 +50,14 @@ failed maintenance leaves a resumable build hidden from snapshot discovery.
 `atlas-postgres.js` reads the six `gold.atlas_*` views in a read-only transaction.
 the [Railway service](atlas-railway.md) is optional infrastructure for this
 provider; the frontend remains on Vercel. `atlas_read.py` consumes the same
-bounded contract for saved investigations. experimental model attachments live
+bounded contract for saved investigations. its Python adapter routes inventory
+and reviewed reads through the existing runtime, validates their distinct
+clock/mode/build bindings, and preserves the current accepted review lens.
+`read_atlas_record` pins each request to its returned immutable build.
+`export_layered_investigation` stores independent request/response records with
+one build per layer; it does not invent a common clock or infer a relationship
+from a cross-layer path. legacy inventory-only exports remain supported. see
+[the research-read contract](atlas-research.md). experimental model attachments live
 under `experiments/ml/atlas/` and never load during ordinary application startup.
 
 The database remains the durable evidence store. Migration `007_warehouse_views.sql` adds read-only observation views. Migration `013_medallion_read_layers.sql` starts a medallion-inspired read path across **raw → bronze → silver → gold**. It exposes every domain table, including topology evidence, identity, candidates, reviews, and graph builds, through one named layer. The existing `public` tables remain the canonical write storage in this first step. The layer views do not copy or relabel records, change IDs, or move foreign keys. New consumers can use the layer paths while existing ingestion and exports continue to work. A later physical move must update all writers, SQL migrations, foreign keys, and test fixtures together; this migration does not claim that move has happened.
