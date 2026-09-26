@@ -25,7 +25,6 @@ let occurrenceById;
 let identityReviewById;
 let financialIndex;
 let exploreView;
-let topologyView;
 let discoveryTopologyView;
 let temporalTopologyView;
 let dataView;
@@ -204,7 +203,9 @@ function bar(value, maximum) {
 
 function writeUrl(replace = false) {
   const query = model.toUrlParams(state);
-  const url = location.pathname + (query ? `?${query}` : '');
+  const params = new URLSearchParams(query);
+  if (state.legacyReviewedScope) params.set('legacyReviewedScope', state.legacyReviewedScope);
+  const url = location.pathname + (params.size ? `?${params}` : '');
   if (url === location.pathname + location.search) return;
   history[replace ? 'replaceState' : 'pushState'](null, '', url);
 }
@@ -377,18 +378,6 @@ function sourceDetails() {
 function renderOverview() {
   root.append(title('02 / SELECTED COMPANY RESEARCH · 2021–2024', 'public-company comparison',
     'select a company to inspect. pin up to four to compare.'));
-  const inventoryYears = discovery.artifacts.map(artifact => artifact.year);
-  const exploreEntry = node('section', '', 'overview-inventory-entry');
-  exploreEntry.append(node('p', 'WIDER SOURCE INVENTORY', 'eyebrow'),
-    node('strong', `${Math.min(...inventoryYears)}–${Math.max(...inventoryYears)} · `
-      + `${discovery.candidates.length.toLocaleString()} candidate keys`),
-    node('p', 'Search pinned software inventories by year and source. Directory rows are leads; the company and relationship review is narrower.', 'muted'));
-  const exploreButton = node('button', 'explore source rows →', 'text-button');
-  exploreButton.type = 'button';
-  exploreButton.addEventListener('click', () => commitState({ view: 'explore',
-    searchYear: 'all', searchType: 'all', query: '', company: null }, { top: true }));
-  exploreEntry.append(exploreButton);
-  root.append(exploreEntry);
   const publicCompanies = data.companies.filter(company => company.cik)
     .sort((left, right) => (financials(right.slug, state.year).revenue || -Infinity)
       - (financials(left.slug, state.year).revenue || -Infinity));
@@ -467,11 +456,18 @@ function compareEvidence(companies) {
 function renderCompare() {
   root.append(title('03 / SELECTED COMPANY RESEARCH', 'compare companies',
     'review selected periods, filing trails, and dated source coverage.'));
-  root.append(append(node('div', '', 'section-controls'), yearControl(),
-    node('p', 'missing evidence is shown as missing, never as zero.', 'muted')), comparePicker());
   const companies = state.compareSlugs.map(slug => data.companies.find(company => company.slug === slug)).filter(Boolean);
+  root.append(append(node('div', '', 'section-controls'), yearControl(),
+    node('p', 'missing evidence is shown as missing, never as zero.', 'muted')));
+  const picker = node('details', '', 'compare-picker-disclosure');
+  picker.open = companies.length === 0;
+  picker.append(node('summary', 'choose companies'), comparePicker());
+  root.append(picker);
   if (!companies.length) {
     root.append(node('p', 'pin two or more companies to begin a comparison.', 'empty-state'));
+    const choose = node('button', 'choose companies →', 'quiet-button');
+    choose.type = 'button'; choose.addEventListener('click', () => commitState({ view: 'overview' }, { top: true }));
+    root.append(choose);
     return;
   }
   root.append(node('h3', 'reported facts and coverage', 'section-title'), compareFacts(companies),
@@ -489,9 +485,8 @@ function renderCompare() {
 }
 
 function render() {
-  if (!data || !exploreView || !topologyView || !discoveryTopologyView || !temporalTopologyView
+  if (!data || !exploreView || !discoveryTopologyView || !temporalTopologyView
       || !dataView) return;
-  topologyView.dispose();
   if (state.view !== 'topology' || state.topologyLayer !== 'temporal') {
     temporalTopologyView.dispose();
   }
@@ -504,6 +499,8 @@ function render() {
   document.body.dataset.layer = state.view === 'topology' ? state.topologyLayer : '';
   root.setAttribute('aria-busy', 'false');
   pinCount.textContent = String(state.compareSlugs.length);
+  const compareTab = document.querySelector('[data-view="compare"]');
+  if (compareTab) compareTab.hidden = state.compareSlugs.length === 0 && state.view !== 'compare';
   if (state.view === 'data') dataView.render();
   else if (state.view === 'overview') renderOverview();
   else if (state.view === 'compare') renderCompare();
@@ -514,14 +511,13 @@ function render() {
       field: ['all retained overlaps',
         'inspect the current build’s full candidate universe and exact source-category-year overlaps.'],
       reviewed: ['reviewed relationships',
-        'read accepted, source-backed claims on their documented evidence clocks.']
+        'open a retained claim in the evidence desk.']
     }[state.topologyLayer];
     root.append(title('MARKET ATLAS', ...layerIntroduction));
     const layers = node('nav', '', 'topology-layer-nav');
     layers.setAttribute('aria-label', 'Market map layers');
     [['temporal', 'through time'],
-      ['field', 'all retained overlaps'],
-      ['reviewed', `${data.market_topology.claims.length} reviewed claims`]].forEach(([layer, label]) => {
+      ['field', 'all retained overlaps']].forEach(([layer, label]) => {
       const button = node('button', label, 'topology-layer-button');
       button.type = 'button';
       button.setAttribute('aria-current', state.topologyLayer === layer ? 'page' : 'false');
@@ -532,7 +528,7 @@ function render() {
     root.append(layers);
     if (state.topologyLayer === 'temporal') temporalTopologyView.activate();
     else if (state.topologyLayer === 'field') discoveryTopologyView.render();
-    else topologyView.render();
+    else dataView.render();
   }
   else exploreView.render();
 }
@@ -551,7 +547,14 @@ function routeState() {
   const artifacts = ['cncf-2026', ...discovery.artifacts.map(artifact => `${artifact.source}-${artifact.year}`)
     .filter(key => key !== 'cncf-2026')];
   const pilotSlugs = new Set(data.companies.map(company => company.slug));
-  return model.parseUrlState(location.search, slugs, data.years, artifacts, pilotSlugs);
+  const parsed = model.parseUrlState(location.search, slugs, data.years, artifacts, pilotSlugs);
+  const url = new URLSearchParams(location.search);
+  if (parsed.view === 'topology' && parsed.topologyLayer === 'reviewed') {
+    return { ...parsed, view: 'data', dataFamily: 'topology', dataRecord: parsed.selectedClaim,
+      legacyReviewedScope: JSON.stringify({ source_year: url.get('topologySourceYear') || 'all',
+        category: url.get('topologyCategory') || 'all', status: url.get('topologyStatus') || 'all' }) };
+  }
+  return { ...parsed, legacyReviewedScope: url.get('legacyReviewedScope') || '' };
 }
 
 window.addEventListener('popstate', () => {
@@ -595,7 +598,6 @@ if (legacyStudyTarget) {
       identityReviewFor, candidateLocationFor, providerLocationInSelectedYear,
       money, financials, companyDetail, commitState, writeUrl, pinCount
     });
-    topologyView = window.LogPoseTopology.create({ root, state, data, model, commitState });
     discoveryTopologyView = window.LogPoseDiscoveryTopologyView.create({
       root, state, index: dataIndex, commitState,
       openRecord: openInventoryRecord, openCompany: openCompanyLead
@@ -607,10 +609,6 @@ if (legacyStudyTarget) {
       root, state, index: dataIndex, discovery, commitState,
       persistDetail: changes => { Object.assign(state, changes); writeUrl(true); },
       openCompany: openCompanyLead,
-      openTopology: claimId => commitState({ view: 'topology', topologyLayer: 'reviewed',
-        selectedClaim: claimId,
-        company: null, topologySourceYear: 'all', topologyCategory: 'all',
-        topologyStatus: 'all' }, { top: true, focus: '#topology-inspector' }),
       openField: () => commitState({ view: 'topology', topologyLayer: 'field',
         fieldQuery: '', fieldSource: 'all', fieldYear: 'all', fieldTag: 'all',
         fieldCategory: 'all', fieldIdentity: 'all', fieldCandidate: null,

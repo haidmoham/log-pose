@@ -561,9 +561,10 @@
       hits.slice(0, state.searchLimit).forEach(hit => {
         const item = hit.candidate;
         const review = identityReviewFor(item);
+        const matchingPaths = new Set(hit.occurrences.map(occurrence =>
+          occurrence.source_category + ' / ' + occurrence.source_subcategory));
         const matchingDescription = hit.occurrences.find(occurrence => occurrence.description)?.description
-          || hit.occurrences.map(occurrence => occurrence.source_category + ' / '
-            + occurrence.source_subcategory).join(' · ');
+          || [...matchingPaths].join(' · ');
         const matchedYears = [...new Set(hit.occurrences.map(occurrence => occurrence.year))].sort();
         const matchedSources = [...new Set(hit.occurrences.map(occurrence => occurrence.source))].sort();
         const matchedTags = [...new Set(hit.occurrences.flatMap(occurrence => occurrence.candidate_tags))];

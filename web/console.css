@@ -442,7 +442,7 @@ footer { display: flex; justify-content: space-between; gap: 20px; padding: 18px
 .tabs output { min-width: 16px; display: inline-grid; place-items: center; margin-left: 5px; padding: 2px 4px; border-radius: 9px; color: var(--instrument); background: var(--yellow); font: 8px/1 var(--mono); }
 
 @media (hover: hover) and (pointer: fine) {
-  .tabs button:hover:not([aria-current="page"]) { color: var(--teal-deep); background: #302532; }
+  .tabs button:hover:not([aria-current="page"]) { color: var(--accent-deep); background: var(--accent-soft); }
   .search-result:hover { background: var(--surface); }
   .search-result:hover::before { background: var(--cyan); }
   .text-button:hover { color: var(--ink); background: var(--cyan-soft); }
@@ -830,6 +830,10 @@ footer { display: flex; justify-content: space-between; gap: 20px; padding: 18px
 .data-atlas-return .text-button { border: 0; background: none; box-shadow: none; padding: 0; color: var(--accent-deep); font-size: 11px; }
 .tabs a { display: inline-flex; align-items: center; min-height: 38px; padding: 8px 14px; border-radius: 9px; color: var(--accent-deep); font-size: 12px; font-weight: 700; text-decoration: none; }
 .tabs a:hover { background: var(--accent-soft); }
+.tabs [hidden] { display: none !important; }
+.compare-picker-disclosure { margin: 10px 0 14px; border: 1px solid var(--rule); border-radius: 7px; background: var(--surface); }
+.compare-picker-disclosure summary { min-height: 44px; display: flex; align-items: center; padding: 8px 12px; color: var(--accent-deep); font-size: 12px; font-weight: 700; cursor: pointer; }
+.compare-picker-disclosure .compare-picker { margin: 0; border: 0; border-top: 1px solid var(--rule); }
 
 .data-inspector { position: sticky; top: 106px; max-height: calc(100svh - 120px); overflow-y: auto; scroll-margin-top: 106px; padding: 19px; border-top: 3px solid var(--accent); background: var(--surface); box-shadow: var(--shadow); }
 .data-inspector:focus { outline: none; }

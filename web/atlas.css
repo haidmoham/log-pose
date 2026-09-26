@@ -4,10 +4,6 @@
 .atlas-heading { display: flex; justify-content: space-between; align-items: end; gap: 32px; margin-bottom: 14px; }
 .atlas-heading h2 { margin: 5px 0 0; font: 470 clamp(25px, 2.8vw, 38px)/1.06 Bricolage, var(--heading); letter-spacing: -.045em; }
 .atlas-heading > p { max-width: 320px; margin: 0 0 2px; color: var(--muted-strong); font-size: 12px; line-height: 1.45; }
-.atlas-layers { display: flex; gap: 8px; margin-bottom: 10px; }
-.atlas-layers a { min-width: 182px; padding: 8px 13px; border: 1px solid var(--rule); border-radius: 7px; color: var(--ink-soft); background: var(--surface); text-decoration: none; font-size: 12px; font-weight: 700; }
-.atlas-layers a small { display: block; margin-top: 2px; color: var(--muted); font-size: 10px; font-weight: 450; }
-.atlas-layers a[aria-current=page] { border-color: var(--accent); color: var(--accent-deep); background: var(--accent-soft); }
 .atlas-controls { display: flex; align-items: end; gap: 8px; padding: 9px 0; border-top: 1px solid var(--rule); flex-wrap: wrap; }
 .atlas-controls label, .atlas-investigation label { display: grid; gap: 5px; color: var(--muted); font-size: 10px; font-weight: 650; }
 .atlas-controls label:has(#atlas-query) { flex: 1 1 240px; }
@@ -29,7 +25,12 @@
 #atlas-inspector code { color: var(--muted); font-size: 10px; overflow-wrap: anywhere; }
 #atlas-inspector .quiet-button { margin: 7px 0; }
 .atlas-inspector-note { padding-top: 12px; border-top: 1px solid var(--rule); }
-.atlas-reviewed-navigation { display: block; margin-top: 16px; font-size: 12px; font-weight: 700; }
+.atlas-relationships { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--rule); }
+.atlas-relationships .eyebrow { margin-bottom: 7px; color: var(--accent-deep); }
+.atlas-relationship-choices { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.atlas-relationship-choices button { text-align: left; }
+.atlas-relationship-evidence h4 { margin: 13px 0 4px; font-size: 13px; }
+.atlas-source-date { font-size: 11px; }
 .atlas-region-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
 .atlas-region { min-height: 104px; padding: 16px; border: 1px solid var(--rule); border-radius: 7px; color: var(--ink); background: var(--surface); text-align: left; display: flex; flex-direction: column; gap: 12px; }
 .atlas-region:hover { border-color: var(--accent); background: var(--surface-hover); }
@@ -43,10 +44,6 @@
 .atlas-candidate-list button:hover { background: var(--surface-hover); }
 .atlas-candidate-list small { display: block; margin-top: 4px; color: var(--muted); font-size: 10px; }
 .atlas-settings-body { padding: 12px 0 2px; }
-.atlas-reviewed-filters { flex: 1 1 100%; padding: 2px 0; }
-.atlas-reviewed-filters summary { width: fit-content; color: var(--accent-deep); cursor: pointer; font-size: 11px; }
-.atlas-reviewed-filters[open] { display: flex; flex-wrap: wrap; align-items: end; gap: 8px; }
-.atlas-reviewed-filters[open] summary { flex: 1 1 100%; }
 .atlas-claim-audit, .atlas-source-audit { margin-top: 9px; padding: 8px 10px; border: 1px solid var(--rule); border-radius: 5px; background: var(--surface-cool); }
 .atlas-claim-audit summary, .atlas-source-audit summary { cursor: pointer; color: var(--accent-deep); font-size: 11px; }
 .atlas-exact-limit { display: flex; align-items: center; gap: 10px; margin-top: 8px; color: var(--muted); font-size: 11px; }
@@ -68,6 +65,9 @@
 .atlas-claim dd { margin-left: 0; overflow-wrap: anywhere; }
 .atlas-claim-status { display: inline-block; padding: 3px 7px; border: 1px solid var(--rule); font-size: 10px; }
 .atlas-claim-status.is-hypothesis { border-style: dashed; }
+.atlas-claim-source { padding-top: 8px; border-top: 1px solid var(--rule); }
+.atlas-premise-identifiers { margin-top: 10px; padding: 8px 10px; border: 1px solid var(--rule); border-radius: 5px; background: var(--surface-cool); }
+.atlas-premise-identifiers summary { color: var(--accent-deep); cursor: pointer; font-size: 11px; }
 .atlas-shell button:focus-visible, .atlas-shell input:focus-visible, .atlas-shell select:focus-visible, .atlas-shell summary:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
 .atlas-shell .constellation-heading { position: relative; inset: auto; min-height: 66px; padding: 13px 19px 0; }
 .atlas-shell .constellation-heading h3 { font-size: clamp(22px, 2.5vw, 32px); }
@@ -75,8 +75,8 @@
 .atlas-shell .constellation-map { min-height: 330px; max-height: 61vh; }
 .atlas-shell [hidden] { display: none !important; }
 @media (max-width: 950px) { .atlas-workspace { grid-template-columns: minmax(0, 1fr) 265px; } .atlas-region-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .atlas-candidate-list { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-@media (max-width: 700px) { .atlas-shell main { padding: 14px 16px 32px; } .atlas-heading { display: block; margin-bottom: 10px; } .atlas-heading > p { display: none; } .atlas-layers a { flex: 1; min-width: 0; } .atlas-controls label { flex: 1 1 100%; } .atlas-workspace { grid-template-columns: 1fr; } #atlas-inspector { max-height: none; } .atlas-candidate-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } .atlas-shell .constellation-map { min-height: 300px; } }
-@media (max-width: 700px) { .atlas-shell button, .atlas-shell input, .atlas-shell select, .atlas-shell summary, .atlas-layers a { min-height: 44px; } .atlas-shell summary { display: flex; align-items: center; } }
+@media (max-width: 700px) { .atlas-shell main { padding: 14px 16px 32px; } .atlas-heading { display: block; margin-bottom: 10px; } .atlas-heading > p { display: none; } .atlas-controls label { flex: 1 1 100%; } .atlas-workspace { grid-template-columns: 1fr; } #atlas-inspector { max-height: none; } .atlas-candidate-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } .atlas-shell .constellation-map { min-height: 300px; } }
+@media (max-width: 700px) { .atlas-shell button, .atlas-shell input, .atlas-shell select, .atlas-shell summary { min-height: 44px; } .atlas-shell summary { display: flex; align-items: center; } }
 @media (max-width: 700px) { .atlas-shell .constellation-label { font-size: 29px; stroke-width: 7px; } }
 @media (max-width: 700px) {
   .atlas-controls { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto; gap: 6px; padding: 7px 0; }

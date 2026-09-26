@@ -38,9 +38,8 @@
         <a href="./atlas.html">atlas</a>
         <button type="button" data-view="data" disabled>evidence</button>
         <button type="button" data-view="overview" disabled>companies</button>
-        <button type="button" data-view="compare" disabled>compare <output id="pin-count">0</output></button>
+        <button type="button" data-view="compare" disabled hidden>compare <output id="pin-count">0</output></button>
         <button type="button" data-view="explore" disabled>sources</button>
-        <button type="button" data-view="topology" aria-current="page" disabled>other maps</button>
       </nav>
 
       <main id="view" aria-busy="true">
@@ -59,8 +58,6 @@
     <script src="./data-view.js"></script>
     <script src="./discovery-topology-model.js"></script>
     <script src="./discovery-topology-view.js"></script>
-    <script src="./topology-webgl.js"></script>
-    <script src="./topology-view.js"></script>
     <script src="./temporal-graph-webgl.js"></script>
     <script src="./temporal-graph.js"></script>
     <script src="./temporal-topology-view.js"></script>

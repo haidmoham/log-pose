@@ -257,7 +257,7 @@ function createAtlasHandler(root = path.join(__dirname, 'data/atlas')) {
     artifacts: rows.slice(0, limit).map(row => ({ ...JSON.parse(row.detail_json), artifact_id: row.id })),
     next_cursor: rows.length > limit ? encodeCursor(binding, rows[limit - 1].id) : null,
     layers: [{ id: 'inventory', status: 'unreviewed_inventory_overlap', clock: 'inventory_year' },
-      { id: 'reviewed_claims', status: 'separate_clock', href: '/atlas.html?layer=reviewed' }] };
+      { id: 'reviewed_claims', status: 'separate_clock', href: '/index.html?view=data&dataFamily=topology' }] };
   }
 
   function focus(store, params, selection, work) {

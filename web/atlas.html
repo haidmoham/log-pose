@@ -28,10 +28,6 @@
       <div class="atlas-heading"><div><p class="eyebrow">a research atlas of retained software evidence</p>
         <h2>explore a connection. trace its source.</h2></div>
         <p>move from a dated source to a candidate, then open the exact records behind a connection.</p></div>
-      <nav class="atlas-layers" aria-label="evidence layer">
-        <a id="atlas-inventory-link" href="./atlas.html">inventory map <small>who appears together in a source</small></a>
-        <a id="atlas-reviewed-link" href="./atlas.html?layer=reviewed">reviewed claims <small>what retained claims say</small></a>
-      </nav>
       <form id="atlas-controls" class="atlas-controls">
         <label>source revision<select id="atlas-revision" required></select></label>
         <label>observation mode<select id="atlas-mode"><option value="snapshot">selected snapshot</option>
@@ -63,13 +59,13 @@
         <label>research question<textarea id="atlas-question" maxlength="2000"></textarea></label>
         <label>observations, interpretation and uncertainty<textarea id="atlas-interpretation" maxlength="8000"></textarea></label>
         <label>counterevidence and next question<textarea id="atlas-counterevidence" maxlength="4000"></textarea></label>
-        <button class="quiet-button" id="atlas-export" type="button">download evidence manifest</button>
-        <p>the export names the selected page, omitted pages, exact source premises and build. interpretation remains your note.</p>
+        <button class="quiet-button" id="atlas-export" type="button">download inventory evidence manifest</button>
+        <p>the export names the selected inventory page, omitted pages, exact source premises and build. interpretation remains your note. contextual reviewed claims are available through their retained claim links and are not included.</p>
       </details>
       <details class="atlas-limitations"><summary>coverage and evidence limits</summary>
         <p id="atlas-coverage">loading retained source revisions…</p><ul id="atlas-limitations"></ul>
         <p>regions are exact source categories. overlapping memberships are not separate companies. positions and distance are display choices.</p>
-        <a href="./atlas.html?layer=reviewed">inspect accepted claims on their source-publication clock →</a></details>
+        <p>reviewed claims appear beside a mapped candidate or connection. their source-publication clock remains separate from inventory year.</p></details>
     </main>
     <footer><span>log pose / retained evidence</span><span id="atlas-version"></span></footer>
   </div>
@@ -78,6 +74,7 @@
   <script src="./temporal-graph.js"></script>
   <script src="./atlas-model.js"></script>
   <script src="./atlas-client.js"></script>
+  <script src="./atlas-relationships.js"></script>
   <script src="./atlas-view.js"></script>
 </body>
 </html>

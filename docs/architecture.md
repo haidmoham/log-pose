@@ -6,7 +6,7 @@ Legacy `/?view=...` links still open the research desk: the local Node and
 Python servers dispatch them directly, and the static atlas document redirects
 them to `/index.html` with the query and fragment intact.
 
-- `npm run dashboard` serves the atlas at `/` and the read-only research desk at `/index.html` from saved JSON exports and bounded read handlers. The atlas initially focuses a pinned Datadog/CNCF 2024 example with a bounded neighbor page; explicit source or year links keep their own frame. Source regions, search, exact co-listing premises, and reviewed claims remain available through their separate selections. `web/index.html` loads `research-model.js` for validation, deterministic layouts and URL state; `console-ui.js` for DOM and chart primitives; `data-view.js` for full cross-source search and retained-record inspection; `explore-view.js` for source audits; `discovery-topology-view.js` for the full retained field; `temporal-graph.js` and `temporal-topology-view.js` for the server-backed temporal atlas; `topology-view.js` for standalone reviewed claims; and `app.js` for state and route composition. It does not require Postgres.
+- `npm run dashboard` serves the atlas at `/` and the read-only research desk at `/index.html` from saved JSON exports and bounded read handlers. The atlas initially focuses a pinned Datadog/CNCF 2024 example with a bounded neighbor page; explicit source or year links keep their own frame. Source regions, search, exact co-listing premises, and contextual reviewed claims share one atlas inspector. `web/index.html` loads `research-model.js` for validation, deterministic layouts and URL state; `console-ui.js` for DOM and chart primitives; `data-view.js` for full cross-source search and retained-record inspection; `explore-view.js` for source audits; `discovery-topology-view.js` for legacy full-field links; `temporal-graph.js` and `temporal-topology-view.js` for legacy temporal links; and `app.js` for state and route composition. It does not require Postgres.
 - `npm run dev` serves the same atlas, research desk, scripts, styles, and lazy data partitions. It does not migrate the database or fetch new evidence when opening the interface. An explicit `DATABASE_URL` enables the retained read-only `/api/companies` and `/api/overview` endpoints; the desk itself does not require Postgres. Static paths are confined to `web/`. `/api/market-field` uses the same precomputed graph query module as the production Node function, without a database connection.
 - The temporal route reads a versioned pinned artifact timeline and requests one bounded source/year frame at a time. `api/market-field.js` owns frame eligibility, accumulation, exact overlap sets, and deltas. The browser owns selection, evidence inspection, and rendering. The precomputed candidate layout provides stable display addresses; it is not an evidence measure. The optional 3d view derives stable display depth from candidate IDs in `research-model.js` and projects it through the temporal renderer; depth is presentation only and does not change the retained graph.
 - `temporal-graph.js` owns the accessible SVG, fixed hit targets, and bounded population entrance. New observed nodes spring around their fixed anchors; selecting an edge does not replay the population. The GPU attaches after the entrance settles and caches geometry between interaction updates. Its animation loop changes light only and stops when hidden, offscreen, disconnected, or switched off. Reduced motion sets the initial motion control to off; an explicit user choice can enable it. SVG remains the fallback. See [the visual pass and capture procedure](graph-visuals.md).
@@ -32,24 +32,28 @@ membership normalization lives in `atlas_membership.py`; immutable publication
 and incremental database updates live in `atlas_snapshot.py`. the browser's
 pure frame adaptation and byte cache live in `atlas-model.js`. `atlas-client.js`
 owns query serialization, cache access, JSON transport, HTTP errors, and the
-pinned-build response guard shared by both atlas layers. each view keeps its own
-abort, retry, disposal, URL, accepted-frame, inspector, and rendering lifecycle.
-`atlas-view.js` composes those controls using `console-ui.js` and `temporal-graph.js`.
+pinned-build response guard shared by inventory and reviewed reads. `atlas-view.js`
+owns the inventory frame and URL lifecycle. `atlas-relationships.js` reads the
+independent reviewed build only for an explicitly mapped focus, binds each
+response to the still selected inventory frame, and renders claims in that
+frame's inspector. `console-ui.js` and `temporal-graph.js` provide UI and graph
+primitives.
 see [the query contract](atlas-service.md), [record grains](atlas-membership.md),
 [publication contract](atlas-snapshots.md), and [measured frontier](atlas-scale.md).
 
-`layer=reviewed` loads `atlas-reviewed-view.js` only after layer selection. the
-runtime routes it to `atlas-reviewed.js` and an independent bundled SQLite build,
-including when an external inventory provider is configured. its builder reads
+reviewed requests route to `atlas-reviewed.js` and an independent bundled SQLite
+build, including when an external inventory provider is configured. its builder reads
 the accepted topology export and explicit reviewed identity links, verifies
 retained source bodies, and publishes a gold derivative. it never writes reviews.
-the browser uses the pure `reviewedGraphFrame` adapter and the shared renderer's
-optional labels and fit scale. inventory defaults stay compatible. source
-publication, current accepted review state, and inventory observation year are
-separate contracts; switching layers starts a new document and query context.
-focus groups claims by neighbor for bounded navigation; the inspector preserves
-each predicate, direction, premise, source hash and review. a source cutoff never
-asserts relationship activity or historical review replay. see
+the browser does not render a second reviewed graph. source publication, current
+accepted review state, and inventory observation year remain separate contracts.
+focus groups claims by neighbor for bounded navigation; a selected co-listing
+shows claims only when both endpoints have explicit reviewed candidate links.
+the inspector preserves each predicate, direction, premise, source hash and
+review, with full audit detail behind a disclosure and an exact retained-record
+link. old reviewed URLs normalize to mapped candidate context or open the
+current claim index with an explicit warning when old filters cannot apply.
+a source cutoff never asserts relationship activity or historical review replay. see
 [reviewed atlas snapshots](atlas-reviewed.md).
 
 `atlas_postgres.py` validates and streams an immutable snapshot into the additive
@@ -136,7 +140,7 @@ The [experimental benchmark protocol](../experiments/ml/benchmark/PROTOCOL.md) d
 - add schema through a new tested migration. Do not rewrite applied migrations or replace raw evidence.
 - assign each new durable record family to exactly one medallion layer, and document grain, key, clocks, and provenance before adding downstream projections. Keep raw bytes and failed acquisition records; keep bronze parsing, silver judgments, and gold aggregates traceable to upstream IDs.
 - add a topology predicate only after defining its direction, scope, evidence rule, and non-implications in the ontology. Keep different claims between the same entities separate and preserve each source premise.
-- keep 3D graph positions and projection deterministic in `research-model.js`. The WebGL module owns canvas geometry, interaction, and cleanup; `topology-view.js` opens a flat SVG map and retains filters, the claim index, evidence inspector, and optional 3D mode. Depth and distance are navigation aids, not quantitative encodings.
+- keep graph positions and projection deterministic in `research-model.js`. The atlas renderer owns display geometry and interaction; depth and distance are navigation aids, not quantitative encodings. Reviewed claims stay in the contextual inspector.
 
 ## checks
 
@@ -147,7 +151,7 @@ node --check web/console-ui.js
 node --check web/explore-view.js
 node --check web/data-view.js
 node --check web/research-model.js
-node --check web/topology-view.js
+node --check web/atlas-relationships.js
 .venv/bin/python -m pytest -q
 LOG_POSE_TEST_DATABASE_URL='postgresql:///disposable_db' .venv/bin/python -m pytest -q tests/test_postgres.py tests/test_topology_postgres.py
 ```

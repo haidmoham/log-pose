@@ -1,23 +1,7 @@
 (function (root) {
   'use strict';
   const requestedLayer = new URLSearchParams(location.search).get('layer') || 'inventory';
-  for (const layer of ['inventory', 'reviewed']) {
-    document.getElementById(`atlas-${layer}-link`).setAttribute('aria-current', requestedLayer === layer ? 'page' : 'false');
-  }
-  if (requestedLayer === 'reviewed') {
-    if (root.LogPoseReviewedAtlas) root.LogPoseReviewedAtlas.start();
-    else {
-      const script = document.createElement('script');
-      script.src = './atlas-reviewed-view.js';
-      script.onload = () => root.LogPoseReviewedAtlas.start();
-      script.onerror = () => {
-        document.getElementById('atlas-status').textContent = 'reviewed claims could not load. reload to retry.';
-      };
-      document.body.append(script);
-    }
-    return;
-  }
-  if (requestedLayer !== 'inventory') {
+  if (!['inventory', 'reviewed'].includes(requestedLayer)) {
     document.getElementById('atlas-status').textContent = 'this evidence layer is not supported.';
     return;
   }
@@ -29,6 +13,7 @@
     fallbackMessage: statusCode => `request failed (${statusCode})`,
     buildMismatchMessage: 'snapshot changed; reload to discover its version'
   });
+  const relationships = root.LogPoseAtlasRelationships;
   let manifest = null;
   let displayed = null;
   let inspected = null;
@@ -58,7 +43,55 @@
   function replaceUrl(fields) {
     const params = new URLSearchParams(fields);
     params.delete('limit');
+    const existing = new URLSearchParams(location.search);
+    for (const key of ['reviewed_build_id', 'reviewed_cutoff', 'reviewed_basis',
+      'reviewed_predicate', 'reviewed_direction', 'reviewed_neighbor', 'reviewed_claim']) {
+      if ((key === 'reviewed_neighbor' || key === 'reviewed_claim')
+          && (fields.mode !== 'focus' || (existing.get('candidate') && fields.candidate !== existing.get('candidate')))) continue;
+      if (existing.has(key)) params.set(key, existing.get(key));
+    }
     history.replaceState(null, '', `${location.pathname}?${params}`);
+  }
+
+  async function normalizeReviewedLink(url, signal) {
+    const oldBuild = url.get('build_id') || '';
+    const legacySelection = { layer: 'reviewed', clock: url.get('clock') || 'source_publication',
+      temporal_mode: url.get('temporal_mode') || 'published_through', cutoff: url.get('cutoff') || '',
+      basis: url.get('basis') || 'documented', predicate: url.get('predicate') || '',
+      direction: url.get('direction') || 'both' };
+    const reviewed = root.LogPoseAtlasClient.create({ cache: model.createCache(),
+      fallbackMessage: () => 'reviewed link unavailable',
+      buildMismatchMessage: 'reviewed link build changed' });
+    const reviewedDiscovery = { ...legacySelection, mode: 'discover' };
+    if (oldBuild) reviewedDiscovery.build_id = oldBuild;
+    const discovery = await reviewed.request(reviewedDiscovery, signal);
+    const pinned = { ...legacySelection, build_id: discovery.build_id };
+    let candidate = url.get('candidate');
+    let entity = url.get('entity');
+    if (url.get('claim')) {
+      const exact = await reviewed.request({ ...pinned, mode: 'explain',
+        ...(candidate ? { candidate } : { entity }), claim: url.get('claim'), limit: '1' }, signal);
+      const record = exact.claims[0];
+      return `./index.html?${new URLSearchParams({ view: 'data', dataFamily: 'topology',
+        dataRecord: record.id, legacyReviewedScope: JSON.stringify(pinned) })}`;
+    }
+    if (!candidate && entity) {
+      const focus = await reviewed.request({ ...pinned, mode: 'focus', entity, top_k: '1', limit: '1' }, signal);
+      candidate = focus.focus.candidate_links[0]?.candidate_id || '';
+    }
+    if (!candidate || url.get('cursor') || url.get('mode') === 'search') {
+      return `./index.html?${new URLSearchParams({ view: 'data', dataFamily: 'topology',
+        dataQuery: url.get('query') || entity || '', legacyReviewedScope: JSON.stringify({ ...pinned,
+          cursor: url.get('cursor') || '', mode: url.get('mode') || 'focus' }) })}`;
+    }
+    const next = new URLSearchParams({ mode: 'focus', candidate,
+      reviewed_build_id: discovery.build_id, reviewed_cutoff: legacySelection.cutoff,
+      reviewed_basis: legacySelection.basis, reviewed_predicate: legacySelection.predicate,
+      reviewed_direction: legacySelection.direction });
+    if (url.get('neighbor')) next.set('reviewed_neighbor', url.get('neighbor'));
+    for (const key of ['source', 'year', 'artifact']) if (url.get(key)) next.set(key, url.get(key));
+    history.replaceState(null, '', `${location.pathname}?${next}`);
+    return '';
   }
 
   async function load(fields) {
@@ -77,6 +110,7 @@
       displayed = result;
       committedRequest = fields;
       inspected = null;
+      replaceUrl(fields);
       render();
       byId('atlas-scene').dataset.frameReadyMs = String(performance.now() - started);
       if (!byId('atlas-scene').dataset.graphReadyMs) {
@@ -91,7 +125,6 @@
             .reduce((total, item) => total + item.decodedBodySize, 0));
         });
       }
-      replaceUrl(fields);
       status('');
       return result;
     } catch (error) {
@@ -135,6 +168,7 @@
   }
 
   function render(result = displayed, animate = true) {
+    relationships.clear();
     const renderStarted = performance.now();
     const scene = byId('atlas-scene');
     const results = byId('atlas-results');
@@ -183,11 +217,8 @@
         const compare = node('button', 'compare with previous retained year', 'quiet-button');
         compare.type = 'button'; compare.addEventListener('click', comparePrevious);
         inspector.append(compare);
-        if (result.focus.identity_review?.pilot_slug) {
-          const reviewed = node('a', `reviewed claims for ${result.focus.name} →`, 'atlas-reviewed-navigation');
-          reviewed.href = `./atlas.html?${new URLSearchParams({ layer: 'reviewed', candidate: result.focus.id })}`;
-          inspector.append(reviewed, node('p', `explicit identity link ${result.focus.identity_review.id}. reviewed claims use a separate source-publication clock.`));
-        }
+        if (result === displayed) relationships.show(result, '', inspector,
+          () => displayed?.frame_id === result.frame_id && inspected === null);
       }
     } else if (result.operation === 'compare') {
       scene.append(node('h3', `compare ${result.comparison_selection.year} → ${result.selection.year}`),
@@ -219,16 +250,22 @@
       evidence.premises.forEach(premise => {
         const block = append(node('section', '', 'atlas-premise'), node('strong', premise.placement.category),
           node('p', `${premise.placement.source} · inventory year ${premise.placement.inventory_year}`),
-          node('code', premise.placement.raw_sha256), link('pinned source ↗', premise.artifact.url));
+          link('pinned source ↗', premise.artifact.url));
+        const identifiers = node('details', '', 'atlas-premise-identifiers');
+        identifiers.append(node('summary', 'source identifiers'),
+          node('p', 'source SHA-256'), node('code', premise.placement.raw_sha256));
         for (const [role, membership] of [['subject', premise.subject], ['object', premise.object]]) {
           membership.rows.forEach(row => {
             const route = new URL('./index.html', location.href);
             route.search = new URLSearchParams({ view: 'data', dataFamily: 'inventory', dataRecord: row.id });
             const sourceLink = node('a', `${role}: ${row.name || row.id} · retained row →`);
             sourceLink.href = route.href;
-            block.append(sourceLink, node('p', row.description || 'no description retained'), node('code', row.id));
+            block.append(sourceLink);
+            if (row.description) block.append(node('p', row.description));
+            identifiers.append(node('p', `${role} retained row id`), node('code', row.id));
           });
         }
+        block.append(identifiers);
         inspector.append(block);
       });
       if (evidence.next_cursor) {
@@ -240,11 +277,8 @@
       const navigate = node('button', 'focus this neighbor →', 'quiet-button');
       navigate.type = 'button'; navigate.addEventListener('click', () => focus(neighbor));
       inspector.append(navigate, node('p', 'supporting membership is not competition, adoption, revenue or investment.'));
-      if (frame.focus.identity_review?.pilot_slug) {
-        const reviewed = node('a', `reviewed claims for ${frame.focus.name} →`, 'atlas-reviewed-navigation');
-        reviewed.href = `./atlas.html?${new URLSearchParams({ layer: 'reviewed', candidate: frame.focus.id })}`;
-        inspector.append(reviewed);
-      }
+      relationships.show(frame, neighbor, inspector,
+        () => displayed?.frame_id === frame.frame_id && inspected === evidence);
       const params = new URLSearchParams(location.search); params.set('neighbor', neighbor);
       if (cursor) params.set('evidence_cursor', cursor);
       else params.delete('evidence_cursor');
@@ -299,7 +333,7 @@
     const anchor = node('a', 'download'); anchor.href = url;
     anchor.download = `log-pose-investigation-${frame.frame_id.slice(0, 12)}.json`;
     document.body.append(anchor); anchor.click(); anchor.remove(); URL.revokeObjectURL(url);
-    status('investigation downloaded with its exact selected page and limitations.');
+    status('inventory investigation downloaded with its exact selected page and limitations.');
   }
 
   async function start() {
@@ -308,7 +342,12 @@
     controller = new AbortController();
     const signal = controller.signal;
     try {
-      const url = new URLSearchParams(location.search);
+      let url = new URLSearchParams(location.search);
+      if (url.get('layer') === 'reviewed') {
+        const destination = await normalizeReviewedLink(url, signal);
+        if (destination) { location.replace(destination); return; }
+        url = new URLSearchParams(location.search);
+      }
       const discoveryRequest = { mode: 'discover' };
       if (url.get('build_id')) discoveryRequest.build_id = url.get('build_id');
       const discovery = await client.request(discoveryRequest, signal);
@@ -403,7 +442,7 @@
   });
   byId('atlas-export').addEventListener('click', exportInvestigation);
   root.addEventListener('pagehide', () => {
-    disposed = true; generation += 1; controller?.abort(); root.clearTimeout(controlTimer); client.clear();
+    disposed = true; generation += 1; controller?.abort(); root.clearTimeout(controlTimer); client.clear(); relationships.dispose();
     if (densityFrame !== null) root.cancelAnimationFrame(densityFrame);
   });
   root.addEventListener('pageshow', event => { if (event.persisted) { disposed = false; start(); } });

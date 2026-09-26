@@ -12,7 +12,7 @@
   const formatCount = value => Number(value || 0).toLocaleString();
 
   function create({ root, state, index, discovery, commitState, persistDetail,
-    openCompany, openTopology, openField }) {
+    openCompany, openField }) {
     const { node, append, link, title, svgNode } = globalScope.LogPoseUI;
     const cache = new Map();
     let inventoryRecords = null;
@@ -482,10 +482,6 @@
           `${item.decision} · ${item.reviewer} · ${item.reviewed_at}: ${item.rationale}`, 'data-reading')));
       }
       body.append(companyAction(record.subject_slug), companyAction(record.object_slug));
-      const map = node('button', 'open claim map →', 'text-button');
-      map.type = 'button';
-      map.addEventListener('click', () => openTopology(record.id));
-      body.append(map);
     }
 
     function inspector(selected) {
@@ -536,6 +532,9 @@
       activeRequest++;
       root.append(title('RESEARCH DESK / RETAINED EVIDENCE', 'research the record',
         'Search across source rows, dated page captures, reported facts, market activity, and reviewed relationships. Open a row to inspect it here.'));
+      if (state.legacyReviewedScope) root.append(node('p',
+        'this older reviewed-map link now opens the current retained claim index. its former snapshot, date, filters and page cursor are not applied here; open a claim to inspect exact scope, source and review history.',
+        'caveat'));
       root.append(coverage());
       if (index.exploratory_topology) {
         const entry = node('p', '', 'data-atlas-return');

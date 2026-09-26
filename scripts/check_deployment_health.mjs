@@ -14,7 +14,7 @@ const ASSETS = [
   ['catalog', '/data/index.json', 'web/data/index.json'],
   ['atlas-html', '/atlas.html', 'web/atlas.html'],
   ['atlas-view', '/atlas-view.js', 'web/atlas-view.js'],
-  ['atlas-reviewed-view', '/atlas-reviewed-view.js', 'web/atlas-reviewed-view.js'],
+  ['atlas-relationships', '/atlas-relationships.js', 'web/atlas-relationships.js'],
   ['atlas-client', '/atlas-client.js', 'web/atlas-client.js'],
   ['atlas-model', '/atlas-model.js', 'web/atlas-model.js'],
   ['atlas-style', '/atlas.css', 'web/atlas.css'],
