@@ -23,7 +23,7 @@ can be assumed to pass.
 | 8 | exact taxonomy regions drill to candidate pages and retained records; camera updates do not alter query selectors or saved cohort. | supported chosen design. the requested small comparison of alternative prototypes on real neighborhoods lacks a durable decision receipt with measured interaction cost. |
 | 9 | `layer-evidence-review.md`, source manifest, three retained topology bodies, fourteen inventory artifacts, and the four-claim reviewed layer. | partial: competition/workflow, partnership, capital participation and observation history exist. the user accepted the scoped integration proposal; canonical import remains pending. named-customer source mentions were found, but need a predicate and reviews; ownership and relationship validity remain unsupported. |
 | 10 | browser saves selected inventory/reviewed pages and notes. `src/log_pose/atlas_read.py` validates bounded inventory research exports. three retained investigations and the isolated experimental attachment validator exist. | partial: Python adapter still accepts only inventory-year pages; the isolated attachment validator has its own generic provenance contract. cross-layer receipt predates the reviewed API, and historical receipt excludes later inventory rows, not a later filing/review/premise through the reviewed route. add reproducible reviewed-read walkthroughs. |
-| 11 | S1/S2 synthetic SQLite build/read receipts; corrected S1 Postgres publication and concurrency measurements; S2 Postgres import time-limit receipt. | partial: S0 constrained browser profile and soak are being measured separately. no S1 browser profile or hosted large-fixture latency proof. current fixtures model memberships, not mixed predicates/long claim histories. S2 Postgres remains incomplete after the declared 30-minute budget. |
+| 11 | S1/S2 synthetic SQLite build/read receipts; corrected S1 Postgres publication and concurrency measurements; S2 Postgres import time-limit receipt. | partial: the final S0 constrained browser profile and twenty-minute soak pass in `browser-playwright-s0.json`. no S1 browser profile or hosted large-fixture latency proof. current fixtures model memberships, not mixed predicates/long claim histories. S2 Postgres remains incomplete after the declared 30-minute budget. |
 | 12 | tests cover duplicate rows, dense buckets, same-year revisions, corrections, immutable publication/rollback, cursor mismatch, cache bounds and route disposal. topology database tests cover review reversals and additional premises. | partial: do not substitute these unit cases for an S1 mixed-history benchmark. large SQLite first-open checksum cost is outside the old scale query timings; measure it explicitly before making a cold-start claim. |
 | 13 | unit tests cover keyboard selection, stable controls/camera, reduced motion, non-color absence text and list fallback; real earlier browser receipts cover selected flows. | partial: new-route touch targeting, emulated media preference, keyboard focus across updates and actual non-GPU fallback need a consolidated browser receipt. a narrow viewport alone is not a touch test. |
 | 14 | required CI creates disposable Postgres, runs database tests, and rejects silent skips. snapshot publication reconciles keys, counts, hashes and references; migrations preserve applied history. | supported automated migration/read-derivative checks. full retained evidence-clone reconciliation remains explicitly unavailable in CI; an empty test database is not a substitute. |
@@ -100,8 +100,8 @@ append-only import, and export reconciliation after the browser run.
 
 ## next work and reserved decisions
 
-1. finish the frozen local browser protocol and actual twenty-minute soak;
-   preserve failed measurements before any performance fix.
+1. retain the completed S0 browser protocol, thirty passing timing samples and
+   twenty-minute soak; failed and interrupted receipts remain separate.
 2. add reviewed Python reads and fresh cross-layer/publication-cutoff research
    receipts, including explicit rejection of unsupported historical clocks.
 3. add constrained typed traversal and browser accessibility/failure receipts.
@@ -134,3 +134,36 @@ they do not implement historical review filtering or canonical acceptance.
 the Node CLI already routes both providers through `atlas-runtime.js`; only the
 Python adapter needed the corresponding clock contract. publication of the new
 research support is pending its required checks and approval.
+
+## verified local recovery result
+
+[database-recovery-20260926.json](database-recovery-20260926.json) supersedes the
+initial filesystem-only inference above. the original cluster was not started
+or edited. all 1,851 files matched an isolated copy before recovery and still
+match their original hashes after inspection. PostgreSQL 18.6 was restored from
+official Ubuntu packages in a persistent user cache, without a system install.
+the copy used a private Unix socket, no TCP listener, unchanged authentication,
+and read-only transactions by default. its server is now stopped.
+
+`logpose_market` contains 14 inventory artifacts, 18,076 inventory rows and
+6,096 occurrence rows. it has **zero** companies, page snapshots, SEC artifacts,
+market files/rows, topology sources, candidates and reviews. `logpose_test` has
+the same partial inventory plus 20 company rows. restoring the saved dump into
+a separate database succeeded and reproduced the same partial counts.
+
+searches covered the project checkouts including ignored files, WSL cache/local
+share/temporary and standard PostgreSQL directories, and Windows Downloads,
+Documents and Desktop. no fuller retained-evidence database backup was found.
+the synthetic scale cluster cannot fill this gap. Docker remains stopped.
+a fresh inventory-only dump and both recovery copies are retained under
+`~/.cache/log-pose-evidence-recovery-20260926/`; they are explicitly not full
+evidence backups.
+
+the published read projections and three retained topology source bodies remain
+available. those projections do not contain every canonical field or raw body:
+for example, original entity creation and secondary-evidence arrival times are
+not fully recoverable from the public topology shape. a reconstruction would
+need an explicit provenance policy for missing values and separately preserved
+source families. do not run the full rebuild against the partial database,
+invent old timestamps, or label such a reconstruction a verified full restore.
+the accepted integration decision remains durable and pending canonical import.
