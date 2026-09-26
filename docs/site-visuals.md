@@ -4,6 +4,8 @@ The console uses a dark navy-plum foundation with a small decorative palette dra
 
 Decorative colors do not describe evidence quality, company type, or relationship strength. Existing positive, negative, warning, missing, and comparison styles retain their semantic meaning. Graph nodes keep their deterministic decorative colors and the graph scene keeps its darker background for legibility.
 
+The evidence desk assigns sky, mint, periwinkle, coral, and gold to its five fixed lens positions. These accents make the lens controls and coverage cards easier to distinguish; they do not change the source-family definitions or add an evidence judgment. Source years rotate through the same decorative accents while their dates and retained-row labels remain authoritative.
+
 Surface depth follows three levels:
 
 - the page is the deepest plane;
