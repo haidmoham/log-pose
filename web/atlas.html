@@ -22,6 +22,11 @@
       <div class="atlas-heading"><div><p class="eyebrow">source regions → neighborhood → evidence</p>
         <h2>follow the evidence.</h2></div>
         <p id="atlas-coverage">loading retained source revisions…</p></div>
+      <nav class="atlas-layers" aria-label="evidence layer">
+        <a id="atlas-inventory-link" href="./atlas.html">inventory co-listing</a>
+        <a id="atlas-reviewed-link" href="./atlas.html?layer=reviewed">reviewed claims</a>
+        <span>each layer keeps its own evidence, clock and build.</span>
+      </nav>
       <form id="atlas-controls" class="atlas-controls">
         <label>source revision<select id="atlas-revision" required></select></label>
         <label>observation mode<select id="atlas-mode"><option value="snapshot">selected snapshot</option>
@@ -55,7 +60,7 @@
       </details>
       <details class="atlas-limitations"><summary>coverage and evidence limits</summary><ul id="atlas-limitations"></ul>
         <p>regions are exact source categories. overlapping memberships are not separate companies. positions and distance are display choices.</p>
-        <a href="./?view=topology&topologyLayer=reviewed">inspect accepted company claims on their separate clocks →</a></details>
+        <a href="./atlas.html?layer=reviewed">inspect accepted claims on their source-publication clock →</a></details>
     </main>
     <footer><span>log pose / retained evidence</span><span id="atlas-version"></span></footer>
   </div>

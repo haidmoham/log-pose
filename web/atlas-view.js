@@ -1,5 +1,26 @@
 (function (root) {
   'use strict';
+  const requestedLayer = new URLSearchParams(location.search).get('layer') || 'inventory';
+  for (const layer of ['inventory', 'reviewed']) {
+    document.getElementById(`atlas-${layer}-link`).setAttribute('aria-current', requestedLayer === layer ? 'page' : 'false');
+  }
+  if (requestedLayer === 'reviewed') {
+    if (root.LogPoseReviewedAtlas) root.LogPoseReviewedAtlas.start();
+    else {
+      const script = document.createElement('script');
+      script.src = './atlas-reviewed-view.js';
+      script.onload = () => root.LogPoseReviewedAtlas.start();
+      script.onerror = () => {
+        document.getElementById('atlas-status').textContent = 'reviewed claims could not load. reload to retry.';
+      };
+      document.body.append(script);
+    }
+    return;
+  }
+  if (requestedLayer !== 'inventory') {
+    document.getElementById('atlas-status').textContent = 'this evidence layer is not supported.';
+    return;
+  }
   const { node, append, link } = root.LogPoseUI;
   const model = root.LogPoseAtlasModel;
   const byId = id => document.getElementById(id);
@@ -149,6 +170,11 @@
         const compare = node('button', 'compare with previous retained year', 'quiet-button');
         compare.type = 'button'; compare.addEventListener('click', comparePrevious);
         inspector.append(compare);
+        if (result.focus.identity_review?.pilot_slug) {
+          const reviewed = node('a', `reviewed claims for ${result.focus.name} →`, 'atlas-reviewed-navigation');
+          reviewed.href = `./atlas.html?${new URLSearchParams({ layer: 'reviewed', candidate: result.focus.id })}`;
+          inspector.append(reviewed, node('p', `identity link ${result.focus.identity_review.id}. opens a separate source-publication frame.`));
+        }
       }
     } else if (result.operation === 'compare') {
       scene.append(node('h3', `compare ${result.comparison_selection.year} → ${result.selection.year}`),

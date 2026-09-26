@@ -65,20 +65,23 @@
 
   function render(frame, options = {}) {
     const selected = options.selectedEdge || '';
+    const semantics = frame.semantics || {};
     // A replaced scene adopts the pending orbit target and leaves no half-settled camera behind.
     camera3d.yaw = camera3d.targetYaw;
     camera3d.pitch = camera3d.targetPitch;
     camera = viewMode === '3d' ? camera3d : camera2d;
     const scene = element('section', 'temporal-constellation');
-    scene.setAttribute('aria-label', 'inventory constellation');
+    scene.setAttribute('aria-label', semantics.sceneLabel || 'inventory constellation');
     const header = element('div', 'constellation-heading');
     const title = element('div');
-    title.append(element('span', 'constellation-eyebrow', `${frame.source?.toUpperCase() || 'inventory'} / ${frame.temporal_mode === 'accumulated' ? 'observed through' : 'inventory year'} ${frame.year || ''}`));
+    title.append(element('span', 'constellation-eyebrow', semantics.eyebrow || `${frame.source?.toUpperCase() || 'inventory'} / ${frame.temporal_mode === 'accumulated' ? 'observed through' : 'inventory year'} ${frame.year || ''}`));
     const focus = frame.nodes.find(node => node.id === frame.focus);
-    title.append(element('h3', '', focus?.name || 'the source constellation'));
+    title.append(element('h3', '', focus?.name || semantics.overviewTitle || 'the source constellation'));
     header.append(title);
     const count = element('div', 'constellation-count');
-    count.append(element('strong', '', String(frame.focus ? frame.edges.length : frame.nodes.length)), element('span', '', frame.focus ? 'visible co-listings' : 'observed candidates'));
+    count.append(element('strong', '', String(frame.focus ? frame.edges.length : frame.nodes.length)),
+      element('span', '', frame.focus ? semantics.focusCountLabel || 'visible co-listings'
+        : semantics.overviewCountLabel || 'observed candidates'));
     header.append(count);
     scene.append(header);
 
@@ -128,7 +131,7 @@
         camera.x = 0; camera.y = 0; camera.zoom = 1;
         return;
       }
-      Object.assign(camera, fittedCamera(points, DETAIL_SCALE));
+      Object.assign(camera, fittedCamera(points, options.fitScale ?? DETAIL_SCALE));
     }
     function fit3dView() {
       const points = [...spatialPositions.values()].map(point => project3d(centeredSpatialPoint(point), camera3d));
@@ -235,12 +238,14 @@
       const isNew = changes.get(node.id)?.status === 'newly_observed_in_selected_frame';
       const group = svgElement('g', { class: `constellation-node${isFocus ? ' is-focus' : ''}${isAbsent ? ' is-absent' : ''}${isNew ? ' is-new' : ''}${node.id === selected ? ' is-selected' : ''}`,
         transform: `translate(${point.x} ${point.y})`, role: 'button', tabindex: '0',
-        'aria-label': !frame.focus ? `explore ${node.name}` : isFocus ? `${node.name}, pinned candidate${isAbsent ? ', absent from this slice' : ''}`
-          : `inspect ${node.name}${isAbsent ? ', comparison only' : isNew ? ', newly observed in selected slice' : ', co-listed'}`,
+        'aria-label': !frame.focus ? `explore ${node.name}` : isFocus ? `${node.name}, pinned ${semantics.focusKind || 'candidate'}${isAbsent ? ', absent from this slice' : ''}`
+          : `inspect ${node.name}${isAbsent ? ', comparison only' : node.connection_label
+            ? `, ${node.connection_label}` : isNew ? ', newly observed in selected slice' : `, ${semantics.neighborKind || 'co-listed'}`}`,
         'aria-pressed': String(node.id === selected), 'data-candidate': node.id });
       group.style.setProperty('--node-tint', tints.get(node.id).hex);
       const name = svgElement('title');
-      name.textContent = `${node.name} · ${isAbsent ? 'comparison context, not observed in this slice' : 'unreviewed inventory candidate'}`;
+      name.textContent = `${node.name} · ${isAbsent ? 'comparison context, not observed in this slice'
+        : node.identity_label || 'unreviewed inventory candidate'}`;
       group.append(name);
       const scale = svgElement('g', { class: 'constellation-scale' });
       scale.append(svgElement('circle', { r: 18, class: 'constellation-hit' }));
@@ -347,7 +352,7 @@
 
     const footer = element('div', 'constellation-footer');
     const legend = element('div', 'constellation-legend');
-    for (const [kind, text] of [['solid', 'observed'], ['diamond', 'new in slice'], ['hollow', 'comparison only']]) {
+    for (const [kind, text] of semantics.legend || [['solid', 'observed'], ['diamond', 'new in slice'], ['hollow', 'comparison only']]) {
       const item = element('span');
       item.append(element('i', `legend-${kind}`), document.createTextNode(text));
       legend.append(item);

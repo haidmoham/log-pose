@@ -59,6 +59,7 @@ jobs:
       - name: Check immutable atlas snapshot
         run: |
           npm run check:atlas
+          npm run check:atlas-reviewed
           ATLAS_PUBLISH_DATABASE_URL="$LOG_POSE_TEST_DATABASE_URL" python scripts/publish_atlas_postgres.py
           npm run test:atlas
       - name: Check disposable database encoding
