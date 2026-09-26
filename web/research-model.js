@@ -421,6 +421,10 @@
     const temporalCategory = requestedTemporalCategory.length <= 120
       && !/[\x00-\x1f]/.test(requestedTemporalCategory) ? requestedTemporalCategory : 'all';
     const temporalQuery = (params.get('temporalQuery') || '').slice(0, 200);
+    const temporalNodeLimit = ['50', '100', '150', '300', 'all'].includes(params.get('temporalNodeLimit'))
+      ? params.get('temporalNodeLimit') : '150';
+    const temporalEdgeLimit = ['100', '250', '500', '1000', '2500'].includes(params.get('temporalEdgeLimit'))
+      ? params.get('temporalEdgeLimit') : '500';
     const temporalOffsetValue = Number(params.get('temporalOffset'));
     const temporalOffset = Number.isSafeInteger(temporalOffsetValue) && temporalOffsetValue >= 0
       ? Math.min(5000, temporalOffsetValue) : 0;
@@ -444,7 +448,7 @@
       fieldCandidate: safeDataRecord(params.get('fieldCandidate') || '') || null,
       fieldNeighbor: safeDataRecord(params.get('fieldNeighbor') || '') || null,
       temporalSource, temporalYear, temporalCompareYear, temporalMode,
-      temporalCategory, temporalQuery,
+      temporalCategory, temporalQuery, temporalNodeLimit, temporalEdgeLimit,
       temporalOffset,
       temporalCandidate, temporalNeighbor,
       topologySourceYear, topologyCategory: choice('topologyCategory', allowedTopologyCategory),
@@ -508,6 +512,10 @@
         if (state.temporalCategory && state.temporalCategory !== 'all')
           params.set('temporalCategory', state.temporalCategory);
         if (state.temporalQuery) params.set('temporalQuery', state.temporalQuery.slice(0, 200));
+        if (state.temporalNodeLimit && state.temporalNodeLimit !== '150')
+          params.set('temporalNodeLimit', state.temporalNodeLimit);
+        if (state.temporalEdgeLimit && state.temporalEdgeLimit !== '500')
+          params.set('temporalEdgeLimit', state.temporalEdgeLimit);
         if (state.temporalOffset > 0) params.set('temporalOffset', String(state.temporalOffset));
         const candidate = safeDataRecord(state.temporalCandidate);
         const neighbor = safeDataRecord(state.temporalNeighbor);

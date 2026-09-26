@@ -16,7 +16,8 @@ const state = { view: 'topology', year: 2024, category: 'all', query: '', compan
   fieldCategory: 'all', fieldIdentity: 'all', fieldCandidate: null, fieldNeighbor: null,
   temporalSource: 'cncf', temporalYear: '2024', temporalCompareYear: 'auto',
   temporalMode: 'accumulated', temporalCategory: 'all', temporalQuery: '',
-  temporalCandidate: null, temporalNeighbor: null, temporalOffset: 0 };
+  temporalCandidate: null, temporalNeighbor: null, temporalOffset: 0,
+  temporalNodeLimit: '150', temporalEdgeLimit: '500' };
 let data;
 let discovery;
 let dataIndex;
