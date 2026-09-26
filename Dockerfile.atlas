@@ -1,0 +1,9 @@
+FROM node:24-bookworm-slim
+WORKDIR /app
+COPY package.json package-lock.json ./
+RUN npm ci --omit=dev
+COPY api/atlas.js api/atlas-runtime.js api/atlas-postgres.js ./api/
+COPY scripts/atlas_service.js ./scripts/
+USER node
+ENV NODE_ENV=production
+CMD ["node", "scripts/atlas_service.js"]
