@@ -457,14 +457,15 @@
       };
       orbitFrame = root.requestAnimationFrame(step);
     }
-    function finishDrag(cancelled = false) {
-      if (!drag) return;
+    function finishDrag(event, cancelled = false) {
+      if (!drag || event.pointerId !== drag.pointerId) return;
       if (drag.owned && !cancelled) suppressClick = true;
       drag = null;
       svg.classList.remove('is-dragging');
     }
     svg.addEventListener('pointerdown', event => {
-      if (event.button !== 0) return;
+      if (event.button !== 0 || drag) return;
+      suppressClick = false;
       if (viewMode === '2d' && event.target.closest('.constellation-node, .constellation-edge-hit')) return;
       drag = { pointerId: event.pointerId, pointerType: event.pointerType, x: event.clientX, y: event.clientY,
         cameraX: camera.x, cameraY: camera.y, yaw: camera3d.yaw, pitch: camera3d.pitch,
@@ -493,9 +494,9 @@
       }
       if (drag.pan || !appearance.motion) scheduleCameraUpdate();
     });
-    svg.addEventListener('pointerup', () => finishDrag());
-    svg.addEventListener('pointercancel', () => finishDrag(true));
-    svg.addEventListener('lostpointercapture', () => finishDrag());
+    svg.addEventListener('pointerup', event => finishDrag(event));
+    svg.addEventListener('pointercancel', event => finishDrag(event, true));
+    svg.addEventListener('lostpointercapture', event => finishDrag(event, true));
     svg.addEventListener('click', event => {
       if (!suppressClick) return;
       suppressClick = false; event.preventDefault(); event.stopImmediatePropagation();

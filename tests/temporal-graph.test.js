@@ -234,3 +234,35 @@ test('3d orbit uses viewport-normalized pointer movement', () => {
   }
   assert.equal(projectedAfterDrag(400, 80), projectedAfterDrag(800, 160));
 });
+
+test('a second pointer cannot steal or end the active orbit gesture', () => {
+  const frames = [];
+  const dom = setup(window => {
+    window.matchMedia = () => ({ matches: true });
+    window.requestAnimationFrame = callback => { frames.push(callback); return frames.length; };
+  });
+  const scene = dom.window.LogPoseTemporalGraph.render(frame);
+  dom.window.document.body.append(scene);
+  scene.querySelector('[aria-label="3d graph"]').click();
+  const map = scene.querySelector('.constellation-map');
+  map.getBoundingClientRect = () => ({ width: 800, height: 500 });
+  const point = scene.querySelector('[data-candidate="two"]');
+  function pointer(type, id, x) {
+    const event = new dom.window.MouseEvent(type, { bubbles: true, clientX: x, clientY: 200 });
+    Object.defineProperty(event, 'pointerId', { value: id });
+    map.dispatchEvent(event);
+    while (frames.length) frames.shift()(16.67);
+  }
+  pointer('pointerdown', 1, 100);
+  pointer('pointermove', 1, 200);
+  const firstPosition = point.getAttribute('transform');
+  pointer('pointerdown', 2, 300);
+  pointer('pointerup', 2, 300);
+  pointer('pointermove', 1, 250);
+  assert.notEqual(point.getAttribute('transform'), firstPosition);
+  pointer('lostpointercapture', 1, 250);
+  const releasedPosition = point.getAttribute('transform');
+  pointer('pointermove', 1, 350);
+  assert.equal(point.getAttribute('transform'), releasedPosition);
+  dom.window.close();
+});
