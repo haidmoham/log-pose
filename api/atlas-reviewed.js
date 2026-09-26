@@ -21,7 +21,16 @@ class ReviewedAtlasError extends Error {
 }
 function digest(value) { return crypto.createHash('sha256').update(JSON.stringify(value)).digest('hex'); }
 function fileDigest(filename) {
-  const hash = crypto.createHash('sha256'); hash.update(fs.readFileSync(filename)); return hash.digest('hex');
+  const hash = crypto.createHash('sha256');
+  const descriptor = fs.openSync(filename, 'r');
+  const block = Buffer.allocUnsafe(1024 * 1024);
+  try {
+    let bytes;
+    while ((bytes = fs.readSync(descriptor, block, 0, block.length, null)) > 0) {
+      hash.update(block.subarray(0, bytes));
+    }
+  } finally { fs.closeSync(descriptor); }
+  return hash.digest('hex');
 }
 function parameter(params, name, fallback = '') {
   const values = params.getAll(name);
@@ -228,7 +237,7 @@ function createReviewedAtlasHandler(root = path.join(__dirname, 'data/atlas-revi
       const counts = store.database.prepare(`SELECT
           (SELECT count(*) FROM claim_source WHERE claim_id=?) sources,
           (SELECT count(*) FROM review_history WHERE claim_id=?) reviews,
-          (SELECT length(detail_json) FROM claim WHERE id=?) detail_bytes`).get(row.id, row.id, row.id);
+          (SELECT length(CAST(detail_json AS BLOB)) FROM claim WHERE id=?) detail_bytes`).get(row.id, row.id, row.id);
       budget.add(Number(counts.sources) + Number(counts.reviews));
       detailBytes += Number(counts.detail_bytes);
     }
