@@ -167,3 +167,14 @@ need an explicit provenance policy for missing values and separately preserved
 source families. do not run the full rebuild against the partial database,
 invent old timestamps, or label such a reconstruction a verified full restore.
 the accepted integration decision remains durable and pending canonical import.
+
+
+## reconstruction policy proposal
+
+[the scoped reconstruction plan](topology-reconstruction-plan.md) and
+[hash-checked preflight](topology-reconstruction-preflight.json) identify the
+recoverable topology slice and exact provenance gaps. three retained bodies,
+four accepted claims and four reviews are recoverable at their exported scope.
+original entity creation times and the secondary-premise row ID/arrival are not.
+the plan preserves those unknowns and separates reconstruction arrival; no
+canonical data, published projection or review was changed.
