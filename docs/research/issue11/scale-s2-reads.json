@@ -1,0 +1,558 @@
+{
+  "receipt_schema": "atlas-scale-reads-v1",
+  "synthetic": true,
+  "tier": "s2",
+  "build_id": "d91b59d4d5c66233b5e2fd2485d63e365e6da444ddc09647014ab30acf616018",
+  "runtime": {
+    "node": "v22.23.1",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  "ranking_semantic": "distinct supporting placement count descending, then candidate ID",
+  "request_budget": {
+    "maximum_per_workload": 200,
+    "actual_per_workload": 175
+  },
+  "results": [
+    {
+      "workload": "focus_top_k_20",
+      "concurrency": 1,
+      "requests": 25,
+      "wall_ms": 7382.122342,
+      "p50_ms": 49.98707699999977,
+      "p95_ms": 58.306321000000025,
+      "max_ms": 74.46244200000001,
+      "response_bytes": {
+        "min": 140415,
+        "max": 140424
+      },
+      "membership_rows_read": {
+        "min": 72513,
+        "max": 72513
+      },
+      "statuses": {
+        "200": 25
+      },
+      "returned": [
+        20
+      ],
+      "exact_eligible": [
+        10967
+      ],
+      "suppressed": [
+        10947
+      ],
+      "errors": []
+    },
+    {
+      "workload": "focus_top_k_60",
+      "concurrency": 1,
+      "requests": 25,
+      "wall_ms": 7382.122342,
+      "p50_ms": 62.02811500000007,
+      "p95_ms": 72.95542299999998,
+      "max_ms": 75.64865400000002,
+      "response_bytes": {
+        "min": 411531,
+        "max": 411541
+      },
+      "membership_rows_read": {
+        "min": 76513,
+        "max": 76513
+      },
+      "statuses": {
+        "200": 25
+      },
+      "returned": [
+        60
+      ],
+      "exact_eligible": [
+        10967
+      ],
+      "suppressed": [
+        10907
+      ],
+      "errors": []
+    },
+    {
+      "workload": "focus_top_k_100",
+      "concurrency": 1,
+      "requests": 25,
+      "wall_ms": 7382.122342,
+      "p50_ms": 74.10424600000033,
+      "p95_ms": 83.97010499999999,
+      "max_ms": 86.57228800000001,
+      "response_bytes": {
+        "min": 673817,
+        "max": 673825
+      },
+      "membership_rows_read": {
+        "min": 80513,
+        "max": 80513
+      },
+      "statuses": {
+        "200": 25
+      },
+      "returned": [
+        100
+      ],
+      "exact_eligible": [
+        10967
+      ],
+      "suppressed": [
+        10867
+      ],
+      "errors": []
+    },
+    {
+      "workload": "focus_dense_accumulated",
+      "concurrency": 1,
+      "requests": 25,
+      "wall_ms": 7382.122342,
+      "p50_ms": 75.0332099999996,
+      "p95_ms": 80.59971099999996,
+      "max_ms": 84.54493200000002,
+      "response_bytes": {
+        "min": 673843,
+        "max": 673844
+      },
+      "membership_rows_read": {
+        "min": 80513,
+        "max": 80513
+      },
+      "statuses": {
+        "200": 25
+      },
+      "returned": [
+        100
+      ],
+      "exact_eligible": [
+        10967
+      ],
+      "suppressed": [
+        10867
+      ],
+      "errors": []
+    },
+    {
+      "workload": "explain",
+      "concurrency": 1,
+      "requests": 25,
+      "wall_ms": 7382.122342,
+      "p50_ms": 1.1932319999996253,
+      "p95_ms": 1.6725040000001172,
+      "max_ms": 3.2736449999999877,
+      "response_bytes": {
+        "min": 3039,
+        "max": 3041
+      },
+      "membership_rows_read": {
+        "min": 200,
+        "max": 200
+      },
+      "statuses": {
+        "200": 25
+      },
+      "returned": [
+        1
+      ],
+      "exact_eligible": [
+        1
+      ],
+      "suppressed": [
+        null
+      ],
+      "errors": []
+    },
+    {
+      "workload": "search",
+      "concurrency": 1,
+      "requests": 25,
+      "wall_ms": 7382.122342,
+      "p50_ms": 22.26954999999998,
+      "p95_ms": 25.515913000000182,
+      "max_ms": 26.17248399999994,
+      "response_bytes": {
+        "min": 15049,
+        "max": 15050
+      },
+      "membership_rows_read": {
+        "min": 8001,
+        "max": 8001
+      },
+      "statuses": {
+        "200": 25
+      },
+      "returned": [
+        60
+      ],
+      "exact_eligible": [
+        null
+      ],
+      "suppressed": [
+        null
+      ],
+      "errors": []
+    },
+    {
+      "workload": "focus_top_k_20",
+      "concurrency": 5,
+      "requests": 50,
+      "wall_ms": 3629.8181400000003,
+      "p50_ms": 62.40023999999994,
+      "p95_ms": 85.980749,
+      "max_ms": 95.17090300000001,
+      "response_bytes": {
+        "min": 140414,
+        "max": 140424
+      },
+      "membership_rows_read": {
+        "min": 72513,
+        "max": 72513
+      },
+      "statuses": {
+        "200": 50
+      },
+      "returned": [
+        20
+      ],
+      "exact_eligible": [
+        10967
+      ],
+      "suppressed": [
+        10947
+      ],
+      "errors": []
+    },
+    {
+      "workload": "focus_top_k_60",
+      "concurrency": 5,
+      "requests": 50,
+      "wall_ms": 3629.8181400000003,
+      "p50_ms": 71.324071,
+      "p95_ms": 92.22833400000007,
+      "max_ms": 102.80461100000002,
+      "response_bytes": {
+        "min": 411532,
+        "max": 411541
+      },
+      "membership_rows_read": {
+        "min": 76513,
+        "max": 76513
+      },
+      "statuses": {
+        "200": 50
+      },
+      "returned": [
+        60
+      ],
+      "exact_eligible": [
+        10967
+      ],
+      "suppressed": [
+        10907
+      ],
+      "errors": []
+    },
+    {
+      "workload": "focus_top_k_100",
+      "concurrency": 5,
+      "requests": 50,
+      "wall_ms": 3629.8181400000003,
+      "p50_ms": 92.83250900000007,
+      "p95_ms": 127.30418099999997,
+      "max_ms": 133.68916900000022,
+      "response_bytes": {
+        "min": 673816,
+        "max": 673826
+      },
+      "membership_rows_read": {
+        "min": 80513,
+        "max": 80513
+      },
+      "statuses": {
+        "200": 50
+      },
+      "returned": [
+        100
+      ],
+      "exact_eligible": [
+        10967
+      ],
+      "suppressed": [
+        10867
+      ],
+      "errors": []
+    },
+    {
+      "workload": "focus_dense_accumulated",
+      "concurrency": 5,
+      "requests": 50,
+      "wall_ms": 3629.8181400000003,
+      "p50_ms": 87.42125099999976,
+      "p95_ms": 99.53808800000002,
+      "max_ms": 109.66146100000014,
+      "response_bytes": {
+        "min": 673836,
+        "max": 673845
+      },
+      "membership_rows_read": {
+        "min": 80513,
+        "max": 80513
+      },
+      "statuses": {
+        "200": 50
+      },
+      "returned": [
+        100
+      ],
+      "exact_eligible": [
+        10967
+      ],
+      "suppressed": [
+        10867
+      ],
+      "errors": []
+    },
+    {
+      "workload": "explain",
+      "concurrency": 5,
+      "requests": 50,
+      "wall_ms": 3629.8181400000003,
+      "p50_ms": 1.377570999999989,
+      "p95_ms": 2.0997589999997217,
+      "max_ms": 3.013476999999966,
+      "response_bytes": {
+        "min": 3039,
+        "max": 3041
+      },
+      "membership_rows_read": {
+        "min": 200,
+        "max": 200
+      },
+      "statuses": {
+        "200": 50
+      },
+      "returned": [
+        1
+      ],
+      "exact_eligible": [
+        1
+      ],
+      "suppressed": [
+        null
+      ],
+      "errors": []
+    },
+    {
+      "workload": "search",
+      "concurrency": 5,
+      "requests": 50,
+      "wall_ms": 3629.8181400000003,
+      "p50_ms": 25.894731000000093,
+      "p95_ms": 31.96406500000012,
+      "max_ms": 35.0436450000002,
+      "response_bytes": {
+        "min": 15048,
+        "max": 15050
+      },
+      "membership_rows_read": {
+        "min": 8001,
+        "max": 8001
+      },
+      "statuses": {
+        "200": 50
+      },
+      "returned": [
+        60
+      ],
+      "exact_eligible": [
+        null
+      ],
+      "suppressed": [
+        null
+      ],
+      "errors": []
+    },
+    {
+      "workload": "focus_top_k_20",
+      "concurrency": 20,
+      "requests": 100,
+      "wall_ms": 5550.622283000001,
+      "p50_ms": 166.17320199999995,
+      "p95_ms": 356.084909,
+      "max_ms": 526.730297,
+      "response_bytes": {
+        "min": 140416,
+        "max": 140424
+      },
+      "membership_rows_read": {
+        "min": 72513,
+        "max": 72513
+      },
+      "statuses": {
+        "200": 100
+      },
+      "returned": [
+        20
+      ],
+      "exact_eligible": [
+        10967
+      ],
+      "suppressed": [
+        10947
+      ],
+      "errors": []
+    },
+    {
+      "workload": "focus_top_k_60",
+      "concurrency": 20,
+      "requests": 100,
+      "wall_ms": 5550.622283000001,
+      "p50_ms": 200.54775099999983,
+      "p95_ms": 353.89032000000003,
+      "max_ms": 419.69082299999997,
+      "response_bytes": {
+        "min": 411531,
+        "max": 411541
+      },
+      "membership_rows_read": {
+        "min": 76513,
+        "max": 76513
+      },
+      "statuses": {
+        "200": 100
+      },
+      "returned": [
+        60
+      ],
+      "exact_eligible": [
+        10967
+      ],
+      "suppressed": [
+        10907
+      ],
+      "errors": []
+    },
+    {
+      "workload": "focus_top_k_100",
+      "concurrency": 20,
+      "requests": 100,
+      "wall_ms": 5550.622283000001,
+      "p50_ms": 211.4964670000004,
+      "p95_ms": 415.56090700000004,
+      "max_ms": 597.651179,
+      "response_bytes": {
+        "min": 673817,
+        "max": 673826
+      },
+      "membership_rows_read": {
+        "min": 80513,
+        "max": 80513
+      },
+      "statuses": {
+        "200": 100
+      },
+      "returned": [
+        100
+      ],
+      "exact_eligible": [
+        10967
+      ],
+      "suppressed": [
+        10867
+      ],
+      "errors": []
+    },
+    {
+      "workload": "focus_dense_accumulated",
+      "concurrency": 20,
+      "requests": 100,
+      "wall_ms": 5550.622283000001,
+      "p50_ms": 205.2942949999997,
+      "p95_ms": 347.40137700000014,
+      "max_ms": 446.0466429999997,
+      "response_bytes": {
+        "min": 673836,
+        "max": 673845
+      },
+      "membership_rows_read": {
+        "min": 80513,
+        "max": 80513
+      },
+      "statuses": {
+        "200": 100
+      },
+      "returned": [
+        100
+      ],
+      "exact_eligible": [
+        10967
+      ],
+      "suppressed": [
+        10867
+      ],
+      "errors": []
+    },
+    {
+      "workload": "explain",
+      "concurrency": 20,
+      "requests": 100,
+      "wall_ms": 5550.622283000001,
+      "p50_ms": 2.3680340000000797,
+      "p95_ms": 6.971187999999984,
+      "max_ms": 9.617717000000084,
+      "response_bytes": {
+        "min": 3031,
+        "max": 3041
+      },
+      "membership_rows_read": {
+        "min": 200,
+        "max": 200
+      },
+      "statuses": {
+        "200": 100
+      },
+      "returned": [
+        1
+      ],
+      "exact_eligible": [
+        1
+      ],
+      "suppressed": [
+        null
+      ],
+      "errors": []
+    },
+    {
+      "workload": "search",
+      "concurrency": 20,
+      "requests": 100,
+      "wall_ms": 5550.622283000001,
+      "p50_ms": 53.11001800000008,
+      "p95_ms": 112.72139500000048,
+      "max_ms": 178.67763299999933,
+      "response_bytes": {
+        "min": 15041,
+        "max": 15050
+      },
+      "membership_rows_read": {
+        "min": 8001,
+        "max": 8001
+      },
+      "statuses": {
+        "200": 100
+      },
+      "returned": [
+        60
+      ],
+      "exact_eligible": [
+        null
+      ],
+      "suppressed": [
+        null
+      ],
+      "errors": []
+    }
+  ]
+}

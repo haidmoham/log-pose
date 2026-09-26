@@ -1,0 +1,115 @@
+{
+  "build_seconds": 112.9124024039993,
+  "dense_placement_members": 10000,
+  "environment": {
+    "cpu_count": 16,
+    "cpu_model": "AMD Ryzen 7 5800X 8-Core Processor",
+    "machine": "x86_64",
+    "memory_bytes": 16716034048,
+    "platform": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.43",
+    "python": "3.13.14",
+    "sqlite": "3.53.1"
+  },
+  "generator_version": "atlas-scale-v1",
+  "index_and_table_bytes": {
+    "artifact": 49152,
+    "artifact_source_year": 12288,
+    "candidate": 18665472,
+    "candidate_search_config": 4096,
+    "candidate_search_content": 4087808,
+    "candidate_search_data": 1904640,
+    "candidate_search_docsize": 540672,
+    "candidate_search_idx": 4096,
+    "membership": 2898796544,
+    "membership_placement_candidate": 504143872,
+    "metadata": 4096,
+    "placement": 1544192,
+    "placement_artifact_category": 1552384,
+    "sqlite_autoindex_candidate_1": 1400832,
+    "sqlite_schema": 4096,
+    "sqlite_stat1": 4096
+  },
+  "manifest": {
+    "build_id": "d91b59d4d5c66233b5e2fd2485d63e365e6da444ddc09647014ab30acf616018",
+    "clocks": {
+      "inventory": {
+        "field": "inventory_year",
+        "precision": "year"
+      }
+    },
+    "counts": {
+      "artifacts": 64,
+      "candidates": 50000,
+      "input_worklist_pairs": 0,
+      "memberships": 5000000,
+      "placements": 8192,
+      "supporting_occurrences": 5000000
+    },
+    "database": "d91b59d4d5c66233b5e2fd2485d63e365e6da444ddc09647014ab30acf616018.sqlite",
+    "database_bytes": 3432722432,
+    "database_sha256": "9e715edde18cc6f0227daebcfa30b14682809cf956abf13ca52d9bf0909df50f",
+    "generator": {
+      "candidates": 50000,
+      "categories": 128,
+      "dense": 10000,
+      "memberships": 5000000,
+      "revisions": 64,
+      "seed": 1102,
+      "version": "atlas-scale-v1"
+    },
+    "input_hashes": {
+      "synthetic_fixture": "0f57240cd7bf00c4fcd7394850fac19a706e504d6d326cd893902e737f7d125d"
+    },
+    "limitations": [
+      "Synthetic scale fixture; no row describes a real entity or relationship.",
+      "Direct streaming writer does not measure canonical Python exporter memory."
+    ],
+    "schema_version": "1.0",
+    "synthetic": true,
+    "versions": {
+      "layout": "atlas-address-v1",
+      "membership": "synthetic-atlas-scale-v1",
+      "query": "atlas-query-v1",
+      "snapshot": "synthetic-scale-v1"
+    }
+  },
+  "parameters": {
+    "candidates": 50000,
+    "categories": 128,
+    "dense": 10000,
+    "memberships": 5000000,
+    "revisions": 64,
+    "seed": 1102
+  },
+  "peak_rss_bytes": 301998080,
+  "query_plans": {
+    "candidate_placements": [
+      [
+        3,
+        0,
+        82,
+        "SEARCH membership USING PRIMARY KEY (candidate_id=?)"
+      ]
+    ],
+    "focus_members": [
+      [
+        3,
+        0,
+        106,
+        "SEARCH membership USING COVERING INDEX membership_placement_candidate (placement_id=?)"
+      ]
+    ],
+    "search": [
+      [
+        3,
+        0,
+        156,
+        "SCAN candidate_search VIRTUAL TABLE INDEX 0:M2"
+      ]
+    ]
+  },
+  "receipt_schema": "atlas-scale-build-v1",
+  "status": "built",
+  "synthetic": true,
+  "tier": "s2"
+}
