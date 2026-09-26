@@ -11,13 +11,9 @@ const require = createRequire(import.meta.url);
 const { handleMarketField } = require('../api/market-field.js');
 const commitSha = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
 const expected = loadExpected(commitSha);
-const assetPaths = new Map(expected.assets.map(asset => [asset.pathname,
-  asset.name === 'html' ? 'web/index.html'
-    : asset.name === 'app' ? 'web/app.js'
-      : asset.name === 'field-view' ? 'web/discovery-topology-view.js'
-        : asset.name === 'dashboard' ? 'web/dashboard.json' : 'web/data/index.json']));
+const assetPaths = new Map(expected.assets.map(asset => [asset.pathname, asset.source_path]));
 
-function fakeFetch({ staleApp = false, protectedUnique = false } = {}) {
+function fakeFetch({ staleApp = false, staleAtlas = false, protectedUnique = false } = {}) {
   return async input => {
     const url = new URL(input);
     if (protectedUnique && url.hostname.endsWith('.vercel.app') &&
@@ -28,7 +24,8 @@ function fakeFetch({ staleApp = false, protectedUnique = false } = {}) {
     const assetPath = assetPaths.get(url.pathname === '/' ? '/' : url.pathname);
     if (assetPath) {
       const bytes = execFileSync('git', ['show', `${commitSha}:${assetPath}`]);
-      if (staleApp && url.pathname === '/app.js') bytes[0] ^= 1;
+      if ((staleApp && url.pathname === '/app.js') ||
+          (staleAtlas && url.pathname === '/atlas-view.js')) bytes[0] ^= 1;
       return new Response(bytes, { status: 200 });
     }
     if (url.pathname === '/api/market-field') {
@@ -51,6 +48,15 @@ test('one stale served asset fails even when the API still has the right graph',
     fakeFetch({ staleApp: true }));
   assert.equal(result.passed, false);
   assert(result.checks.some(check => check.name === 'app' && !check.passed));
+});
+
+test('a stale atlas route fails while the legacy app and graph still match', async () => {
+  const result = await verifySite('https://logpose.mhaider.dev/', expected,
+    fakeFetch({ staleAtlas: true }));
+  assert.equal(result.passed, false);
+  assert(result.checks.some(check => check.name === 'atlas-view' && !check.passed));
+  assert(result.checks.some(check => check.name === 'app' && check.passed));
+  assert(result.checks.some(check => check.name === 'api-source-inspector' && check.passed));
 });
 
 test('release report records protected unique URL and still requires public exact bytes', async () => {

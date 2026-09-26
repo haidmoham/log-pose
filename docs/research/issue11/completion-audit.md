@@ -115,3 +115,13 @@ the user chose bundled SQLite and withdrew Railway provisioning. no paid
 resource, acquisition-cap expansion, other semantic acceptance, or future main
 merge is authorized by this audit. required PR gates and publication approval
 still apply. independent implementation can continue while review is pending.
+
+## release-check follow-up in PR #17
+
+the follow-up implementation adds exact-commit atlas asset hashes to the HTTP
+check, a real inventory top-100 browser assertion, and unavailable-build,
+retry and history-recovery assertions for both atlas layers. the benchmark's
+small contract test now joins `test:atlas` in the required CI job. focused
+checker tests pass locally. the expanded browser checks still need CI and
+post-merge deployment verification; this does not retroactively widen the
+older production receipts above.
