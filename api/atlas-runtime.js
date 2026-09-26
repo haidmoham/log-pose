@@ -1,6 +1,7 @@
 'use strict';
 
 let postgresHandler;
+let reviewedHandler;
 
 function poolOptions(environment = process.env) {
   const url = new URL(environment.ATLAS_DATABASE_URL);
@@ -22,6 +23,15 @@ function poolOptions(environment = process.env) {
 }
 
 async function readAtlas(parameters) {
+  const layers = parameters.getAll('layer');
+  if (layers.length > 1 || (layers.length && !['inventory', 'reviewed'].includes(layers[0]))) {
+    return { status: 400, body: { error: 'invalid_layer', message: 'choose inventory or reviewed claims' } };
+  }
+  if (layers[0] === 'reviewed') {
+    // Reviewed evidence has an independent immutable build and publication clock.
+    reviewedHandler ||= require('./atlas-reviewed.js').createReviewedAtlasHandler();
+    return reviewedHandler(parameters);
+  }
   if (process.env.ATLAS_READ_SERVICE_URL) return remoteRead(parameters);
   if (!process.env.ATLAS_DATABASE_URL) return require('./atlas.js').handleAtlas(parameters);
   try {
@@ -64,6 +74,7 @@ async function remoteRead(parameters) {
 }
 
 readAtlas.close = async () => {
+  if (reviewedHandler) { reviewedHandler.close(); reviewedHandler = null; }
   if (postgresHandler) { await postgresHandler.close(); postgresHandler = null; }
   require('./atlas.js').handleAtlas.close();
 };

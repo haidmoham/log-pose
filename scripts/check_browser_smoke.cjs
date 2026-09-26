@@ -75,6 +75,32 @@ async function main() {
     }, { rowId: sourceRowId, hash: sourceHash }, { timeout: 30000 });
     report.checks.push({ name: 'source-row-drill', passed: true,
       source_row_id: sourceRowId, artifact_sha256: sourceHash });
+    const reviewedManifest = JSON.parse(execFileSync('git', ['show',
+      `${commitSha}:api/data/atlas-reviewed/current.json`]));
+    const reviewedUrl = new URL('/atlas.html', baseUrl);
+    reviewedUrl.search = new URLSearchParams({ layer: 'reviewed', entity: 'snowflake',
+      neighbor: 'dbt-labs', cutoff: '2022-02-24', build_id: reviewedManifest.build_id }).toString();
+    await page.goto(reviewedUrl.href, { waitUntil: 'domcontentloaded', timeout: 30000 });
+    await page.locator('#atlas-inspector .atlas-claim').nth(1).waitFor({ state: 'visible', timeout: 30000 });
+    const reviewedInspector = await page.locator('#atlas-inspector').innerText();
+    assert(reviewedInspector.includes('announced partnership with'), 'partnership claim missing');
+    assert(reviewedInspector.includes('invested in'), 'financing claim missing');
+    assert(reviewedInspector.includes('64694c906f3c8be8b3fd90d88725fe3598a896533adf3123a24dc684610ffece'), 'reviewed source hash missing');
+    assert(reviewedInspector.includes('no reviewed inventory candidate mapping'), 'external entity label missing');
+    assert.equal(await page.locator('#atlas-frame-label').getAttribute('data-frame-id'),
+      await page.locator('#atlas-inspector').getAttribute('data-frame-id'), 'reviewed graph and inspector frame');
+    assert.equal(await page.locator('.constellation-node').count(), 2, 'reviewed graph node count');
+    report.checks.push({ name: 'reviewed-claims-deep-link', passed: true, build_id: reviewedManifest.build_id,
+      claims: 2, clock: 'source_publication', review_lens: 'current_accepted_at_build' });
+    await page.locator('#atlas-inspector a[href*="dataFamily=topology"]').first().click();
+    await page.waitForFunction(() => {
+      const params = new URLSearchParams(window.location.search);
+      const body = document.querySelector('#data-inspector .data-inspector-body');
+      return params.get('dataRecord') === 'dbt-labs-announced-partnership-snowflake-2022'
+        && body?.textContent.includes('review history')
+        && body?.querySelector('a[href*="dbt-labs-raises-222m"]');
+    }, null, { timeout: 30000 });
+    report.checks.push({ name: 'reviewed-claim-source-trail', passed: true });
     assert.deepEqual(report.page_errors, [], 'uncaught browser errors');
     report.status = 'passed';
   } catch (error) {

@@ -13,6 +13,27 @@
       temporal_mode: result.selection.temporal_mode, nodes, focus: focused ? result.focus.id : '',
       focus_present: result.focus_status === 'observed', edges: focused ? result.edges : [], context_edges: [] };
   }
+  function reviewedGraphFrame(result) {
+    const focused = result.operation === 'focus';
+    const entities = focused ? result.edges.map(edge => ({ ...edge.neighbor, position: edge.position,
+      connection_label: `${edge.claim_count} reviewed ${edge.claim_count === 1 ? 'claim' : 'claims'}` })) : result.entities;
+    const nodes = entities.map(entity => ({ ...entity, position: displayPosition(entity.position),
+      identity_label: entity.target_kind === 'reviewed_external_entity'
+        ? 'reviewed entity; no reviewed inventory mapping' : 'reviewed entity with an explicit inventory identity link' }));
+    if (focused) nodes.push({ ...result.focus, position: displayPosition(result.focus.position),
+      identity_label: 'reviewed entity; source publication is not relationship validity' });
+    return { build_id: result.versions.layout, source: 'reviewed', nodes,
+      focus: focused ? result.focus.id : '', focus_present: true,
+      edges: focused ? result.edges.map(edge => ({ ...edge, candidate_id: edge.neighbor_id })) : [],
+      context_edges: [], semantics: {
+        sceneLabel: 'reviewed claim constellation',
+        eyebrow: `reviewed claims / ${result.selection.cutoff ? `sources through ${result.selection.cutoff}` : 'all retained source dates'}`,
+        overviewTitle: 'reviewed entities', focusCountLabel: 'visible neighbors',
+        overviewCountLabel: 'reviewed entities', focusKind: 'reviewed entity',
+        neighborKind: 'reviewed claims',
+        legend: [['solid', 'eligible claims']]
+      } };
+  }
   function createCache(maxBytes = 3 * 1024 * 1024) {
     const entries = new Map();
     let bytes = 0;
@@ -37,5 +58,5 @@
       usage() { return { bytes, entries: entries.size, max_bytes: maxBytes }; }
     };
   }
-  root.LogPoseAtlasModel = { graphFrame, createCache };
+  root.LogPoseAtlasModel = { graphFrame, reviewedGraphFrame, createCache };
 })(globalThis);

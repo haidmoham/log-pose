@@ -28,6 +28,20 @@ composes controls and requests using `console-ui.js` and `temporal-graph.js`.
 see [the query contract](atlas-service.md), [record grains](atlas-membership.md),
 [publication contract](atlas-snapshots.md), and [measured frontier](atlas-scale.md).
 
+`layer=reviewed` loads `atlas-reviewed-view.js` only after layer selection. the
+runtime routes it to `atlas-reviewed.js` and an independent bundled SQLite build,
+including when an external inventory provider is configured. its builder reads
+the accepted topology export and explicit reviewed identity links, verifies
+retained source bodies, and publishes a gold derivative. it never writes reviews.
+the browser uses the pure `reviewedGraphFrame` adapter and the shared renderer's
+optional labels and fit scale. inventory defaults stay compatible. source
+publication, current accepted review state, and inventory observation year are
+separate contracts; switching layers starts a new document and query context.
+focus groups claims by neighbor for bounded navigation; the inspector preserves
+each predicate, direction, premise, source hash and review. a source cutoff never
+asserts relationship activity or historical review replay. see
+[reviewed atlas snapshots](atlas-reviewed.md).
+
 `atlas_postgres.py` validates and streams an immutable snapshot into the additive
 `014_atlas_postgres.sql` schema. migration `015` gates serving readiness: an
 import commits as unpublished, runs explicit VACUUM/ANALYZE, then reconciles

@@ -2,7 +2,7 @@
 
 These local measurements use deterministic synthetic inventory rows. They test the Postgres gold representation and async Node handler. They do not measure Railway, network latency, browser rendering, real market coverage, or relationship truth.
 
-The 687 MB S1 SQLite snapshot cannot fit the 250 MB Vercel function bundle limit. The external Postgres representation addresses that storage blocker, but these local measurements do not prove hosted connectivity or latency.
+The 687 MB S1 SQLite snapshot exceeds Vercel's standard 250 MB function bundle limit. An eligible 5 GB Large Functions beta is now documented but has not been enabled or measured here. The external Postgres representation offers another deployment path; these local measurements do not prove hosted connectivity or latency. The user chose to keep bundled SQLite for the hobby deployment; see [backend cost](atlas-backend-cost.md).
 
 Generator `atlas-scale-v2` keeps the prior S1 and S2 shapes while emitting the complete current snapshot manifest. The unchanged production validator checks each SQLite checksum, logical build ID, foreign keys, counts, FTS alignment, placement totals, and retained occurrence rows. Old v1 fixtures and receipts remain unchanged.
 
