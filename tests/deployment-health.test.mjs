@@ -41,6 +41,7 @@ test('exact committed assets, graph build, and source inspector pass together', 
   assert.equal(result.passed, true);
   assert(result.checks.some(check => check.name === 'html' && check.passed));
   assert(result.checks.some(check => check.name === 'console-html' && check.passed));
+  assert(result.checks.some(check => check.name === 'atlas-client' && check.passed));
   assert(result.checks.some(check => check.name === 'direct-deep-link' && check.passed));
   assert(result.checks.some(check => check.name === 'api-source-inspector' && check.passed));
 });

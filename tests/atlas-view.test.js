@@ -30,7 +30,7 @@ function page(t, query = '', delay = async () => {}) {
     const result = handleAtlas(params);
     return { ok: result.status === 200, status: result.status, json: async () => result.body };
   };
-  for (const script of ['console-ui.js', 'research-model.js', 'temporal-graph.js', 'atlas-model.js', 'atlas-view.js']) {
+  for (const script of ['console-ui.js', 'research-model.js', 'temporal-graph.js', 'atlas-model.js', 'atlas-client.js', 'atlas-view.js']) {
     dom.window.eval(fs.readFileSync(path.join(root, 'web', script), 'utf8'));
   }
   t.after(() => { dom.window.dispatchEvent(new dom.window.Event('pagehide')); dom.window.close(); assert.deepEqual(errors, []); });
