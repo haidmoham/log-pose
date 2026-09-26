@@ -13,6 +13,12 @@ selectors. each layer must use one immutable build within an investigation;
 cutoffs can differ for comparison. a cross-layer identity link is explicit
 present-day navigation. a joined path does not create an accepted claim.
 
+reviewed `traverse` reads can save one cycle-safe path of at most three hops.
+each hop retains its typed accepted claims and source premises under one
+publication cutoff, basis, predicate and direction. path order is deterministic
+and bounded to 100 visited entities. a missing or budget-exhausted path remains
+a query result, not evidence that a relationship is absent.
+
 legacy `export_investigation` keeps its inventory-only contract. the new format
 is `atlas-layered-investigation-v1`; it has `layer_builds` and `reads` instead of
 one global build and clock. notes, uncertainty and counterevidence remain

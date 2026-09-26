@@ -251,6 +251,67 @@ function createReviewedAtlasHandler(root = path.join(__dirname, 'data/atlas-revi
       returned: page.length, count: { status: 'exact', value: rows.length, grain: 'claim' },
       next_cursor: offset + limit < rows.length ? encodeCursor(binding, offset + limit) : null };
   }
+  function traversalClaims(store, claimIds, budget) {
+    return claimIds.map(id => {
+      const row = store.database.prepare('SELECT * FROM claim WHERE id=?').get(id);
+      if (!row) throw new ReviewedAtlasError(503, 'snapshot_invalid', 'reviewed path claim is absent');
+      budget.add(1);
+      return fullClaim(store, row, budget);
+    });
+  }
+  function traverse(store, params, selected, budget = workBudget()) {
+    const start = resolve(store, params); const target = parameter(params, 'target');
+    if (!target) throw new ReviewedAtlasError(400, 'invalid_request', 'target is required');
+    descriptor(store, target);
+    const maxHops = integer(params, 'hops', 2, 3);
+    const queue = [{ id: start, path: [] }]; const visited = new Set([start]);
+    while (queue.length) {
+      const current = queue.shift();
+      if (current.id === target) {
+        const path = current.path.map(edge => ({ from: edge.from, to: edge.to,
+          claim_ids: edge.claim_ids, claims: traversalClaims(store, edge.claim_ids, budget) }));
+        const base = common(store, 'traverse', selected, start);
+        base.receipt_id = digest({ build_id: store.manifest.build_id, selection: selected,
+          resolved_entity: start, operation: 'traverse', target, max_hops: maxHops });
+        return { ...base, status: 'found', start: descriptor(store, start), target: descriptor(store, target),
+          path, hops: path.length, visited: visited.size, exhaustive: false,
+          selection_policy: 'breadth_first_neighbor_id_ascii_asc_then_claim_id_ascii_asc',
+          meaning: 'a path groups eligible accepted claims; it does not establish a direct relationship' };
+      }
+      if (current.path.length === maxHops) continue;
+      const filter = where(selected, current.id);
+      const rows = boundedMetadata(store,
+        `SELECT id,subject_id,object_id FROM claim ${filter.sql} ORDER BY id`, filter.values, budget);
+      const groups = new Map();
+      for (const row of rows) {
+        const neighbor = row.subject_id === current.id ? row.object_id : row.subject_id;
+        if (!groups.has(neighbor)) groups.set(neighbor, []);
+        groups.get(neighbor).push(row.id);
+      }
+      for (const neighbor of [...groups.keys()].sort()) {
+        if (visited.has(neighbor)) continue;
+        if (visited.size >= 100) {
+          const base = common(store, 'traverse', selected, start);
+          base.receipt_id = digest({ build_id: store.manifest.build_id, selection: selected,
+            resolved_entity: start, operation: 'traverse', target, max_hops: maxHops });
+          return { ...base, status: 'visited_entity_budget_exhausted', start: descriptor(store, start),
+            target: descriptor(store, target), path: null, hops: maxHops, visited: visited.size,
+            exhaustive: false, selection_policy: 'breadth_first_neighbor_id_ascii_asc_then_claim_id_ascii_asc',
+            meaning: 'the bounded search ended without inferring a relationship or reporting absence' };
+        }
+        visited.add(neighbor);
+        queue.push({ id: neighbor, path: [...current.path,
+          { from: current.id, to: neighbor, claim_ids: groups.get(neighbor) }] });
+      }
+    }
+    const base = common(store, 'traverse', selected, start);
+    base.receipt_id = digest({ build_id: store.manifest.build_id, selection: selected,
+      resolved_entity: start, operation: 'traverse', target, max_hops: maxHops });
+    return { ...base, status: 'not_found_within_hop_limit', start: descriptor(store, start),
+      target: descriptor(store, target), path: null, hops: maxHops, visited: visited.size,
+      exhaustive: true, selection_policy: 'breadth_first_neighbor_id_ascii_asc_then_claim_id_ascii_asc',
+      meaning: 'no eligible path was found in this bounded publication-time scope; this is not relationship absence' };
+  }
   function handle(params) {
     try {
       const started = performance.now();
@@ -280,6 +341,7 @@ function createReviewedAtlasHandler(root = path.join(__dirname, 'data/atlas-revi
           returned: page.length, count: { status: 'exact', value: count, grain: 'entity' }, next_cursor: offset + limit < count ? encodeCursor(binding, offset + limit) : null };
       } else if (mode === 'focus') body = focus(store, params, selected);
       else if (mode === 'explain') body = explain(store, params, selected);
+      else if (mode === 'traverse') body = traverse(store, params, selected);
       else if (mode === 'compare') {
         const entity = resolve(store, params); const compareCutoff = parameter(params, 'compare_cutoff');
         if (!validDate(compareCutoff)) throw new ReviewedAtlasError(400, 'invalid_request', 'invalid compare_cutoff');
