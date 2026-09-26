@@ -12,7 +12,8 @@ const { handleMarketField } = require('../api/market-field.js');
 const commitSha = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
 const expected = loadExpected(commitSha);
 const assetPaths = new Map(expected.assets.map(asset => [asset.pathname,
-  asset.name === 'html' ? 'web/index.html'
+  asset.name === 'html' ? 'web/atlas.html'
+    : asset.name === 'console-html' ? 'web/index.html'
     : asset.name === 'app' ? 'web/app.js'
       : asset.name === 'field-view' ? 'web/discovery-topology-view.js'
         : asset.name === 'dashboard' ? 'web/dashboard.json' : 'web/data/index.json']));
@@ -42,6 +43,8 @@ function fakeFetch({ staleApp = false, protectedUnique = false } = {}) {
 test('exact committed assets, graph build, and source inspector pass together', async () => {
   const result = await verifySite('https://logpose.mhaider.dev/', expected, fakeFetch());
   assert.equal(result.passed, true);
+  assert(result.checks.some(check => check.name === 'html' && check.passed));
+  assert(result.checks.some(check => check.name === 'console-html' && check.passed));
   assert(result.checks.some(check => check.name === 'direct-deep-link' && check.passed));
   assert(result.checks.some(check => check.name === 'api-source-inspector' && check.passed));
 });
