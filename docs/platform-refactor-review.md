@@ -57,9 +57,9 @@ at their call sites.
 local results: 57 atlas tests passed (3 database checks skipped), 109 dashboard
 tests passed, and 11 saved-read tests passed. both snapshot validators passed.
 changed JavaScript has no lint findings; the full repository baseline retains
-20 existing errors and 8 warnings. exact-commit deployment tests and the real
-browser smoke run are checked after committing the new client asset. required
-CI and Vercel results are recorded on the refactor pull request.
+20 existing errors and 8 warnings. all 7 exact-commit deployment tests and 12 real-browser smoke checks passed,
+with no page errors. required CI and Vercel results are recorded on the refactor
+pull request; they include the disposable-database checks skipped locally.
 
 this is a structural refactor, with no measured speedup claim. it adds one small
 browser script request and no dependency. retained data and applied SQL are
