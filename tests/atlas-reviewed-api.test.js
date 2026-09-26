@@ -19,9 +19,10 @@ test('discover reports the independently versioned accepted lens', () => {
   const response = request('mode=discover');
   assert.equal(response.status, 200);
   assert.equal(response.body.review_lens, 'current_accepted_at_build');
-  assert.equal(response.body.counts.claims, 4);
+  assert.equal(response.body.counts.claims, 5);
   assert.deepEqual(response.body.predicates.map(row => row.id),
-    ['announced_partnership_with', 'invested_in', 'named_competitor_of', 'shared_exposure_hypothesis']);
+    ['announced_partnership_with', 'integrates_with', 'invested_in',
+      'named_competitor_of', 'shared_exposure_hypothesis']);
   assert.equal(response.body.predicates.at(-1).count, 0);
   assert.equal(response.body.predicates.at(-1).total_count, 1);
 });
@@ -47,11 +48,20 @@ test('explain retains multiple typed claims, direction, reviews, and external id
   assert.equal(response.status, 200);
   assert.equal(response.body.neighbor.target_kind, 'reviewed_external_entity');
   assert.deepEqual(response.body.claims.map(claim => claim.predicate),
-    ['announced_partnership_with', 'invested_in']);
-  assert.deepEqual(response.body.claims.map(claim => claim.direction), ['symmetric', 'subject_to_object']);
+    ['announced_partnership_with', 'integrates_with', 'invested_in']);
+  assert.deepEqual(response.body.claims.map(claim => claim.direction),
+    ['symmetric', 'subject_to_object', 'subject_to_object']);
   assert.ok(response.body.claims.every(claim => claim.sources[0].artifact_sha256 && claim.review_history.length === 1));
   assert.equal(response.body.frame_id,
     request('mode=focus&entity=snowflake&cutoff=2022-02-24').body.frame_id);
+});
+
+test('the retained old reviewed build keeps the two-claim snowflake dbt frame', () => {
+  const build = 'bb773ae69b9991bed00afcf39948e66660eb4d5d51b8037be174ef273d30e7e7';
+  const response = request(`mode=explain&entity=snowflake&neighbor=dbt-labs&cutoff=2022-02-24&build_id=${build}`);
+  assert.equal(response.status, 200);
+  assert.deepEqual(response.body.claims.map(claim => claim.predicate),
+    ['announced_partnership_with', 'invested_in']);
 });
 
 test('identity mismatch, unsupported clocks and unknown candidates fail explicitly', () => {
@@ -108,6 +118,106 @@ test('compare reports publication availability and never activity', () => {
   assert.match(response.body.caveat, /not relationship activity/);
   const other = request('mode=compare&entity=datadog&basis=all&compare_cutoff=2025-02-20&cutoff=2025-02-20');
   assert.notEqual(other.body.frame_id, response.body.frame_id);
+});
+
+test('typed traversal is cycle safe, deterministic and retains exact evidence', () => {
+  const first = request('mode=traverse&entity=snowflake&target=dbt-labs&hops=3&cutoff=2022-02-24');
+  const second = request('mode=traverse&entity=snowflake&target=dbt-labs&hops=3&cutoff=2022-02-24');
+  assert.equal(first.status, 200);
+  assert.equal(first.body.status, 'found');
+  assert.equal(first.body.hops, 1);
+  assert.deepEqual(first.body.path, second.body.path);
+  assert.deepEqual(first.body.path[0].claim_ids, [
+    'dbt-labs-announced-partnership-snowflake-2022',
+    'proposal:dbt-labs-integrates-with-snowflake-products:20260926',
+    'snowflake-invested-in-dbt-labs-series-d-2022']);
+  assert.deepEqual(first.body.path[0].claims.map(claim => claim.direction),
+    ['symmetric', 'subject_to_object', 'subject_to_object']);
+  assert.ok(first.body.path[0].claims.every(claim => claim.sources[0].artifact_sha256
+    && claim.review_history.length === 1));
+  const entities = [first.body.start.id, ...first.body.path.map(edge => edge.to)];
+  assert.equal(new Set(entities).size, entities.length);
+  assert.match(first.body.meaning, /does not establish a direct relationship/);
+});
+
+test('traversal honors direction, predicate, publication cutoff and hop scope', () => {
+  const incoming = request('mode=traverse&entity=elastic&target=datadog&direction=in&hops=1');
+  assert.equal(incoming.body.status, 'found');
+  assert.deepEqual(incoming.body.path[0].claim_ids,
+    ['datadog-named-competitor-elastic-log-management-2024']);
+  const outgoing = request('mode=traverse&entity=elastic&target=datadog&direction=out&hops=1');
+  assert.equal(outgoing.body.status, 'not_found_within_hop_limit');
+  assert.equal(outgoing.body.exhaustive, true);
+  const filtered = request('mode=traverse&entity=snowflake&target=dbt-labs&hops=1'
+    + '&predicate=invested_in&direction=out&cutoff=2022-02-24');
+  assert.equal(filtered.body.status, 'found');
+  assert.deepEqual(filtered.body.path[0].claim_ids,
+    ['snowflake-invested-in-dbt-labs-series-d-2022']);
+  const beforePremise = request('mode=traverse&entity=datadog&target=snowflake&hops=1'
+    + '&basis=hypothesis&cutoff=2025-02-19');
+  assert.equal(beforePremise.body.status, 'not_found_within_hop_limit');
+  const onPremise = request('mode=traverse&entity=datadog&target=snowflake&hops=1'
+    + '&basis=hypothesis&cutoff=2025-02-20');
+  assert.equal(onPremise.body.status, 'found');
+  assert.equal(onPremise.body.path[0].claims[0].sources.length, 2);
+  const tooShallow = request('mode=traverse&entity=datadog&target=dbt-labs&hops=1&basis=all');
+  assert.equal(tooShallow.body.status, 'not_found_within_hop_limit');
+  const enough = request('mode=traverse&entity=datadog&target=dbt-labs&hops=2&basis=all');
+  assert.equal(enough.body.status, 'found');
+  assert.equal(enough.body.path.length, 2);
+  assert.equal(request('mode=traverse&entity=datadog&target=dbt-labs&hops=4').status, 400);
+});
+
+test('traversal reports its visited-entity budget without claiming absence', () => {
+  const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'atlas-reviewed-traversal-'));
+  fs.cpSync(root, temporary, { recursive: true });
+  const manifestPath = path.join(temporary, 'current.json');
+  const manifest = JSON.parse(fs.readFileSync(manifestPath));
+  const databasePath = path.join(temporary, manifest.database);
+  const database = new DatabaseSync(databasePath);
+  const insertEntity = database.prepare('INSERT INTO entity(id,name,target_kind,detail_json) VALUES(?,?,?,?)');
+  const insertClaim = database.prepare(`INSERT INTO claim
+    (id,subject_id,object_id,predicate,direction,status,latest_source_date,detail_json)
+    VALUES(?,?,?,?,?,?,?,?)`);
+  database.exec('BEGIN');
+  insertEntity.run('zz-target', 'unreachable target', 'reviewed_external_entity', '{}');
+  for (let index = 0; index < 101; index += 1) {
+    const entity = `fanout-${String(index).padStart(3, '0')}`;
+    insertEntity.run(entity, entity, 'reviewed_external_entity', '{}');
+    insertClaim.run(`fanout-claim-${String(index).padStart(3, '0')}`, 'datadog', entity,
+      'named_competitor_of', 'subject_to_object', 'documented', '2025-02-20', '{}');
+  }
+  database.exec('COMMIT'); database.close();
+  const bytes = fs.readFileSync(databasePath);
+  manifest.database_bytes = bytes.length;
+  manifest.database_sha256 = crypto.createHash('sha256').update(bytes).digest('hex');
+  fs.writeFileSync(manifestPath, JSON.stringify(manifest));
+  const handler = createReviewedAtlasHandler(temporary);
+  try {
+    const found = handler(new URLSearchParams(
+      'mode=traverse&entity=datadog&target=fanout-000&hops=1'));
+    assert.equal(found.status, 200);
+    assert.equal(found.body.status, 'found');
+    assert.deepEqual(found.body.path[0].claim_ids, ['fanout-claim-000']);
+    // The retained elastic neighbor sorts before the synthetic fanout.
+    assert.equal(found.body.visited, 3);
+    const boundary = handler(new URLSearchParams(
+      'mode=traverse&entity=datadog&target=fanout-097&hops=1'));
+    assert.equal(boundary.body.status, 'found');
+    assert.equal(boundary.body.visited, 100);
+    const pastBoundary = handler(new URLSearchParams(
+      'mode=traverse&entity=datadog&target=fanout-098&hops=1'));
+    assert.equal(pastBoundary.body.status, 'visited_entity_budget_exhausted');
+    assert.equal(pastBoundary.body.visited, 100);
+    const response = handler(new URLSearchParams(
+      'mode=traverse&entity=datadog&target=zz-target&hops=1'));
+    assert.equal(response.status, 200);
+    assert.equal(response.body.status, 'visited_entity_budget_exhausted');
+    assert.equal(response.body.visited, 100);
+    assert.equal(response.body.path, null);
+    assert.equal(response.body.exhaustive, false);
+    assert.match(response.body.meaning, /without inferring.*absence/);
+  } finally { handler.close(); fs.rmSync(temporary, { recursive: true, force: true }); }
 });
 
 test('dense claim work fails before detail materialization', () => {

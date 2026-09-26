@@ -106,7 +106,12 @@
 
   function base(mode, extra = {}) {
     const fields = { mode, build_id: manifest.build_id, ...selection(), ...extra };
-    if (mode === 'focus') fields.top_k = byId('atlas-top-k').value;
+    if (mode === 'focus') {
+      fields.top_k = byId('atlas-top-k').value;
+      // The focus page and its ranked selection are one visible graph. Keep the
+      // independent API page limit aligned with the user's connection budget.
+      fields.limit = byId('atlas-top-k').value;
+    }
     return fields;
   }
 

@@ -1,0 +1,116 @@
+{
+  "schema_version": "1.0",
+  "status": "passed",
+  "base_url": "http://127.0.0.1:8097/",
+  "expected_sha": "587ba1381b45685367eda15b98e9db58d7e0dd9e",
+  "checks": [
+    {
+      "name": "browser-api-build",
+      "passed": true,
+      "build_id": "0c15e1ce1a92738173af8d94f7f89a2175d5c267f93e87f35a2b3ec01756d338"
+    },
+    {
+      "name": "direct-deep-link",
+      "passed": true
+    },
+    {
+      "name": "exact-source-inspector",
+      "passed": true,
+      "source_row_buttons": 4
+    },
+    {
+      "name": "source-row-drill",
+      "passed": true,
+      "source_row_id": "2a3de0564d73c91e7760",
+      "artifact_sha256": "f1036cb6b8e9b9ef7647a0203ac349ba308173bf407f79cc8ccd4d4a2e7d46fd"
+    },
+    {
+      "name": "inventory-top100-deep-link",
+      "passed": true,
+      "build_id": "990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5",
+      "nodes": 101,
+      "neighbors": 100
+    },
+    {
+      "name": "inventory-missing-build-retry-recovery",
+      "passed": true,
+      "recovered_frame_id": "7a7ec70e3c0883408845f73da798c6c6fb74cc6ff2565ab8029ad3c804963f53",
+      "nodes": 101
+    },
+    {
+      "name": "reviewed-claims-deep-link",
+      "passed": true,
+      "build_id": "710ab7d36a1cca9fc0f55b0c18ba42b963245268f4d614e0089fea2f6cde91bc",
+      "claims": 3,
+      "clock": "source_publication",
+      "review_lens": "current_accepted_at_build"
+    },
+    {
+      "name": "reviewed-missing-build-retry-recovery",
+      "passed": true,
+      "recovered_frame_id": "175c6aad21039811b7bd2ef3c5da481dfad84c860ff139b7809d86c1366c277b",
+      "nodes": 2
+    },
+    {
+      "name": "reviewed-claim-source-trail",
+      "passed": true
+    },
+    {
+      "name": "inventory-keyboard-touch-reduced-motion-without-webgl",
+      "passed": true,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "capabilities": {
+        "reduced_motion": true,
+        "touch_points": 1,
+        "webgl_available": false,
+        "webgl2_available": false
+      },
+      "keyboard_reached_list": true,
+      "focus_preserved_on_inspection": true,
+      "focus_preserved_on_frame_change": true,
+      "selected_touch_target": {
+        "x": 30,
+        "y": 635.265625,
+        "width": 164.5,
+        "height": 74
+      },
+      "reduced_motion_animation_calls": 0,
+      "list_frame_id": "7a7ec70e3c0883408845f73da798c6c6fb74cc6ff2565ab8029ad3c804963f53",
+      "changed_frame_id": "e0c9471f6fec8636b3c023d6a550d72921cb13993e1d9db5c4a62299736287b7",
+      "limitation": "emulated touch and reduced motion; not a physical-device or screen-reader audit"
+    },
+    {
+      "name": "reviewed-keyboard-touch-reduced-motion-without-webgl",
+      "passed": true,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "capabilities": {
+        "reduced_motion": true,
+        "touch_points": 1,
+        "webgl_available": false,
+        "webgl2_available": false
+      },
+      "keyboard_reached_list": true,
+      "focus_preserved_on_inspection": true,
+      "focus_preserved_on_frame_change": true,
+      "selected_touch_target": {
+        "x": 30,
+        "y": 1088.453125,
+        "width": 164.5,
+        "height": 74
+      },
+      "reduced_motion_animation_calls": 0,
+      "list_frame_id": "175c6aad21039811b7bd2ef3c5da481dfad84c860ff139b7809d86c1366c277b",
+      "changed_frame_id": "58ed300a9b6202561f3666dd21265ebc56ace94716106f665b03a42e165a22df",
+      "limitation": "emulated touch and reduced motion; not a physical-device or screen-reader audit"
+    }
+  ],
+  "page_errors": [],
+  "candidate_id": "004c9f6b7ecc1c48c8e4",
+  "neighbor_id": "30e05171b7a1b357ee44"
+}

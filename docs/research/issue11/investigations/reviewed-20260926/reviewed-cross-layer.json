@@ -1,0 +1,433 @@
+{
+  "cohort_query": {
+    "inventory": {
+      "artifact": "artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8",
+      "build_id": "990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5",
+      "layer": "inventory",
+      "mode": "search",
+      "query": "Snowflake",
+      "source": "cncf",
+      "temporal_mode": "snapshot",
+      "year": "2024"
+    },
+    "reviewed": {
+      "build_id": "bb773ae69b9991bed00afcf39948e66660eb4d5d51b8037be174ef273d30e7e7",
+      "candidate": "9129ab18dfd8c1058038",
+      "cutoff": "2022-02-24",
+      "entity": "snowflake",
+      "layer": "reviewed"
+    }
+  },
+  "counterevidence": [
+    {
+      "detail": "No ownership percentage, continuing relationship, integration functionality or causal path is inferred from financing or partnership.",
+      "status": "scope_limit"
+    }
+  ],
+  "cross_layer_join": "explicit_present_day_navigation_not_inference",
+  "generated_at": "2026-09-26T16:17:48.332827+00:00",
+  "geometry_use": "display_only_not_model_input",
+  "interpretation": "A reviewed identity link connects the selected inventory lead to a separate company frame. The retained announcement supports separately scoped accepted claim types; the join is navigation.",
+  "layer_builds": {
+    "inventory": "990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5",
+    "reviewed": "bb773ae69b9991bed00afcf39948e66660eb4d5d51b8037be174ef273d30e7e7"
+  },
+  "next_question": "Which separately reviewed premises can support additional technical or commercial claims?",
+  "observations": [
+    {
+      "candidate_id": "9129ab18dfd8c1058038",
+      "identity_review_id": "identity-review-02",
+      "mapping_use": "present_day_navigation_only"
+    },
+    {
+      "claim_ids": [
+        "dbt-labs-announced-partnership-snowflake-2022",
+        "snowflake-invested-in-dbt-labs-series-d-2022"
+      ],
+      "predicates": [
+        "announced_partnership_with",
+        "invested_in"
+      ]
+    }
+  ],
+  "omissions": [
+    "Only the selected CNCF revision and dbt Labs neighbor are inspected.",
+    "Other neighbors and unreviewed claims are outside this saved read.",
+    "Publication filtering does not make present-day identity mapping historical."
+  ],
+  "question": "What can the inventory and reviewed layers jointly establish about Snowflake and dbt Labs?",
+  "reads": [
+    {
+      "layer": "inventory",
+      "request": {
+        "artifact": "artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8",
+        "build_id": "990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5",
+        "clock": "inventory_year",
+        "layer": "inventory",
+        "mode": "search",
+        "query": "Snowflake",
+        "source": "cncf",
+        "temporal_mode": "snapshot",
+        "year": "2024"
+      },
+      "response": {
+        "build_id": "990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5",
+        "candidates": [
+          {
+            "candidate_tags": [
+              "data_infrastructure"
+            ],
+            "id": "9129ab18dfd8c1058038",
+            "identity_review": {
+              "candidate_ids": [
+                "9129ab18dfd8c1058038"
+              ],
+              "id": "identity-review-02",
+              "item_kind": "company_brand",
+              "pilot_slug": "snowflake",
+              "provider_name": "Snowflake",
+              "provider_relation": "company_offering",
+              "review_note": "The filing describes Snowflake's data platform as a company service.",
+              "source_url": "https://www.sec.gov/Archives/edgar/data/1640147/000164014724000101/snow-20240131.htm",
+              "source_year": 2024
+            },
+            "name": "Snowflake",
+            "position": {
+              "x": 0.5034145488178857,
+              "y": 0.7666429646235525
+            },
+            "record_type": "product_or_project_candidate"
+          }
+        ],
+        "count": {
+          "grain": "matching_candidates",
+          "reason": "paged lookup does not scan the complete matching universe",
+          "status": "unavailable",
+          "value": null
+        },
+        "frame_id": "d45ae32861f3640cb1dc7b0986bb2898aa8c4de0377363ce6e67a719bf9157d9",
+        "limitations": [
+          "inventory co-listing is an unreviewed lead, not a company relationship.",
+          "inventory years have year precision; missing observations do not establish exits.",
+          "accumulation means previously observed, not continuously valid.",
+          "identity keys and display positions are a present-day lens; system-known replay is unsupported."
+        ],
+        "next_cursor": null,
+        "operation": "search",
+        "receipt_id": "31fe647675e5bbfca29c5df8ae8f20f6098739e7cdae133178a677990d9925d7",
+        "returned": 1,
+        "schema_version": "1.0",
+        "selection": {
+          "artifact": "artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8",
+          "category": "",
+          "clock": "inventory_year",
+          "source": "cncf",
+          "temporal_mode": "snapshot",
+          "year": "2024"
+        },
+        "versions": {
+          "layout": "atlas-address-v1",
+          "membership": "1.0",
+          "query": "atlas-query-v1",
+          "snapshot": "atlas-snapshot-v1"
+        },
+        "work": {
+          "elapsed_ms": 2.0431199999999947,
+          "membership_rows_read": 8
+        }
+      }
+    },
+    {
+      "layer": "reviewed",
+      "request": {
+        "build_id": "bb773ae69b9991bed00afcf39948e66660eb4d5d51b8037be174ef273d30e7e7",
+        "candidate": "9129ab18dfd8c1058038",
+        "clock": "source_publication",
+        "cutoff": "2022-02-24",
+        "entity": "snowflake",
+        "layer": "reviewed",
+        "mode": "focus",
+        "review_lens": "current_accepted_at_build",
+        "temporal_mode": "published_through"
+      },
+      "response": {
+        "build_id": "bb773ae69b9991bed00afcf39948e66660eb4d5d51b8037be174ef273d30e7e7",
+        "count": {
+          "grain": "neighbor",
+          "status": "exact",
+          "value": 1
+        },
+        "edges": [
+          {
+            "claim_count": 2,
+            "neighbor": {
+              "candidate_links": [],
+              "entity_slug": "dbt-labs",
+              "id": "dbt-labs",
+              "name": "dbt Labs",
+              "position": {
+                "x": 0.6492831384877867,
+                "y": 0.6116668939617618
+              },
+              "target_kind": "reviewed_external_entity"
+            },
+            "neighbor_id": "dbt-labs",
+            "position": {
+              "x": 0.38400086583197135,
+              "y": 0.5143798830719618
+            }
+          }
+        ],
+        "eligible_claim_count": 2,
+        "focus": {
+          "candidate_links": [
+            {
+              "candidate_id": "9129ab18dfd8c1058038",
+              "identity_review_id": "identity-review-02"
+            }
+          ],
+          "entity_slug": "snowflake",
+          "id": "snowflake",
+          "name": "Snowflake",
+          "position": {
+            "x": 0.19136405857078825,
+            "y": 0.5431485379913702
+          },
+          "target_kind": "reviewed_mapped_entity"
+        },
+        "frame_id": "73acebb67529aac73ec53ad0b668d98fbbf13dea384460f39620b6079b5d15c9",
+        "limitations": [
+          "source publication cutoff includes a claim only when every premise was published by the cutoff.",
+          "published-through is evidence availability, not relationship validity or operational replay.",
+          "accepted hypotheses remain untested hypotheses; graph position and order do not encode strength."
+        ],
+        "next_cursor": null,
+        "operation": "focus",
+        "receipt_id": "de57f3b225cd042b15c31e85cae61849e0d3aee4dc43d688271c80cdaabc488b",
+        "returned": 1,
+        "selection": {
+          "basis": "documented",
+          "clock": "source_publication",
+          "cutoff": "2022-02-24",
+          "direction": "both",
+          "predicate": "",
+          "review_lens": "current_accepted_at_build",
+          "temporal_mode": "published_through"
+        },
+        "selection_policy": "neighbor_id_ascii_asc",
+        "suppressed": 0,
+        "versions": {
+          "layout": "atlas-reviewed-address-v1",
+          "query": "atlas-reviewed-query-v1",
+          "snapshot": "atlas-reviewed-snapshot-v1",
+          "topology": "1.0"
+        }
+      }
+    },
+    {
+      "layer": "reviewed",
+      "request": {
+        "build_id": "bb773ae69b9991bed00afcf39948e66660eb4d5d51b8037be174ef273d30e7e7",
+        "candidate": "9129ab18dfd8c1058038",
+        "clock": "source_publication",
+        "cutoff": "2022-02-24",
+        "entity": "snowflake",
+        "layer": "reviewed",
+        "limit": 25,
+        "mode": "explain",
+        "neighbor": "dbt-labs",
+        "review_lens": "current_accepted_at_build",
+        "temporal_mode": "published_through"
+      },
+      "response": {
+        "build_id": "bb773ae69b9991bed00afcf39948e66660eb4d5d51b8037be174ef273d30e7e7",
+        "claims": [
+          {
+            "alternative_or_unknown": "The announcement establishes a dated partnership statement, not the partnership's start, current status, exclusivity, commercial terms, or contribution to either company's results.",
+            "claim_status": "documented",
+            "created_at": "2026-09-25T13:45:44.592832+00:00",
+            "database_id": "seed-claim:dbt-labs-announced-partnership-snowflake-2022:14301c1bd839",
+            "direction": "symmetric",
+            "event_date": "2022-02-24",
+            "generator": "curated_seed",
+            "generator_version": "1.0",
+            "id": "dbt-labs-announced-partnership-snowflake-2022",
+            "interpretation": "The 2022 dbt Labs financing announcement describes the companies as deepening their partnership and serving joint customers.",
+            "object_slug": "snowflake",
+            "predicate": "announced_partnership_with",
+            "review": {
+              "date_precision": "day",
+              "decision": "accept",
+              "id": 2,
+              "rationale": "Imported prior curated seed review dated 2026-09-24; date precision is one day (stored at 00:00 UTC). This import is not a new source review. The prior review retained 1 source(s), beginning at Series D announcement, statement attributed to Snowflake's SVP of Product about deepening the partnership and serving joint customers, with claim scope and explicit unknowns.",
+              "reviewed_at": "2026-09-24T00:00:00+00:00",
+              "reviewer": "imported prior Codex seed review"
+            },
+            "review_history": [
+              {
+                "candidate_id": "seed-claim:dbt-labs-announced-partnership-snowflake-2022:14301c1bd839",
+                "decision": "accept",
+                "id": 2,
+                "rationale": "Imported prior curated seed review dated 2026-09-24; date precision is one day (stored at 00:00 UTC). This import is not a new source review. The prior review retained 1 source(s), beginning at Series D announcement, statement attributed to Snowflake's SVP of Product about deepening the partnership and serving joint customers, with claim scope and explicit unknowns.",
+                "reviewed_at": "2026-09-24T00:00:00+00:00",
+                "reviewer": "imported prior Codex seed review"
+              }
+            ],
+            "scope": "joint analytics-engineering workflows for customers using dbt with Snowflake products",
+            "sources": [
+              {
+                "artifact_sha256": "64694c906f3c8be8b3fd90d88725fe3598a896533adf3123a24dc684610ffece",
+                "captured_at": null,
+                "event_date": "2022-02-24",
+                "evidence_kind": "summary",
+                "evidence_locator": "Series D announcement, statement attributed to Snowflake's SVP of Product about deepening the partnership and serving joint customers",
+                "evidence_quote": "By deepening our partnership with dbt Labs, we offer joint customers",
+                "evidence_text": "The announcement says Snowflake and dbt Labs were deepening their partnership, refers to joint customers, and lists existing integrations with Snowflake products.",
+                "id": "seed-source:dbt-series-d-2022:64694c906f3c8be8b3fd90d88725fe3598a896533adf3123a24dc684610ffece",
+                "period_end": null,
+                "period_start": null,
+                "publisher": "dbt Labs",
+                "retrieved_at": "2026-09-24T17:50:30+00:00",
+                "retrieved_on": "2026-09-24",
+                "role": "support",
+                "snapshot_id": null,
+                "source_date": "2022-02-24",
+                "source_type": "company announcement",
+                "source_url": "https://www.getdbt.com/blog/dbt-labs-raises-222m-in-series-d-funding-at-4-2b-valuation-led-by-altimeter-with-participation-from-databricks-and-snowflake",
+                "title": "dbt Labs raises $222M in Series D funding"
+              }
+            ],
+            "subject_slug": "dbt-labs",
+            "temporal_basis": "The source publishes a partnership statement on 2022-02-24; it does not date the relationship's start or end.",
+            "temporal_form": "event",
+            "valid_from": null,
+            "valid_to": null
+          },
+          {
+            "alternative_or_unknown": "The announcement establishes participation in this financing, not ownership percentage, later holdings, governance rights, or a continuing strategic relationship.",
+            "claim_status": "documented",
+            "created_at": "2026-09-25T13:45:44.593652+00:00",
+            "database_id": "seed-claim:snowflake-invested-in-dbt-labs-series-d-2022:14301c1bd839",
+            "direction": "subject_to_object",
+            "event_date": "2022-02-24",
+            "generator": "curated_seed",
+            "generator_version": "1.0",
+            "id": "snowflake-invested-in-dbt-labs-series-d-2022",
+            "interpretation": "dbt Labs names Snowflake as a strategic investor participating in its Series D financing.",
+            "object_slug": "dbt-labs",
+            "predicate": "invested_in",
+            "review": {
+              "date_precision": "day",
+              "decision": "accept",
+              "id": 3,
+              "rationale": "Imported prior curated seed review dated 2026-09-24; date precision is one day (stored at 00:00 UTC). This import is not a new source review. The prior review retained 1 source(s), beginning at Series D announcement, financing paragraph naming Snowflake among the strategic investors, with claim scope and explicit unknowns.",
+              "reviewed_at": "2026-09-24T00:00:00+00:00",
+              "reviewer": "imported prior Codex seed review"
+            },
+            "review_history": [
+              {
+                "candidate_id": "seed-claim:snowflake-invested-in-dbt-labs-series-d-2022:14301c1bd839",
+                "decision": "accept",
+                "id": 3,
+                "rationale": "Imported prior curated seed review dated 2026-09-24; date precision is one day (stored at 00:00 UTC). This import is not a new source review. The prior review retained 1 source(s), beginning at Series D announcement, financing paragraph naming Snowflake among the strategic investors, with claim scope and explicit unknowns.",
+                "reviewed_at": "2026-09-24T00:00:00+00:00",
+                "reviewer": "imported prior Codex seed review"
+              }
+            ],
+            "scope": "dbt Labs Series D financing announced 2022-02-24",
+            "sources": [
+              {
+                "artifact_sha256": "64694c906f3c8be8b3fd90d88725fe3598a896533adf3123a24dc684610ffece",
+                "captured_at": null,
+                "event_date": "2022-02-24",
+                "evidence_kind": "summary",
+                "evidence_locator": "Series D announcement, financing paragraph naming Snowflake among the strategic investors",
+                "evidence_quote": "Databricks, Salesforce Ventures, and Snowflake – also participated.",
+                "evidence_text": "dbt Labs says Snowflake participated in the Series D as one of three strategic investors.",
+                "id": "seed-source:dbt-series-d-2022:64694c906f3c8be8b3fd90d88725fe3598a896533adf3123a24dc684610ffece",
+                "period_end": null,
+                "period_start": null,
+                "publisher": "dbt Labs",
+                "retrieved_at": "2026-09-24T17:50:30+00:00",
+                "retrieved_on": "2026-09-24",
+                "role": "support",
+                "snapshot_id": null,
+                "source_date": "2022-02-24",
+                "source_type": "company announcement",
+                "source_url": "https://www.getdbt.com/blog/dbt-labs-raises-222m-in-series-d-funding-at-4-2b-valuation-led-by-altimeter-with-participation-from-databricks-and-snowflake",
+                "title": "dbt Labs raises $222M in Series D funding"
+              }
+            ],
+            "subject_slug": "snowflake",
+            "temporal_basis": "The source announces dbt Labs' Series D financing on 2022-02-24; it does not establish later ownership.",
+            "temporal_form": "event",
+            "valid_from": null,
+            "valid_to": null
+          }
+        ],
+        "count": {
+          "grain": "claim",
+          "status": "exact",
+          "value": 2
+        },
+        "focus": {
+          "candidate_links": [
+            {
+              "candidate_id": "9129ab18dfd8c1058038",
+              "identity_review_id": "identity-review-02"
+            }
+          ],
+          "entity_slug": "snowflake",
+          "id": "snowflake",
+          "name": "Snowflake",
+          "position": {
+            "x": 0.19136405857078825,
+            "y": 0.5431485379913702
+          },
+          "target_kind": "reviewed_mapped_entity"
+        },
+        "frame_id": "73acebb67529aac73ec53ad0b668d98fbbf13dea384460f39620b6079b5d15c9",
+        "limitations": [
+          "source publication cutoff includes a claim only when every premise was published by the cutoff.",
+          "published-through is evidence availability, not relationship validity or operational replay.",
+          "accepted hypotheses remain untested hypotheses; graph position and order do not encode strength."
+        ],
+        "neighbor": {
+          "candidate_links": [],
+          "entity_slug": "dbt-labs",
+          "id": "dbt-labs",
+          "name": "dbt Labs",
+          "position": {
+            "x": 0.6492831384877867,
+            "y": 0.6116668939617618
+          },
+          "target_kind": "reviewed_external_entity"
+        },
+        "next_cursor": null,
+        "operation": "explain",
+        "receipt_id": "838adf80369114d14be9992fcf99a637fd3ce712a5a9136f0a44393b03814e3d",
+        "returned": 2,
+        "selection": {
+          "basis": "documented",
+          "clock": "source_publication",
+          "cutoff": "2022-02-24",
+          "direction": "both",
+          "predicate": "",
+          "review_lens": "current_accepted_at_build",
+          "temporal_mode": "published_through"
+        },
+        "versions": {
+          "layout": "atlas-reviewed-address-v1",
+          "query": "atlas-reviewed-query-v1",
+          "snapshot": "atlas-reviewed-snapshot-v1",
+          "topology": "1.0"
+        }
+      }
+    }
+  ],
+  "result": "The saved neighbor exposes 2 accepted claims under independent layer builds and clocks.",
+  "schema_version": "atlas-layered-investigation-v1",
+  "status": "research_record_not_reviewed_claim",
+  "system_known_replay": "unsupported",
+  "uncertainty": "The page was retrieved in 2026 and has later modification metadata; its exact 2022 wording is unproven. Current accepted reviews and present-day identity remain explicit lenses."
+}

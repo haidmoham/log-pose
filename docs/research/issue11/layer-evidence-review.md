@@ -5,11 +5,18 @@ no claim, identity decision, or canonical evidence. “Accepted” below means a
 existing explicit review accepted the stated, bounded claim. It does not widen
 that claim or establish present validity.
 
+2026-09-26 correction: the retained dbt announcement's “Customer growth” item
+does name customer accounts. the original pass below correctly found no
+accepted customer claim, but missed these source mentions. the
+[integration review packet](integration-review-packet.md) binds the integration
+and customer passages and records their remaining identity, scope, time, and
+review limits. no claim or identity was accepted by this correction.
+
 ## Result by research layer
 
 | Layer | Retained support | Review state | Material gap |
 | --- | --- | --- | --- |
-| Products, buyers, and workflows | Exact CNCF/LFAI placements; Datadog names Elastic as a log-management competitor | One accepted competitor claim; inventory placements remain unreviewed leads | No retained reviewed buyer/customer relationship; category overlap does not prove substitution |
+| Products, buyers, and workflows | Exact CNCF/LFAI placements; Datadog names Elastic as a log-management competitor; dbt announcement names customer accounts | One accepted competitor claim; inventory placements and customer mentions remain leads | No retained reviewed buyer/customer relationship; category overlap does not prove substitution |
 | Technology and integrations | dbt Labs announcement describes existing Snowflake integrations | Source retained, but no separately reviewed `integrates_with` claim | Direction, product endpoints, integration scope, event/validity time, and current status need review |
 | Commercial relationships | dbt Labs announcement says dbt Labs and Snowflake were deepening a partnership and serving joint customers | Accepted dated `announced_partnership_with` claim | No named-customer claim, contract value, exclusivity, revenue contribution, or present-validity finding |
 | Capital and ownership | Same announcement names Snowflake as a Series D strategic investor; four financing announcements are indexed | One accepted `invested_in` claim for Snowflake→dbt Labs | Ownership percentage, governance rights, continuing holdings, acquisition/ownership relations, and participant claims for the other rounds are unsupported |

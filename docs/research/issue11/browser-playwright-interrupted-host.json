@@ -1,0 +1,3470 @@
+{
+  "schemaVersion": "2.0",
+  "status": "failed",
+  "startedAt": "2026-09-26T15:50:48.584Z",
+  "question": "Do bounded real S0 inventory and reviewed frames meet interaction budgets without retained browser-state growth?",
+  "commit": "0313d8eb79f455122082115c930c241fda01870e",
+  "runtimeState": {
+    "dirtyPatchSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "untracked": [],
+    "harnessSha256": "b604687f296d9379f79b7a47bfef4c651b73e480768fbeeadd65a64e6050ba44"
+  },
+  "budgets": {
+    "desktop": {
+      "frameAcceptanceP95Ms": 1000,
+      "graphReadyP95Ms": 2000,
+      "cameraP95Ms": 33
+    },
+    "constrained": {
+      "frameAcceptanceP95Ms": 2000,
+      "graphReadyP95Ms": 5000,
+      "cameraP95Ms": 50
+    },
+    "heapGrowthBytes": 20971520,
+    "heapGrowthRatio": 1.15,
+    "domNodeGrowth": 50,
+    "listenerGrowth": 5
+  },
+  "limits": {
+    "apiPerWorkload": 200,
+    "soakApi": 180,
+    "totalHttp": 2000,
+    "decodedBytes": 1048576,
+    "runtimeMs": 1440000,
+    "browserRssBytes": 2147483648,
+    "outputBytes": 104857600
+  },
+  "environment": {
+    "platform": "linux",
+    "release": "6.18.33.2-microsoft-standard-WSL2",
+    "cpus": 16,
+    "cpuModel": "AMD Ryzen 7 5800X 8-Core Processor",
+    "memoryBytes": 16716025856,
+    "node": "v22.23.1",
+    "playwright": "1.63.0",
+    "executablePath": "/home/haidm/.cache/ms-playwright/chromium-1243/chrome-linux64/chrome",
+    "server": "loopback Node/SQLite; warm process and OS cache",
+    "gpuMemory": "not_evaluated",
+    "browser": "153.0.8010.12",
+    "gpu": {
+      "devices": [
+        {
+          "vendorId": 65535,
+          "deviceId": 65535,
+          "vendorString": "Google Inc. (Google)",
+          "deviceString": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver-5.0.0)"
+        }
+      ],
+      "featureStatus": {
+        "2d_canvas": "unavailable_software",
+        "direct_rendering_display_compositor": "disabled_off_ok",
+        "gpu_compositing": "disabled_software",
+        "multiple_raster_threads": "enabled_on",
+        "opengl": "disabled_off",
+        "rasterization": "disabled_software",
+        "raw_draw": "disabled_off_ok",
+        "skia_graphite": "disabled_off",
+        "trees_in_viz": "disabled_off",
+        "video_decode": "disabled_software",
+        "video_encode": "disabled_software",
+        "vulkan": "disabled_off",
+        "webgl": "unavailable_software",
+        "webgpu": "unavailable_software",
+        "webgpu_on_vk_via_gl_interop": "disabled_off",
+        "webnn": "unavailable_software"
+      },
+      "limitation": "availability only; GPU retained memory and compositor completion are not evaluated"
+    }
+  },
+  "measurements": [
+    {
+      "workload": "inventory-top60",
+      "profile": "desktop",
+      "trial": 1,
+      "elapsedMs": 3951,
+      "initial": {
+        "graphReadyMs": 203.60000000009313,
+        "frameReadyMs": 29.4000000001397,
+        "renderMs": 10.600000000093132,
+        "frameId": "7a7ec70e3c0883408845f73da798c6c6fb74cc6ff2565ab8029ad3c804963f53",
+        "inspectorFrameId": "7a7ec70e3c0883408845f73da798c6c6fb74cc6ff2565ab8029ad3c804963f53",
+        "nodes": 61,
+        "domNodes": 947,
+        "resources": [
+          {
+            "path": "/style.css",
+            "transferBytes": 16366,
+            "encodedBytes": 16066,
+            "decodedBytes": 16066
+          },
+          {
+            "path": "/console.css",
+            "transferBytes": 60118,
+            "encodedBytes": 59818,
+            "decodedBytes": 59818
+          },
+          {
+            "path": "/temporal-graph.css",
+            "transferBytes": 10640,
+            "encodedBytes": 10340,
+            "decodedBytes": 10340
+          },
+          {
+            "path": "/atlas.css",
+            "transferBytes": 6213,
+            "encodedBytes": 5913,
+            "decodedBytes": 5913
+          },
+          {
+            "path": "/console-ui.js",
+            "transferBytes": 4127,
+            "encodedBytes": 3827,
+            "decodedBytes": 3827
+          },
+          {
+            "path": "/research-model.js",
+            "transferBytes": 30097,
+            "encodedBytes": 29797,
+            "decodedBytes": 29797
+          },
+          {
+            "path": "/temporal-graph.js",
+            "transferBytes": 32590,
+            "encodedBytes": 32290,
+            "decodedBytes": 32290
+          },
+          {
+            "path": "/atlas-model.js",
+            "transferBytes": 3732,
+            "encodedBytes": 3432,
+            "decodedBytes": 3432
+          },
+          {
+            "path": "/atlas-view.js",
+            "transferBytes": 22002,
+            "encodedBytes": 21702,
+            "decodedBytes": 21702
+          },
+          {
+            "path": "/api/atlas",
+            "transferBytes": 13324,
+            "encodedBytes": 13024,
+            "decodedBytes": 13024
+          },
+          {
+            "path": "/api/atlas",
+            "transferBytes": 21068,
+            "encodedBytes": 20768,
+            "decodedBytes": 20768
+          }
+        ]
+      },
+      "frameAcceptanceMs": 134.9000000001397,
+      "acceptedFrameId": "7a7ec70e3c0883408845f73da798c6c6fb74cc6ff2565ab8029ad3c804963f53",
+      "camera": {
+        "zoom": [
+          0.6000000000931323,
+          1.3000000000465661,
+          1.2000000001862645,
+          1,
+          0.5,
+          0.39999999990686774,
+          0.5999999998603016,
+          0.8000000000465661,
+          0.8999999999068677,
+          1,
+          0.7000000001862645,
+          0.6000000000931323,
+          0.39999999990686774,
+          0.6999999999534339,
+          0.6999999999534339,
+          0.5999999998603016,
+          0.4000000001396984,
+          0.6000000000931323,
+          0.8000000000465661,
+          0.5999999998603016
+        ],
+        "pan": [
+          0.10000000009313226,
+          0,
+          0,
+          0,
+          0,
+          0.10000000009313226,
+          0,
+          0.10000000009313226,
+          0.09999999986030161,
+          0,
+          0,
+          0.10000000009313226,
+          0,
+          0.19999999995343387,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "transport": {
+        "cache": "disabled",
+        "initial": {
+          "attempts": 13,
+          "apiAttempts": 2,
+          "totalDecodedBytes": 221981,
+          "totalTransferBytes": 224277,
+          "apiResponses": [
+            {
+              "url": "http://127.0.0.1:8139/api/atlas?mode=discover&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5",
+              "path": "/api/atlas?mode=discover&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5",
+              "status": 200,
+              "api": true,
+              "decodedBytes": 13024,
+              "transferBytes": 13240,
+              "contentEncoding": ""
+            },
+            {
+              "url": "http://127.0.0.1:8139/api/atlas?mode=focus&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5&source=cncf&year=2024&temporal_mode=snapshot&artifact=artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8&top_k=60&limit=60&candidate=4d9ade2bfb2aa6cb4afb",
+              "path": "/api/atlas?mode=focus&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5&source=cncf&year=2024&temporal_mode=snapshot&artifact=artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8&top_k=60&limit=60&candidate=4d9ade2bfb2aa6cb4afb",
+              "status": 200,
+              "api": true,
+              "decodedBytes": 20768,
+              "transferBytes": 20984,
+              "contentEncoding": ""
+            }
+          ],
+          "resourceTiming": {
+            "transferBytes": 220277,
+            "encodedBytes": 216977,
+            "decodedBytes": 216977
+          }
+        },
+        "compression": [],
+        "apiResponses": [
+          {
+            "url": "http://127.0.0.1:8139/api/atlas?mode=discover&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5",
+            "path": "/api/atlas?mode=discover&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5",
+            "status": 200,
+            "api": true,
+            "decodedBytes": 13024,
+            "transferBytes": 13240,
+            "contentEncoding": ""
+          },
+          {
+            "url": "http://127.0.0.1:8139/api/atlas?mode=focus&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5&source=cncf&year=2024&temporal_mode=snapshot&artifact=artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8&top_k=60&limit=60&candidate=4d9ade2bfb2aa6cb4afb",
+            "path": "/api/atlas?mode=focus&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5&source=cncf&year=2024&temporal_mode=snapshot&artifact=artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8&top_k=60&limit=60&candidate=4d9ade2bfb2aa6cb4afb",
+            "status": 200,
+            "api": true,
+            "decodedBytes": 20768,
+            "transferBytes": 20984,
+            "contentEncoding": ""
+          },
+          {
+            "url": "http://127.0.0.1:8139/api/atlas?mode=focus&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5&source=cncf&year=2024&temporal_mode=snapshot&artifact=artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8&candidate=4d9ade2bfb2aa6cb4afb&top_k=100&limit=100",
+            "path": "/api/atlas?mode=focus&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5&source=cncf&year=2024&temporal_mode=snapshot&artifact=artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8&candidate=4d9ade2bfb2aa6cb4afb&top_k=100&limit=100",
+            "status": 200,
+            "api": true,
+            "decodedBytes": 32820,
+            "transferBytes": 33036,
+            "contentEncoding": ""
+          }
+        ],
+        "totalHttpRequests": 14,
+        "totalDecodedBytes": 460269,
+        "totalTransferBytes": 459165,
+        "resourceTiming": [
+          {
+            "path": "/style.css",
+            "transferBytes": 16366,
+            "encodedBytes": 16066,
+            "decodedBytes": 16066
+          },
+          {
+            "path": "/console.css",
+            "transferBytes": 60118,
+            "encodedBytes": 59818,
+            "decodedBytes": 59818
+          },
+          {
+            "path": "/temporal-graph.css",
+            "transferBytes": 10640,
+            "encodedBytes": 10340,
+            "decodedBytes": 10340
+          },
+          {
+            "path": "/atlas.css",
+            "transferBytes": 6213,
+            "encodedBytes": 5913,
+            "decodedBytes": 5913
+          },
+          {
+            "path": "/console-ui.js",
+            "transferBytes": 4127,
+            "encodedBytes": 3827,
+            "decodedBytes": 3827
+          },
+          {
+            "path": "/research-model.js",
+            "transferBytes": 30097,
+            "encodedBytes": 29797,
+            "decodedBytes": 29797
+          },
+          {
+            "path": "/temporal-graph.js",
+            "transferBytes": 32590,
+            "encodedBytes": 32290,
+            "decodedBytes": 32290
+          },
+          {
+            "path": "/atlas-model.js",
+            "transferBytes": 3732,
+            "encodedBytes": 3432,
+            "decodedBytes": 3432
+          },
+          {
+            "path": "/atlas-view.js",
+            "transferBytes": 22002,
+            "encodedBytes": 21702,
+            "decodedBytes": 21702
+          },
+          {
+            "path": "/api/atlas",
+            "transferBytes": 13324,
+            "encodedBytes": 13024,
+            "decodedBytes": 13024
+          },
+          {
+            "path": "/api/atlas",
+            "transferBytes": 21068,
+            "encodedBytes": 20768,
+            "decodedBytes": 20768
+          },
+          {
+            "path": "/fonts/bricolage-grotesque-variable.woff2",
+            "transferBytes": 205768,
+            "encodedBytes": 205468,
+            "decodedBytes": 205468
+          },
+          {
+            "path": "/api/atlas",
+            "transferBytes": 33120,
+            "encodedBytes": 32820,
+            "decodedBytes": 32820
+          }
+        ]
+      },
+      "errors": []
+    },
+    {
+      "workload": "inventory-top60",
+      "profile": "desktop",
+      "trial": 2,
+      "elapsedMs": 3551,
+      "initial": {
+        "graphReadyMs": 181,
+        "frameReadyMs": 25.799999999813735,
+        "renderMs": 13.300000000046566,
+        "frameId": "7a7ec70e3c0883408845f73da798c6c6fb74cc6ff2565ab8029ad3c804963f53",
+        "inspectorFrameId": "7a7ec70e3c0883408845f73da798c6c6fb74cc6ff2565ab8029ad3c804963f53",
+        "nodes": 61,
+        "domNodes": 947,
+        "resources": [
+          {
+            "path": "/style.css",
+            "transferBytes": 16366,
+            "encodedBytes": 16066,
+            "decodedBytes": 16066
+          },
+          {
+            "path": "/console.css",
+            "transferBytes": 60118,
+            "encodedBytes": 59818,
+            "decodedBytes": 59818
+          },
+          {
+            "path": "/temporal-graph.css",
+            "transferBytes": 10640,
+            "encodedBytes": 10340,
+            "decodedBytes": 10340
+          },
+          {
+            "path": "/atlas.css",
+            "transferBytes": 6213,
+            "encodedBytes": 5913,
+            "decodedBytes": 5913
+          },
+          {
+            "path": "/console-ui.js",
+            "transferBytes": 4127,
+            "encodedBytes": 3827,
+            "decodedBytes": 3827
+          },
+          {
+            "path": "/research-model.js",
+            "transferBytes": 30097,
+            "encodedBytes": 29797,
+            "decodedBytes": 29797
+          },
+          {
+            "path": "/temporal-graph.js",
+            "transferBytes": 32590,
+            "encodedBytes": 32290,
+            "decodedBytes": 32290
+          },
+          {
+            "path": "/atlas-model.js",
+            "transferBytes": 3732,
+            "encodedBytes": 3432,
+            "decodedBytes": 3432
+          },
+          {
+            "path": "/atlas-view.js",
+            "transferBytes": 22002,
+            "encodedBytes": 21702,
+            "decodedBytes": 21702
+          },
+          {
+            "path": "/api/atlas",
+            "transferBytes": 13325,
+            "encodedBytes": 13025,
+            "decodedBytes": 13025
+          },
+          {
+            "path": "/api/atlas",
+            "transferBytes": 21069,
+            "encodedBytes": 20769,
+            "decodedBytes": 20769
+          }
+        ]
+      },
+      "frameAcceptanceMs": 129.89999999990687,
+      "acceptedFrameId": "7a7ec70e3c0883408845f73da798c6c6fb74cc6ff2565ab8029ad3c804963f53",
+      "camera": {
+        "zoom": [
+          0.7000000001862645,
+          0.39999999990686774,
+          1.0999999998603016,
+          0.9000000001396984,
+          0.8999999999068677,
+          0.8000000000465661,
+          0.39999999990686774,
+          0.6000000000931323,
+          0.5999999998603016,
+          0.8000000000465661,
+          0.6999999999534339,
+          0.6999999999534339,
+          0.5999999998603016,
+          0.4000000001396984,
+          0.6999999999534339,
+          0.6999999999534339,
+          0.6999999999534339,
+          0.6000000000931323,
+          0.6999999999534339,
+          0.6999999999534339
+        ],
+        "pan": [
+          0.09999999986030161,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.19999999995343387,
+          0,
+          0.10000000009313226,
+          0,
+          0.10000000009313226,
+          0
+        ]
+      },
+      "transport": {
+        "cache": "disabled",
+        "initial": {
+          "attempts": 13,
+          "apiAttempts": 2,
+          "totalDecodedBytes": 221983,
+          "totalTransferBytes": 224279,
+          "apiResponses": [
+            {
+              "url": "http://127.0.0.1:8139/api/atlas?mode=discover&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5",
+              "path": "/api/atlas?mode=discover&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5",
+              "status": 200,
+              "api": true,
+              "decodedBytes": 13025,
+              "transferBytes": 13241,
+              "contentEncoding": ""
+            },
+            {
+              "url": "http://127.0.0.1:8139/api/atlas?mode=focus&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5&source=cncf&year=2024&temporal_mode=snapshot&artifact=artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8&top_k=60&limit=60&candidate=4d9ade2bfb2aa6cb4afb",
+              "path": "/api/atlas?mode=focus&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5&source=cncf&year=2024&temporal_mode=snapshot&artifact=artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8&top_k=60&limit=60&candidate=4d9ade2bfb2aa6cb4afb",
+              "status": 200,
+              "api": true,
+              "decodedBytes": 20769,
+              "transferBytes": 20985,
+              "contentEncoding": ""
+            }
+          ],
+          "resourceTiming": {
+            "transferBytes": 220279,
+            "encodedBytes": 216979,
+            "decodedBytes": 216979
+          }
+        },
+        "compression": [],
+        "apiResponses": [
+          {
+            "url": "http://127.0.0.1:8139/api/atlas?mode=discover&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5",
+            "path": "/api/atlas?mode=discover&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5",
+            "status": 200,
+            "api": true,
+            "decodedBytes": 13025,
+            "transferBytes": 13241,
+            "contentEncoding": ""
+          },
+          {
+            "url": "http://127.0.0.1:8139/api/atlas?mode=focus&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5&source=cncf&year=2024&temporal_mode=snapshot&artifact=artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8&top_k=60&limit=60&candidate=4d9ade2bfb2aa6cb4afb",
+            "path": "/api/atlas?mode=focus&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5&source=cncf&year=2024&temporal_mode=snapshot&artifact=artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8&top_k=60&limit=60&candidate=4d9ade2bfb2aa6cb4afb",
+            "status": 200,
+            "api": true,
+            "decodedBytes": 20769,
+            "transferBytes": 20985,
+            "contentEncoding": ""
+          },
+          {
+            "url": "http://127.0.0.1:8139/api/atlas?mode=focus&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5&source=cncf&year=2024&temporal_mode=snapshot&artifact=artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8&candidate=4d9ade2bfb2aa6cb4afb&top_k=100&limit=100",
+            "path": "/api/atlas?mode=focus&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5&source=cncf&year=2024&temporal_mode=snapshot&artifact=artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8&candidate=4d9ade2bfb2aa6cb4afb&top_k=100&limit=100",
+            "status": 200,
+            "api": true,
+            "decodedBytes": 32820,
+            "transferBytes": 33036,
+            "contentEncoding": ""
+          }
+        ],
+        "totalHttpRequests": 14,
+        "totalDecodedBytes": 460271,
+        "totalTransferBytes": 459167,
+        "resourceTiming": [
+          {
+            "path": "/style.css",
+            "transferBytes": 16366,
+            "encodedBytes": 16066,
+            "decodedBytes": 16066
+          },
+          {
+            "path": "/console.css",
+            "transferBytes": 60118,
+            "encodedBytes": 59818,
+            "decodedBytes": 59818
+          },
+          {
+            "path": "/temporal-graph.css",
+            "transferBytes": 10640,
+            "encodedBytes": 10340,
+            "decodedBytes": 10340
+          },
+          {
+            "path": "/atlas.css",
+            "transferBytes": 6213,
+            "encodedBytes": 5913,
+            "decodedBytes": 5913
+          },
+          {
+            "path": "/console-ui.js",
+            "transferBytes": 4127,
+            "encodedBytes": 3827,
+            "decodedBytes": 3827
+          },
+          {
+            "path": "/research-model.js",
+            "transferBytes": 30097,
+            "encodedBytes": 29797,
+            "decodedBytes": 29797
+          },
+          {
+            "path": "/temporal-graph.js",
+            "transferBytes": 32590,
+            "encodedBytes": 32290,
+            "decodedBytes": 32290
+          },
+          {
+            "path": "/atlas-model.js",
+            "transferBytes": 3732,
+            "encodedBytes": 3432,
+            "decodedBytes": 3432
+          },
+          {
+            "path": "/atlas-view.js",
+            "transferBytes": 22002,
+            "encodedBytes": 21702,
+            "decodedBytes": 21702
+          },
+          {
+            "path": "/api/atlas",
+            "transferBytes": 13325,
+            "encodedBytes": 13025,
+            "decodedBytes": 13025
+          },
+          {
+            "path": "/api/atlas",
+            "transferBytes": 21069,
+            "encodedBytes": 20769,
+            "decodedBytes": 20769
+          },
+          {
+            "path": "/fonts/bricolage-grotesque-variable.woff2",
+            "transferBytes": 205768,
+            "encodedBytes": 205468,
+            "decodedBytes": 205468
+          },
+          {
+            "path": "/api/atlas",
+            "transferBytes": 33120,
+            "encodedBytes": 32820,
+            "decodedBytes": 32820
+          }
+        ]
+      },
+      "errors": []
+    },
+    {
+      "workload": "inventory-top60",
+      "profile": "desktop",
+      "trial": 3,
+      "elapsedMs": 3374,
+      "initial": {
+        "graphReadyMs": 155.5999999998603,
+        "frameReadyMs": 26.600000000093132,
+        "renderMs": 10.599999999860302,
+        "frameId": "7a7ec70e3c0883408845f73da798c6c6fb74cc6ff2565ab8029ad3c804963f53",
+        "inspectorFrameId": "7a7ec70e3c0883408845f73da798c6c6fb74cc6ff2565ab8029ad3c804963f53",
+        "nodes": 61,
+        "domNodes": 947,
+        "resources": [
+          {
+            "path": "/style.css",
+            "transferBytes": 16366,
+            "encodedBytes": 16066,
+            "decodedBytes": 16066
+          },
+          {
+            "path": "/console.css",
+            "transferBytes": 60118,
+            "encodedBytes": 59818,
+            "decodedBytes": 59818
+          },
+          {
+            "path": "/temporal-graph.css",
+            "transferBytes": 10640,
+            "encodedBytes": 10340,
+            "decodedBytes": 10340
+          },
+          {
+            "path": "/atlas.css",
+            "transferBytes": 6213,
+            "encodedBytes": 5913,
+            "decodedBytes": 5913
+          },
+          {
+            "path": "/console-ui.js",
+            "transferBytes": 4127,
+            "encodedBytes": 3827,
+            "decodedBytes": 3827
+          },
+          {
+            "path": "/research-model.js",
+            "transferBytes": 30097,
+            "encodedBytes": 29797,
+            "decodedBytes": 29797
+          },
+          {
+            "path": "/atlas-model.js",
+            "transferBytes": 3732,
+            "encodedBytes": 3432,
+            "decodedBytes": 3432
+          },
+          {
+            "path": "/temporal-graph.js",
+            "transferBytes": 32590,
+            "encodedBytes": 32290,
+            "decodedBytes": 32290
+          },
+          {
+            "path": "/atlas-view.js",
+            "transferBytes": 22002,
+            "encodedBytes": 21702,
+            "decodedBytes": 21702
+          },
+          {
+            "path": "/api/atlas",
+            "transferBytes": 13325,
+            "encodedBytes": 13025,
+            "decodedBytes": 13025
+          },
+          {
+            "path": "/api/atlas",
+            "transferBytes": 21068,
+            "encodedBytes": 20768,
+            "decodedBytes": 20768
+          },
+          {
+            "path": "/fonts/bricolage-grotesque-variable.woff2",
+            "transferBytes": 205768,
+            "encodedBytes": 205468,
+            "decodedBytes": 205468
+          }
+        ]
+      },
+      "frameAcceptanceMs": 135.0999999998603,
+      "acceptedFrameId": "7a7ec70e3c0883408845f73da798c6c6fb74cc6ff2565ab8029ad3c804963f53",
+      "camera": {
+        "zoom": [
+          0.5999999998603016,
+          0.5,
+          0.8000000000465661,
+          0.8000000000465661,
+          0.6000000000931323,
+          0.5,
+          0.5,
+          0.6000000000931323,
+          0.7000000001862645,
+          0.5999999998603016,
+          0.6000000000931323,
+          0.6000000000931323,
+          0.6000000000931323,
+          0.5999999998603016,
+          0.6999999999534339,
+          0.5999999998603016,
+          0.39999999990686774,
+          0.6000000000931323,
+          0.4000000001396984,
+          0.6000000000931323
+        ],
+        "pan": [
+          0,
+          0.10000000009313226,
+          0.10000000009313226,
+          0,
+          0,
+          0,
+          0,
+          0.10000000009313226,
+          0,
+          0.10000000009313226,
+          0.09999999986030161,
+          0,
+          0,
+          0,
+          0.10000000009313226,
+          0,
+          0.10000000009313226,
+          0,
+          0,
+          0
+        ]
+      },
+      "transport": {
+        "cache": "disabled",
+        "initial": {
+          "attempts": 13,
+          "apiAttempts": 2,
+          "totalDecodedBytes": 427450,
+          "totalTransferBytes": 429943,
+          "apiResponses": [
+            {
+              "url": "http://127.0.0.1:8139/api/atlas?mode=discover&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5",
+              "path": "/api/atlas?mode=discover&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5",
+              "status": 200,
+              "api": true,
+              "decodedBytes": 13025,
+              "transferBytes": 13241,
+              "contentEncoding": ""
+            },
+            {
+              "url": "http://127.0.0.1:8139/api/atlas?mode=focus&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5&source=cncf&year=2024&temporal_mode=snapshot&artifact=artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8&top_k=60&limit=60&candidate=4d9ade2bfb2aa6cb4afb",
+              "path": "/api/atlas?mode=focus&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5&source=cncf&year=2024&temporal_mode=snapshot&artifact=artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8&top_k=60&limit=60&candidate=4d9ade2bfb2aa6cb4afb",
+              "status": 200,
+              "api": true,
+              "decodedBytes": 20768,
+              "transferBytes": 20984,
+              "contentEncoding": ""
+            }
+          ],
+          "resourceTiming": {
+            "transferBytes": 426046,
+            "encodedBytes": 422446,
+            "decodedBytes": 422446
+          }
+        },
+        "compression": [],
+        "apiResponses": [
+          {
+            "url": "http://127.0.0.1:8139/api/atlas?mode=discover&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5",
+            "path": "/api/atlas?mode=discover&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5",
+            "status": 200,
+            "api": true,
+            "decodedBytes": 13025,
+            "transferBytes": 13241,
+            "contentEncoding": ""
+          },
+          {
+            "url": "http://127.0.0.1:8139/api/atlas?mode=focus&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5&source=cncf&year=2024&temporal_mode=snapshot&artifact=artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8&top_k=60&limit=60&candidate=4d9ade2bfb2aa6cb4afb",
+            "path": "/api/atlas?mode=focus&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5&source=cncf&year=2024&temporal_mode=snapshot&artifact=artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8&top_k=60&limit=60&candidate=4d9ade2bfb2aa6cb4afb",
+            "status": 200,
+            "api": true,
+            "decodedBytes": 20768,
+            "transferBytes": 20984,
+            "contentEncoding": ""
+          },
+          {
+            "url": "http://127.0.0.1:8139/api/atlas?mode=focus&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5&source=cncf&year=2024&temporal_mode=snapshot&artifact=artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8&candidate=4d9ade2bfb2aa6cb4afb&top_k=100&limit=100",
+            "path": "/api/atlas?mode=focus&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5&source=cncf&year=2024&temporal_mode=snapshot&artifact=artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8&candidate=4d9ade2bfb2aa6cb4afb&top_k=100&limit=100",
+            "status": 200,
+            "api": true,
+            "decodedBytes": 32820,
+            "transferBytes": 33036,
+            "contentEncoding": ""
+          }
+        ],
+        "totalHttpRequests": 14,
+        "totalDecodedBytes": 460270,
+        "totalTransferBytes": 459166,
+        "resourceTiming": [
+          {
+            "path": "/style.css",
+            "transferBytes": 16366,
+            "encodedBytes": 16066,
+            "decodedBytes": 16066
+          },
+          {
+            "path": "/console.css",
+            "transferBytes": 60118,
+            "encodedBytes": 59818,
+            "decodedBytes": 59818
+          },
+          {
+            "path": "/temporal-graph.css",
+            "transferBytes": 10640,
+            "encodedBytes": 10340,
+            "decodedBytes": 10340
+          },
+          {
+            "path": "/atlas.css",
+            "transferBytes": 6213,
+            "encodedBytes": 5913,
+            "decodedBytes": 5913
+          },
+          {
+            "path": "/console-ui.js",
+            "transferBytes": 4127,
+            "encodedBytes": 3827,
+            "decodedBytes": 3827
+          },
+          {
+            "path": "/research-model.js",
+            "transferBytes": 30097,
+            "encodedBytes": 29797,
+            "decodedBytes": 29797
+          },
+          {
+            "path": "/atlas-model.js",
+            "transferBytes": 3732,
+            "encodedBytes": 3432,
+            "decodedBytes": 3432
+          },
+          {
+            "path": "/temporal-graph.js",
+            "transferBytes": 32590,
+            "encodedBytes": 32290,
+            "decodedBytes": 32290
+          },
+          {
+            "path": "/atlas-view.js",
+            "transferBytes": 22002,
+            "encodedBytes": 21702,
+            "decodedBytes": 21702
+          },
+          {
+            "path": "/api/atlas",
+            "transferBytes": 13325,
+            "encodedBytes": 13025,
+            "decodedBytes": 13025
+          },
+          {
+            "path": "/api/atlas",
+            "transferBytes": 21068,
+            "encodedBytes": 20768,
+            "decodedBytes": 20768
+          },
+          {
+            "path": "/fonts/bricolage-grotesque-variable.woff2",
+            "transferBytes": 205768,
+            "encodedBytes": 205468,
+            "decodedBytes": 205468
+          },
+          {
+            "path": "/api/atlas",
+            "transferBytes": 33120,
+            "encodedBytes": 32820,
+            "decodedBytes": 32820
+          }
+        ]
+      },
+      "errors": []
+    },
+    {
+      "workload": "inventory-top60",
+      "profile": "desktop",
+      "trial": 4,
+      "elapsedMs": 3475,
+      "initial": {
+        "graphReadyMs": 163.10000000009313,
+        "frameReadyMs": 23.0999999998603,
+        "renderMs": 10.800000000046566,
+        "frameId": "7a7ec70e3c0883408845f73da798c6c6fb74cc6ff2565ab8029ad3c804963f53",
+        "inspectorFrameId": "7a7ec70e3c0883408845f73da798c6c6fb74cc6ff2565ab8029ad3c804963f53",
+        "nodes": 61,
+        "domNodes": 947,
+        "resources": [
+          {
+            "path": "/style.css",
+            "transferBytes": 16366,
+            "encodedBytes": 16066,
+            "decodedBytes": 16066
+          },
+          {
+            "path": "/console.css",
+            "transferBytes": 60118,
+            "encodedBytes": 59818,
+            "decodedBytes": 59818
+          },
+          {
+            "path": "/temporal-graph.css",
+            "transferBytes": 10640,
+            "encodedBytes": 10340,
+            "decodedBytes": 10340
+          },
+          {
+            "path": "/atlas.css",
+            "transferBytes": 6213,
+            "encodedBytes": 5913,
+            "decodedBytes": 5913
+          },
+          {
+            "path": "/console-ui.js",
+            "transferBytes": 4127,
+            "encodedBytes": 3827,
+            "decodedBytes": 3827
+          },
+          {
+            "path": "/research-model.js",
+            "transferBytes": 30097,
+            "encodedBytes": 29797,
+            "decodedBytes": 29797
+          },
+          {
+            "path": "/temporal-graph.js",
+            "transferBytes": 32590,
+            "encodedBytes": 32290,
+            "decodedBytes": 32290
+          },
+          {
+            "path": "/atlas-model.js",
+            "transferBytes": 3732,
+            "encodedBytes": 3432,
+            "decodedBytes": 3432
+          },
+          {
+            "path": "/atlas-view.js",
+            "transferBytes": 22002,
+            "encodedBytes": 21702,
+            "decodedBytes": 21702
+          },
+          {
+            "path": "/api/atlas",
+            "transferBytes": 13324,
+            "encodedBytes": 13024,
+            "decodedBytes": 13024
+          },
+          {
+            "path": "/api/atlas",
+            "transferBytes": 21069,
+            "encodedBytes": 20769,
+            "decodedBytes": 20769
+          }
+        ]
+      },
+      "frameAcceptanceMs": 135.69999999995343,
+      "acceptedFrameId": "7a7ec70e3c0883408845f73da798c6c6fb74cc6ff2565ab8029ad3c804963f53",
+      "camera": {
+        "zoom": [
+          1.1999999999534339,
+          0.6999999999534339,
+          1.1000000000931323,
+          0.8000000000465661,
+          1.5,
+          0.5,
+          0.30000000004656613,
+          0.7999999998137355,
+          0.7999999998137355,
+          0.5999999998603016,
+          0.5999999998603016,
+          0.6999999999534339,
+          0.6999999999534339,
+          0.8000000000465661,
+          0.8000000000465661,
+          0.5999999998603016,
+          0.5999999998603016,
+          0.5999999998603016,
+          0.6000000000931323,
+          0.39999999990686774
+        ],
+        "pan": [
+          0,
+          0,
+          0,
+          0,
+          0.09999999986030161,
+          0,
+          0.10000000009313226,
+          0,
+          0.10000000009313226,
+          0,
+          0,
+          0.10000000009313226,
+          0,
+          0.09999999986030161,
+          0.10000000009313226,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "transport": {
+        "cache": "disabled",
+        "initial": {
+          "attempts": 13,
+          "apiAttempts": 2,
+          "totalDecodedBytes": 221982,
+          "totalTransferBytes": 224278,
+          "apiResponses": [
+            {
+              "url": "http://127.0.0.1:8139/api/atlas?mode=discover&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5",
+              "path": "/api/atlas?mode=discover&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5",
+              "status": 200,
+              "api": true,
+              "decodedBytes": 13024,
+              "transferBytes": 13240,
+              "contentEncoding": ""
+            },
+            {
+              "url": "http://127.0.0.1:8139/api/atlas?mode=focus&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5&source=cncf&year=2024&temporal_mode=snapshot&artifact=artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8&top_k=60&limit=60&candidate=4d9ade2bfb2aa6cb4afb",
+              "path": "/api/atlas?mode=focus&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5&source=cncf&year=2024&temporal_mode=snapshot&artifact=artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8&top_k=60&limit=60&candidate=4d9ade2bfb2aa6cb4afb",
+              "status": 200,
+              "api": true,
+              "decodedBytes": 20769,
+              "transferBytes": 20985,
+              "contentEncoding": ""
+            }
+          ],
+          "resourceTiming": {
+            "transferBytes": 220278,
+            "encodedBytes": 216978,
+            "decodedBytes": 216978
+          }
+        },
+        "compression": [],
+        "apiResponses": [
+          {
+            "url": "http://127.0.0.1:8139/api/atlas?mode=discover&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5",
+            "path": "/api/atlas?mode=discover&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5",
+            "status": 200,
+            "api": true,
+            "decodedBytes": 13024,
+            "transferBytes": 13240,
+            "contentEncoding": ""
+          },
+          {
+            "url": "http://127.0.0.1:8139/api/atlas?mode=focus&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5&source=cncf&year=2024&temporal_mode=snapshot&artifact=artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8&top_k=60&limit=60&candidate=4d9ade2bfb2aa6cb4afb",
+            "path": "/api/atlas?mode=focus&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5&source=cncf&year=2024&temporal_mode=snapshot&artifact=artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8&top_k=60&limit=60&candidate=4d9ade2bfb2aa6cb4afb",
+            "status": 200,
+            "api": true,
+            "decodedBytes": 20769,
+            "transferBytes": 20985,
+            "contentEncoding": ""
+          },
+          {
+            "url": "http://127.0.0.1:8139/api/atlas?mode=focus&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5&source=cncf&year=2024&temporal_mode=snapshot&artifact=artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8&candidate=4d9ade2bfb2aa6cb4afb&top_k=100&limit=100",
+            "path": "/api/atlas?mode=focus&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5&source=cncf&year=2024&temporal_mode=snapshot&artifact=artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8&candidate=4d9ade2bfb2aa6cb4afb&top_k=100&limit=100",
+            "status": 200,
+            "api": true,
+            "decodedBytes": 32821,
+            "transferBytes": 33037,
+            "contentEncoding": ""
+          }
+        ],
+        "totalHttpRequests": 14,
+        "totalDecodedBytes": 460271,
+        "totalTransferBytes": 459167,
+        "resourceTiming": [
+          {
+            "path": "/style.css",
+            "transferBytes": 16366,
+            "encodedBytes": 16066,
+            "decodedBytes": 16066
+          },
+          {
+            "path": "/console.css",
+            "transferBytes": 60118,
+            "encodedBytes": 59818,
+            "decodedBytes": 59818
+          },
+          {
+            "path": "/temporal-graph.css",
+            "transferBytes": 10640,
+            "encodedBytes": 10340,
+            "decodedBytes": 10340
+          },
+          {
+            "path": "/atlas.css",
+            "transferBytes": 6213,
+            "encodedBytes": 5913,
+            "decodedBytes": 5913
+          },
+          {
+            "path": "/console-ui.js",
+            "transferBytes": 4127,
+            "encodedBytes": 3827,
+            "decodedBytes": 3827
+          },
+          {
+            "path": "/research-model.js",
+            "transferBytes": 30097,
+            "encodedBytes": 29797,
+            "decodedBytes": 29797
+          },
+          {
+            "path": "/temporal-graph.js",
+            "transferBytes": 32590,
+            "encodedBytes": 32290,
+            "decodedBytes": 32290
+          },
+          {
+            "path": "/atlas-model.js",
+            "transferBytes": 3732,
+            "encodedBytes": 3432,
+            "decodedBytes": 3432
+          },
+          {
+            "path": "/atlas-view.js",
+            "transferBytes": 22002,
+            "encodedBytes": 21702,
+            "decodedBytes": 21702
+          },
+          {
+            "path": "/api/atlas",
+            "transferBytes": 13324,
+            "encodedBytes": 13024,
+            "decodedBytes": 13024
+          },
+          {
+            "path": "/api/atlas",
+            "transferBytes": 21069,
+            "encodedBytes": 20769,
+            "decodedBytes": 20769
+          },
+          {
+            "path": "/fonts/bricolage-grotesque-variable.woff2",
+            "transferBytes": 205768,
+            "encodedBytes": 205468,
+            "decodedBytes": 205468
+          },
+          {
+            "path": "/api/atlas",
+            "transferBytes": 33121,
+            "encodedBytes": 32821,
+            "decodedBytes": 32821
+          }
+        ]
+      },
+      "errors": []
+    },
+    {
+      "workload": "inventory-top60",
+      "profile": "desktop",
+      "trial": 5,
+      "elapsedMs": 3362,
+      "initial": {
+        "graphReadyMs": 146.69999999995343,
+        "frameReadyMs": 28.800000000046566,
+        "renderMs": 10.099999999860302,
+        "frameId": "7a7ec70e3c0883408845f73da798c6c6fb74cc6ff2565ab8029ad3c804963f53",
+        "inspectorFrameId": "7a7ec70e3c0883408845f73da798c6c6fb74cc6ff2565ab8029ad3c804963f53",
+        "nodes": 61,
+        "domNodes": 947,
+        "resources": [
+          {
+            "path": "/style.css",
+            "transferBytes": 16366,
+            "encodedBytes": 16066,
+            "decodedBytes": 16066
+          },
+          {
+            "path": "/console.css",
+            "transferBytes": 60118,
+            "encodedBytes": 59818,
+            "decodedBytes": 59818
+          },
+          {
+            "path": "/temporal-graph.css",
+            "transferBytes": 10640,
+            "encodedBytes": 10340,
+            "decodedBytes": 10340
+          },
+          {
+            "path": "/atlas.css",
+            "transferBytes": 6213,
+            "encodedBytes": 5913,
+            "decodedBytes": 5913
+          },
+          {
+            "path": "/console-ui.js",
+            "transferBytes": 4127,
+            "encodedBytes": 3827,
+            "decodedBytes": 3827
+          },
+          {
+            "path": "/research-model.js",
+            "transferBytes": 30097,
+            "encodedBytes": 29797,
+            "decodedBytes": 29797
+          },
+          {
+            "path": "/temporal-graph.js",
+            "transferBytes": 32590,
+            "encodedBytes": 32290,
+            "decodedBytes": 32290
+          },
+          {
+            "path": "/atlas-model.js",
+            "transferBytes": 3732,
+            "encodedBytes": 3432,
+            "decodedBytes": 3432
+          },
+          {
+            "path": "/atlas-view.js",
+            "transferBytes": 22002,
+            "encodedBytes": 21702,
+            "decodedBytes": 21702
+          },
+          {
+            "path": "/api/atlas",
+            "transferBytes": 13325,
+            "encodedBytes": 13025,
+            "decodedBytes": 13025
+          },
+          {
+            "path": "/api/atlas",
+            "transferBytes": 21068,
+            "encodedBytes": 20768,
+            "decodedBytes": 20768
+          }
+        ]
+      },
+      "frameAcceptanceMs": 133.29999999981374,
+      "acceptedFrameId": "7a7ec70e3c0883408845f73da798c6c6fb74cc6ff2565ab8029ad3c804963f53",
+      "camera": {
+        "zoom": [
+          0.5,
+          0.5999999998603016,
+          1.4000000001396984,
+          1.5,
+          0.39999999990686774,
+          0.5,
+          0.7999999998137355,
+          0.6999999999534339,
+          0.9000000001396984,
+          0.5,
+          0.5999999998603016,
+          0.5999999998603016,
+          0.5,
+          0.5,
+          0.8000000000465661,
+          0.5,
+          0.5,
+          0.5999999998603016,
+          0.6000000000931323,
+          0.5
+        ],
+        "pan": [
+          0,
+          0,
+          0,
+          0.09999999986030161,
+          0.10000000009313226,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.10000000009313226,
+          0.10000000009313226,
+          0,
+          0,
+          0.19999999995343387
+        ]
+      },
+      "transport": {
+        "cache": "disabled",
+        "initial": {
+          "attempts": 13,
+          "apiAttempts": 2,
+          "totalDecodedBytes": 221982,
+          "totalTransferBytes": 224278,
+          "apiResponses": [
+            {
+              "url": "http://127.0.0.1:8139/api/atlas?mode=discover&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5",
+              "path": "/api/atlas?mode=discover&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5",
+              "status": 200,
+              "api": true,
+              "decodedBytes": 13025,
+              "transferBytes": 13241,
+              "contentEncoding": ""
+            },
+            {
+              "url": "http://127.0.0.1:8139/api/atlas?mode=focus&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5&source=cncf&year=2024&temporal_mode=snapshot&artifact=artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8&top_k=60&limit=60&candidate=4d9ade2bfb2aa6cb4afb",
+              "path": "/api/atlas?mode=focus&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5&source=cncf&year=2024&temporal_mode=snapshot&artifact=artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8&top_k=60&limit=60&candidate=4d9ade2bfb2aa6cb4afb",
+              "status": 200,
+              "api": true,
+              "decodedBytes": 20768,
+              "transferBytes": 20984,
+              "contentEncoding": ""
+            }
+          ],
+          "resourceTiming": {
+            "transferBytes": 220278,
+            "encodedBytes": 216978,
+            "decodedBytes": 216978
+          }
+        },
+        "compression": [],
+        "apiResponses": [
+          {
+            "url": "http://127.0.0.1:8139/api/atlas?mode=discover&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5",
+            "path": "/api/atlas?mode=discover&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5",
+            "status": 200,
+            "api": true,
+            "decodedBytes": 13025,
+            "transferBytes": 13241,
+            "contentEncoding": ""
+          },
+          {
+            "url": "http://127.0.0.1:8139/api/atlas?mode=focus&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5&source=cncf&year=2024&temporal_mode=snapshot&artifact=artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8&top_k=60&limit=60&candidate=4d9ade2bfb2aa6cb4afb",
+            "path": "/api/atlas?mode=focus&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5&source=cncf&year=2024&temporal_mode=snapshot&artifact=artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8&top_k=60&limit=60&candidate=4d9ade2bfb2aa6cb4afb",
+            "status": 200,
+            "api": true,
+            "decodedBytes": 20768,
+            "transferBytes": 20984,
+            "contentEncoding": ""
+          },
+          {
+            "url": "http://127.0.0.1:8139/api/atlas?mode=focus&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5&source=cncf&year=2024&temporal_mode=snapshot&artifact=artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8&candidate=4d9ade2bfb2aa6cb4afb&top_k=100&limit=100",
+            "path": "/api/atlas?mode=focus&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5&source=cncf&year=2024&temporal_mode=snapshot&artifact=artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8&candidate=4d9ade2bfb2aa6cb4afb&top_k=100&limit=100",
+            "status": 200,
+            "api": true,
+            "decodedBytes": 32819,
+            "transferBytes": 33035,
+            "contentEncoding": ""
+          }
+        ],
+        "totalHttpRequests": 14,
+        "totalDecodedBytes": 460269,
+        "totalTransferBytes": 459165,
+        "resourceTiming": [
+          {
+            "path": "/style.css",
+            "transferBytes": 16366,
+            "encodedBytes": 16066,
+            "decodedBytes": 16066
+          },
+          {
+            "path": "/console.css",
+            "transferBytes": 60118,
+            "encodedBytes": 59818,
+            "decodedBytes": 59818
+          },
+          {
+            "path": "/temporal-graph.css",
+            "transferBytes": 10640,
+            "encodedBytes": 10340,
+            "decodedBytes": 10340
+          },
+          {
+            "path": "/atlas.css",
+            "transferBytes": 6213,
+            "encodedBytes": 5913,
+            "decodedBytes": 5913
+          },
+          {
+            "path": "/console-ui.js",
+            "transferBytes": 4127,
+            "encodedBytes": 3827,
+            "decodedBytes": 3827
+          },
+          {
+            "path": "/research-model.js",
+            "transferBytes": 30097,
+            "encodedBytes": 29797,
+            "decodedBytes": 29797
+          },
+          {
+            "path": "/temporal-graph.js",
+            "transferBytes": 32590,
+            "encodedBytes": 32290,
+            "decodedBytes": 32290
+          },
+          {
+            "path": "/atlas-model.js",
+            "transferBytes": 3732,
+            "encodedBytes": 3432,
+            "decodedBytes": 3432
+          },
+          {
+            "path": "/atlas-view.js",
+            "transferBytes": 22002,
+            "encodedBytes": 21702,
+            "decodedBytes": 21702
+          },
+          {
+            "path": "/api/atlas",
+            "transferBytes": 13325,
+            "encodedBytes": 13025,
+            "decodedBytes": 13025
+          },
+          {
+            "path": "/api/atlas",
+            "transferBytes": 21068,
+            "encodedBytes": 20768,
+            "decodedBytes": 20768
+          },
+          {
+            "path": "/fonts/bricolage-grotesque-variable.woff2",
+            "transferBytes": 205768,
+            "encodedBytes": 205468,
+            "decodedBytes": 205468
+          },
+          {
+            "path": "/api/atlas",
+            "transferBytes": 33119,
+            "encodedBytes": 32819,
+            "decodedBytes": 32819
+          }
+        ]
+      },
+      "errors": []
+    },
+    {
+      "workload": "inventory-top100",
+      "profile": "desktop",
+      "trial": 1,
+      "elapsedMs": 1955,
+      "initial": {
+        "graphReadyMs": 180.89999999990687,
+        "frameReadyMs": 33.300000000046566,
+        "renderMs": 15.299999999813735,
+        "frameId": "7a7ec70e3c0883408845f73da798c6c6fb74cc6ff2565ab8029ad3c804963f53",
+        "inspectorFrameId": "7a7ec70e3c0883408845f73da798c6c6fb74cc6ff2565ab8029ad3c804963f53",
+        "nodes": 101,
+        "domNodes": 1467,
+        "resources": [
+          {
+            "path": "/style.css",
+            "transferBytes": 16366,
+            "encodedBytes": 16066,
+            "decodedBytes": 16066
+          },
+          {
+            "path": "/console.css",
+            "transferBytes": 60118,
+            "encodedBytes": 59818,
+            "decodedBytes": 59818
+          },
+          {
+            "path": "/temporal-graph.css",
+            "transferBytes": 10640,
+            "encodedBytes": 10340,
+            "decodedBytes": 10340
+          },
+          {
+            "path": "/atlas.css",
+            "transferBytes": 6213,
+            "encodedBytes": 5913,
+            "decodedBytes": 5913
+          },
+          {
+            "path": "/console-ui.js",
+            "transferBytes": 4127,
+            "encodedBytes": 3827,
+            "decodedBytes": 3827
+          },
+          {
+            "path": "/research-model.js",
+            "transferBytes": 30097,
+            "encodedBytes": 29797,
+            "decodedBytes": 29797
+          },
+          {
+            "path": "/temporal-graph.js",
+            "transferBytes": 32590,
+            "encodedBytes": 32290,
+            "decodedBytes": 32290
+          },
+          {
+            "path": "/atlas-model.js",
+            "transferBytes": 3732,
+            "encodedBytes": 3432,
+            "decodedBytes": 3432
+          },
+          {
+            "path": "/atlas-view.js",
+            "transferBytes": 22002,
+            "encodedBytes": 21702,
+            "decodedBytes": 21702
+          },
+          {
+            "path": "/api/atlas",
+            "transferBytes": 13325,
+            "encodedBytes": 13025,
+            "decodedBytes": 13025
+          },
+          {
+            "path": "/api/atlas",
+            "transferBytes": 33120,
+            "encodedBytes": 32820,
+            "decodedBytes": 32820
+          }
+        ]
+      },
+      "frameAcceptanceMs": 159.89999999990687,
+      "acceptedFrameId": "7a7ec70e3c0883408845f73da798c6c6fb74cc6ff2565ab8029ad3c804963f53",
+      "camera": {
+        "zoom": [
+          0.6000000000931323,
+          0.6000000000931323,
+          0.5,
+          0.5,
+          0.39999999990686774,
+          0.5999999998603016,
+          0.5,
+          0.30000000004656613,
+          0.5,
+          0.5,
+          0.39999999990686774,
+          0.30000000004656613,
+          0.4000000001396984,
+          0.5999999998603016,
+          0.6000000000931323,
+          0.4000000001396984,
+          0.30000000004656613,
+          0.39999999990686774,
+          0.30000000004656613,
+          0.30000000004656613
+        ],
+        "pan": [
+          0,
+          0,
+          0,
+          0.09999999986030161,
+          0,
+          0,
+          0,
+          0.10000000009313226,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.09999999986030161,
+          0,
+          0.10000000009313226
+        ]
+      },
+      "transport": {
+        "cache": "disabled",
+        "initial": {
+          "attempts": 13,
+          "apiAttempts": 2,
+          "totalDecodedBytes": 234034,
+          "totalTransferBytes": 236330,
+          "apiResponses": [
+            {
+              "url": "http://127.0.0.1:8139/api/atlas?mode=discover&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5",
+              "path": "/api/atlas?mode=discover&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5",
+              "status": 200,
+              "api": true,
+              "decodedBytes": 13025,
+              "transferBytes": 13241,
+              "contentEncoding": ""
+            },
+            {
+              "url": "http://127.0.0.1:8139/api/atlas?mode=focus&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5&source=cncf&year=2024&temporal_mode=snapshot&artifact=artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8&top_k=100&limit=100&candidate=4d9ade2bfb2aa6cb4afb",
+              "path": "/api/atlas?mode=focus&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5&source=cncf&year=2024&temporal_mode=snapshot&artifact=artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8&top_k=100&limit=100&candidate=4d9ade2bfb2aa6cb4afb",
+              "status": 200,
+              "api": true,
+              "decodedBytes": 32820,
+              "transferBytes": 33036,
+              "contentEncoding": ""
+            }
+          ],
+          "resourceTiming": {
+            "transferBytes": 232330,
+            "encodedBytes": 229030,
+            "decodedBytes": 229030
+          }
+        },
+        "compression": [],
+        "apiResponses": [
+          {
+            "url": "http://127.0.0.1:8139/api/atlas?mode=discover&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5",
+            "path": "/api/atlas?mode=discover&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5",
+            "status": 200,
+            "api": true,
+            "decodedBytes": 13025,
+            "transferBytes": 13241,
+            "contentEncoding": ""
+          },
+          {
+            "url": "http://127.0.0.1:8139/api/atlas?mode=focus&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5&source=cncf&year=2024&temporal_mode=snapshot&artifact=artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8&top_k=100&limit=100&candidate=4d9ade2bfb2aa6cb4afb",
+            "path": "/api/atlas?mode=focus&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5&source=cncf&year=2024&temporal_mode=snapshot&artifact=artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8&top_k=100&limit=100&candidate=4d9ade2bfb2aa6cb4afb",
+            "status": 200,
+            "api": true,
+            "decodedBytes": 32820,
+            "transferBytes": 33036,
+            "contentEncoding": ""
+          },
+          {
+            "url": "http://127.0.0.1:8139/api/atlas?mode=focus&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5&source=cncf&year=2024&temporal_mode=snapshot&artifact=artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8&candidate=4d9ade2bfb2aa6cb4afb&top_k=60&limit=60",
+            "path": "/api/atlas?mode=focus&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5&source=cncf&year=2024&temporal_mode=snapshot&artifact=artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8&candidate=4d9ade2bfb2aa6cb4afb&top_k=60&limit=60",
+            "status": 200,
+            "api": true,
+            "decodedBytes": 20769,
+            "transferBytes": 20985,
+            "contentEncoding": ""
+          }
+        ],
+        "totalHttpRequests": 14,
+        "totalDecodedBytes": 460271,
+        "totalTransferBytes": 459167,
+        "resourceTiming": [
+          {
+            "path": "/style.css",
+            "transferBytes": 16366,
+            "encodedBytes": 16066,
+            "decodedBytes": 16066
+          },
+          {
+            "path": "/console.css",
+            "transferBytes": 60118,
+            "encodedBytes": 59818,
+            "decodedBytes": 59818
+          },
+          {
+            "path": "/temporal-graph.css",
+            "transferBytes": 10640,
+            "encodedBytes": 10340,
+            "decodedBytes": 10340
+          },
+          {
+            "path": "/atlas.css",
+            "transferBytes": 6213,
+            "encodedBytes": 5913,
+            "decodedBytes": 5913
+          },
+          {
+            "path": "/console-ui.js",
+            "transferBytes": 4127,
+            "encodedBytes": 3827,
+            "decodedBytes": 3827
+          },
+          {
+            "path": "/research-model.js",
+            "transferBytes": 30097,
+            "encodedBytes": 29797,
+            "decodedBytes": 29797
+          },
+          {
+            "path": "/temporal-graph.js",
+            "transferBytes": 32590,
+            "encodedBytes": 32290,
+            "decodedBytes": 32290
+          },
+          {
+            "path": "/atlas-model.js",
+            "transferBytes": 3732,
+            "encodedBytes": 3432,
+            "decodedBytes": 3432
+          },
+          {
+            "path": "/atlas-view.js",
+            "transferBytes": 22002,
+            "encodedBytes": 21702,
+            "decodedBytes": 21702
+          },
+          {
+            "path": "/api/atlas",
+            "transferBytes": 13325,
+            "encodedBytes": 13025,
+            "decodedBytes": 13025
+          },
+          {
+            "path": "/api/atlas",
+            "transferBytes": 33120,
+            "encodedBytes": 32820,
+            "decodedBytes": 32820
+          },
+          {
+            "path": "/fonts/bricolage-grotesque-variable.woff2",
+            "transferBytes": 205768,
+            "encodedBytes": 205468,
+            "decodedBytes": 205468
+          },
+          {
+            "path": "/api/atlas",
+            "transferBytes": 21069,
+            "encodedBytes": 20769,
+            "decodedBytes": 20769
+          }
+        ]
+      },
+      "errors": []
+    },
+    {
+      "workload": "inventory-top100",
+      "profile": "desktop",
+      "trial": 2,
+      "elapsedMs": 1922,
+      "initial": {
+        "graphReadyMs": 182.30000000004657,
+        "frameReadyMs": 34.39999999990687,
+        "renderMs": 18.399999999906868,
+        "frameId": "7a7ec70e3c0883408845f73da798c6c6fb74cc6ff2565ab8029ad3c804963f53",
+        "inspectorFrameId": "7a7ec70e3c0883408845f73da798c6c6fb74cc6ff2565ab8029ad3c804963f53",
+        "nodes": 101,
+        "domNodes": 1467,
+        "resources": [
+          {
+            "path": "/style.css",
+            "transferBytes": 16366,
+            "encodedBytes": 16066,
+            "decodedBytes": 16066
+          },
+          {
+            "path": "/console.css",
+            "transferBytes": 60118,
+            "encodedBytes": 59818,
+            "decodedBytes": 59818
+          },
+          {
+            "path": "/temporal-graph.css",
+            "transferBytes": 10640,
+            "encodedBytes": 10340,
+            "decodedBytes": 10340
+          },
+          {
+            "path": "/atlas.css",
+            "transferBytes": 6213,
+            "encodedBytes": 5913,
+            "decodedBytes": 5913
+          },
+          {
+            "path": "/console-ui.js",
+            "transferBytes": 4127,
+            "encodedBytes": 3827,
+            "decodedBytes": 3827
+          },
+          {
+            "path": "/research-model.js",
+            "transferBytes": 30097,
+            "encodedBytes": 29797,
+            "decodedBytes": 29797
+          },
+          {
+            "path": "/temporal-graph.js",
+            "transferBytes": 32590,
+            "encodedBytes": 32290,
+            "decodedBytes": 32290
+          },
+          {
+            "path": "/atlas-model.js",
+            "transferBytes": 3732,
+            "encodedBytes": 3432,
+            "decodedBytes": 3432
+          },
+          {
+            "path": "/atlas-view.js",
+            "transferBytes": 22002,
+            "encodedBytes": 21702,
+            "decodedBytes": 21702
+          },
+          {
+            "path": "/api/atlas",
+            "transferBytes": 13325,
+            "encodedBytes": 13025,
+            "decodedBytes": 13025
+          },
+          {
+            "path": "/api/atlas",
+            "transferBytes": 33120,
+            "encodedBytes": 32820,
+            "decodedBytes": 32820
+          }
+        ]
+      },
+      "frameAcceptanceMs": 119.5,
+      "acceptedFrameId": "7a7ec70e3c0883408845f73da798c6c6fb74cc6ff2565ab8029ad3c804963f53",
+      "camera": {
+        "zoom": [
+          0.5,
+          0.6000000000931323,
+          0.39999999990686774,
+          0.4000000001396984,
+          0.6000000000931323,
+          0.5,
+          0.39999999990686774,
+          0.30000000004656613,
+          0.19999999995343387,
+          0.39999999990686774,
+          0.30000000004656613,
+          0.6000000000931323,
+          0.4000000001396984,
+          0.30000000004656613,
+          0.39999999990686774,
+          0.2999999998137355,
+          0.4000000001396984,
+          0.19999999995343387,
+          0.30000000004656613,
+          0.30000000004656613
+        ],
+        "pan": [
+          0.09999999986030161,
+          0,
+          0.09999999986030161,
+          0.09999999986030161,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.10000000009313226,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.10000000009313226,
+          0
+        ]
+      },
+      "transport": {
+        "cache": "disabled",
+        "initial": {
+          "attempts": 13,
+          "apiAttempts": 2,
+          "totalDecodedBytes": 234034,
+          "totalTransferBytes": 236330,
+          "apiResponses": [
+            {
+              "url": "http://127.0.0.1:8139/api/atlas?mode=discover&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5",
+              "path": "/api/atlas?mode=discover&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5",
+              "status": 200,
+              "api": true,
+              "decodedBytes": 13025,
+              "transferBytes": 13241,
+              "contentEncoding": ""
+            },
+            {
+              "url": "http://127.0.0.1:8139/api/atlas?mode=focus&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5&source=cncf&year=2024&temporal_mode=snapshot&artifact=artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8&top_k=100&limit=100&candidate=4d9ade2bfb2aa6cb4afb",
+              "path": "/api/atlas?mode=focus&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5&source=cncf&year=2024&temporal_mode=snapshot&artifact=artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8&top_k=100&limit=100&candidate=4d9ade2bfb2aa6cb4afb",
+              "status": 200,
+              "api": true,
+              "decodedBytes": 32820,
+              "transferBytes": 33036,
+              "contentEncoding": ""
+            }
+          ],
+          "resourceTiming": {
+            "transferBytes": 232330,
+            "encodedBytes": 229030,
+            "decodedBytes": 229030
+          }
+        },
+        "compression": [],
+        "apiResponses": [
+          {
+            "url": "http://127.0.0.1:8139/api/atlas?mode=discover&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5",
+            "path": "/api/atlas?mode=discover&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5",
+            "status": 200,
+            "api": true,
+            "decodedBytes": 13025,
+            "transferBytes": 13241,
+            "contentEncoding": ""
+          },
+          {
+            "url": "http://127.0.0.1:8139/api/atlas?mode=focus&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5&source=cncf&year=2024&temporal_mode=snapshot&artifact=artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8&top_k=100&limit=100&candidate=4d9ade2bfb2aa6cb4afb",
+            "path": "/api/atlas?mode=focus&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5&source=cncf&year=2024&temporal_mode=snapshot&artifact=artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8&top_k=100&limit=100&candidate=4d9ade2bfb2aa6cb4afb",
+            "status": 200,
+            "api": true,
+            "decodedBytes": 32820,
+            "transferBytes": 33036,
+            "contentEncoding": ""
+          },
+          {
+            "url": "http://127.0.0.1:8139/api/atlas?mode=focus&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5&source=cncf&year=2024&temporal_mode=snapshot&artifact=artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8&candidate=4d9ade2bfb2aa6cb4afb&top_k=60&limit=60",
+            "path": "/api/atlas?mode=focus&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5&source=cncf&year=2024&temporal_mode=snapshot&artifact=artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8&candidate=4d9ade2bfb2aa6cb4afb&top_k=60&limit=60",
+            "status": 200,
+            "api": true,
+            "decodedBytes": 20769,
+            "transferBytes": 20985,
+            "contentEncoding": ""
+          }
+        ],
+        "totalHttpRequests": 14,
+        "totalDecodedBytes": 460271,
+        "totalTransferBytes": 459167,
+        "resourceTiming": [
+          {
+            "path": "/style.css",
+            "transferBytes": 16366,
+            "encodedBytes": 16066,
+            "decodedBytes": 16066
+          },
+          {
+            "path": "/console.css",
+            "transferBytes": 60118,
+            "encodedBytes": 59818,
+            "decodedBytes": 59818
+          },
+          {
+            "path": "/temporal-graph.css",
+            "transferBytes": 10640,
+            "encodedBytes": 10340,
+            "decodedBytes": 10340
+          },
+          {
+            "path": "/atlas.css",
+            "transferBytes": 6213,
+            "encodedBytes": 5913,
+            "decodedBytes": 5913
+          },
+          {
+            "path": "/console-ui.js",
+            "transferBytes": 4127,
+            "encodedBytes": 3827,
+            "decodedBytes": 3827
+          },
+          {
+            "path": "/research-model.js",
+            "transferBytes": 30097,
+            "encodedBytes": 29797,
+            "decodedBytes": 29797
+          },
+          {
+            "path": "/temporal-graph.js",
+            "transferBytes": 32590,
+            "encodedBytes": 32290,
+            "decodedBytes": 32290
+          },
+          {
+            "path": "/atlas-model.js",
+            "transferBytes": 3732,
+            "encodedBytes": 3432,
+            "decodedBytes": 3432
+          },
+          {
+            "path": "/atlas-view.js",
+            "transferBytes": 22002,
+            "encodedBytes": 21702,
+            "decodedBytes": 21702
+          },
+          {
+            "path": "/api/atlas",
+            "transferBytes": 13325,
+            "encodedBytes": 13025,
+            "decodedBytes": 13025
+          },
+          {
+            "path": "/api/atlas",
+            "transferBytes": 33120,
+            "encodedBytes": 32820,
+            "decodedBytes": 32820
+          },
+          {
+            "path": "/fonts/bricolage-grotesque-variable.woff2",
+            "transferBytes": 205768,
+            "encodedBytes": 205468,
+            "decodedBytes": 205468
+          },
+          {
+            "path": "/api/atlas",
+            "transferBytes": 21069,
+            "encodedBytes": 20769,
+            "decodedBytes": 20769
+          }
+        ]
+      },
+      "errors": []
+    },
+    {
+      "workload": "inventory-top100",
+      "profile": "desktop",
+      "trial": 3,
+      "elapsedMs": 1873,
+      "initial": {
+        "graphReadyMs": 179.5,
+        "frameReadyMs": 32.799999999813735,
+        "renderMs": 17.800000000046566,
+        "frameId": "7a7ec70e3c0883408845f73da798c6c6fb74cc6ff2565ab8029ad3c804963f53",
+        "inspectorFrameId": "7a7ec70e3c0883408845f73da798c6c6fb74cc6ff2565ab8029ad3c804963f53",
+        "nodes": 101,
+        "domNodes": 1467,
+        "resources": [
+          {
+            "path": "/style.css",
+            "transferBytes": 16366,
+            "encodedBytes": 16066,
+            "decodedBytes": 16066
+          },
+          {
+            "path": "/console.css",
+            "transferBytes": 60118,
+            "encodedBytes": 59818,
+            "decodedBytes": 59818
+          },
+          {
+            "path": "/temporal-graph.css",
+            "transferBytes": 10640,
+            "encodedBytes": 10340,
+            "decodedBytes": 10340
+          },
+          {
+            "path": "/atlas.css",
+            "transferBytes": 6213,
+            "encodedBytes": 5913,
+            "decodedBytes": 5913
+          },
+          {
+            "path": "/console-ui.js",
+            "transferBytes": 4127,
+            "encodedBytes": 3827,
+            "decodedBytes": 3827
+          },
+          {
+            "path": "/research-model.js",
+            "transferBytes": 30097,
+            "encodedBytes": 29797,
+            "decodedBytes": 29797
+          },
+          {
+            "path": "/temporal-graph.js",
+            "transferBytes": 32590,
+            "encodedBytes": 32290,
+            "decodedBytes": 32290
+          },
+          {
+            "path": "/atlas-model.js",
+            "transferBytes": 3732,
+            "encodedBytes": 3432,
+            "decodedBytes": 3432
+          },
+          {
+            "path": "/atlas-view.js",
+            "transferBytes": 22002,
+            "encodedBytes": 21702,
+            "decodedBytes": 21702
+          },
+          {
+            "path": "/api/atlas",
+            "transferBytes": 13324,
+            "encodedBytes": 13024,
+            "decodedBytes": 13024
+          },
+          {
+            "path": "/api/atlas",
+            "transferBytes": 33120,
+            "encodedBytes": 32820,
+            "decodedBytes": 32820
+          }
+        ]
+      },
+      "frameAcceptanceMs": 142.69999999995343,
+      "acceptedFrameId": "7a7ec70e3c0883408845f73da798c6c6fb74cc6ff2565ab8029ad3c804963f53",
+      "camera": {
+        "zoom": [
+          0.5,
+          0.39999999990686774,
+          0.5999999998603016,
+          0.5,
+          0.6999999999534339,
+          0.39999999990686774,
+          0.30000000004656613,
+          0.30000000004656613,
+          0.30000000004656613,
+          0.30000000004656613,
+          0.6000000000931323,
+          0.4000000001396984,
+          0.5,
+          0.39999999990686774,
+          0.4000000001396984,
+          0.30000000004656613,
+          0.39999999990686774,
+          0.4000000001396984,
+          0.20000000018626451,
+          0.4000000001396984
+        ],
+        "pan": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.10000000009313226,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "transport": {
+        "cache": "disabled",
+        "initial": {
+          "attempts": 13,
+          "apiAttempts": 2,
+          "totalDecodedBytes": 234033,
+          "totalTransferBytes": 236329,
+          "apiResponses": [
+            {
+              "url": "http://127.0.0.1:8139/api/atlas?mode=discover&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5",
+              "path": "/api/atlas?mode=discover&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5",
+              "status": 200,
+              "api": true,
+              "decodedBytes": 13024,
+              "transferBytes": 13240,
+              "contentEncoding": ""
+            },
+            {
+              "url": "http://127.0.0.1:8139/api/atlas?mode=focus&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5&source=cncf&year=2024&temporal_mode=snapshot&artifact=artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8&top_k=100&limit=100&candidate=4d9ade2bfb2aa6cb4afb",
+              "path": "/api/atlas?mode=focus&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5&source=cncf&year=2024&temporal_mode=snapshot&artifact=artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8&top_k=100&limit=100&candidate=4d9ade2bfb2aa6cb4afb",
+              "status": 200,
+              "api": true,
+              "decodedBytes": 32820,
+              "transferBytes": 33036,
+              "contentEncoding": ""
+            }
+          ],
+          "resourceTiming": {
+            "transferBytes": 232329,
+            "encodedBytes": 229029,
+            "decodedBytes": 229029
+          }
+        },
+        "compression": [],
+        "apiResponses": [
+          {
+            "url": "http://127.0.0.1:8139/api/atlas?mode=discover&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5",
+            "path": "/api/atlas?mode=discover&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5",
+            "status": 200,
+            "api": true,
+            "decodedBytes": 13024,
+            "transferBytes": 13240,
+            "contentEncoding": ""
+          },
+          {
+            "url": "http://127.0.0.1:8139/api/atlas?mode=focus&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5&source=cncf&year=2024&temporal_mode=snapshot&artifact=artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8&top_k=100&limit=100&candidate=4d9ade2bfb2aa6cb4afb",
+            "path": "/api/atlas?mode=focus&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5&source=cncf&year=2024&temporal_mode=snapshot&artifact=artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8&top_k=100&limit=100&candidate=4d9ade2bfb2aa6cb4afb",
+            "status": 200,
+            "api": true,
+            "decodedBytes": 32820,
+            "transferBytes": 33036,
+            "contentEncoding": ""
+          },
+          {
+            "url": "http://127.0.0.1:8139/api/atlas?mode=focus&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5&source=cncf&year=2024&temporal_mode=snapshot&artifact=artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8&candidate=4d9ade2bfb2aa6cb4afb&top_k=60&limit=60",
+            "path": "/api/atlas?mode=focus&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5&source=cncf&year=2024&temporal_mode=snapshot&artifact=artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8&candidate=4d9ade2bfb2aa6cb4afb&top_k=60&limit=60",
+            "status": 200,
+            "api": true,
+            "decodedBytes": 20767,
+            "transferBytes": 20983,
+            "contentEncoding": ""
+          }
+        ],
+        "totalHttpRequests": 14,
+        "totalDecodedBytes": 460268,
+        "totalTransferBytes": 459164,
+        "resourceTiming": [
+          {
+            "path": "/style.css",
+            "transferBytes": 16366,
+            "encodedBytes": 16066,
+            "decodedBytes": 16066
+          },
+          {
+            "path": "/console.css",
+            "transferBytes": 60118,
+            "encodedBytes": 59818,
+            "decodedBytes": 59818
+          },
+          {
+            "path": "/temporal-graph.css",
+            "transferBytes": 10640,
+            "encodedBytes": 10340,
+            "decodedBytes": 10340
+          },
+          {
+            "path": "/atlas.css",
+            "transferBytes": 6213,
+            "encodedBytes": 5913,
+            "decodedBytes": 5913
+          },
+          {
+            "path": "/console-ui.js",
+            "transferBytes": 4127,
+            "encodedBytes": 3827,
+            "decodedBytes": 3827
+          },
+          {
+            "path": "/research-model.js",
+            "transferBytes": 30097,
+            "encodedBytes": 29797,
+            "decodedBytes": 29797
+          },
+          {
+            "path": "/temporal-graph.js",
+            "transferBytes": 32590,
+            "encodedBytes": 32290,
+            "decodedBytes": 32290
+          },
+          {
+            "path": "/atlas-model.js",
+            "transferBytes": 3732,
+            "encodedBytes": 3432,
+            "decodedBytes": 3432
+          },
+          {
+            "path": "/atlas-view.js",
+            "transferBytes": 22002,
+            "encodedBytes": 21702,
+            "decodedBytes": 21702
+          },
+          {
+            "path": "/api/atlas",
+            "transferBytes": 13324,
+            "encodedBytes": 13024,
+            "decodedBytes": 13024
+          },
+          {
+            "path": "/api/atlas",
+            "transferBytes": 33120,
+            "encodedBytes": 32820,
+            "decodedBytes": 32820
+          },
+          {
+            "path": "/fonts/bricolage-grotesque-variable.woff2",
+            "transferBytes": 205768,
+            "encodedBytes": 205468,
+            "decodedBytes": 205468
+          },
+          {
+            "path": "/api/atlas",
+            "transferBytes": 21067,
+            "encodedBytes": 20767,
+            "decodedBytes": 20767
+          }
+        ]
+      },
+      "errors": []
+    },
+    {
+      "workload": "inventory-top100",
+      "profile": "desktop",
+      "trial": 4,
+      "elapsedMs": 1913,
+      "initial": {
+        "graphReadyMs": 165.9000000001397,
+        "frameReadyMs": 27.5,
+        "renderMs": 14.800000000046566,
+        "frameId": "7a7ec70e3c0883408845f73da798c6c6fb74cc6ff2565ab8029ad3c804963f53",
+        "inspectorFrameId": "7a7ec70e3c0883408845f73da798c6c6fb74cc6ff2565ab8029ad3c804963f53",
+        "nodes": 101,
+        "domNodes": 1467,
+        "resources": [
+          {
+            "path": "/style.css",
+            "transferBytes": 16366,
+            "encodedBytes": 16066,
+            "decodedBytes": 16066
+          },
+          {
+            "path": "/console.css",
+            "transferBytes": 60118,
+            "encodedBytes": 59818,
+            "decodedBytes": 59818
+          },
+          {
+            "path": "/temporal-graph.css",
+            "transferBytes": 10640,
+            "encodedBytes": 10340,
+            "decodedBytes": 10340
+          },
+          {
+            "path": "/atlas.css",
+            "transferBytes": 6213,
+            "encodedBytes": 5913,
+            "decodedBytes": 5913
+          },
+          {
+            "path": "/console-ui.js",
+            "transferBytes": 4127,
+            "encodedBytes": 3827,
+            "decodedBytes": 3827
+          },
+          {
+            "path": "/research-model.js",
+            "transferBytes": 30097,
+            "encodedBytes": 29797,
+            "decodedBytes": 29797
+          },
+          {
+            "path": "/temporal-graph.js",
+            "transferBytes": 32590,
+            "encodedBytes": 32290,
+            "decodedBytes": 32290
+          },
+          {
+            "path": "/atlas-model.js",
+            "transferBytes": 3732,
+            "encodedBytes": 3432,
+            "decodedBytes": 3432
+          },
+          {
+            "path": "/atlas-view.js",
+            "transferBytes": 22002,
+            "encodedBytes": 21702,
+            "decodedBytes": 21702
+          },
+          {
+            "path": "/api/atlas",
+            "transferBytes": 13325,
+            "encodedBytes": 13025,
+            "decodedBytes": 13025
+          },
+          {
+            "path": "/api/atlas",
+            "transferBytes": 33121,
+            "encodedBytes": 32821,
+            "decodedBytes": 32821
+          }
+        ]
+      },
+      "frameAcceptanceMs": 140.79999999981374,
+      "acceptedFrameId": "7a7ec70e3c0883408845f73da798c6c6fb74cc6ff2565ab8029ad3c804963f53",
+      "camera": {
+        "zoom": [
+          0.39999999990686774,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.4000000001396984,
+          0.39999999990686774,
+          0.2999999998137355,
+          0.6000000000931323,
+          0.5,
+          0.39999999990686774,
+          0.39999999990686774,
+          0.39999999990686774,
+          0.5,
+          0.30000000004656613,
+          0.4000000001396984,
+          0.2999999998137355,
+          0.4000000001396984,
+          0.4000000001396984,
+          0.30000000004656613
+        ],
+        "pan": [
+          0,
+          0,
+          0,
+          0,
+          0.10000000009313226,
+          0.10000000009313226,
+          0.10000000009313226,
+          0,
+          0,
+          0,
+          0.10000000009313226,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.09999999986030161,
+          0.10000000009313226,
+          0
+        ]
+      },
+      "transport": {
+        "cache": "disabled",
+        "initial": {
+          "attempts": 13,
+          "apiAttempts": 2,
+          "totalDecodedBytes": 234035,
+          "totalTransferBytes": 236331,
+          "apiResponses": [
+            {
+              "url": "http://127.0.0.1:8139/api/atlas?mode=discover&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5",
+              "path": "/api/atlas?mode=discover&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5",
+              "status": 200,
+              "api": true,
+              "decodedBytes": 13025,
+              "transferBytes": 13241,
+              "contentEncoding": ""
+            },
+            {
+              "url": "http://127.0.0.1:8139/api/atlas?mode=focus&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5&source=cncf&year=2024&temporal_mode=snapshot&artifact=artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8&top_k=100&limit=100&candidate=4d9ade2bfb2aa6cb4afb",
+              "path": "/api/atlas?mode=focus&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5&source=cncf&year=2024&temporal_mode=snapshot&artifact=artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8&top_k=100&limit=100&candidate=4d9ade2bfb2aa6cb4afb",
+              "status": 200,
+              "api": true,
+              "decodedBytes": 32821,
+              "transferBytes": 33037,
+              "contentEncoding": ""
+            }
+          ],
+          "resourceTiming": {
+            "transferBytes": 232331,
+            "encodedBytes": 229031,
+            "decodedBytes": 229031
+          }
+        },
+        "compression": [],
+        "apiResponses": [
+          {
+            "url": "http://127.0.0.1:8139/api/atlas?mode=discover&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5",
+            "path": "/api/atlas?mode=discover&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5",
+            "status": 200,
+            "api": true,
+            "decodedBytes": 13025,
+            "transferBytes": 13241,
+            "contentEncoding": ""
+          },
+          {
+            "url": "http://127.0.0.1:8139/api/atlas?mode=focus&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5&source=cncf&year=2024&temporal_mode=snapshot&artifact=artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8&top_k=100&limit=100&candidate=4d9ade2bfb2aa6cb4afb",
+            "path": "/api/atlas?mode=focus&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5&source=cncf&year=2024&temporal_mode=snapshot&artifact=artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8&top_k=100&limit=100&candidate=4d9ade2bfb2aa6cb4afb",
+            "status": 200,
+            "api": true,
+            "decodedBytes": 32821,
+            "transferBytes": 33037,
+            "contentEncoding": ""
+          },
+          {
+            "url": "http://127.0.0.1:8139/api/atlas?mode=focus&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5&source=cncf&year=2024&temporal_mode=snapshot&artifact=artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8&candidate=4d9ade2bfb2aa6cb4afb&top_k=60&limit=60",
+            "path": "/api/atlas?mode=focus&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5&source=cncf&year=2024&temporal_mode=snapshot&artifact=artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8&candidate=4d9ade2bfb2aa6cb4afb&top_k=60&limit=60",
+            "status": 200,
+            "api": true,
+            "decodedBytes": 20769,
+            "transferBytes": 20985,
+            "contentEncoding": ""
+          }
+        ],
+        "totalHttpRequests": 14,
+        "totalDecodedBytes": 460272,
+        "totalTransferBytes": 459168,
+        "resourceTiming": [
+          {
+            "path": "/style.css",
+            "transferBytes": 16366,
+            "encodedBytes": 16066,
+            "decodedBytes": 16066
+          },
+          {
+            "path": "/console.css",
+            "transferBytes": 60118,
+            "encodedBytes": 59818,
+            "decodedBytes": 59818
+          },
+          {
+            "path": "/temporal-graph.css",
+            "transferBytes": 10640,
+            "encodedBytes": 10340,
+            "decodedBytes": 10340
+          },
+          {
+            "path": "/atlas.css",
+            "transferBytes": 6213,
+            "encodedBytes": 5913,
+            "decodedBytes": 5913
+          },
+          {
+            "path": "/console-ui.js",
+            "transferBytes": 4127,
+            "encodedBytes": 3827,
+            "decodedBytes": 3827
+          },
+          {
+            "path": "/research-model.js",
+            "transferBytes": 30097,
+            "encodedBytes": 29797,
+            "decodedBytes": 29797
+          },
+          {
+            "path": "/temporal-graph.js",
+            "transferBytes": 32590,
+            "encodedBytes": 32290,
+            "decodedBytes": 32290
+          },
+          {
+            "path": "/atlas-model.js",
+            "transferBytes": 3732,
+            "encodedBytes": 3432,
+            "decodedBytes": 3432
+          },
+          {
+            "path": "/atlas-view.js",
+            "transferBytes": 22002,
+            "encodedBytes": 21702,
+            "decodedBytes": 21702
+          },
+          {
+            "path": "/api/atlas",
+            "transferBytes": 13325,
+            "encodedBytes": 13025,
+            "decodedBytes": 13025
+          },
+          {
+            "path": "/api/atlas",
+            "transferBytes": 33121,
+            "encodedBytes": 32821,
+            "decodedBytes": 32821
+          },
+          {
+            "path": "/fonts/bricolage-grotesque-variable.woff2",
+            "transferBytes": 205768,
+            "encodedBytes": 205468,
+            "decodedBytes": 205468
+          },
+          {
+            "path": "/api/atlas",
+            "transferBytes": 21069,
+            "encodedBytes": 20769,
+            "decodedBytes": 20769
+          }
+        ]
+      },
+      "errors": []
+    },
+    {
+      "workload": "inventory-top100",
+      "profile": "desktop",
+      "trial": 5,
+      "elapsedMs": 2338,
+      "initial": {
+        "graphReadyMs": 210.60000000009313,
+        "frameReadyMs": 34.39999999990687,
+        "renderMs": 18.200000000186265,
+        "frameId": "7a7ec70e3c0883408845f73da798c6c6fb74cc6ff2565ab8029ad3c804963f53",
+        "inspectorFrameId": "7a7ec70e3c0883408845f73da798c6c6fb74cc6ff2565ab8029ad3c804963f53",
+        "nodes": 101,
+        "domNodes": 1467,
+        "resources": [
+          {
+            "path": "/style.css",
+            "transferBytes": 16366,
+            "encodedBytes": 16066,
+            "decodedBytes": 16066
+          },
+          {
+            "path": "/console.css",
+            "transferBytes": 60118,
+            "encodedBytes": 59818,
+            "decodedBytes": 59818
+          },
+          {
+            "path": "/atlas.css",
+            "transferBytes": 6213,
+            "encodedBytes": 5913,
+            "decodedBytes": 5913
+          },
+          {
+            "path": "/temporal-graph.css",
+            "transferBytes": 10640,
+            "encodedBytes": 10340,
+            "decodedBytes": 10340
+          },
+          {
+            "path": "/console-ui.js",
+            "transferBytes": 4127,
+            "encodedBytes": 3827,
+            "decodedBytes": 3827
+          },
+          {
+            "path": "/research-model.js",
+            "transferBytes": 30097,
+            "encodedBytes": 29797,
+            "decodedBytes": 29797
+          },
+          {
+            "path": "/temporal-graph.js",
+            "transferBytes": 32590,
+            "encodedBytes": 32290,
+            "decodedBytes": 32290
+          },
+          {
+            "path": "/atlas-model.js",
+            "transferBytes": 3732,
+            "encodedBytes": 3432,
+            "decodedBytes": 3432
+          },
+          {
+            "path": "/atlas-view.js",
+            "transferBytes": 22002,
+            "encodedBytes": 21702,
+            "decodedBytes": 21702
+          },
+          {
+            "path": "/api/atlas",
+            "transferBytes": 13325,
+            "encodedBytes": 13025,
+            "decodedBytes": 13025
+          },
+          {
+            "path": "/api/atlas",
+            "transferBytes": 33120,
+            "encodedBytes": 32820,
+            "decodedBytes": 32820
+          }
+        ]
+      },
+      "frameAcceptanceMs": 163.19999999995343,
+      "acceptedFrameId": "7a7ec70e3c0883408845f73da798c6c6fb74cc6ff2565ab8029ad3c804963f53",
+      "camera": {
+        "zoom": [
+          0.5,
+          0.39999999990686774,
+          0.6999999999534339,
+          0.6999999999534339,
+          0.6999999999534339,
+          0.30000000004656613,
+          0.6000000000931323,
+          0.5,
+          0.5999999998603016,
+          0.4000000001396984,
+          0.5,
+          0.5,
+          0.39999999990686774,
+          0.5,
+          0.39999999990686774,
+          0.39999999990686774,
+          0.39999999990686774,
+          0.39999999990686774,
+          0.5,
+          0.39999999990686774
+        ],
+        "pan": [
+          0.10000000009313226,
+          0.10000000009313226,
+          0,
+          0.10000000009313226,
+          0,
+          0,
+          0,
+          0.10000000009313226,
+          0,
+          0.09999999986030161,
+          0,
+          0,
+          0,
+          0.10000000009313226,
+          0.09999999986030161,
+          0,
+          0,
+          0,
+          0,
+          0.10000000009313226
+        ]
+      },
+      "transport": {
+        "cache": "disabled",
+        "initial": {
+          "attempts": 13,
+          "apiAttempts": 2,
+          "totalDecodedBytes": 234034,
+          "totalTransferBytes": 236330,
+          "apiResponses": [
+            {
+              "url": "http://127.0.0.1:8139/api/atlas?mode=discover&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5",
+              "path": "/api/atlas?mode=discover&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5",
+              "status": 200,
+              "api": true,
+              "decodedBytes": 13025,
+              "transferBytes": 13241,
+              "contentEncoding": ""
+            },
+            {
+              "url": "http://127.0.0.1:8139/api/atlas?mode=focus&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5&source=cncf&year=2024&temporal_mode=snapshot&artifact=artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8&top_k=100&limit=100&candidate=4d9ade2bfb2aa6cb4afb",
+              "path": "/api/atlas?mode=focus&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5&source=cncf&year=2024&temporal_mode=snapshot&artifact=artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8&top_k=100&limit=100&candidate=4d9ade2bfb2aa6cb4afb",
+              "status": 200,
+              "api": true,
+              "decodedBytes": 32820,
+              "transferBytes": 33036,
+              "contentEncoding": ""
+            }
+          ],
+          "resourceTiming": {
+            "transferBytes": 232330,
+            "encodedBytes": 229030,
+            "decodedBytes": 229030
+          }
+        },
+        "compression": [],
+        "apiResponses": [
+          {
+            "url": "http://127.0.0.1:8139/api/atlas?mode=discover&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5",
+            "path": "/api/atlas?mode=discover&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5",
+            "status": 200,
+            "api": true,
+            "decodedBytes": 13025,
+            "transferBytes": 13241,
+            "contentEncoding": ""
+          },
+          {
+            "url": "http://127.0.0.1:8139/api/atlas?mode=focus&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5&source=cncf&year=2024&temporal_mode=snapshot&artifact=artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8&top_k=100&limit=100&candidate=4d9ade2bfb2aa6cb4afb",
+            "path": "/api/atlas?mode=focus&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5&source=cncf&year=2024&temporal_mode=snapshot&artifact=artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8&top_k=100&limit=100&candidate=4d9ade2bfb2aa6cb4afb",
+            "status": 200,
+            "api": true,
+            "decodedBytes": 32820,
+            "transferBytes": 33036,
+            "contentEncoding": ""
+          },
+          {
+            "url": "http://127.0.0.1:8139/api/atlas?mode=focus&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5&source=cncf&year=2024&temporal_mode=snapshot&artifact=artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8&candidate=4d9ade2bfb2aa6cb4afb&top_k=60&limit=60",
+            "path": "/api/atlas?mode=focus&build_id=990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5&source=cncf&year=2024&temporal_mode=snapshot&artifact=artifact_01044292a1f8dc05285bdb5e7c3814dd91e577059b74385fff4bacaaf26bc3a8&candidate=4d9ade2bfb2aa6cb4afb&top_k=60&limit=60",
+            "status": 200,
+            "api": true,
+            "decodedBytes": 20768,
+            "transferBytes": 20984,
+            "contentEncoding": ""
+          }
+        ],
+        "totalHttpRequests": 14,
+        "totalDecodedBytes": 460270,
+        "totalTransferBytes": 459166,
+        "resourceTiming": [
+          {
+            "path": "/style.css",
+            "transferBytes": 16366,
+            "encodedBytes": 16066,
+            "decodedBytes": 16066
+          },
+          {
+            "path": "/console.css",
+            "transferBytes": 60118,
+            "encodedBytes": 59818,
+            "decodedBytes": 59818
+          },
+          {
+            "path": "/atlas.css",
+            "transferBytes": 6213,
+            "encodedBytes": 5913,
+            "decodedBytes": 5913
+          },
+          {
+            "path": "/temporal-graph.css",
+            "transferBytes": 10640,
+            "encodedBytes": 10340,
+            "decodedBytes": 10340
+          },
+          {
+            "path": "/console-ui.js",
+            "transferBytes": 4127,
+            "encodedBytes": 3827,
+            "decodedBytes": 3827
+          },
+          {
+            "path": "/research-model.js",
+            "transferBytes": 30097,
+            "encodedBytes": 29797,
+            "decodedBytes": 29797
+          },
+          {
+            "path": "/temporal-graph.js",
+            "transferBytes": 32590,
+            "encodedBytes": 32290,
+            "decodedBytes": 32290
+          },
+          {
+            "path": "/atlas-model.js",
+            "transferBytes": 3732,
+            "encodedBytes": 3432,
+            "decodedBytes": 3432
+          },
+          {
+            "path": "/atlas-view.js",
+            "transferBytes": 22002,
+            "encodedBytes": 21702,
+            "decodedBytes": 21702
+          },
+          {
+            "path": "/api/atlas",
+            "transferBytes": 13325,
+            "encodedBytes": 13025,
+            "decodedBytes": 13025
+          },
+          {
+            "path": "/api/atlas",
+            "transferBytes": 33120,
+            "encodedBytes": 32820,
+            "decodedBytes": 32820
+          },
+          {
+            "path": "/fonts/bricolage-grotesque-variable.woff2",
+            "transferBytes": 205768,
+            "encodedBytes": 205468,
+            "decodedBytes": 205468
+          },
+          {
+            "path": "/api/atlas",
+            "transferBytes": 21068,
+            "encodedBytes": 20768,
+            "decodedBytes": 20768
+          }
+        ]
+      },
+      "errors": []
+    },
+    {
+      "workload": "reviewed",
+      "profile": "desktop",
+      "trial": 1,
+      "elapsedMs": 1724,
+      "initial": {
+        "graphReadyMs": 155.4000000001397,
+        "frameReadyMs": 12.100000000093132,
+        "renderMs": 3.699999999953434,
+        "frameId": "73acebb67529aac73ec53ad0b668d98fbbf13dea384460f39620b6079b5d15c9",
+        "inspectorFrameId": "73acebb67529aac73ec53ad0b668d98fbbf13dea384460f39620b6079b5d15c9",
+        "nodes": 2,
+        "domNodes": 176,
+        "resources": [
+          {
+            "path": "/style.css",
+            "transferBytes": 16366,
+            "encodedBytes": 16066,
+            "decodedBytes": 16066
+          },
+          {
+            "path": "/console.css",
+            "transferBytes": 60118,
+            "encodedBytes": 59818,
+            "decodedBytes": 59818
+          },
+          {
+            "path": "/temporal-graph.css",
+            "transferBytes": 10640,
+            "encodedBytes": 10340,
+            "decodedBytes": 10340
+          },
+          {
+            "path": "/atlas.css",
+            "transferBytes": 6213,
+            "encodedBytes": 5913,
+            "decodedBytes": 5913
+          },
+          {
+            "path": "/console-ui.js",
+            "transferBytes": 4127,
+            "encodedBytes": 3827,
+            "decodedBytes": 3827
+          },
+          {
+            "path": "/research-model.js",
+            "transferBytes": 30097,
+            "encodedBytes": 29797,
+            "decodedBytes": 29797
+          },
+          {
+            "path": "/temporal-graph.js",
+            "transferBytes": 32590,
+            "encodedBytes": 32290,
+            "decodedBytes": 32290
+          },
+          {
+            "path": "/atlas-model.js",
+            "transferBytes": 3732,
+            "encodedBytes": 3432,
+            "decodedBytes": 3432
+          },
+          {
+            "path": "/atlas-view.js",
+            "transferBytes": 22002,
+            "encodedBytes": 21702,
+            "decodedBytes": 21702
+          },
+          {
+            "path": "/atlas-reviewed-view.js",
+            "transferBytes": 23696,
+            "encodedBytes": 23396,
+            "decodedBytes": 23396
+          },
+          {
+            "path": "/api/atlas",
+            "transferBytes": 1635,
+            "encodedBytes": 1335,
+            "decodedBytes": 1335
+          },
+          {
+            "path": "/api/atlas",
+            "transferBytes": 1954,
+            "encodedBytes": 1654,
+            "decodedBytes": 1654
+          }
+        ]
+      },
+      "frameAcceptanceMs": 102.20000000018626,
+      "acceptedFrameId": "9f5fe2447ce0ce8491fb48facd4a1ac79e88b288504b3cc8ffd9ee6832096382",
+      "camera": {
+        "zoom": [
+          0.30000000004656613,
+          0.09999999986030161,
+          0.19999999995343387,
+          0.19999999995343387,
+          0.10000000009313226,
+          0.10000000009313226,
+          0.19999999995343387,
+          0.19999999995343387,
+          0.30000000004656613,
+          0.09999999986030161,
+          0.10000000009313226,
+          0.09999999986030161,
+          0.10000000009313226,
+          0.10000000009313226,
+          0.10000000009313226,
+          0.09999999986030161,
+          0.19999999995343387,
+          0.09999999986030161,
+          0,
+          0.10000000009313226
+        ],
+        "pan": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.10000000009313226,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.10000000009313226,
+          0,
+          0.10000000009313226,
+          0,
+          0.09999999986030161,
+          0.09999999986030161,
+          0.19999999995343387,
+          0.19999999995343387,
+          0
+        ]
+      },
+      "transport": {
+        "cache": "disabled",
+        "initial": {
+          "attempts": 14,
+          "apiAttempts": 2,
+          "totalDecodedBytes": 214574,
+          "totalTransferBytes": 217058,
+          "apiResponses": [
+            {
+              "url": "http://127.0.0.1:8139/api/atlas?layer=reviewed&mode=discover&build_id=bb773ae69b9991bed00afcf39948e66660eb4d5d51b8037be174ef273d30e7e7",
+              "path": "/api/atlas?layer=reviewed&mode=discover&build_id=bb773ae69b9991bed00afcf39948e66660eb4d5d51b8037be174ef273d30e7e7",
+              "status": 200,
+              "api": true,
+              "decodedBytes": 1335,
+              "transferBytes": 1550,
+              "contentEncoding": ""
+            },
+            {
+              "url": "http://127.0.0.1:8139/api/atlas?layer=reviewed&mode=focus&build_id=bb773ae69b9991bed00afcf39948e66660eb4d5d51b8037be174ef273d30e7e7&clock=source_publication&temporal_mode=published_through&cutoff=2022-02-24&predicate=&basis=documented&direction=both&top_k=60&entity=snowflake",
+              "path": "/api/atlas?layer=reviewed&mode=focus&build_id=bb773ae69b9991bed00afcf39948e66660eb4d5d51b8037be174ef273d30e7e7&clock=source_publication&temporal_mode=published_through&cutoff=2022-02-24&predicate=&basis=documented&direction=both&top_k=60&entity=snowflake",
+              "status": 200,
+              "api": true,
+              "decodedBytes": 1654,
+              "transferBytes": 1869,
+              "contentEncoding": ""
+            }
+          ],
+          "resourceTiming": {
+            "transferBytes": 213170,
+            "encodedBytes": 209570,
+            "decodedBytes": 209570
+          }
+        },
+        "compression": [],
+        "apiResponses": [
+          {
+            "url": "http://127.0.0.1:8139/api/atlas?layer=reviewed&mode=discover&build_id=bb773ae69b9991bed00afcf39948e66660eb4d5d51b8037be174ef273d30e7e7",
+            "path": "/api/atlas?layer=reviewed&mode=discover&build_id=bb773ae69b9991bed00afcf39948e66660eb4d5d51b8037be174ef273d30e7e7",
+            "status": 200,
+            "api": true,
+            "decodedBytes": 1335,
+            "transferBytes": 1550,
+            "contentEncoding": ""
+          },
+          {
+            "url": "http://127.0.0.1:8139/api/atlas?layer=reviewed&mode=focus&build_id=bb773ae69b9991bed00afcf39948e66660eb4d5d51b8037be174ef273d30e7e7&clock=source_publication&temporal_mode=published_through&cutoff=2022-02-24&predicate=&basis=documented&direction=both&top_k=60&entity=snowflake",
+            "path": "/api/atlas?layer=reviewed&mode=focus&build_id=bb773ae69b9991bed00afcf39948e66660eb4d5d51b8037be174ef273d30e7e7&clock=source_publication&temporal_mode=published_through&cutoff=2022-02-24&predicate=&basis=documented&direction=both&top_k=60&entity=snowflake",
+            "status": 200,
+            "api": true,
+            "decodedBytes": 1654,
+            "transferBytes": 1869,
+            "contentEncoding": ""
+          },
+          {
+            "url": "http://127.0.0.1:8139/api/atlas?layer=reviewed&mode=focus&build_id=bb773ae69b9991bed00afcf39948e66660eb4d5d51b8037be174ef273d30e7e7&clock=source_publication&temporal_mode=published_through&cutoff=2025-02-20&predicate=&basis=documented&direction=both&entity=snowflake&top_k=60",
+            "path": "/api/atlas?layer=reviewed&mode=focus&build_id=bb773ae69b9991bed00afcf39948e66660eb4d5d51b8037be174ef273d30e7e7&clock=source_publication&temporal_mode=published_through&cutoff=2025-02-20&predicate=&basis=documented&direction=both&entity=snowflake&top_k=60",
+            "status": 200,
+            "api": true,
+            "decodedBytes": 1654,
+            "transferBytes": 1869,
+            "contentEncoding": ""
+          }
+        ],
+        "totalHttpRequests": 15,
+        "totalDecodedBytes": 421696,
+        "totalTransferBytes": 420892,
+        "resourceTiming": [
+          {
+            "path": "/style.css",
+            "transferBytes": 16366,
+            "encodedBytes": 16066,
+            "decodedBytes": 16066
+          },
+          {
+            "path": "/console.css",
+            "transferBytes": 60118,
+            "encodedBytes": 59818,
+            "decodedBytes": 59818
+          },
+          {
+            "path": "/temporal-graph.css",
+            "transferBytes": 10640,
+            "encodedBytes": 10340,
+            "decodedBytes": 10340
+          },
+          {
+            "path": "/atlas.css",
+            "transferBytes": 6213,
+            "encodedBytes": 5913,
+            "decodedBytes": 5913
+          },
+          {
+            "path": "/console-ui.js",
+            "transferBytes": 4127,
+            "encodedBytes": 3827,
+            "decodedBytes": 3827
+          },
+          {
+            "path": "/research-model.js",
+            "transferBytes": 30097,
+            "encodedBytes": 29797,
+            "decodedBytes": 29797
+          },
+          {
+            "path": "/temporal-graph.js",
+            "transferBytes": 32590,
+            "encodedBytes": 32290,
+            "decodedBytes": 32290
+          },
+          {
+            "path": "/atlas-model.js",
+            "transferBytes": 3732,
+            "encodedBytes": 3432,
+            "decodedBytes": 3432
+          },
+          {
+            "path": "/atlas-view.js",
+            "transferBytes": 22002,
+            "encodedBytes": 21702,
+            "decodedBytes": 21702
+          },
+          {
+            "path": "/atlas-reviewed-view.js",
+            "transferBytes": 23696,
+            "encodedBytes": 23396,
+            "decodedBytes": 23396
+          },
+          {
+            "path": "/api/atlas",
+            "transferBytes": 1635,
+            "encodedBytes": 1335,
+            "decodedBytes": 1335
+          },
+          {
+            "path": "/api/atlas",
+            "transferBytes": 1954,
+            "encodedBytes": 1654,
+            "decodedBytes": 1654
+          },
+          {
+            "path": "/fonts/bricolage-grotesque-variable.woff2",
+            "transferBytes": 205768,
+            "encodedBytes": 205468,
+            "decodedBytes": 205468
+          },
+          {
+            "path": "/api/atlas",
+            "transferBytes": 1954,
+            "encodedBytes": 1654,
+            "decodedBytes": 1654
+          }
+        ]
+      },
+      "errors": []
+    },
+    {
+      "workload": "reviewed",
+      "profile": "desktop",
+      "trial": 2,
+      "elapsedMs": 1705,
+      "initial": {
+        "graphReadyMs": 156.5,
+        "frameReadyMs": 14.199999999953434,
+        "renderMs": 5.699999999953434,
+        "frameId": "73acebb67529aac73ec53ad0b668d98fbbf13dea384460f39620b6079b5d15c9",
+        "inspectorFrameId": "73acebb67529aac73ec53ad0b668d98fbbf13dea384460f39620b6079b5d15c9",
+        "nodes": 2,
+        "domNodes": 176,
+        "resources": [
+          {
+            "path": "/style.css",
+            "transferBytes": 16366,
+            "encodedBytes": 16066,
+            "decodedBytes": 16066
+          },
+          {
+            "path": "/console.css",
+            "transferBytes": 60118,
+            "encodedBytes": 59818,
+            "decodedBytes": 59818
+          },
+          {
+            "path": "/temporal-graph.css",
+            "transferBytes": 10640,
+            "encodedBytes": 10340,
+            "decodedBytes": 10340
+          },
+          {
+            "path": "/atlas.css",
+            "transferBytes": 6213,
+            "encodedBytes": 5913,
+            "decodedBytes": 5913
+          },
+          {
+            "path": "/console-ui.js",
+            "transferBytes": 4127,
+            "encodedBytes": 3827,
+            "decodedBytes": 3827
+          },
+          {
+            "path": "/research-model.js",
+            "transferBytes": 30097,
+            "encodedBytes": 29797,
+            "decodedBytes": 29797
+          },
+          {
+            "path": "/temporal-graph.js",
+            "transferBytes": 32590,
+            "encodedBytes": 32290,
+            "decodedBytes": 32290
+          },
+          {
+            "path": "/atlas-model.js",
+            "transferBytes": 3732,
+            "encodedBytes": 3432,
+            "decodedBytes": 3432
+          },
+          {
+            "path": "/atlas-view.js",
+            "transferBytes": 22002,
+            "encodedBytes": 21702,
+            "decodedBytes": 21702
+          },
+          {
+            "path": "/atlas-reviewed-view.js",
+            "transferBytes": 23696,
+            "encodedBytes": 23396,
+            "decodedBytes": 23396
+          },
+          {
+            "path": "/api/atlas",
+            "transferBytes": 1635,
+            "encodedBytes": 1335,
+            "decodedBytes": 1335
+          },
+          {
+            "path": "/api/atlas",
+            "transferBytes": 1954,
+            "encodedBytes": 1654,
+            "decodedBytes": 1654
+          }
+        ]
+      },
+      "frameAcceptanceMs": 103.80000000004657,
+      "acceptedFrameId": "9f5fe2447ce0ce8491fb48facd4a1ac79e88b288504b3cc8ffd9ee6832096382",
+      "camera": {
+        "zoom": [
+          0.19999999995343387,
+          0.10000000009313226,
+          0.10000000009313226,
+          0.20000000018626451,
+          0.09999999986030161,
+          0.10000000009313226,
+          0.10000000009313226,
+          0.19999999995343387,
+          0.19999999995343387,
+          0.09999999986030161,
+          0,
+          0.09999999986030161,
+          0.10000000009313226,
+          0.19999999995343387,
+          0.09999999986030161,
+          0.10000000009313226,
+          0.10000000009313226,
+          0.10000000009313226,
+          0.10000000009313226,
+          0.19999999995343387
+        ],
+        "pan": [
+          0,
+          0,
+          0.10000000009313226,
+          0.10000000009313226,
+          0,
+          0.10000000009313226,
+          0.10000000009313226,
+          0,
+          0,
+          0.10000000009313226,
+          0.10000000009313226,
+          0,
+          0,
+          0,
+          0.10000000009313226,
+          0.19999999995343387,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "transport": {
+        "cache": "disabled",
+        "initial": {
+          "attempts": 14,
+          "apiAttempts": 2,
+          "totalDecodedBytes": 214574,
+          "totalTransferBytes": 217058,
+          "apiResponses": [
+            {
+              "url": "http://127.0.0.1:8139/api/atlas?layer=reviewed&mode=discover&build_id=bb773ae69b9991bed00afcf39948e66660eb4d5d51b8037be174ef273d30e7e7",
+              "path": "/api/atlas?layer=reviewed&mode=discover&build_id=bb773ae69b9991bed00afcf39948e66660eb4d5d51b8037be174ef273d30e7e7",
+              "status": 200,
+              "api": true,
+              "decodedBytes": 1335,
+              "transferBytes": 1550,
+              "contentEncoding": ""
+            },
+            {
+              "url": "http://127.0.0.1:8139/api/atlas?layer=reviewed&mode=focus&build_id=bb773ae69b9991bed00afcf39948e66660eb4d5d51b8037be174ef273d30e7e7&clock=source_publication&temporal_mode=published_through&cutoff=2022-02-24&predicate=&basis=documented&direction=both&top_k=60&entity=snowflake",
+              "path": "/api/atlas?layer=reviewed&mode=focus&build_id=bb773ae69b9991bed00afcf39948e66660eb4d5d51b8037be174ef273d30e7e7&clock=source_publication&temporal_mode=published_through&cutoff=2022-02-24&predicate=&basis=documented&direction=both&top_k=60&entity=snowflake",
+              "status": 200,
+              "api": true,
+              "decodedBytes": 1654,
+              "transferBytes": 1869,
+              "contentEncoding": ""
+            }
+          ],
+          "resourceTiming": {
+            "transferBytes": 213170,
+            "encodedBytes": 209570,
+            "decodedBytes": 209570
+          }
+        },
+        "compression": [],
+        "apiResponses": [
+          {
+            "url": "http://127.0.0.1:8139/api/atlas?layer=reviewed&mode=discover&build_id=bb773ae69b9991bed00afcf39948e66660eb4d5d51b8037be174ef273d30e7e7",
+            "path": "/api/atlas?layer=reviewed&mode=discover&build_id=bb773ae69b9991bed00afcf39948e66660eb4d5d51b8037be174ef273d30e7e7",
+            "status": 200,
+            "api": true,
+            "decodedBytes": 1335,
+            "transferBytes": 1550,
+            "contentEncoding": ""
+          },
+          {
+            "url": "http://127.0.0.1:8139/api/atlas?layer=reviewed&mode=focus&build_id=bb773ae69b9991bed00afcf39948e66660eb4d5d51b8037be174ef273d30e7e7&clock=source_publication&temporal_mode=published_through&cutoff=2022-02-24&predicate=&basis=documented&direction=both&top_k=60&entity=snowflake",
+            "path": "/api/atlas?layer=reviewed&mode=focus&build_id=bb773ae69b9991bed00afcf39948e66660eb4d5d51b8037be174ef273d30e7e7&clock=source_publication&temporal_mode=published_through&cutoff=2022-02-24&predicate=&basis=documented&direction=both&top_k=60&entity=snowflake",
+            "status": 200,
+            "api": true,
+            "decodedBytes": 1654,
+            "transferBytes": 1869,
+            "contentEncoding": ""
+          },
+          {
+            "url": "http://127.0.0.1:8139/api/atlas?layer=reviewed&mode=focus&build_id=bb773ae69b9991bed00afcf39948e66660eb4d5d51b8037be174ef273d30e7e7&clock=source_publication&temporal_mode=published_through&cutoff=2025-02-20&predicate=&basis=documented&direction=both&entity=snowflake&top_k=60",
+            "path": "/api/atlas?layer=reviewed&mode=focus&build_id=bb773ae69b9991bed00afcf39948e66660eb4d5d51b8037be174ef273d30e7e7&clock=source_publication&temporal_mode=published_through&cutoff=2025-02-20&predicate=&basis=documented&direction=both&entity=snowflake&top_k=60",
+            "status": 200,
+            "api": true,
+            "decodedBytes": 1654,
+            "transferBytes": 1869,
+            "contentEncoding": ""
+          }
+        ],
+        "totalHttpRequests": 15,
+        "totalDecodedBytes": 421696,
+        "totalTransferBytes": 420892,
+        "resourceTiming": [
+          {
+            "path": "/style.css",
+            "transferBytes": 16366,
+            "encodedBytes": 16066,
+            "decodedBytes": 16066
+          },
+          {
+            "path": "/console.css",
+            "transferBytes": 60118,
+            "encodedBytes": 59818,
+            "decodedBytes": 59818
+          },
+          {
+            "path": "/temporal-graph.css",
+            "transferBytes": 10640,
+            "encodedBytes": 10340,
+            "decodedBytes": 10340
+          },
+          {
+            "path": "/atlas.css",
+            "transferBytes": 6213,
+            "encodedBytes": 5913,
+            "decodedBytes": 5913
+          },
+          {
+            "path": "/console-ui.js",
+            "transferBytes": 4127,
+            "encodedBytes": 3827,
+            "decodedBytes": 3827
+          },
+          {
+            "path": "/research-model.js",
+            "transferBytes": 30097,
+            "encodedBytes": 29797,
+            "decodedBytes": 29797
+          },
+          {
+            "path": "/temporal-graph.js",
+            "transferBytes": 32590,
+            "encodedBytes": 32290,
+            "decodedBytes": 32290
+          },
+          {
+            "path": "/atlas-model.js",
+            "transferBytes": 3732,
+            "encodedBytes": 3432,
+            "decodedBytes": 3432
+          },
+          {
+            "path": "/atlas-view.js",
+            "transferBytes": 22002,
+            "encodedBytes": 21702,
+            "decodedBytes": 21702
+          },
+          {
+            "path": "/atlas-reviewed-view.js",
+            "transferBytes": 23696,
+            "encodedBytes": 23396,
+            "decodedBytes": 23396
+          },
+          {
+            "path": "/api/atlas",
+            "transferBytes": 1635,
+            "encodedBytes": 1335,
+            "decodedBytes": 1335
+          },
+          {
+            "path": "/api/atlas",
+            "transferBytes": 1954,
+            "encodedBytes": 1654,
+            "decodedBytes": 1654
+          },
+          {
+            "path": "/fonts/bricolage-grotesque-variable.woff2",
+            "transferBytes": 205768,
+            "encodedBytes": 205468,
+            "decodedBytes": 205468
+          },
+          {
+            "path": "/api/atlas",
+            "transferBytes": 1954,
+            "encodedBytes": 1654,
+            "decodedBytes": 1654
+          }
+        ]
+      },
+      "errors": []
+    }
+  ],
+  "builds": {
+    "inventory": "990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5",
+    "reviewed": "bb773ae69b9991bed00afcf39948e66660eb4d5d51b8037be174ef273d30e7e7"
+  },
+  "error": "locator.focus: Target page, context or browser has been closed\nCall log:\n\u001b[2m  - waiting for locator('.constellation-map')\u001b[22m\n\n    at cameraSamples (/home/haidm/projects/log-pose-reviewed-provider/scripts/benchmark_atlas_browser.mjs:167:13)\n    at async measureOne (/home/haidm/projects/log-pose-reviewed-provider/scripts/benchmark_atlas_browser.mjs:253:18)\n    at async main (/home/haidm/projects/log-pose-reviewed-provider/scripts/benchmark_atlas_browser.mjs:420:32)",
+  "finishedAt": "2026-09-26T15:51:22.037Z",
+  "resources": {
+    "peakBrowserRssBytes": 863272960,
+    "peakServerRssBytes": 70160384,
+    "violation": null
+  }
+}

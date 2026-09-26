@@ -13,7 +13,8 @@ LAYER_TABLES = {
     "raw": {
         "snapshots", "ingestion_attempts", "market_files", "sec_artifacts",
         "sec_companyfacts", "topology_sources", "topology_acquisition_jobs",
-        "discovery_artifacts",
+        "discovery_artifacts", "topology_reconstruction_batches",
+        "topology_reconstruction_records",
     },
     "bronze": {
         "market_daily", "sec_financial_facts", "discovery_occurrences",
@@ -51,9 +52,48 @@ def test_every_domain_table_has_one_lossless_layer_view():
                     cursor.execute(f"SELECT count(*) AS count FROM public.{table_name}")
                     public_count = cursor.fetchone()["count"]
                     cursor.execute(f"SELECT count(*) AS count FROM {layer}.{table_name}")
-                    assert cursor.fetchone()["count"] == public_count
+                    layer_count = cursor.fetchone()["count"]
+                    if layer == "gold" and table_name == "atlas_snapshot":
+                        cursor.execute("SELECT count(*) AS count FROM public.atlas_snapshot WHERE ready")
+                        assert layer_count == cursor.fetchone()["count"]
+                    elif layer == "gold" and table_name == "atlas_current":
+                        cursor.execute("""SELECT count(*) AS count FROM public.atlas_current AS current
+                            JOIN public.atlas_snapshot AS snapshot USING (build_id)
+                            WHERE snapshot.ready""")
+                        assert layer_count == cursor.fetchone()["count"]
+                    else:
+                        assert layer_count == public_count
+                    cursor.execute("""SELECT column_name FROM information_schema.columns
+                        WHERE table_schema=%s AND table_name=%s ORDER BY ordinal_position""",
+                        ("public", table_name))
+                    public_columns = [row["column_name"] for row in cursor.fetchall()]
+                    cursor.execute("""SELECT column_name FROM information_schema.columns
+                        WHERE table_schema=%s AND table_name=%s ORDER BY ordinal_position""",
+                        (layer, table_name))
+                    assert [row["column_name"] for row in cursor.fetchall()] == public_columns
 
             cursor.execute("SELECT count(*) AS count FROM gold.topology_current_review")
             projection_count = cursor.fetchone()["count"]
             cursor.execute("SELECT count(*) AS count FROM silver.topology_candidates")
             assert projection_count == cursor.fetchone()["count"]
+
+            cursor.execute("""INSERT INTO public.topology_entities
+                (id,name,entity_kind,identity_status,created_at,original_created_at,
+                 reconstruction_arrived_at)
+                VALUES ('layer-clock-check','Layer clock check','company','reviewed',
+                    '2020-01-01T00:00:00Z',NULL,'2026-09-26T00:00:00Z')""")
+            cursor.execute("""SELECT original_created_at,reconstruction_arrived_at
+                FROM silver.topology_entities WHERE id='layer-clock-check'""")
+            row = cursor.fetchone()
+            assert row["original_created_at"] is None
+            assert row["reconstruction_arrived_at"] is not None
+
+            cursor.execute("""INSERT INTO public.atlas_snapshot(build_id,manifest,ready)
+                VALUES ('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa','{}'::jsonb,false)""")
+            cursor.execute("""SELECT ready,prepared_at FROM public.atlas_snapshot
+                WHERE build_id='aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'""")
+            assert cursor.fetchone() == {"ready": False, "prepared_at": None}
+            cursor.execute("""SELECT 1 FROM gold.atlas_snapshot
+                WHERE build_id='aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'""")
+            assert cursor.fetchone() is None
+            connection.rollback()

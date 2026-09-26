@@ -1,0 +1,389 @@
+{
+  "cohort_query": {
+    "basis": "hypothesis",
+    "build_id": "bb773ae69b9991bed00afcf39948e66660eb4d5d51b8037be174ef273d30e7e7",
+    "cutoff": "2024-12-31",
+    "entity": "datadog",
+    "layer": "reviewed",
+    "mode": "explain",
+    "neighbor": "snowflake"
+  },
+  "counterevidence": [
+    {
+      "detail": "The common-exposure hypothesis remains untested; source publication and acceptance do not prove the hypothesis.",
+      "status": "not_tested"
+    }
+  ],
+  "cross_layer_join": "explicit_present_day_navigation_not_inference",
+  "generated_at": "2026-09-26T16:17:48.508953+00:00",
+  "geometry_use": "display_only_not_model_input",
+  "interpretation": "The combined hypothesis is absent before its latest supporting filing date. The later frame exposes both premises and the review history without accepting a stronger claim.",
+  "layer_builds": {
+    "reviewed": "bb773ae69b9991bed00afcf39948e66660eb4d5d51b8037be174ef273d30e7e7"
+  },
+  "next_question": "What independently reviewed evidence would test the proposed shared exposure?",
+  "observations": [
+    {
+      "claim_id": "datadog-snowflake-shared-customer-workload-exposure-hypothesis-2024",
+      "earlier_claim_count": 0,
+      "excluded_premises": [
+        {
+          "artifact_sha256": "711ee14f238f3e12597a03d889b7d8c29785eee865e1cecd8e20e0578a67facf",
+          "id": "seed-source:datadog-2024-10k:711ee14f238f3e12597a03d889b7d8c29785eee865e1cecd8e20e0578a67facf",
+          "source_date": "2025-02-20"
+        }
+      ],
+      "later_claim_count": 1
+    },
+    {
+      "unsupported_clock_checks": [
+        {
+          "reason": "requested historical clock is unsupported",
+          "request": {
+            "review_cutoff": "2024-12-31"
+          },
+          "status": "unsupported"
+        },
+        {
+          "reason": "reviewed reads require the source_publication clock",
+          "request": {
+            "clock": "system_known"
+          },
+          "status": "unsupported"
+        },
+        {
+          "reason": "requested historical clock is unsupported",
+          "request": {
+            "valid_at": "2024-12-31"
+          },
+          "status": "unsupported"
+        }
+      ]
+    }
+  ],
+  "omissions": [
+    "Review-time replay and relationship validity are unsupported, so they are rejected rather than simulated.",
+    "This is a publication-metadata filter over retained sources and current accepted reviews."
+  ],
+  "question": "Does a later filing enter an earlier publication-cutoff hypothesis frame?",
+  "reads": [
+    {
+      "layer": "reviewed",
+      "request": {
+        "basis": "hypothesis",
+        "build_id": "bb773ae69b9991bed00afcf39948e66660eb4d5d51b8037be174ef273d30e7e7",
+        "clock": "source_publication",
+        "cutoff": "2024-12-31",
+        "entity": "datadog",
+        "layer": "reviewed",
+        "mode": "explain",
+        "neighbor": "snowflake",
+        "review_lens": "current_accepted_at_build",
+        "temporal_mode": "published_through"
+      },
+      "response": {
+        "build_id": "bb773ae69b9991bed00afcf39948e66660eb4d5d51b8037be174ef273d30e7e7",
+        "claims": [],
+        "count": {
+          "grain": "claim",
+          "status": "exact",
+          "value": 0
+        },
+        "focus": {
+          "candidate_links": [
+            {
+              "candidate_id": "4d9ade2bfb2aa6cb4afb",
+              "identity_review_id": "identity-review-12"
+            }
+          ],
+          "entity_slug": "datadog",
+          "id": "datadog",
+          "name": "Datadog",
+          "position": {
+            "x": 0.847162735612868,
+            "y": 0.41237886352752773
+          },
+          "target_kind": "reviewed_mapped_entity"
+        },
+        "frame_id": "63fddc160652d19d5f80514e13cb5096acb7f158c99b7dd00dee77b670e9600c",
+        "limitations": [
+          "source publication cutoff includes a claim only when every premise was published by the cutoff.",
+          "published-through is evidence availability, not relationship validity or operational replay.",
+          "accepted hypotheses remain untested hypotheses; graph position and order do not encode strength."
+        ],
+        "neighbor": {
+          "candidate_links": [
+            {
+              "candidate_id": "9129ab18dfd8c1058038",
+              "identity_review_id": "identity-review-02"
+            }
+          ],
+          "entity_slug": "snowflake",
+          "id": "snowflake",
+          "name": "Snowflake",
+          "position": {
+            "x": 0.19136405857078825,
+            "y": 0.5431485379913702
+          },
+          "target_kind": "reviewed_mapped_entity"
+        },
+        "next_cursor": null,
+        "operation": "explain",
+        "receipt_id": "faed53b6c79e7e7463133ac7682e517f0e14c4d0e853b76f597218ad535ec3b1",
+        "returned": 0,
+        "selection": {
+          "basis": "hypothesis",
+          "clock": "source_publication",
+          "cutoff": "2024-12-31",
+          "direction": "both",
+          "predicate": "",
+          "review_lens": "current_accepted_at_build",
+          "temporal_mode": "published_through"
+        },
+        "versions": {
+          "layout": "atlas-reviewed-address-v1",
+          "query": "atlas-reviewed-query-v1",
+          "snapshot": "atlas-reviewed-snapshot-v1",
+          "topology": "1.0"
+        }
+      }
+    },
+    {
+      "layer": "reviewed",
+      "request": {
+        "basis": "hypothesis",
+        "build_id": "bb773ae69b9991bed00afcf39948e66660eb4d5d51b8037be174ef273d30e7e7",
+        "clock": "source_publication",
+        "cutoff": "2025-02-20",
+        "entity": "datadog",
+        "layer": "reviewed",
+        "mode": "explain",
+        "neighbor": "snowflake",
+        "review_lens": "current_accepted_at_build",
+        "temporal_mode": "published_through"
+      },
+      "response": {
+        "build_id": "bb773ae69b9991bed00afcf39948e66660eb4d5d51b8037be174ef273d30e7e7",
+        "claims": [
+          {
+            "alternative_or_unknown": "Revenue sensitivity may differ because Datadog's revenue is largely subscription-based while Snowflake recognizes most product revenue on consumption. No shared-customer evidence has been established. Revenue and stock-return co-movement remain untested, as do causal effects and effect size.",
+            "claim_status": "hypothesis",
+            "created_at": "2026-09-25T13:45:44.594360+00:00",
+            "database_id": "seed-claim:datadog-snowflake-shared-customer-workload-exposure-hypothesis-2024:929d80cd58d5",
+            "direction": "symmetric",
+            "event_date": null,
+            "generator": "curated_seed",
+            "generator_version": "1.0",
+            "id": "datadog-snowflake-shared-customer-workload-exposure-hypothesis-2024",
+            "interpretation": "Both companies' disclosures support a testable hypothesis that customer workload and technology-spending changes can affect operating performance: Datadog says customer usage expands with cloud workloads and warns that IT spending changes may affect its business; Snowflake reports consumption-based product revenue and says customers may optimize consumption in response to macroeconomic uncertainty. This establishes a common possible driver, not shared customers or observed co-movement.",
+            "object_slug": "snowflake",
+            "predicate": "shared_exposure_hypothesis",
+            "review": {
+              "date_precision": "day",
+              "decision": "accept",
+              "id": 4,
+              "rationale": "Imported prior curated seed review dated 2026-09-24; date precision is one day (stored at 00:00 UTC). This import is not a new source review. The prior review retained 2 source(s), beginning at Form 10-K, Item 7, Overview and Revenue; printed pages 44 and 47, with claim scope and explicit unknowns.",
+              "reviewed_at": "2026-09-24T00:00:00+00:00",
+              "reviewer": "imported prior Codex seed review"
+            },
+            "review_history": [
+              {
+                "candidate_id": "seed-claim:datadog-snowflake-shared-customer-workload-exposure-hypothesis-2024:929d80cd58d5",
+                "decision": "accept",
+                "id": 4,
+                "rationale": "Imported prior curated seed review dated 2026-09-24; date precision is one day (stored at 00:00 UTC). This import is not a new source review. The prior review retained 2 source(s), beginning at Form 10-K, Item 7, Overview and Revenue; printed pages 44 and 47, with claim scope and explicit unknowns.",
+                "reviewed_at": "2026-09-24T00:00:00+00:00",
+                "reviewer": "imported prior Codex seed review"
+              }
+            ],
+            "scope": "operating-performance exposure to customer cloud/data workload usage and technology-spending optimization",
+            "sources": [
+              {
+                "artifact_sha256": "711ee14f238f3e12597a03d889b7d8c29785eee865e1cecd8e20e0578a67facf",
+                "captured_at": null,
+                "event_date": null,
+                "evidence_kind": "summary",
+                "evidence_locator": "Form 10-K, Item 7, Overview and Revenue; printed pages 44 and 47",
+                "evidence_quote": "We grow with our customers as they expand their workloads",
+                "evidence_text": "Datadog says customers expand usage as they expand public- and private-cloud workloads, describes host- and data-volume-based usage pricing, and warns that businesses may slow IT spending during economic uncertainty.",
+                "id": "seed-source:datadog-2024-10k:711ee14f238f3e12597a03d889b7d8c29785eee865e1cecd8e20e0578a67facf",
+                "period_end": "2024-12-31",
+                "period_start": "2024-01-01",
+                "publisher": "Datadog, Inc. / U.S. Securities and Exchange Commission",
+                "retrieved_at": "2026-09-24T17:50:30+00:00",
+                "retrieved_on": "2026-09-24",
+                "role": "support",
+                "snapshot_id": null,
+                "source_date": "2025-02-20",
+                "source_type": "SEC Form 10-K",
+                "source_url": "https://www.sec.gov/Archives/edgar/data/1561550/000156155025000025/ddog-20241231.htm",
+                "title": "Datadog 2024 Form 10-K"
+              },
+              {
+                "artifact_sha256": "6c1f7dc96b0e484160a38025fcf2895a016a02a5f918ad5fb2250476e191a5a6",
+                "captured_at": null,
+                "event_date": null,
+                "evidence_kind": "summary",
+                "evidence_locator": "Form 10-K, Item 7, revenue model and customer consumption/macroeconomic risk discussion",
+                "evidence_quote": "customers may continue to optimize consumption, rationalize budgets",
+                "evidence_text": "Snowflake says most revenue comes from customer consumption of compute, storage, and data transfer, and warns that customers may rationalize budgets and optimize consumption amid macroeconomic uncertainty.",
+                "id": "seed-source:snowflake-fy2024-10k:6c1f7dc96b0e484160a38025fcf2895a016a02a5f918ad5fb2250476e191a5a6",
+                "period_end": "2024-01-31",
+                "period_start": "2023-02-01",
+                "publisher": "Snowflake Inc. / U.S. Securities and Exchange Commission",
+                "retrieved_at": "2026-09-24T17:50:30+00:00",
+                "retrieved_on": "2026-09-24",
+                "role": "support",
+                "snapshot_id": null,
+                "source_date": "2024-03-26",
+                "source_type": "SEC Form 10-K",
+                "source_url": "https://www.sec.gov/Archives/edgar/data/1640147/000164014724000101/snow-20240131.htm",
+                "title": "Snowflake fiscal 2024 Form 10-K"
+              }
+            ],
+            "subject_slug": "datadog",
+            "temporal_basis": "The hypothesis combines operating-model disclosures in two separate annual filings; each source has its own reporting period and neither describes a relationship interval.",
+            "temporal_form": "observed_state",
+            "valid_from": null,
+            "valid_to": null
+          }
+        ],
+        "count": {
+          "grain": "claim",
+          "status": "exact",
+          "value": 1
+        },
+        "focus": {
+          "candidate_links": [
+            {
+              "candidate_id": "4d9ade2bfb2aa6cb4afb",
+              "identity_review_id": "identity-review-12"
+            }
+          ],
+          "entity_slug": "datadog",
+          "id": "datadog",
+          "name": "Datadog",
+          "position": {
+            "x": 0.847162735612868,
+            "y": 0.41237886352752773
+          },
+          "target_kind": "reviewed_mapped_entity"
+        },
+        "frame_id": "37c06628ebd95a6b2f6b354bebf5046df9d851554dab92df4547e7762c44c32e",
+        "limitations": [
+          "source publication cutoff includes a claim only when every premise was published by the cutoff.",
+          "published-through is evidence availability, not relationship validity or operational replay.",
+          "accepted hypotheses remain untested hypotheses; graph position and order do not encode strength."
+        ],
+        "neighbor": {
+          "candidate_links": [
+            {
+              "candidate_id": "9129ab18dfd8c1058038",
+              "identity_review_id": "identity-review-02"
+            }
+          ],
+          "entity_slug": "snowflake",
+          "id": "snowflake",
+          "name": "Snowflake",
+          "position": {
+            "x": 0.19136405857078825,
+            "y": 0.5431485379913702
+          },
+          "target_kind": "reviewed_mapped_entity"
+        },
+        "next_cursor": null,
+        "operation": "explain",
+        "receipt_id": "e790909ecb4047a63c7037c8893b9cbe2395a8f8219266769e936473ed92c3da",
+        "returned": 1,
+        "selection": {
+          "basis": "hypothesis",
+          "clock": "source_publication",
+          "cutoff": "2025-02-20",
+          "direction": "both",
+          "predicate": "",
+          "review_lens": "current_accepted_at_build",
+          "temporal_mode": "published_through"
+        },
+        "versions": {
+          "layout": "atlas-reviewed-address-v1",
+          "query": "atlas-reviewed-query-v1",
+          "snapshot": "atlas-reviewed-snapshot-v1",
+          "topology": "1.0"
+        }
+      }
+    },
+    {
+      "layer": "reviewed",
+      "request": {
+        "basis": "hypothesis",
+        "build_id": "bb773ae69b9991bed00afcf39948e66660eb4d5d51b8037be174ef273d30e7e7",
+        "clock": "source_publication",
+        "compare_cutoff": "2024-12-31",
+        "cutoff": "2025-02-20",
+        "entity": "datadog",
+        "layer": "reviewed",
+        "mode": "compare",
+        "review_lens": "current_accepted_at_build",
+        "temporal_mode": "published_through"
+      },
+      "response": {
+        "additions": [
+          {
+            "id": "datadog-snowflake-shared-customer-workload-exposure-hypothesis-2024",
+            "predicate": "shared_exposure_hypothesis",
+            "status": "hypothesis"
+          }
+        ],
+        "build_id": "bb773ae69b9991bed00afcf39948e66660eb4d5d51b8037be174ef273d30e7e7",
+        "caveat": "differences are source-publication availability, not relationship activity",
+        "compare_cutoff": "2024-12-31",
+        "focus": {
+          "candidate_links": [
+            {
+              "candidate_id": "4d9ade2bfb2aa6cb4afb",
+              "identity_review_id": "identity-review-12"
+            }
+          ],
+          "entity_slug": "datadog",
+          "id": "datadog",
+          "name": "Datadog",
+          "position": {
+            "x": 0.847162735612868,
+            "y": 0.41237886352752773
+          },
+          "target_kind": "reviewed_mapped_entity"
+        },
+        "frame_id": "37e1ad6452bb15f98c20d2f45eb3867b3c0481321650a16fde40bd7fafb364d9",
+        "limitations": [
+          "source publication cutoff includes a claim only when every premise was published by the cutoff.",
+          "published-through is evidence availability, not relationship validity or operational replay.",
+          "accepted hypotheses remain untested hypotheses; graph position and order do not encode strength."
+        ],
+        "operation": "compare",
+        "receipt_id": "f6cdcce7f81b513fca74625f9e1979086a126ecc92bc0f0a35e0a8dd46446d41",
+        "removals": [],
+        "selection": {
+          "basis": "hypothesis",
+          "clock": "source_publication",
+          "compare_cutoff": "2024-12-31",
+          "cutoff": "2025-02-20",
+          "direction": "both",
+          "predicate": "",
+          "review_lens": "current_accepted_at_build",
+          "temporal_mode": "published_through"
+        },
+        "versions": {
+          "layout": "atlas-reviewed-address-v1",
+          "query": "atlas-reviewed-query-v1",
+          "snapshot": "atlas-reviewed-snapshot-v1",
+          "topology": "1.0"
+        }
+      }
+    }
+  ],
+  "result": "The 2025-02-20 filing cannot enter the 2024-12-31 frame through the hypothesis's older premise.",
+  "schema_version": "atlas-layered-investigation-v1",
+  "status": "research_record_not_reviewed_claim",
+  "system_known_replay": "unsupported",
+  "uncertainty": "The cutoff does not prove when this system knew the claim. It uses current review decisions and does not establish in-period availability of mutable retained page wording."
+}

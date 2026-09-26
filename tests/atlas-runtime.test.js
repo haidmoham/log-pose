@@ -32,7 +32,7 @@ test('reviewed requests use their own build even when an inventory read service 
     const response = await readAtlas(new URLSearchParams('layer=reviewed&mode=focus&entity=snowflake'));
     assert.equal(response.status, 200);
     assert.equal(response.body.selection.clock, 'source_publication');
-    assert.equal(response.body.eligible_claim_count, 2);
+    assert.equal(response.body.eligible_claim_count, 3);
     assert.equal((await readAtlas(new URLSearchParams('layer=unknown'))).status, 400);
     assert.equal((await readAtlas(new URLSearchParams('layer=reviewed&layer=inventory'))).status, 400);
   } finally {
