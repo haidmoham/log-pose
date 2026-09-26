@@ -12,6 +12,17 @@ const ASSETS = [
   ['field-view', '/discovery-topology-view.js', 'web/discovery-topology-view.js'],
   ['dashboard', '/dashboard.json', 'web/dashboard.json'],
   ['catalog', '/data/index.json', 'web/data/index.json'],
+  ['atlas-html', '/atlas.html', 'web/atlas.html'],
+  ['atlas-view', '/atlas-view.js', 'web/atlas-view.js'],
+  ['atlas-reviewed-view', '/atlas-reviewed-view.js', 'web/atlas-reviewed-view.js'],
+  ['atlas-model', '/atlas-model.js', 'web/atlas-model.js'],
+  ['atlas-style', '/atlas.css', 'web/atlas.css'],
+  ['temporal-graph', '/temporal-graph.js', 'web/temporal-graph.js'],
+  ['temporal-style', '/temporal-graph.css', 'web/temporal-graph.css'],
+  ['console-ui', '/console-ui.js', 'web/console-ui.js'],
+  ['research-model', '/research-model.js', 'web/research-model.js'],
+  ['base-style', '/style.css', 'web/style.css'],
+  ['console-style', '/console.css', 'web/console.css'],
 ];
 
 function sha256(bytes) {
@@ -29,7 +40,7 @@ export function loadExpected(commitSha) {
     { encoding: 'utf8' }).trim();
   if (localHead !== 'true') throw new Error('release check needs the source repository');
   const assets = ASSETS.map(([name, pathname, sourcePath]) => ({
-    name, pathname, sha256: sha256(committedFile(commitSha, sourcePath))
+    name, pathname, source_path: sourcePath, sha256: sha256(committedFile(commitSha, sourcePath))
   }));
   const graph = JSON.parse(committedFile(commitSha, 'api/data/market-field-graph.json'));
   const catalog = JSON.parse(committedFile(commitSha, 'web/data/index.json'));

@@ -1762,7 +1762,7 @@
   "market_topology": {
     "schema_version": "1.0",
     "projection": "accepted_database_reviews",
-    "reviewed_at": "2026-09-24",
+    "reviewed_at": "2026-09-26",
     "entities": [
       {
         "slug": "datadog",
@@ -1918,6 +1918,57 @@
         "generator_version": "1.0"
       },
       {
+        "id": "proposal:dbt-labs-integrates-with-snowflake-products:20260926",
+        "database_id": "proposal:dbt-labs-integrates-with-snowflake-products:20260926",
+        "subject_slug": "dbt-labs",
+        "object_slug": "snowflake",
+        "claim_status": "documented",
+        "event_date": null,
+        "valid_from": null,
+        "valid_to": null,
+        "created_at": "2026-09-26T16:58:40.610087+00:00",
+        "sources": [
+          {
+            "id": "seed-source:dbt-series-d-2022:64694c906f3c8be8b3fd90d88725fe3598a896533adf3123a24dc684610ffece",
+            "source_url": "https://www.getdbt.com/blog/dbt-labs-raises-222m-in-series-d-funding-at-4-2b-valuation-led-by-altimeter-with-participation-from-databricks-and-snowflake",
+            "publisher": "dbt Labs",
+            "title": "dbt Labs raises $222M in Series D funding",
+            "source_type": "company announcement",
+            "source_date": "2022-02-24",
+            "retrieved_at": "2026-09-24T17:50:30+00:00",
+            "retrieved_on": "2026-09-24",
+            "captured_at": null,
+            "snapshot_id": null,
+            "artifact_sha256": "64694c906f3c8be8b3fd90d88725fe3598a896533adf3123a24dc684610ffece",
+            "evidence_locator": "Deepened partnerships list item",
+            "evidence_kind": "summary",
+            "evidence_text": "dbt Labs states that dbt transformation workloads had existing integrations with Snowflake products in its announcement bearing publication date 2022-02-24.",
+            "evidence_quote": "existing integrations with AWS, Databricks, Google Cloud, and Snowflake products.",
+            "role": "support",
+            "event_date": null,
+            "period_start": null,
+            "period_end": null
+          }
+        ],
+        "review": {
+          "id": 5,
+          "reviewer": "user",
+          "reviewed_at": "2026-09-26T15:38:50.335653+00:00",
+          "rationale": "Explicit user semantic acceptance in this task after presentation of the review packet and its limits. No customer or product identity acceptance was requested or supplied.",
+          "decision": "accept",
+          "date_precision": "timestamp"
+        },
+        "predicate": "integrates_with",
+        "direction": "subject_to_object",
+        "scope": "dbt data-transformation workloads with Snowflake products; editions and versions unspecified",
+        "interpretation": "dbt Labs states that dbt transformation workloads had existing integrations with Snowflake products in its announcement bearing publication date 2022-02-24.",
+        "alternative_or_unknown": "Product edition, version and feature support; Technical direction of data flow; Start and end of availability; Current functionality; Adoption, customer use, payment and revenue",
+        "temporal_form": "observed_state",
+        "temporal_basis": "Source describes existing integrations; publication is not the integration start or end and exact in-period availability of the retained wording is unproven.",
+        "generator": "human_review_packet",
+        "generator_version": "issue11-human-review-packet-v1"
+      },
+      {
         "id": "dbt-labs-announced-partnership-snowflake-2022",
         "database_id": "seed-claim:dbt-labs-announced-partnership-snowflake-2022:14301c1bd839",
         "subject_slug": "dbt-labs",
@@ -2052,14 +2103,22 @@
         "reviewer": "imported prior Codex seed review",
         "reviewed_at": "2026-09-24T00:00:00+00:00",
         "rationale": "Imported prior curated seed review dated 2026-09-24; date precision is one day (stored at 00:00 UTC). This import is not a new source review. The prior review retained 2 source(s), beginning at Form 10-K, Item 7, Overview and Revenue; printed pages 44 and 47, with claim scope and explicit unknowns."
+      },
+      {
+        "id": 5,
+        "candidate_id": "proposal:dbt-labs-integrates-with-snowflake-products:20260926",
+        "decision": "accept",
+        "reviewer": "user",
+        "reviewed_at": "2026-09-26T15:38:50.335653+00:00",
+        "rationale": "Explicit user semantic acceptance in this task after presentation of the review packet and its limits. No customer or product identity acceptance was requested or supplied."
       }
     ],
     "counts": {
       "entities": 4,
-      "claims": 4,
-      "reviews": 4,
+      "claims": 5,
+      "reviews": 5,
       "sources": 3,
-      "candidates": 4,
+      "candidates": 5,
       "rejected": 0,
       "needs_evidence": 0,
       "unreviewed": 0

@@ -320,12 +320,16 @@ def reviewed_claims(conn, *, source_date_cutoff: date | None = None,
                     AND (premise_source.published_on IS NULL OR premise_source.published_on > %s)
             ))
             AND (%s::timestamptz IS NULL OR source.retrieved_at <= %s)
-            AND (%s::timestamptz IS NULL OR candidate.created_at <= %s)
+            AND (%s::timestamptz IS NULL OR
+                (candidate.original_created_at IS NOT NULL
+                 AND candidate.original_created_at <= %s))
             AND (%s::timestamptz IS NULL OR NOT EXISTS (
                 SELECT 1 FROM topology_candidate_evidence AS premise
                 JOIN topology_sources AS premise_source ON premise_source.id=premise.source_id
                 WHERE premise.candidate_id=candidate.id AND premise.evidence_role='support'
-                    AND (premise.added_at > %s OR premise_source.retrieved_at > %s)
+                    AND (premise.original_added_at IS NULL
+                         OR premise.original_added_at > %s
+                         OR premise_source.retrieved_at > %s)
             ))
             AND (%s::text IS NULL OR candidate.subject_entity_id = %s
                 OR candidate.object_entity_id = %s)

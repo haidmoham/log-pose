@@ -1,0 +1,11 @@
+{
+  "schema_version": "topology-reconstruction-decision-v1",
+  "decision": "accept_scoped_reconstruction",
+  "user_response": "approve scoped reconstruction",
+  "recorded_at": "2026-09-26T16:48:48.062685+00:00",
+  "plan_commit": "9ef8487e356f1497994953b1f8c481a07fa55184",
+  "plan_path": "docs/research/issue11/topology-reconstruction-plan.md",
+  "scope": "preserve known IDs, hashes and reviews; missing original times stay unknown; record reconstruction arrival separately; then import only the previously accepted attributed integration",
+  "production_publish_authorized": false,
+  "other_evidence_families_reconstructed": false
+}

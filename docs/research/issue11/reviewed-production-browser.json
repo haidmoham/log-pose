@@ -1,0 +1,34 @@
+{
+  "schema_version": "issue11-manual-browser-receipt-v1",
+  "observed_at": "2026-09-26T15:43:53.223Z",
+  "method": "Codex in-app browser UI and read-only DOM observations",
+  "origin": "https://logpose.mhaider.dev",
+  "expected_commit": "72333464855bd6a8003086a92fe89acc9d02ef34",
+  "commit_binding": "separate production CI receipt 36211205562 plus unchanged main at audit; this UI observation alone does not verify served asset hashes",
+  "initial": {
+    "claims": [
+      "dbt Labs ↔ Snowflake",
+      "Snowflake → dbt Labs"
+    ],
+    "frame": "73acebb67529aac73ec53ad0b668d98fbbf13dea384460f39620b6079b5d15c9",
+    "inspectorFrame": "73acebb67529aac73ec53ad0b668d98fbbf13dea384460f39620b6079b5d15c9",
+    "nodes": 2,
+    "url": "https://logpose.mhaider.dev/atlas.html?layer=reviewed&mode=focus&build_id=bb773ae69b9991bed00afcf39948e66660eb4d5d51b8037be174ef273d30e7e7&clock=source_publication&temporal_mode=published_through&cutoff=2022-02-24&predicate=&basis=documented&direction=both&top_k=60&entity=snowflake&neighbor=dbt-labs"
+  },
+  "missing_build_after_retry": {
+    "claims": 0,
+    "nodes": 0,
+    "status": "reviewed build is not hosted",
+    "url": "https://logpose.mhaider.dev/atlas.html?layer=reviewed&entity=snowflake&build_id=0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  "recovery": {
+    "claims": 2,
+    "frame": "73acebb67529aac73ec53ad0b668d98fbbf13dea384460f39620b6079b5d15c9",
+    "inspectorFrame": "73acebb67529aac73ec53ad0b668d98fbbf13dea384460f39620b6079b5d15c9",
+    "nodes": 2,
+    "status": "",
+    "url": "https://logpose.mhaider.dev/atlas.html?layer=reviewed&mode=focus&build_id=bb773ae69b9991bed00afcf39948e66660eb4d5d51b8037be174ef273d30e7e7&clock=source_publication&temporal_mode=published_through&cutoff=2022-02-24&predicate=&basis=documented&direction=both&top_k=60&entity=snowflake&neighbor=dbt-labs"
+  },
+  "unique_deployment": "not_evaluated: authorized Chrome instance disconnected",
+  "errors_in_console": "not_collected_by_this_manual_pass"
+}

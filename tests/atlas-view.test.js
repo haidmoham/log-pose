@@ -53,6 +53,21 @@ test('regions, focused top-k, exact row inspection and list fallback share one f
   assert.equal(document.querySelectorAll('.atlas-candidate-list button').length, 2);
 });
 
+test('top 100 requests and renders the complete ranked page while lower limits stay exact', async t => {
+  const dom = page(t, '?candidate=4d9ade2bfb2aa6cb4afb&source=cncf&year=2024&top_k=100');
+  const document = dom.window.document;
+  await waitFor(() => document.querySelectorAll('.atlas-candidate-list button').length === 100);
+  assert.match(document.getElementById('atlas-frame-label').textContent, /100 of 145.*top 100/);
+  assert.equal(document.querySelectorAll('.constellation-node').length, 101);
+
+  const topK = document.getElementById('atlas-top-k');
+  topK.value = '7';
+  topK.dispatchEvent(new dom.window.Event('change', { bubbles: true }));
+  await waitFor(() => document.querySelectorAll('.atlas-candidate-list button').length === 7);
+  assert.match(document.getElementById('atlas-frame-label').textContent, /7 of 145.*top 7/);
+  assert.equal(document.querySelectorAll('.constellation-node').length, 8);
+});
+
 test('pending and late responses cannot move the committed graph under a different year', async t => {
   let release;
   const pending = new Promise(resolve => { release = resolve; });

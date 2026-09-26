@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "2.0",
+  "status": "failed",
+  "startedAt": "2026-09-26T15:35:43.003Z",
+  "question": "Do bounded real S0 inventory and reviewed frames meet interaction budgets without retained browser-state growth?",
+  "commit": "72333464855bd6a8003086a92fe89acc9d02ef34",
+  "budgets": {
+    "desktop": {
+      "frameAcceptanceP95Ms": 1000,
+      "graphReadyP95Ms": 2000,
+      "cameraP95Ms": 33
+    },
+    "constrained": {
+      "frameAcceptanceP95Ms": 2000,
+      "graphReadyP95Ms": 5000,
+      "cameraP95Ms": 50
+    },
+    "heapGrowthBytes": 20971520,
+    "heapGrowthRatio": 1.15,
+    "domNodeGrowth": 50,
+    "listenerGrowth": 5
+  },
+  "limits": {
+    "apiPerWorkload": 200,
+    "soakApi": 180,
+    "totalHttp": 2000,
+    "decodedBytes": 1048576,
+    "runtimeMs": 1440000,
+    "browserRssBytes": 2147483648,
+    "outputBytes": 104857600
+  },
+  "environment": {
+    "platform": "linux",
+    "release": "6.18.33.2-microsoft-standard-WSL2",
+    "cpus": 16,
+    "cpuModel": "AMD Ryzen 7 5800X 8-Core Processor",
+    "memoryBytes": 16716025856,
+    "node": "v22.23.1",
+    "playwright": "1.63.0",
+    "executablePath": "/home/haidm/.cache/ms-playwright/chromium-1243/chrome-linux64/chrome",
+    "server": "loopback Node/SQLite; warm process and OS cache",
+    "gpuMemory": "not_evaluated",
+    "browser": "153.0.8010.12"
+  },
+  "measurements": [],
+  "builds": {
+    "inventory": "990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5",
+    "reviewed": "bb773ae69b9991bed00afcf39948e66660eb4d5d51b8037be174ef273d30e7e7"
+  },
+  "error": "Error: page.waitForFunction: Timeout 15000ms exceeded.; update state {\"status\":\"\",\"label\":\"cncf · inventory year 2024 · 60 of 145 distinct neighbor candidates · top 100 by shared placements\",\"frame\":\"7a7ec70e3c0883408845f73da798c6c6fb74cc6ff2565ab8029ad3c804963f53\",\"inspector\":\"7a7ec70e3c0883408845f73da798c6c6fb74cc6ff2565ab8029ad3c804963f53\",\"nodes\":61,\"topK\":\"100\"}\n    at measureOne (file:///home/haidm/projects/log-pose-reviewed-provider/scripts/benchmark_atlas_browser.mjs:165:11)\n    at async main (file:///home/haidm/projects/log-pose-reviewed-provider/scripts/benchmark_atlas_browser.mjs:297:32)",
+  "finishedAt": "2026-09-26T15:35:58.404Z"
+}

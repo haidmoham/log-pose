@@ -42,7 +42,7 @@ function page(t, query = '', delay = async () => {}) {
 test('reviewed focus keeps typed claims, exact premises and explicit identity separate from inventory', async t => {
   const dom = page(t, '&entity=snowflake&neighbor=dbt-labs&cutoff=2022-02-24');
   const document = dom.window.document;
-  await waitFor(() => document.querySelectorAll('.atlas-claim').length === 2);
+  await waitFor(() => document.querySelectorAll('.atlas-claim').length === 3);
   assert.equal(document.querySelectorAll('.constellation-node').length, 2);
   assert.equal(document.querySelectorAll('.constellation-node.has-label').length, 2);
   assert.match(document.querySelector('#atlas-frame-label').textContent, /source.*2022-02-24.*1 of 1 eligible neighbors/);
@@ -51,12 +51,13 @@ test('reviewed focus keeps typed claims, exact premises and explicit identity se
   const inspector = document.querySelector('#atlas-inspector');
   assert.match(inspector.textContent, /announced partnership with/);
   assert.match(inspector.textContent, /invested in/);
+  assert.match(inspector.textContent, /integrates with/);
   assert.match(inspector.textContent, /no reviewed inventory candidate mapping/);
   assert.match(inspector.textContent, /64694c906f3c8be8b3fd90d88725fe3598a896533adf3123a24dc684610ffece/);
-  assert.equal(inspector.querySelectorAll('a[href*="dataFamily=topology"]').length, 2);
+  assert.equal(inspector.querySelectorAll('a[href*="dataFamily=topology"]').length, 3);
   document.querySelector('#atlas-list-toggle').click();
   assert.equal(document.querySelector('.constellation-map'), null);
-  assert.equal(inspector.querySelectorAll('.atlas-claim').length, 2);
+  assert.equal(inspector.querySelectorAll('.atlas-claim').length, 3);
   assert.equal(document.querySelector('#atlas-reviewed-link').getAttribute('aria-current'), 'page');
 });
 
@@ -121,7 +122,7 @@ test('unsupported deep-link clocks and missing immutable builds fail visibly', a
 test('saved investigation contains the visible claim page and current-review clock', async t => {
   const dom = page(t, '&entity=snowflake&neighbor=dbt-labs');
   const document = dom.window.document;
-  await waitFor(() => document.querySelectorAll('.atlas-claim').length === 2);
+  await waitFor(() => document.querySelectorAll('.atlas-claim').length === 3);
   let exported;
   dom.window.Blob = class { constructor(parts) { exported = JSON.parse(parts[0]); } };
   dom.window.URL.createObjectURL = () => 'blob:test';
@@ -132,7 +133,7 @@ test('saved investigation contains the visible claim page and current-review clo
   assert.equal(exported.question, 'which claims share this pair?');
   assert.equal(exported.review_lens, 'current_accepted_at_build');
   assert.equal(exported.frame_id, exported.selected_premises.frame_id);
-  assert.equal(exported.selected_premises.claims.length, 2);
+  assert.equal(exported.selected_premises.claims.length, 3);
   assert.equal(exported.geometry.historically_eligible_model_input, false);
 });
 
