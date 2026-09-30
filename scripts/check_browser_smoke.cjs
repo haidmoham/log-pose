@@ -3,7 +3,7 @@
 
 const assert = require('node:assert/strict');
 const { execFileSync } = require('node:child_process');
-const { writeFileSync } = require('node:fs');
+const { readFileSync, writeFileSync } = require('node:fs');
 const path = require('node:path');
 const { verifyAccessibleAtlas } = require('./check_atlas_accessibility.cjs');
 
@@ -40,6 +40,86 @@ async function verifyMissingBuildRecovery(page, validUrl, layer, report) {
   { frame: validFrame, nodes: validNodes }, { timeout: 30000 });
   report.checks.push({ name: `${layer}-missing-build-retry-recovery`, passed: true,
     recovered_frame_id: validFrame, nodes: validNodes });
+}
+
+async function verifyDecisionWorkflow(page, baseUrl, report) {
+  await page.goto(baseUrl.href, { waitUntil: 'domcontentloaded', timeout: 30000 });
+  await page.waitForFunction(() => document.querySelector('#atlas-frame-label')?.dataset.frameId
+    && !document.querySelector('#atlas-regions').disabled);
+  await page.getByRole('link', { name: 'start a company decision brief →', exact: true }).click();
+  await page.locator('#decision-question').waitFor({ state: 'visible', timeout: 30000 });
+  assert.equal(new URL(page.url()).searchParams.get('view'), 'compare');
+  await page.goBack({ waitUntil: 'domcontentloaded' });
+  await page.getByRole('link', { name: 'start a company decision brief →', exact: true })
+    .waitFor({ state: 'visible' });
+  await page.goForward({ waitUntil: 'domcontentloaded' });
+  await page.locator('#decision-question').waitFor({ state: 'visible' });
+  report.checks.push({ name: 'atlas-decision-entry-history', passed: true });
+  const companyUrl = new URL('/index.html?view=overview&company=datadog', baseUrl);
+  await page.goto(companyUrl.href, { waitUntil: 'domcontentloaded', timeout: 30000 });
+  await page.getByRole('button', { name: 'inspect dated evidence →', exact: true }).click();
+  await page.locator('#company-detail').waitFor({ state: 'visible', timeout: 30000 });
+  assert.equal(new URL(page.url()).searchParams.get('view'), 'explore');
+  const claim = page.locator('.company-relationships [data-claim]').first();
+  const claimId = await claim.getAttribute('data-claim');
+  await claim.click();
+  assert.equal(new URL(page.url()).searchParams.get('dataRecord'), claimId);
+  assert.match(await page.locator('#data-inspector').innerText(), /log management/);
+  await page.goBack();
+  await page.locator('#company-detail').waitFor({ state: 'visible' });
+  await page.locator('#company-detail .detail-head button').click();
+  assert.equal(new URL(page.url()).searchParams.has('company'), false);
+  await page.goBack();
+  await page.locator('#company-detail').waitFor({ state: 'visible' });
+  report.checks.push({ name: 'company-evidence-claim-close-history', passed: true, claim_id: claimId });
+
+  const compareUrl = new URL('/index.html?view=compare&pinned=datadog,weights-and-biases', baseUrl);
+  await page.goto(compareUrl.href, { waitUntil: 'domcontentloaded', timeout: 30000 });
+  const question = 'Smoke test: what evidence should be investigated next?';
+  await page.locator('#decision-question').fill(question);
+  await page.locator('#decision-datadog-why').fill('Smoke test note, not an investment recommendation.');
+  await page.locator('.decision-evidence summary').first().click();
+  await page.locator('.decision-evidence select').first().selectOption('context');
+  await page.locator('.decision-evidence button').first().click();
+  await page.locator('#data-inspector .data-reading').first().waitFor({ state: 'visible' });
+  await page.goBack();
+  assert.equal(await page.locator('#decision-question').inputValue(), question);
+  await page.reload({ waitUntil: 'domcontentloaded' });
+  await page.locator('#decision-question').waitFor({ state: 'visible' });
+  assert.equal(await page.locator('#decision-question').inputValue(), question);
+  assert(!page.url().includes('Smoke'), 'private notes must not enter URL state');
+  const downloadPromise = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'download decision brief · JSON', exact: true }).click();
+  const download = await downloadPromise;
+  const brief = JSON.parse(readFileSync(await download.path(), 'utf8'));
+  assert.equal(brief.investor_question, question);
+  assert.equal(brief.scope.historical_replay, false);
+  assert.equal(brief.companies.length, 2);
+  assert.equal(brief.companies[0].citations[0].role, 'context');
+  assert.match(brief.companies[0].citations[0].partition.sha256, /^[a-f0-9]{64}$/);
+  assert.equal(brief.companies[1].citations.length, 0, 'uncited company must not acquire automatic evidence');
+  const citedUrl = new URL(brief.companies[0].citations[0].record_url);
+  assert.equal(citedUrl.searchParams.get('dataBuild'), brief.scope.catalog_build_id);
+  await page.goto(citedUrl.href, { waitUntil: 'domcontentloaded', timeout: 30000 });
+  await page.locator('#data-inspector .data-reading').first().waitFor({ state: 'visible' });
+  await page.goBack();
+  await page.locator('#decision-question').waitFor({ state: 'visible' });
+  report.checks.push({ name: 'decision-brief-source-restore-download', passed: true,
+    catalog_build_id: brief.scope.catalog_build_id });
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  const widths = await page.evaluate(() => ({ viewport: window.innerWidth,
+    document: document.documentElement.scrollWidth }));
+  assert(widths.document <= widths.viewport, 'decision brief must not overflow the mobile page');
+  report.checks.push({ name: 'decision-brief-mobile-width', passed: true, ...widths });
+  await page.goto(baseUrl.href, { waitUntil: 'domcontentloaded', timeout: 30000 });
+  const mobileEntry = page.getByRole('link', { name: 'start a company decision brief →', exact: true });
+  await mobileEntry.waitFor({ state: 'visible', timeout: 30000 });
+  await mobileEntry.click();
+  await page.locator('#decision-question').waitFor({ state: 'visible', timeout: 30000 });
+  assert.equal(await page.locator('#decision-question').inputValue(), question);
+  report.checks.push({ name: 'mobile-atlas-decision-entry', passed: true, viewport: 390 });
+  await page.setViewportSize({ width: 1365, height: 900 });
 }
 
 async function main() {
@@ -229,6 +309,7 @@ async function main() {
     report.checks.push({ name: 'legacy-exact-claim-build-unavailable', passed: true });
     await verifyAccessibleAtlas(browser, inventoryUrl, 'inventory', report);
     await verifyAccessibleAtlas(browser, reviewedUrl, 'contextual', report);
+    await verifyDecisionWorkflow(page, baseUrl, report);
     assert.deepEqual(report.page_errors, [], 'uncaught browser errors');
     report.status = 'passed';
   } catch (error) {

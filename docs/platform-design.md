@@ -1,4 +1,34 @@
-# atlas-first research experience
+# investor discovery and the research experience
+
+## durable product intent
+
+the purpose of Log Pose is to help investors discover worthwhile companies and
+choose useful next research actions. a successful workflow makes the investor's
+question explicit, explains why a company deserves attention, shows the source
+evidence and strongest alternative explanation, and identifies what could change
+the decision. a larger graph or a cleaner evidence browser alone does not satisfy
+that purpose. discovery, comparison, and a source-linked diligence handoff are
+the product test; investment performance remains an unproven outcome.
+
+on 2026-09-30 the user proposed learning from companies that would have been good
+investments to reverse-engineer meaningful discovery signals, and explicitly
+asked to preserve this intention. treat that as a research direction: use
+historical successes to generate hypotheses, then test those hypotheses on an
+eligible point-in-time cohort, including comparable unsuccessful and unresolved
+companies, with untouched temporal/company holdouts and named simple baselines.
+do not tune the platform merely to surface remembered winners. future outcome
+labels, later source content, present-day identity judgments, and model knowledge
+can all leak the answer.
+
+the definition of a good investment remains to be agreed. follow-on funding,
+acquisition, operating growth, and investor cash returns are different targets.
+actual returns need dated entry terms, access, dilution, and proceeds; unavailable
+returns stay not estimable. keep this intent independent of a fixed metric,
+model, market, or implementation. the existing [experimental benchmark
+protocol](../experiments/ml/benchmark/PROTOCOL.md) governs evidence replay and its
+limits; it does not validate investment selection.
+
+## atlas-first implementation baseline
 
 the entry page begins with one labelled example: Datadog in the retained CNCF 2024 source, showing 24 of 145 exact neighbors. an explicit source, year, artifact, search, or mode keeps its requested scope instead of inheriting the example. warm paper, plum type, and restrained blue, mint, and coral accents keep the map central.
 
@@ -8,7 +38,7 @@ the research desk retains evidence, companies, and sources. comparison appears a
 
 graph surfaces and labels cannot select text during a drag. evidence text outside the map remains selectable. camera gestures clear transient hover without losing persistent selection, and keyboard focus remains visible.
 
-## verification
+## verification of the atlas-first baseline
 
 local checks pass: 59 atlas tests, 111 dashboard tests, 7 committed-asset deployment tests, and 125 Python tests. three atlas and 26 Python database-dependent checks are skipped locally; the required app-and-data-health CI supplies disposable PostgreSQL and audits skips. both immutable snapshot validators pass. browser smoke covers 14 checks, including exact legacy claim links and unavailable reviewed-build recovery. required CI and Vercel results are recorded on PR 22 for the final commit.
 
@@ -31,3 +61,13 @@ bash scripts/render_platform_demo.sh /path/to/captures /path/to/log-pose-atlas.m
 ```
 
 the cut is ten seconds at 30 fps, silent H.264/yuv420p, 1280 × 720. inspect frames 0, 99, 100, 199, 200, and 299. keep generated media outside git.
+
+
+## bounded investor workflow, 2026-09-30
+
+comparison is now reachable before pinning. it includes a local analyst-authored
+decision brief: question, scope, company reasoning, counterevidence, unknowns,
+next action and exact source citations. this closes a research handoff; it does
+not validate discovery ranking or historical investment performance. the atlas
+remains the evidence explorer. see the [deep audit](research/investor-discovery-audit.md)
+and [draft/export contract](architecture.md#analyst-decision-briefs).

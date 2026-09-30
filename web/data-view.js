@@ -188,10 +188,14 @@
       query.setAttribute('aria-label', 'Search retained record metadata');
       query.value = state.dataQuery;
       query.addEventListener('input', () => {
+        const start = query.selectionStart;
+        const end = query.selectionEnd;
         state.dataQuery = query.value.slice(0, 200);
         state.dataRecord = null;
         resultLimit = 18;
         commitState({}, { focus: '#data-query', replace: true });
+        const updated = root.querySelector('#data-query');
+        if (start !== null && end !== null) updated?.setSelectionRange(start, end);
       });
       form.append(query);
       const facets = node('div', '', 'data-facets');
@@ -217,6 +221,8 @@
           (_, offset) => [String(2020 + offset), String(2020 + offset)])], state.dataYear,
         value => commitState({ dataYear: value, dataRecord: null })));
       form.append(facets);
+      form.append(node('p', 'year filters describe inventory, capture, reporting-period or source dates. '
+        + 'they do not freeze what was knowable then; later filings and reviews can remain visible.', 'caveat'));
       return form;
     }
 
@@ -530,6 +536,16 @@
 
     function render() {
       activeRequest++;
+      if (state.dataBuild && state.dataBuild !== index.build_id) {
+        const openCurrent = node('button', 'open the current collection without this saved record', 'quiet-button');
+        openCurrent.type = 'button';
+        openCurrent.addEventListener('click', () => commitState({ dataBuild: '', dataRecord: null },
+          { focus: '#data-query' }));
+        root.append(title('SAVED EVIDENCE REFERENCE', 'saved evidence build unavailable',
+          'this link names a catalog build that is not available here. no current record has been substituted.'),
+        node('p', `requested build: ${state.dataBuild} · current build: ${index.build_id}`, 'error'), openCurrent);
+        return;
+      }
       root.append(title('RESEARCH DESK / RETAINED EVIDENCE', 'research the record',
         'Search across source rows, dated page captures, reported facts, market activity, and reviewed relationships. Open a row to inspect it here.'));
       if (state.legacyReviewedScope) root.append(node('p',
@@ -547,9 +563,9 @@
       root.append(controls());
       const context = companyContext();
       if (context) root.append(context);
-      if ((state.dataFamily === 'all' || state.dataFamily === 'inventory')
-          && !inventoryRecords && !inventoryError) loadInventory();
-      if (inventoryError) {
+      const needsInventory = state.dataFamily === 'all' || state.dataFamily === 'inventory';
+      if (needsInventory && !inventoryRecords && !inventoryError) loadInventory();
+      if (needsInventory && inventoryError) {
         const retry = node('button', 'retry inventory index', 'quiet-button');
         retry.type = 'button';
         retry.addEventListener('click', () => {
@@ -569,7 +585,7 @@
         + (!inventoryRecords && (state.dataFamily === 'all' || state.dataFamily === 'inventory')
           ? ' · loading full inventory index' : ''), 'eyebrow'),
         node('p', fullUniverse
-          ? 'Choose a source family or enter a question to narrow this retained index. Inventory leads remain unreviewed unless an identity review is attached.'
+          ? 'Choose a source family or search names, categories and record metadata. Inventory leads remain unreviewed unless an identity review is attached.'
           : 'Filters use record metadata. Open a result to read the retained detail.', 'muted'));
       resultList.append(header);
       const selected = hits.find(item => item.id === state.dataRecord);
@@ -592,8 +608,12 @@
         });
         resultList.append(more);
       }
-      if (!hits.length && inventoryRecords) resultList.append(node('p',
+      const waitingForInventory = inventoryLoading && needsInventory;
+      if (!hits.length && !waitingForInventory && !(needsInventory && inventoryError)) resultList.append(node('p',
         'No retained records match these filters. Clear a filter or try a broader term.', 'empty-state'));
+      if (state.dataRecord && !selected && !waitingForInventory) resultList.append(node('p',
+        'the saved record is unavailable in this filtered collection. '
+          + 'check the filters or return to the source link; no other record has been substituted.', 'caveat'));
       resultArea.append(resultList, inspector(selected));
       root.append(resultArea);
     }

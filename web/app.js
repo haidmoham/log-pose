@@ -5,7 +5,7 @@ const model = window.LogPoseResearchModel;
 const { node, append, link, title, metric, table } = window.LogPoseUI;
 const seriesChart = (...args) => window.LogPoseUI.seriesChart(model, ...args);
 const state = { view: 'topology', year: 2024, category: 'all', query: '', company: null,
-  dataFamily: 'all', dataQuery: '', dataCompany: 'all', dataYear: 'all', dataRecord: null,
+  dataFamily: 'all', dataQuery: '', dataCompany: 'all', dataYear: 'all', dataRecord: null, dataBuild: '',
   dataMarketDay: null, dataMarketMeasure: 'total_shares', dataMarketParticipant: null,
   searchYear: 'all', searchSource: 'all', searchType: 'all', searchUs: 'all',
   inventoryArtifact: 'cncf-2026', inventoryQuery: '',
@@ -28,6 +28,7 @@ let exploreView;
 let discoveryTopologyView;
 let temporalTopologyView;
 let dataView;
+let decisionBriefView;
 
 function categoryName(value) {
   return {
@@ -97,19 +98,47 @@ function financials(slug, year) {
   return model.financialsFor(financialIndex, slug, year);
 }
 
+function companyRelationships(slug) {
+  const section = node('section', '', 'company-relationships');
+  const claims = dataIndex.topology.claims.filter(claim =>
+    claim.subject_slug === slug || claim.object_slug === slug);
+  section.append(node('h4', 'retained relationship evidence'),
+    node('p', 'current reviewed collection · all retained source dates. '
+      + 'these claims are not a historical eligibility or investment screen.', 'caveat'));
+  if (!claims.length) {
+    section.append(node('p', 'no relationship claim is retained for this company in this collection. '
+      + 'this does not establish that no relationship exists.', 'muted'));
+  }
+  for (const claim of claims) {
+    const subject = data.companies.find(company => company.slug === claim.subject_slug);
+    const object = data.companies.find(company => company.slug === claim.object_slug);
+    const open = node('button', `${subject.name} / ${object.name} · `
+      + claim.predicate.replaceAll('_', ' ') + ' →', 'text-button');
+    open.type = 'button';
+    open.dataset.claim = claim.id;
+    open.addEventListener('click', () => commitState({ view: 'data', dataFamily: 'topology',
+      dataCompany: 'all', dataYear: 'all', dataQuery: '', dataRecord: claim.id, dataBuild: dataIndex.build_id },
+    { top: true, focus: '#data-inspector' }));
+    section.append(append(node('article', '', 'funding-event'), open,
+      node('p', `${claim.claim_status.replaceAll('_', ' ')} · ${claim.scope}`, 'muted')));
+  }
+  return section;
+}
+
 function companyDetail(slug) {
   const company = data.companies.find(item => item.slug === slug);
   const section = node('section', '', 'detail-panel');
   const close = node('button', 'Close ×', 'quiet-button');
   close.type = 'button';
-  close.addEventListener('click', () => { state.company = null; render(); });
+  close.addEventListener('click', () => commitState({ company: null },
+    { focus: '[aria-label="Search source records"]' }));
   section.append(append(node('div', '', 'detail-head'),
     append(node('div'), node('p', 'COMPANY RECORD / 2021–2024', 'eyebrow'), node('h3', company.name)),
     close));
   const openRecords = node('button', 'inspect all retained records →', 'text-button');
   openRecords.type = 'button';
   openRecords.addEventListener('click', () => commitState({ view: 'data', dataFamily: 'all',
-    dataCompany: slug, dataYear: 'all', dataQuery: '', dataRecord: null },
+    dataCompany: slug, dataYear: 'all', dataQuery: '', dataRecord: null, dataBuild: dataIndex.build_id },
   { top: true, focus: '#data-query' }));
   section.append(openRecords);
   const locationReview = locationReviewFor(slug);
@@ -140,7 +169,7 @@ function companyDetail(slug) {
       inspectCapture.type = 'button';
       inspectCapture.addEventListener('click', () => commitState({ view: 'data',
         dataFamily: 'pages', dataCompany: slug, dataYear: 'all', dataQuery: '',
-        dataRecord: `page:${item.snapshot_id}` }, { top: true, focus: '#data-inspector' }));
+        dataRecord: `page:${item.snapshot_id}`, dataBuild: dataIndex.build_id }, { top: true, focus: '#data-inspector' }));
       card.append(inspectCapture);
       if (item.warc_truncated) card.append(node('span', 'WARC body truncated', 'pill warning'));
       const sourceFoot = node('div', '', 'source-foot');
@@ -161,13 +190,13 @@ function companyDetail(slug) {
       inspectFacts.type = 'button';
       inspectFacts.addEventListener('click', () => commitState({ view: 'data',
         dataFamily: 'sec', dataCompany: slug, dataYear: String(year),
-        dataQuery: '', dataRecord: null }, { top: true, focus: '#data-query' }));
+        dataQuery: '', dataRecord: null, dataBuild: dataIndex.build_id }, { top: true, focus: '#data-query' }));
       card.append(inspectFacts);
     }
     grid.append(card);
   }
   section.append(grid, node('p', 'A company page records what its publisher said at capture time. It does not verify adoption, customer outcomes, or when a feature first appeared.', 'caveat'));
-  section.append(topologyView.companySummary(slug));
+  section.append(companyRelationships(slug));
   const announcements = financingFor(slug);
   if (announcements.length) {
     const funding = node('section', '', 'funding-events');
@@ -233,7 +262,7 @@ function openCompanyEvidence(company) {
 
 function openInventoryRecord(recordId) {
   commitState({ view: 'data', dataFamily: 'inventory', dataQuery: '',
-    dataCompany: 'all', dataYear: 'all', dataRecord: recordId },
+    dataCompany: 'all', dataYear: 'all', dataRecord: recordId, dataBuild: dataIndex.build_id },
   { top: true, focus: '#data-inspector' });
 }
 
@@ -462,7 +491,7 @@ function renderCompare() {
   const picker = node('details', '', 'compare-picker-disclosure');
   picker.open = companies.length === 0;
   picker.append(node('summary', 'choose companies'), comparePicker());
-  root.append(picker);
+  root.append(decisionBriefView.render(companies), picker);
   if (!companies.length) {
     root.append(node('p', 'pin two or more companies to begin a comparison.', 'empty-state'));
     const choose = node('button', 'choose companies →', 'quiet-button');
@@ -499,8 +528,6 @@ function render() {
   document.body.dataset.layer = state.view === 'topology' ? state.topologyLayer : '';
   root.setAttribute('aria-busy', 'false');
   pinCount.textContent = String(state.compareSlugs.length);
-  const compareTab = document.querySelector('[data-view="compare"]');
-  if (compareTab) compareTab.hidden = state.compareSlugs.length === 0 && state.view !== 'compare';
   if (state.view === 'data') dataView.render();
   else if (state.view === 'overview') renderOverview();
   else if (state.view === 'compare') renderCompare();
@@ -596,7 +623,7 @@ if (legacyStudyTarget) {
       root, state, data, discovery, occurrenceById, identityReviewById, model,
       categoryName, financingFor, locationReviewFor, locationReviewInSelectedYear,
       identityReviewFor, candidateLocationFor, providerLocationInSelectedYear,
-      money, financials, companyDetail, commitState, writeUrl, pinCount
+      money, financials, companyDetail, commitState, writeUrl
     });
     discoveryTopologyView = window.LogPoseDiscoveryTopologyView.create({
       root, state, index: dataIndex, commitState,
@@ -614,6 +641,10 @@ if (legacyStudyTarget) {
         fieldCategory: 'all', fieldIdentity: 'all', fieldCandidate: null,
         fieldNeighbor: null }, { top: true })
     });
+    decisionBriefView = window.LogPoseDecisionBrief.create({ model, index: dataIndex,
+      pilot: data, state, openRecord: record => commitState({ view: 'data',
+        dataFamily: record.family, dataCompany: 'all', dataYear: 'all',
+        dataQuery: '', dataRecord: record.id, dataBuild: dataIndex.build_id }, { top: true, focus: '#data-inspector' }) });
     const fromUrl = routeState();
     Object.assign(state, {
       ...fromUrl,

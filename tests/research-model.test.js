@@ -387,3 +387,88 @@ test('overview top-k defaults and explicit values survive URL round trips', () =
   assert.equal(invalid.temporalNodeLimit, '150');
   assert.equal(invalid.temporalEdgeLimit, '500');
 });
+
+test('decision drafts round-trip bounded user interpretation without becoming evidence', () => {
+  const draft = model.emptyDecisionDraft();
+  draft.question = 'Which developer tools deserve a first call?';
+  draft.scope = 'Series A; US; two weeks of research';
+  draft.notes.push({ ...model.decisionNote(draft, 'datadog'), why: 'Test paid expansion.',
+    counterevidence: 'Usage may not convert to revenue.', status: 'investigate' });
+  assert.deepEqual(model.parseDecisionDraft(JSON.stringify(draft)), draft);
+  assert.throws(() => model.parseDecisionDraft('{'), /JSON/);
+  assert.throws(() => model.parseDecisionDraft(JSON.stringify({ ...draft, schema_version: '2.0' })), /invalid/);
+  assert.throws(() => model.parseDecisionDraft(JSON.stringify({ ...draft, question: {} })), /invalid/);
+  assert.throws(() => model.parseDecisionDraft(JSON.stringify({ ...draft, notes: [draft.notes[0], draft.notes[0]] })), /invalid/);
+});
+
+test('decision brief keeps period labels, source provenance and analyst judgments separate', () => {
+  const index = require('../web/data/index.json');
+  const pilot = require('../web/dashboard.json');
+  const original = JSON.stringify(index);
+  const draft = model.emptyDecisionDraft();
+  draft.question = 'Is there evidence worth testing?';
+  const note = { ...model.decisionNote(draft, 'datadog'), why: 'Hypothesis only.', status: 'investigate' };
+  const records = model.decisionEvidence(index, 'datadog');
+  const page = records.find(record => record.family === 'pages' && record.selected_for_pilot);
+  const fact = records.find(record => record.family === 'sec' && record.selected && record.year === 2024);
+  const claim = records.find(record => record.family === 'topology');
+  note.citations = [page, fact, claim].map((record, position) => ({
+    id: record.id, role: position === 2 ? 'challenges' : 'supports', catalog_build_id: index.build_id
+  }));
+  draft.notes.push(note);
+  const result = model.exportDecisionBrief(draft, ['datadog'], index, pilot, 2024,
+    '2026-09-30T00:00:00Z', 'https://logpose.test/index.html');
+  assert.equal(result.kind, 'analyst_decision_brief');
+  assert.equal(result.scope.historical_replay, false);
+  assert.equal(result.scope.comparison_period_end_year, 2024);
+  assert.equal(result.companies[0].analyst_interpretation.status, 'investigate');
+  assert.match(result.companies[0].citations[0].partition.sha256, /^[a-f0-9]{64}$/);
+  assert.match(result.companies[0].citations[0].capture_provenance.raw_sha256, /^[a-f0-9]{64}$/);
+  assert.equal(result.companies[0].citations[1].selected_fact_provenance.fact_id, fact.fact_id);
+  assert.ok(result.companies[0].citations[1].record.filed_date > '2024-12-31');
+  assert.equal(result.companies[0].citations[2].record.sources[0].artifact_sha256, claim.sources[0].artifact_sha256);
+  assert.match(result.companies[0].citations[2].record.sources[0].artifact_sha256, /^[a-f0-9]{64}$/);
+  assert.equal(new URL(result.companies[0].citations[0].record_url).origin, 'https://logpose.test');
+  assert.equal(JSON.stringify(index), original);
+  assert.equal(result.companies[0].citations.length, 3);
+});
+
+test('unavailable, different-build and other-company citations cannot resolve to current facts', () => {
+  const index = require('../web/data/index.json');
+  const pilot = require('../web/dashboard.json');
+  const draft = model.emptyDecisionDraft();
+  const note = model.decisionNote(draft, 'datadog');
+  const page = model.decisionEvidence(index, 'datadog').find(record => record.family === 'pages');
+  const other = model.decisionEvidence(index, 'atlassian').find(record => record.family === 'pages');
+  note.citations = [
+    { id: page.id, role: 'supports', catalog_build_id: '0'.repeat(64) },
+    { id: other.id, role: 'context', catalog_build_id: index.build_id },
+    { id: 'page:999999', role: 'challenges', catalog_build_id: index.build_id }
+  ];
+  draft.notes.push(note);
+  const brief = model.exportDecisionBrief(draft, ['datadog'], index, pilot, 2024, 'test-clock');
+  assert.ok(brief.companies[0].citations.every(citation => citation.record === null
+    && citation.resolution === 'unavailable_in_current_catalog'));
+  assert.ok(brief.companies[0].unresolved.some(item => item.includes('cannot be resolved')));
+  assert.throws(() => model.exportDecisionBrief(draft, ['not-a-company'], index, pilot, 2024, 'test-clock'), /unknown company/);
+});
+
+test('uncited and unpinned company drafts remain outside the exported decision evidence', () => {
+  const index = require('../web/data/index.json');
+  const pilot = require('../web/dashboard.json');
+  const draft = model.emptyDecisionDraft();
+  draft.notes.push({ ...model.decisionNote(draft, 'atlassian'), why: 'Do not include an unpinned note.' });
+  const brief = model.exportDecisionBrief(draft, ['datadog', 'datadog'], index, pilot, 2024, 'test-clock');
+  assert.equal(brief.companies.length, 1);
+  assert.equal(brief.companies[0].analyst_interpretation.why, null);
+  assert.equal(brief.companies[0].citations.length, 0);
+  assert.ok(brief.companies[0].unresolved.includes('no source record has been cited by the analyst'));
+  assert.equal(brief.investor_question, null);
+});
+
+test('source search ordering cannot borrow years outside the filtered occurrences', () => {
+  const candidate = { name: 'Example', observed_years: [2020, 2021, 2022, 2023, 2024, 2025, 2026] };
+  assert.equal(model.candidateSearchScore(candidate, '', [{ year: 2021 }, { year: 2021 }]), 1);
+  assert.equal(model.candidateSearchScore(candidate, 'unmatched', [{ year: 2020 }, { year: 2021 }]), 2);
+  assert.equal(model.candidateSearchScore(candidate, 'Example', [{ year: 2021 }]), 1000);
+});

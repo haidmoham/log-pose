@@ -141,6 +141,18 @@ async function page(route = '/', failOncePath = null, mockWebgl = false, apiOpti
     resources: new LocalResources(),
     virtualConsole,
     beforeParse(window) {
+      window.__routeErrors = errors;
+      if (apiOptions.captureDownloads) {
+        window.URL.createObjectURL = blob => { window.__downloadBlob = blob; return 'blob:test'; };
+        window.URL.revokeObjectURL = () => {};
+        window.HTMLAnchorElement.prototype.click = function click() {};
+      }
+      if (apiOptions.storage) Object.defineProperty(window, 'localStorage', { value: apiOptions.storage });
+      if (apiOptions.decisionDraft) window.localStorage.setItem(
+        'log-pose.decision-brief.v1', apiOptions.decisionDraft);
+      if (apiOptions.blockStorage) Object.defineProperty(window, 'localStorage', {
+        get() { throw new Error('storage unavailable'); }
+      });
       window.HTMLElement.prototype.scrollIntoView = function scrollIntoView() {};
       window.__marketFieldRequests = apiRequests;
       if (mockWebgl) {
@@ -207,6 +219,62 @@ async function page(route = '/', failOncePath = null, mockWebgl = false, apiOpti
   assert.deepEqual(errors, []);
   return dom;
 }
+
+test('company evidence, exact relationship, close, and browser history remain coherent', async () => {
+  const dom = await page('/index.html?view=overview&year=2024&company=datadog');
+  try {
+    const { document, history } = dom.window;
+    const inspect = [...document.querySelectorAll('button')]
+      .find(button => button.textContent === 'inspect dated evidence →');
+    inspect.click();
+    assert.match(document.querySelector('#company-detail h3').textContent, /Datadog/);
+    assert.equal(new URL(dom.window.location.href).searchParams.get('view'), 'explore');
+    const claim = document.querySelector('[data-claim]');
+    const claimId = claim.dataset.claim;
+    claim.click();
+    assert.equal(new URL(dom.window.location.href).searchParams.get('dataRecord'), claimId);
+    assert.match(document.querySelector('.data-inspector').textContent, /scope.*log management/i);
+    history.back();
+    await waitFor(() => document.querySelector('#company-detail'));
+    document.querySelector('#company-detail .detail-head button').click();
+    assert.equal(document.querySelector('#company-detail'), null);
+    assert.equal(new URL(dom.window.location.href).searchParams.has('company'), false);
+    history.back();
+    await waitFor(() => document.querySelector('#company-detail'));
+    history.forward();
+    await waitFor(() => !document.querySelector('#company-detail'));
+    assert.deepEqual(dom.window.__routeErrors, []);
+  } finally { dom.window.close(); }
+});
+
+test('empty comparison is discoverable and source-list pins expose capacity', async () => {
+  const dom = await page('/index.html?view=explore&type=pilot');
+  try {
+    const { document } = dom.window;
+    assert.equal(document.querySelector('[data-view="compare"]').hidden, false);
+    for (let index = 0; index < 4; index += 1) {
+      const next = document.querySelector('[data-compare][aria-pressed="false"]');
+      assert(next && !next.disabled);
+      next.click();
+    }
+    assert.equal(document.querySelector('#pin-count').textContent, '4');
+    assert.equal(document.querySelector('[data-compare][aria-pressed="false"]').disabled, true);
+    document.querySelector('[data-view="compare"]').click();
+    assert.match(document.querySelector('#view h2').textContent, /compare companies/);
+    assert.equal(new URL(dom.window.location.href).searchParams.get('pinned').split(',').length, 4);
+    assert.deepEqual(dom.window.__routeErrors, []);
+  } finally { dom.window.close(); }
+});
+
+test('direct empty page and SEC filters explain missing results without an inventory request', async () => {
+  for (const family of ['pages', 'sec']) {
+    const dom = await page(`/index.html?view=data&dataFamily=${family}&dataQuery=no-such-company`);
+    try {
+      assert.match(dom.window.document.querySelector('.empty-state').textContent, /No retained records/);
+      assert.match(dom.window.document.querySelector('.data-controls').textContent, /do not freeze what was knowable/);
+    } finally { dom.window.close(); }
+  }
+});
 
 test('canonical route searches retained evidence and opens a full page record', async () => {
   const dom = await page('/?view=data');
@@ -720,13 +788,13 @@ test('a failed raw partition offers a working retry', async () => {
   dom.window.close();
 });
 
-test('compare navigation appears after a pin and empty direct compare offers a company action', async () => {
+test('compare navigation stays discoverable and empty direct compare offers a company action', async () => {
   const dom = await page('/?view=compare');
   const { document } = dom.window;
   assert.match(document.querySelector('#view').textContent, /pin two or more companies/);
   document.querySelector('#view button.quiet-button:last-child').click();
   assert.equal(new URL(dom.window.location.href).searchParams.get('view'), 'overview');
-  assert.equal(document.querySelector('[data-view="compare"]').hidden, true);
+  assert.equal(document.querySelector('[data-view="compare"]').hidden, false);
   document.querySelector('[data-pin]').click();
   assert.equal(document.querySelector('[data-view="compare"]').hidden, false);
   assert.equal(document.querySelector('#pin-count').textContent, '1');
@@ -738,7 +806,7 @@ test('compare navigation appears after a pin and empty direct compare offers a c
   selectedPin.click();
   assert.match(document.querySelector('#view').textContent, /pin two or more companies/);
   document.querySelector('#view button.quiet-button:last-child').click();
-  assert.equal(document.querySelector('[data-view="compare"]').hidden, true);
+  assert.equal(document.querySelector('[data-view="compare"]').hidden, false);
   dom.window.close();
 });
 
@@ -1081,5 +1149,207 @@ test('visible overview top-k controls update the graph, persist through time, an
     await waitFor(() => document.querySelectorAll('.constellation-node').length === 150);
     assert.equal(nodes.value, '150');
     assert.equal(edges.value, '500');
+  } finally { dom.window.close(); }
+});
+
+test('investor question, company notes and exact citations survive research navigation and reload', async () => {
+  const dom = await page('/index.html?view=compare&pinned=datadog,weights-and-biases');
+  let restored;
+  try {
+    const { document, Event, history } = dom.window;
+    const question = document.querySelector('#decision-question');
+    question.value = 'Which developer-first company deserves more diligence?';
+    question.dispatchEvent(new Event('input', { bubbles: true }));
+    const why = document.querySelector('#decision-datadog-why');
+    why.value = 'Test a recurring-use hypothesis.';
+    why.dispatchEvent(new Event('input', { bubbles: true }));
+    const cite = document.querySelector('.decision-evidence select');
+    cite.value = 'supports';
+    cite.dispatchEvent(new Event('change', { bubbles: true }));
+    assert.match(document.querySelector('.decision-evidence summary').textContent, /1 cited/);
+    const saved = dom.window.localStorage.getItem('log-pose.decision-brief.v1');
+    assert.match(saved, /Which developer-first/);
+    assert.doesNotMatch(dom.window.location.href, /Which|recurring-use|supports/);
+    document.querySelector('.decision-evidence button').click();
+    assert.equal(new URL(dom.window.location.href).searchParams.get('view'), 'data');
+    await waitFor(() => document.querySelector('.data-inspector .data-reading'));
+    history.back();
+    await waitFor(() => document.querySelector('#decision-question'));
+    assert.equal(document.querySelector('#decision-question').value, question.value);
+    assert.equal(document.querySelector('#decision-datadog-why').value, why.value);
+    assert.equal(document.querySelector('.decision-evidence select').value, 'supports');
+    restored = await page('/index.html?view=compare&pinned=datadog', null, false, { decisionDraft: saved });
+    assert.equal(restored.window.document.querySelector('#decision-question').value, question.value);
+    assert.equal(restored.window.document.querySelector('#decision-datadog-why').value, why.value);
+    assert.deepEqual(dom.window.__routeErrors, []);
+  } finally { dom.window.close(); restored?.window.close(); }
+});
+
+test('invalid or blocked browser storage does not overwrite saved notes or prevent a session draft', async () => {
+  for (const options of [{ decisionDraft: '{invalid' }, { blockStorage: true }]) {
+    const dom = await page('/index.html?view=compare&pinned=datadog', null, false, options);
+    try {
+      const { document, Event } = dom.window;
+      assert.match(document.querySelector('.decision-storage').textContent, /has not been overwritten/);
+      const question = document.querySelector('#decision-question');
+      question.value = 'Session-only question';
+      question.dispatchEvent(new Event('input', { bubbles: true }));
+      assert.equal(document.querySelector('.decision-actions button').disabled, false);
+      if (options.decisionDraft) assert.equal(dom.window.localStorage.getItem('log-pose.decision-brief.v1'), '{invalid');
+      assert.deepEqual(dom.window.__routeErrors, []);
+    } finally { dom.window.close(); }
+  }
+});
+
+test('decision brief begins with an explicit question and no fabricated recommendations', async () => {
+  const dom = await page('/index.html?view=compare&pinned=weights-and-biases');
+  try {
+    const document = dom.window.document;
+    assert.equal(document.querySelector('.decision-actions button').disabled, true);
+    assert.equal(document.querySelector('#decision-question').value, '');
+    assert.equal(document.querySelector('.decision-company select').value, 'undecided');
+    assert.match(document.querySelector('.decision-brief').textContent, /does not filter or verify company eligibility/);
+    assert.equal(document.querySelectorAll('.decision-evidence select').length > 0, true);
+    assert.deepEqual(dom.window.__routeErrors, []);
+  } finally { dom.window.close(); }
+});
+
+test('record search preserves a middle-of-query caret and unrelated source errors do not hide empty states', async () => {
+  const dom = await page('/index.html?view=data', '/data/inventory-search.json');
+  try {
+    const { document, Event } = dom.window;
+    await waitFor(() => document.querySelector('#view .error'));
+    const family = document.querySelector('[aria-label="Record family"]');
+    family.value = 'pages';
+    family.dispatchEvent(new Event('change', { bubbles: true }));
+    assert.equal(document.querySelector('#view .error'), null);
+    const query = document.querySelector('#data-query');
+    query.value = 'no-such-company';
+    query.setSelectionRange(3, 3);
+    query.dispatchEvent(new Event('input', { bubbles: true }));
+    assert.equal(document.querySelector('#data-query').selectionStart, 3);
+    assert.match(document.querySelector('.empty-state').textContent, /No retained records/);
+    assert.deepEqual(dom.window.__routeErrors, []);
+  } finally { dom.window.close(); }
+});
+
+test('a stale second tab cannot silently overwrite a newer saved investor draft', async () => {
+  let saved = null;
+  const storage = { getItem: () => saved, setItem: (_key, value) => { saved = value; } };
+  const first = await page('/index.html?view=compare&pinned=datadog', null, false, { storage });
+  const second = await page('/index.html?view=compare&pinned=datadog', null, false, { storage, captureDownloads: true });
+  try {
+    const question = first.window.document.querySelector('#decision-question');
+    question.value = 'First tab question';
+    question.dispatchEvent(new first.window.Event('input', { bubbles: true }));
+    const why = first.window.document.querySelector('#decision-datadog-why');
+    why.value = 'First tab reasoning';
+    why.dispatchEvent(new first.window.Event('input', { bubbles: true }));
+    const firstSaved = saved;
+    const scope = second.window.document.querySelector('#decision-scope');
+    scope.value = 'Second tab scope';
+    scope.dispatchEvent(new second.window.Event('input', { bubbles: true }));
+    assert.equal(saved, firstSaved);
+    assert.match(second.window.document.querySelector('.decision-storage').textContent, /another tab changed/);
+    assert.equal(scope.value, 'Second tab scope');
+    const secondQuestion = second.window.document.querySelector('#decision-question');
+    secondQuestion.value = 'Second tab question';
+    secondQuestion.dispatchEvent(new second.window.Event('input', { bubbles: true }));
+    second.window.document.querySelector('.decision-actions button').click();
+    const exported = await new Promise((resolve, reject) => {
+      const reader = new second.window.FileReader();
+      reader.onload = () => resolve(JSON.parse(reader.result));
+      reader.onerror = reject;
+      reader.readAsText(second.window.__downloadBlob);
+    });
+    assert.equal(exported.investor_question, 'Second tab question');
+    assert.equal(exported.investor_scope, 'Second tab scope');
+    assert.equal(JSON.parse(saved).question, 'First tab question');
+    assert.equal(JSON.parse(saved).notes[0].why, 'First tab reasoning');
+    first.window.dispatchEvent(new first.window.StorageEvent('storage', {
+      key: 'log-pose.decision-brief.v1', newValue: 'another saved revision'
+    }));
+    assert.match(first.window.document.querySelector('.decision-storage').textContent, /another tab changed/);
+  } finally { first.window.close(); second.window.close(); }
+});
+
+test('saved citation links enforce catalog build identity before displaying any evidence', async () => {
+  const index = JSON.parse(await fs.readFile(path.join(web, 'data/index.json'), 'utf8'));
+  const record = index.pages[0];
+  for (const build of ['0'.repeat(64), 'malformed-build']) {
+    const dom = await page(`/index.html?view=data&dataFamily=pages&dataRecord=${record.id}&dataBuild=${build}`);
+    try {
+      const document = dom.window.document;
+      assert.match(document.querySelector('#view h2').textContent, /saved evidence build unavailable/);
+      assert.equal(document.querySelector('.data-inspector'), null);
+      document.querySelector('#view button').click();
+      assert.equal(new URL(dom.window.location.href).searchParams.has('dataRecord'), false);
+      assert.equal(new URL(dom.window.location.href).searchParams.has('dataBuild'), false);
+      assert.match(document.querySelector('#data-inspector').textContent, /Select a record/);
+      dom.window.history.back();
+      await waitFor(() => document.querySelector('#view h2')?.textContent === 'saved evidence build unavailable');
+      assert.equal(document.querySelector('.data-inspector'), null);
+      dom.window.history.forward();
+      await waitFor(() => document.querySelector('#data-inspector'));
+    } finally { dom.window.close(); }
+  }
+  const matching = await page(`/index.html?view=data&dataFamily=pages&dataRecord=${record.id}&dataBuild=${index.build_id}`);
+  try {
+    await waitFor(() => matching.window.document.querySelector('.data-inspector .data-reading'));
+    assert.equal(new URL(matching.window.location.href).searchParams.get('dataBuild'), index.build_id);
+    const reloaded = await page(matching.window.location.pathname + matching.window.location.search);
+    try {
+      await waitFor(() => reloaded.window.document.querySelector('.data-inspector .data-reading'));
+      assert.equal(new URL(reloaded.window.location.href).searchParams.get('dataBuild'), index.build_id);
+    } finally { reloaded.window.close(); }
+  } finally { matching.window.close(); }
+});
+
+test('citation capacity protects reload and unavailable references can be removed', async () => {
+  const model = require('../web/research-model.js');
+  const draft = model.emptyDecisionDraft();
+  draft.notes.push({ ...model.decisionNote(draft, 'datadog'), citations:
+    Array.from({ length: model.MAX_DECISION_CITATIONS }, (_, index) => ({
+      id: `page:unavailable-${index}`, role: 'context', catalog_build_id: '0'.repeat(64)
+    })) });
+  const initial = JSON.stringify(draft);
+  const dom = await page('/index.html?view=compare&pinned=datadog', null, false, { decisionDraft: initial });
+  let reloaded;
+  try {
+    const { document, Event } = dom.window;
+    const role = document.querySelector('.decision-evidence select');
+    role.value = 'supports';
+    role.dispatchEvent(new Event('change', { bubbles: true }));
+    assert.equal(role.value, '');
+    assert.equal(dom.window.localStorage.getItem('log-pose.decision-brief.v1'), initial);
+    assert.match(document.querySelector('.decision-storage').textContent, /citation limit reached/);
+    document.querySelector('.decision-stale-citation button').click();
+    role.value = 'supports';
+    role.dispatchEvent(new Event('change', { bubbles: true }));
+    const saved = dom.window.localStorage.getItem('log-pose.decision-brief.v1');
+    assert.equal(model.parseDecisionDraft(saved).notes[0].citations.length, model.MAX_DECISION_CITATIONS);
+    reloaded = await page('/index.html?view=compare&pinned=datadog', null, false, { decisionDraft: saved });
+    assert.equal(reloaded.window.document.querySelector('.decision-evidence select').value, 'supports');
+    assert.equal(reloaded.window.document.querySelectorAll('.decision-stale-citation').length, 99);
+  } finally { dom.window.close(); reloaded?.window.close(); }
+});
+
+test('leaving a stale saved link can open current in-app citations without carrying the old build lock', async () => {
+  const index = JSON.parse(await fs.readFile(path.join(web, 'data/index.json'), 'utf8'));
+  const dom = await page('/index.html?view=data&dataRecord=page:19&pinned=datadog&dataBuild=' + '0'.repeat(64));
+  try {
+    const { document } = dom.window;
+    document.querySelector('[data-view="compare"]').click();
+    document.querySelector('.decision-evidence button').click();
+    await waitFor(() => document.querySelector('#data-inspector .data-reading'));
+    assert.equal(new URL(dom.window.location.href).searchParams.get('dataBuild'), index.build_id);
+    document.querySelector('[data-view="overview"]').click();
+    [...document.querySelectorAll('button')].find(button => button.textContent === 'inspect dated evidence →').click();
+    [...document.querySelectorAll('#company-detail button')]
+      .find(button => button.textContent === 'inspect all retained records →').click();
+    assert.equal(new URL(dom.window.location.href).searchParams.get('dataBuild'), index.build_id);
+    assert.match(document.querySelector('#view h2').textContent, /research the record/);
+    await waitFor(() => !document.querySelector('.data-results-head')?.textContent.includes('loading full inventory'));
+    assert.deepEqual(dom.window.__routeErrors, []);
   } finally { dom.window.close(); }
 });

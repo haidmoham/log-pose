@@ -1,0 +1,93 @@
+{
+  "schema_version": "1.0",
+  "checked_on": "2026-09-30",
+  "base_revision": "370b0769cf81845c8ff4dddb3a614b6ef685a5dc",
+  "runtime": {
+    "node": "24.19.0",
+    "python": "3.12.14"
+  },
+  "checks": [
+    {
+      "command": "npm run test:dashboard",
+      "passed": 127,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "command": "npm run test:atlas",
+      "passed": 60,
+      "failed": 0,
+      "skipped": 3,
+      "limit": "PostgreSQL integration unavailable locally"
+    },
+    {
+      "command": "node --test tests/deployment-health.test.mjs",
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "command": ".venv/bin/python -m pytest -q tests",
+      "passed": 125,
+      "failed": 0,
+      "skipped": 26,
+      "limit": "Database and prepared-clone checks unavailable locally"
+    },
+    {
+      "command": "npm run test:experimental",
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "command": ".venv/bin/python -m pytest -q experiments/ml",
+      "passed": 22,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "command": ".venv/bin/python scripts/check_data_health.py",
+      "checked": 6,
+      "failed": 0,
+      "not_evaluated": [
+        "claim_semantic_truth",
+        "database_reconciliation"
+      ]
+    },
+    {
+      "command": "PYTHONPATH=src .venv/bin/python scripts/build_atlas_snapshot.py --check",
+      "status": "passed",
+      "build_id": "990c81ef7202ecab9a0c9bf8185c459537dd1d48d7981d2839a297ed242396b5"
+    },
+    {
+      "command": "PYTHONPATH=src .venv/bin/python scripts/build_atlas_reviewed.py --check",
+      "status": "passed",
+      "build_id": "710ab7d36a1cca9fc0f55b0c18ba42b963245268f4d614e0089fea2f6cde91bc"
+    },
+    {
+      "command": "npm run lint",
+      "status": "failed_preexisting",
+      "errors": 18,
+      "warnings": 7,
+      "note": "same baseline count; narrow documented typeof exception for explicit untrusted storage schema parser"
+    },
+    {
+      "command": "node scripts/check_browser_smoke.cjs",
+      "status": "not_run_locally",
+      "reason": "cloud browser loopback request returned ERR_BLOCKED_BY_CLIENT; no bypass attempted; run on permitted preview or CI"
+    },
+    {
+      "command": "git diff --name-only 370b076 -- web/*.json web/data api/data docs/research/source-artifacts sql",
+      "status": "passed",
+      "changed_files": []
+    }
+  ],
+  "not_established": [
+    "investor or customer validation",
+    "historical investment prediction",
+    "point-in-time replay by company/period UI filters",
+    "investment returns",
+    "physical-device behavior",
+    "production deployment verification"
+  ]
+}

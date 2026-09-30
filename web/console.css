@@ -916,3 +916,35 @@ footer { display: flex; justify-content: space-between; gap: 20px; padding: 18px
   .desk-toy-label { font-size: 8px; }
   .data-facts { grid-template-columns: 1fr; }
 }
+
+/* User notes are a separate decision layer above the retained source comparison. */
+.decision-brief {
+  margin: 20px 0 28px;
+  padding: clamp(16px, 3vw, 28px);
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-top: 3px solid var(--teal-deep);
+  border-radius: 12px;
+}
+.decision-brief h3 { margin: 4px 0 12px; font-size: clamp(21px, 3vw, 28px); }
+.decision-brief h4 { margin: 4px 0 18px; font-size: 20px; }
+.decision-field { display: grid; gap: 7px; margin: 16px 0; font-size: 12px; font-weight: 650; }
+.decision-field textarea {
+  width: 100%; min-height: 76px; padding: 11px 12px; resize: vertical;
+  border: 1px solid var(--rule-strong); border-radius: 6px;
+  background: var(--white); color: var(--ink); font: 400 14px/1.5 var(--sans);
+}
+.decision-field select, .decision-evidence-row select { min-height: 40px; width: 100%; }
+.decision-company-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.decision-company { min-width: 0; margin-top: 14px; padding-top: 20px; border-top: 1px solid var(--rule); }
+.decision-evidence { margin-top: 20px; border-top: 1px solid var(--rule); }
+.decision-evidence summary { padding: 14px 0; cursor: pointer; font-size: 12px; font-weight: 650; }
+.decision-evidence-row { display: grid; grid-template-columns: minmax(0, 1fr) 145px; gap: 10px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--rule); }
+.decision-evidence-row button { text-align: left; overflow-wrap: anywhere; line-height: 1.5; }
+.decision-actions { margin-top: 22px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.decision-storage { margin-top: 12px; }
+.company-relationships { margin: 22px 0; }
+@media (max-width: 760px) {
+  .decision-company-grid { grid-template-columns: 1fr; }
+  .decision-evidence-row { grid-template-columns: 1fr; }
+}

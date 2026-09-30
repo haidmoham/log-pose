@@ -6,7 +6,7 @@
       root, state, data, discovery, occurrenceById, identityReviewById, model,
       categoryName, financingFor, locationReviewFor, locationReviewInSelectedYear,
       identityReviewFor, candidateLocationFor, providerLocationInSelectedYear,
-      money, financials, companyDetail, commitState, writeUrl, pinCount
+      money, financials, companyDetail, commitState, writeUrl
     } = context;
     const { node, append, link, title, metric, table } = globalScope.LogPoseUI;
     const inventoryYears = [...new Set(discovery.artifacts.map(artifact => artifact.year))]
@@ -125,11 +125,11 @@
         });
         partitionCache.set(artifactKey, pending);
         pending.then(partition => {
-          if (currentRequest !== request) return;
+          if (currentRequest !== request || !panel.isConnected) return;
           loaded = partition;
           showRows();
         }).catch(error => {
-          if (currentRequest !== request) return;
+          if (currentRequest !== request || !panel.isConnected) return;
           status.textContent = `Could not load this source: ${error.message}`;
           const retry = node('button', 'retry source', 'quiet-button');
           retry.type = 'button';
@@ -241,16 +241,6 @@
         inventoryCoverage(), fullInventoryBrowser());
       root.append(sourceArchive);
       updateSearchResults();
-    }
-
-    function candidateScore(candidate, query) {
-      if (!query) return candidate.observed_years.length;
-      const name = candidate.name.toLocaleLowerCase();
-      const phrase = query.toLocaleLowerCase().trim();
-      if (name === phrase) return 1000;
-      if (name.startsWith(phrase)) return 500;
-      if (name.includes(phrase)) return 200;
-      return candidate.observed_years.length;
     }
 
     function searchAggregation(hits, providers, pilots) {
@@ -472,8 +462,8 @@
         && (terms.every(term => [item.name, item.purpose, item.url].join(' ')
           .toLocaleLowerCase().includes(term)) || evidenceMatches.length > 0
           || financingMatches.length > 0));
-      hits.sort((left, right) => candidateScore(right.candidate, state.query)
-        - candidateScore(left.candidate, state.query)
+      hits.sort((left, right) => model.candidateSearchScore(right.candidate, state.query, right.occurrences)
+        - model.candidateSearchScore(left.candidate, state.query, left.occurrences)
         || left.candidate.name.localeCompare(right.candidate.name));
       const breakdown = node('details', '', 'search-breakdown');
       breakdown.append(node('summary', 'current result counts by evidence type'));
@@ -488,6 +478,8 @@
           'With U.S. base evidence', 'Source year matches selected year')));
       breakdown.append(searchAggregation(hits, providers, pilots));
       target.append(breakdown);
+      if (hits.length) target.append(node('p', 'directory order: name match, then distinct years in the filtered source occurrences. '
+        + 'this is navigation order, not investment merit or a point-in-time prediction.', 'caption'));
       const resultList = node('div', '', 'search-result-list');
       providers.forEach(provider => {
         const button = node('button', state.selectedProvider === provider.id
@@ -531,16 +523,16 @@
           ...(announcements.length ? [node('p', announcements.map(event =>
             event.announced_on + ' · ' + event.round + ' · ' + money(event.amount_usd)).join(' / '), 'search-tags')] : []),
           button);
-        const compare = node('button', state.compareSlugs.includes(item.slug)
-          ? 'Remove from comparison' : 'Add to comparison', 'quiet-button');
+        const pinned = state.compareSlugs.includes(item.slug);
+        const atCapacity = !pinned && state.compareSlugs.length >= model.MAX_PINNED;
+        const compare = node('button', pinned ? 'Remove from comparison'
+          : atCapacity ? '4 pinned · remove one to add' : 'Add to comparison', 'quiet-button');
         compare.type = 'button';
-        compare.setAttribute('aria-pressed', String(state.compareSlugs.includes(item.slug)));
+        compare.disabled = atCapacity;
+        compare.setAttribute('aria-pressed', String(pinned));
         compare.addEventListener('click', () => {
-          state.compareSlugs = model.togglePinned(state.compareSlugs, item.slug);
-          updateSearchResults();
-          pinCount.textContent = String(state.compareSlugs.length);
-          writeUrl();
-          document.querySelector(`[data-compare="${item.slug}"]`)?.focus();
+          commitState({ compareSlugs: model.togglePinned(state.compareSlugs, item.slug) },
+            { focus: `[data-compare="${item.slug}"]` });
         });
         compare.dataset.compare = item.slug;
         card.append(compare);
