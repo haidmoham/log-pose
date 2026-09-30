@@ -97,12 +97,40 @@ function financials(slug, year) {
   return model.financialsFor(financialIndex, slug, year);
 }
 
+function companyRelationships(slug) {
+  const section = node('section', '', 'company-relationships');
+  const claims = dataIndex.topology.claims.filter(claim =>
+    claim.subject_slug === slug || claim.object_slug === slug);
+  section.append(node('h4', 'retained relationship evidence'),
+    node('p', 'current reviewed collection · all retained source dates. '
+      + 'these claims are not a historical eligibility or investment screen.', 'caveat'));
+  if (!claims.length) {
+    section.append(node('p', 'no relationship claim is retained for this company in this collection. '
+      + 'this does not establish that no relationship exists.', 'muted'));
+  }
+  for (const claim of claims) {
+    const subject = data.companies.find(company => company.slug === claim.subject_slug);
+    const object = data.companies.find(company => company.slug === claim.object_slug);
+    const open = node('button', `${subject.name} / ${object.name} · `
+      + claim.predicate.replaceAll('_', ' ') + ' →', 'text-button');
+    open.type = 'button';
+    open.dataset.claim = claim.id;
+    open.addEventListener('click', () => commitState({ view: 'data', dataFamily: 'topology',
+      dataCompany: 'all', dataYear: 'all', dataQuery: '', dataRecord: claim.id },
+    { top: true, focus: '#data-inspector' }));
+    section.append(append(node('article', '', 'funding-event'), open,
+      node('p', `${claim.claim_status.replaceAll('_', ' ')} · ${claim.scope}`, 'muted')));
+  }
+  return section;
+}
+
 function companyDetail(slug) {
   const company = data.companies.find(item => item.slug === slug);
   const section = node('section', '', 'detail-panel');
   const close = node('button', 'Close ×', 'quiet-button');
   close.type = 'button';
-  close.addEventListener('click', () => { state.company = null; render(); });
+  close.addEventListener('click', () => commitState({ company: null },
+    { focus: '[aria-label="Search source records"]' }));
   section.append(append(node('div', '', 'detail-head'),
     append(node('div'), node('p', 'COMPANY RECORD / 2021–2024', 'eyebrow'), node('h3', company.name)),
     close));
@@ -167,7 +195,7 @@ function companyDetail(slug) {
     grid.append(card);
   }
   section.append(grid, node('p', 'A company page records what its publisher said at capture time. It does not verify adoption, customer outcomes, or when a feature first appeared.', 'caveat'));
-  section.append(topologyView.companySummary(slug));
+  section.append(companyRelationships(slug));
   const announcements = financingFor(slug);
   if (announcements.length) {
     const funding = node('section', '', 'funding-events');
@@ -499,8 +527,6 @@ function render() {
   document.body.dataset.layer = state.view === 'topology' ? state.topologyLayer : '';
   root.setAttribute('aria-busy', 'false');
   pinCount.textContent = String(state.compareSlugs.length);
-  const compareTab = document.querySelector('[data-view="compare"]');
-  if (compareTab) compareTab.hidden = state.compareSlugs.length === 0 && state.view !== 'compare';
   if (state.view === 'data') dataView.render();
   else if (state.view === 'overview') renderOverview();
   else if (state.view === 'compare') renderCompare();
@@ -596,7 +622,7 @@ if (legacyStudyTarget) {
       root, state, data, discovery, occurrenceById, identityReviewById, model,
       categoryName, financingFor, locationReviewFor, locationReviewInSelectedYear,
       identityReviewFor, candidateLocationFor, providerLocationInSelectedYear,
-      money, financials, companyDetail, commitState, writeUrl, pinCount
+      money, financials, companyDetail, commitState, writeUrl
     });
     discoveryTopologyView = window.LogPoseDiscoveryTopologyView.create({
       root, state, index: dataIndex, commitState,

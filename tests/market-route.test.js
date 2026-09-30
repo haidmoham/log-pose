@@ -141,6 +141,7 @@ async function page(route = '/', failOncePath = null, mockWebgl = false, apiOpti
     resources: new LocalResources(),
     virtualConsole,
     beforeParse(window) {
+      window.__routeErrors = errors;
       window.HTMLElement.prototype.scrollIntoView = function scrollIntoView() {};
       window.__marketFieldRequests = apiRequests;
       if (mockWebgl) {
@@ -207,6 +208,62 @@ async function page(route = '/', failOncePath = null, mockWebgl = false, apiOpti
   assert.deepEqual(errors, []);
   return dom;
 }
+
+test('company evidence, exact relationship, close, and browser history remain coherent', async () => {
+  const dom = await page('/index.html?view=overview&year=2024&company=datadog');
+  try {
+    const { document, history } = dom.window;
+    const inspect = [...document.querySelectorAll('button')]
+      .find(button => button.textContent === 'inspect dated evidence →');
+    inspect.click();
+    assert.match(document.querySelector('#company-detail h3').textContent, /Datadog/);
+    assert.equal(new URL(dom.window.location.href).searchParams.get('view'), 'explore');
+    const claim = document.querySelector('[data-claim]');
+    const claimId = claim.dataset.claim;
+    claim.click();
+    assert.equal(new URL(dom.window.location.href).searchParams.get('dataRecord'), claimId);
+    assert.match(document.querySelector('.data-inspector').textContent, /scope.*log management/i);
+    history.back();
+    await waitFor(() => document.querySelector('#company-detail'));
+    document.querySelector('#company-detail .detail-head button').click();
+    assert.equal(document.querySelector('#company-detail'), null);
+    assert.equal(new URL(dom.window.location.href).searchParams.has('company'), false);
+    history.back();
+    await waitFor(() => document.querySelector('#company-detail'));
+    history.forward();
+    await waitFor(() => !document.querySelector('#company-detail'));
+    assert.deepEqual(dom.window.__routeErrors, []);
+  } finally { dom.window.close(); }
+});
+
+test('empty comparison is discoverable and source-list pins expose capacity', async () => {
+  const dom = await page('/index.html?view=explore&type=pilot');
+  try {
+    const { document } = dom.window;
+    assert.equal(document.querySelector('[data-view="compare"]').hidden, false);
+    for (let index = 0; index < 4; index += 1) {
+      const next = document.querySelector('[data-compare][aria-pressed="false"]');
+      assert(next && !next.disabled);
+      next.click();
+    }
+    assert.equal(document.querySelector('#pin-count').textContent, '4');
+    assert.equal(document.querySelector('[data-compare][aria-pressed="false"]').disabled, true);
+    document.querySelector('[data-view="compare"]').click();
+    assert.match(document.querySelector('#view h2').textContent, /compare companies/);
+    assert.equal(new URL(dom.window.location.href).searchParams.get('pinned').split(',').length, 4);
+    assert.deepEqual(dom.window.__routeErrors, []);
+  } finally { dom.window.close(); }
+});
+
+test('direct empty page and SEC filters explain missing results without an inventory request', async () => {
+  for (const family of ['pages', 'sec']) {
+    const dom = await page(`/index.html?view=data&dataFamily=${family}&dataQuery=no-such-company`);
+    try {
+      assert.match(dom.window.document.querySelector('.empty-state').textContent, /No retained records/);
+      assert.match(dom.window.document.querySelector('.data-controls').textContent, /do not freeze what was knowable/);
+    } finally { dom.window.close(); }
+  }
+});
 
 test('canonical route searches retained evidence and opens a full page record', async () => {
   const dom = await page('/?view=data');
@@ -720,13 +777,13 @@ test('a failed raw partition offers a working retry', async () => {
   dom.window.close();
 });
 
-test('compare navigation appears after a pin and empty direct compare offers a company action', async () => {
+test('compare navigation stays discoverable and empty direct compare offers a company action', async () => {
   const dom = await page('/?view=compare');
   const { document } = dom.window;
   assert.match(document.querySelector('#view').textContent, /pin two or more companies/);
   document.querySelector('#view button.quiet-button:last-child').click();
   assert.equal(new URL(dom.window.location.href).searchParams.get('view'), 'overview');
-  assert.equal(document.querySelector('[data-view="compare"]').hidden, true);
+  assert.equal(document.querySelector('[data-view="compare"]').hidden, false);
   document.querySelector('[data-pin]').click();
   assert.equal(document.querySelector('[data-view="compare"]').hidden, false);
   assert.equal(document.querySelector('#pin-count').textContent, '1');
@@ -738,7 +795,7 @@ test('compare navigation appears after a pin and empty direct compare offers a c
   selectedPin.click();
   assert.match(document.querySelector('#view').textContent, /pin two or more companies/);
   document.querySelector('#view button.quiet-button:last-child').click();
-  assert.equal(document.querySelector('[data-view="compare"]').hidden, true);
+  assert.equal(document.querySelector('[data-view="compare"]').hidden, false);
   dom.window.close();
 });
 

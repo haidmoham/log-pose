@@ -217,6 +217,8 @@
           (_, offset) => [String(2020 + offset), String(2020 + offset)])], state.dataYear,
         value => commitState({ dataYear: value, dataRecord: null })));
       form.append(facets);
+      form.append(node('p', 'year filters describe inventory, capture, reporting-period or source dates. '
+        + 'they do not freeze what was knowable then; later filings and reviews can remain visible.', 'caveat'));
       return form;
     }
 
@@ -569,7 +571,7 @@
         + (!inventoryRecords && (state.dataFamily === 'all' || state.dataFamily === 'inventory')
           ? ' · loading full inventory index' : ''), 'eyebrow'),
         node('p', fullUniverse
-          ? 'Choose a source family or enter a question to narrow this retained index. Inventory leads remain unreviewed unless an identity review is attached.'
+          ? 'Choose a source family or search names, categories and record metadata. Inventory leads remain unreviewed unless an identity review is attached.'
           : 'Filters use record metadata. Open a result to read the retained detail.', 'muted'));
       resultList.append(header);
       const selected = hits.find(item => item.id === state.dataRecord);
@@ -592,8 +594,13 @@
         });
         resultList.append(more);
       }
-      if (!hits.length && inventoryRecords) resultList.append(node('p',
+      const waitingForInventory = inventoryLoading
+        && (state.dataFamily === 'all' || state.dataFamily === 'inventory');
+      if (!hits.length && !waitingForInventory && !inventoryError) resultList.append(node('p',
         'No retained records match these filters. Clear a filter or try a broader term.', 'empty-state'));
+      if (state.dataRecord && !selected && !waitingForInventory) resultList.append(node('p',
+        'the saved record is unavailable in this filtered collection. '
+          + 'check the filters or return to the source link; no other record has been substituted.', 'caveat'));
       resultArea.append(resultList, inspector(selected));
       root.append(resultArea);
     }

@@ -6,7 +6,7 @@
       root, state, data, discovery, occurrenceById, identityReviewById, model,
       categoryName, financingFor, locationReviewFor, locationReviewInSelectedYear,
       identityReviewFor, candidateLocationFor, providerLocationInSelectedYear,
-      money, financials, companyDetail, commitState, writeUrl, pinCount
+      money, financials, companyDetail, commitState, writeUrl
     } = context;
     const { node, append, link, title, metric, table } = globalScope.LogPoseUI;
     const inventoryYears = [...new Set(discovery.artifacts.map(artifact => artifact.year))]
@@ -125,11 +125,11 @@
         });
         partitionCache.set(artifactKey, pending);
         pending.then(partition => {
-          if (currentRequest !== request) return;
+          if (currentRequest !== request || !panel.isConnected) return;
           loaded = partition;
           showRows();
         }).catch(error => {
-          if (currentRequest !== request) return;
+          if (currentRequest !== request || !panel.isConnected) return;
           status.textContent = `Could not load this source: ${error.message}`;
           const retry = node('button', 'retry source', 'quiet-button');
           retry.type = 'button';
@@ -531,16 +531,16 @@
           ...(announcements.length ? [node('p', announcements.map(event =>
             event.announced_on + ' · ' + event.round + ' · ' + money(event.amount_usd)).join(' / '), 'search-tags')] : []),
           button);
-        const compare = node('button', state.compareSlugs.includes(item.slug)
-          ? 'Remove from comparison' : 'Add to comparison', 'quiet-button');
+        const pinned = state.compareSlugs.includes(item.slug);
+        const atCapacity = !pinned && state.compareSlugs.length >= model.MAX_PINNED;
+        const compare = node('button', pinned ? 'Remove from comparison'
+          : atCapacity ? '4 pinned · remove one to add' : 'Add to comparison', 'quiet-button');
         compare.type = 'button';
-        compare.setAttribute('aria-pressed', String(state.compareSlugs.includes(item.slug)));
+        compare.disabled = atCapacity;
+        compare.setAttribute('aria-pressed', String(pinned));
         compare.addEventListener('click', () => {
-          state.compareSlugs = model.togglePinned(state.compareSlugs, item.slug);
-          updateSearchResults();
-          pinCount.textContent = String(state.compareSlugs.length);
-          writeUrl();
-          document.querySelector(`[data-compare="${item.slug}"]`)?.focus();
+          commitState({ compareSlugs: model.togglePinned(state.compareSlugs, item.slug) },
+            { focus: `[data-compare="${item.slug}"]` });
         });
         compare.dataset.compare = item.slug;
         card.append(compare);
