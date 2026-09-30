@@ -142,6 +142,11 @@ async function page(route = '/', failOncePath = null, mockWebgl = false, apiOpti
     virtualConsole,
     beforeParse(window) {
       window.__routeErrors = errors;
+      if (apiOptions.decisionDraft) window.localStorage.setItem(
+        'log-pose.decision-brief.v1', apiOptions.decisionDraft);
+      if (apiOptions.blockStorage) Object.defineProperty(window, 'localStorage', {
+        get() { throw new Error('storage unavailable'); }
+      });
       window.HTMLElement.prototype.scrollIntoView = function scrollIntoView() {};
       window.__marketFieldRequests = apiRequests;
       if (mockWebgl) {
@@ -1138,5 +1143,86 @@ test('visible overview top-k controls update the graph, persist through time, an
     await waitFor(() => document.querySelectorAll('.constellation-node').length === 150);
     assert.equal(nodes.value, '150');
     assert.equal(edges.value, '500');
+  } finally { dom.window.close(); }
+});
+
+test('investor question, company notes and exact citations survive research navigation and reload', async () => {
+  const dom = await page('/index.html?view=compare&pinned=datadog,weights-and-biases');
+  let restored;
+  try {
+    const { document, Event, history } = dom.window;
+    const question = document.querySelector('#decision-question');
+    question.value = 'Which developer-first company deserves more diligence?';
+    question.dispatchEvent(new Event('input', { bubbles: true }));
+    const why = document.querySelector('#decision-datadog-why');
+    why.value = 'Test a recurring-use hypothesis.';
+    why.dispatchEvent(new Event('input', { bubbles: true }));
+    const cite = document.querySelector('.decision-evidence select');
+    cite.value = 'supports';
+    cite.dispatchEvent(new Event('change', { bubbles: true }));
+    assert.match(document.querySelector('.decision-evidence summary').textContent, /1 cited/);
+    const saved = dom.window.localStorage.getItem('log-pose.decision-brief.v1');
+    assert.match(saved, /Which developer-first/);
+    assert.doesNotMatch(dom.window.location.href, /Which|recurring-use|supports/);
+    document.querySelector('.decision-evidence button').click();
+    assert.equal(new URL(dom.window.location.href).searchParams.get('view'), 'data');
+    await waitFor(() => document.querySelector('.data-inspector .data-reading'));
+    history.back();
+    await waitFor(() => document.querySelector('#decision-question'));
+    assert.equal(document.querySelector('#decision-question').value, question.value);
+    assert.equal(document.querySelector('#decision-datadog-why').value, why.value);
+    assert.equal(document.querySelector('.decision-evidence select').value, 'supports');
+    restored = await page('/index.html?view=compare&pinned=datadog', null, false, { decisionDraft: saved });
+    assert.equal(restored.window.document.querySelector('#decision-question').value, question.value);
+    assert.equal(restored.window.document.querySelector('#decision-datadog-why').value, why.value);
+    assert.deepEqual(dom.window.__routeErrors, []);
+  } finally { dom.window.close(); restored?.window.close(); }
+});
+
+test('invalid or blocked browser storage does not overwrite saved notes or prevent a session draft', async () => {
+  for (const options of [{ decisionDraft: '{invalid' }, { blockStorage: true }]) {
+    const dom = await page('/index.html?view=compare&pinned=datadog', null, false, options);
+    try {
+      const { document, Event } = dom.window;
+      assert.match(document.querySelector('.decision-storage').textContent, /has not been overwritten/);
+      const question = document.querySelector('#decision-question');
+      question.value = 'Session-only question';
+      question.dispatchEvent(new Event('input', { bubbles: true }));
+      assert.equal(document.querySelector('.decision-actions button').disabled, false);
+      if (options.decisionDraft) assert.equal(dom.window.localStorage.getItem('log-pose.decision-brief.v1'), '{invalid');
+      assert.deepEqual(dom.window.__routeErrors, []);
+    } finally { dom.window.close(); }
+  }
+});
+
+test('decision brief begins with an explicit question and no fabricated recommendations', async () => {
+  const dom = await page('/index.html?view=compare&pinned=weights-and-biases');
+  try {
+    const document = dom.window.document;
+    assert.equal(document.querySelector('.decision-actions button').disabled, true);
+    assert.equal(document.querySelector('#decision-question').value, '');
+    assert.equal(document.querySelector('.decision-company select').value, 'undecided');
+    assert.match(document.querySelector('.decision-brief').textContent, /does not filter or verify company eligibility/);
+    assert.equal(document.querySelectorAll('.decision-evidence select').length > 0, true);
+    assert.deepEqual(dom.window.__routeErrors, []);
+  } finally { dom.window.close(); }
+});
+
+test('record search preserves a middle-of-query caret and unrelated source errors do not hide empty states', async () => {
+  const dom = await page('/index.html?view=data', '/data/inventory-search.json');
+  try {
+    const { document, Event } = dom.window;
+    await waitFor(() => document.querySelector('#view .error'));
+    const family = document.querySelector('[aria-label="Record family"]');
+    family.value = 'pages';
+    family.dispatchEvent(new Event('change', { bubbles: true }));
+    assert.equal(document.querySelector('#view .error'), null);
+    const query = document.querySelector('#data-query');
+    query.value = 'no-such-company';
+    query.setSelectionRange(3, 3);
+    query.dispatchEvent(new Event('input', { bubbles: true }));
+    assert.equal(document.querySelector('#data-query').selectionStart, 3);
+    assert.match(document.querySelector('.empty-state').textContent, /No retained records/);
+    assert.deepEqual(dom.window.__routeErrors, []);
   } finally { dom.window.close(); }
 });

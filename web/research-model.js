@@ -556,7 +556,142 @@
     return [...pinned, slug];
   }
 
+  function candidateSearchScore(candidate, query, matchingOccurrences) {
+    const observedYears = new Set(matchingOccurrences.map(item => item.year)).size;
+    if (!query.trim()) return observedYears;
+    const name = candidate.name.toLocaleLowerCase();
+    const phrase = query.toLocaleLowerCase().trim();
+    if (name === phrase) return 1000;
+    if (name.startsWith(phrase)) return 500;
+    if (name.includes(phrase)) return 200;
+    return observedYears;
+  }
+
+  const DECISION_NOTE_FIELDS = ['why', 'counterevidence', 'unknowns', 'next_action'];
+  const DECISION_STATUSES = ['undecided', 'investigate', 'watch', 'pass'];
+  const CITATION_ROLES = ['supports', 'challenges', 'context'];
+
+  function emptyDecisionDraft() {
+    return { schema_version: '1.0', question: '', scope: '', notes: [] };
+  }
+
+  function decisionNote(draft, slug) {
+    return draft.notes.find(note => note.slug === slug) || {
+      slug, status: 'undecided', why: '', counterevidence: '', unknowns: '',
+      next_action: '', citations: []
+    };
+  }
+
+  // Browser storage is untrusted input. Reject an invalid draft rather than
+  // silently replacing the analyst's notes or treating it as source evidence.
+  function parseDecisionDraft(serialized) {
+    const value = JSON.parse(serialized);
+    // oxlint-disable-next-line anti-slop/no-runtime-typeof -- Explicit schema validation at the untrusted browser-storage boundary.
+    const isText = text => typeof text === 'string' && text.length <= 2000;
+    if (value?.schema_version !== '1.0' || !isText(value.question)
+        || !isText(value.scope) || !Array.isArray(value.notes) || value.notes.length > 100) {
+      throw new Error('saved decision draft is invalid or uses an unsupported version');
+    }
+    const slugs = new Set();
+    const notes = value.notes.map(note => {
+      if (!note || !safeDataRecord(note.slug) || slugs.has(note.slug)
+          || !DECISION_STATUSES.includes(note.status)
+          || !DECISION_NOTE_FIELDS.every(field => isText(note[field]))
+          || !Array.isArray(note.citations) || note.citations.length > 100) {
+        throw new Error('saved company notes are invalid');
+      }
+      slugs.add(note.slug);
+      const citationKeys = new Set();
+      const citations = note.citations.map(citation => {
+        if (!citation || !safeDataRecord(citation.id)
+            || !CITATION_ROLES.includes(citation.role)
+            || !isText(citation.catalog_build_id)
+            || !/^[a-f0-9]{64}$/.test(citation.catalog_build_id)) {
+          throw new Error('saved evidence reference is invalid');
+        }
+        const key = citation.catalog_build_id + ':' + citation.id;
+        if (citationKeys.has(key)) throw new Error('saved evidence reference is duplicated');
+        citationKeys.add(key);
+        return { id: citation.id, role: citation.role, catalog_build_id: citation.catalog_build_id };
+      });
+      return { slug: note.slug, status: note.status,
+        ...Object.fromEntries(DECISION_NOTE_FIELDS.map(field => [field, note[field]])), citations };
+    });
+    return { schema_version: '1.0', question: value.question, scope: value.scope, notes };
+  }
+
+  function decisionEvidence(index, slug) {
+    const pages = index.pages.filter(record => record.company_slug === slug)
+      .map(record => ({ ...record, family: 'pages',
+        label: `page captured ${(record.captured_at || '').slice(0, 10)} · ${record.text_status}` }));
+    const facts = index.sec.filter(record => record.company_slug === slug)
+      .map(record => ({ ...record, family: 'sec',
+        label: `${record.concept_group.replaceAll('_', ' ')} · period ${record.end_date} · filed ${record.filed_date}` }));
+    const relationships = index.topology.claims.filter(record =>
+      record.subject_slug === slug || record.object_slug === slug)
+      .map(record => ({ ...record, family: 'topology',
+        label: `${record.predicate.replaceAll('_', ' ')} · ${record.claim_status} · ${record.subject_slug} / ${record.object_slug}` }));
+    return [...pages, ...facts, ...relationships];
+  }
+
+  function exportDecisionBrief(draft, slugs, index, pilot, year, createdAt, applicationUrl = null) {
+    const selectedSlugs = [...new Set(slugs)].slice(0, MAX_PINNED);
+    const companies = selectedSlugs.map(slug => {
+      const company = index.companies.find(item => item.slug === slug);
+      if (!company) throw new Error(`unknown company in decision brief: ${slug}`);
+      const note = decisionNote(draft, slug);
+      const records = new Map(decisionEvidence(index, slug).map(record => [record.id, record]));
+      const citations = note.citations.map(citation => {
+        const record = citation.catalog_build_id === index.build_id ? records.get(citation.id) : null;
+        if (!record) return { ...citation, resolution: 'unavailable_in_current_catalog', record: null };
+        const partition = index.partitions[record.partition_path];
+        const capture = record.family === 'pages' ? pilot.evidence.find(item =>
+          item.snapshot_id === record.snapshot_id) : null;
+        const fact = record.family === 'sec' ? pilot.financials.cells.find(item =>
+          item.selected?.fact_id === record.fact_id)?.selected : null;
+        const route = './index.html?' + new URLSearchParams({ view: 'data',
+          dataFamily: record.family, dataRecord: record.id });
+        return { ...citation, resolution: 'retained_record_reference',
+          record_route: route, record_url: applicationUrl ? new URL(route, applicationUrl).href : null,
+          partition: partition ? { path: record.partition_path, sha256: partition.sha256 } : null,
+          record, capture_provenance: capture ? {
+            snapshot_id: capture.snapshot_id, captured_at: capture.captured_at,
+            raw_sha256: capture.raw_sha256, provider_record_id: capture.provider_record_id,
+            archive_url: capture.archive_url, source_url: capture.source_url
+          } : null, selected_fact_provenance: fact || null };
+      });
+      return { company: { slug, name: company.name, category: company.category },
+        analyst_interpretation: { status: note.status,
+          ...Object.fromEntries(DECISION_NOTE_FIELDS.map(field => [field, note[field] || null])) },
+        citations,
+        unresolved: [
+          ...(!note.why.trim() ? ['reason to investigate has not been recorded'] : []),
+          ...(!note.next_action.trim() ? ['next evidence or action has not been recorded'] : []),
+          ...(!citations.length ? ['no source record has been cited by the analyst'] : []),
+          ...(citations.some(item => item.resolution !== 'retained_record_reference')
+            ? ['one or more saved citations cannot be resolved against the current catalog'] : [])
+        ] };
+    });
+    return { schema_version: '1.0', kind: 'analyst_decision_brief', created_at: createdAt,
+      investor_question: draft.question || null, investor_scope: draft.scope || null,
+      application_url: applicationUrl,
+      scope: { selected_company_count: companies.length, retained_pilot_count: index.companies.length,
+        selection: 'user-pinned companies from a purposive retained pilot; not a market census',
+        comparison_period_end_year: year, historical_replay: false,
+        catalog_build_id: index.build_id, catalog_provenance: index.provenance },
+      companies,
+      limits: [
+        'Investor question, dispositions, notes and citation roles are analyst-authored interpretations, not accepted source claims or recommendations.',
+        'Record year is not a point-in-time availability cutoff. Later filings, captures, reviews and selections can be present.',
+        'Citations identify retained records and partitions; this export does not include all source bodies or prove that a citation supports its assigned role.',
+        'Missing evidence does not prove absence. Inventory co-listing does not establish competition, adoption, traction or investability.',
+        'Investment returns, entry terms, access, dilution and exits are not evaluated.'
+      ] };
+  }
+
   const model = {
+    DECISION_NOTE_FIELDS, DECISION_STATUSES, CITATION_ROLES,
+    emptyDecisionDraft, decisionNote, parseDecisionDraft, decisionEvidence, exportDecisionBrief,
     legacyResearchSetTarget,
     MAX_PINNED,
     VALID_VIEWS,
@@ -569,6 +704,7 @@
     parseUrlState,
     toUrlParams,
     togglePinned,
+    candidateSearchScore,
     topologyCategory,
     claimSourceDate,
     filterTopologyClaims,

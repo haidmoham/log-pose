@@ -117,7 +117,7 @@ Page partitions contain complete normalized plain text by default, never raw HTM
 
 `topology_discovery.py` projects the discovery index and deterministic review queue into the retained `web/data/topology-discovery.json` evidence projection. `market_field_graph.py` builds the full exact source/year/category graph from that projection before serving. `api/market-field.js` queries its indexed adjacency and returns bounded summaries, filtered counts/group flows, pages, and selected neighborhoods. source rows load only for an inspector selection. deterministic build IDs bind the graph to retained input hashes; version mismatch responses prevent mixed-build reads. the pinned frame has 1,240 candidates and 47,288 graph pairs; the 100 worklist edges remain separate. no new identity or accepted relationship follows from an overlap. [the service contract](market-field-service.md) describes limits, caching, rebuilds, deployment, and degraded behavior.
 
-The canonical `/` route opens the research desk with the full retained 18,542-record index across five families, then loads full detail on selection. `?view=topology` defaults to the full 1,240-candidate source field; its source, year, research tag, exact source category, identity, candidate, and neighbor state persist in the URL. The complete overlap graph is constructed at build time and queried through the read service; the browser keeps layout and interaction only. Aggregate lines indicate co-listing volume between research groups; candidate focus reveals exact neighbors and source rows. `?view=topology&topologyLayer=reviewed` opens the four accepted company claims. The older `?view=explore` source audit loads one `web/discovery-inventory/{source}-{year}.json` partition on demand. The `?view=overview` selected company study retains its separate 2021–2024 page and SEC period series in `web/dashboard.json`; changing an inventory year does not change a financial period. Raw source rows, tagged occurrences, candidate keys, reviewed providers, selected companies, and accepted topology claims have different grains.
+The research desk at `/index.html?view=data` opens the full retained 18,543-record index across five families, then loads full detail on selection. `?view=topology` defaults to the full 1,240-candidate source field; its source, year, research tag, exact source category, identity, candidate, and neighbor state persist in the URL. The complete overlap graph is constructed at build time and queried through the read service; the browser keeps layout and interaction only. Aggregate lines indicate co-listing volume between research groups; candidate focus reveals exact neighbors and source rows. `?view=topology&topologyLayer=reviewed` opens the retained company claims. The older `?view=explore` source audit loads one `web/discovery-inventory/{source}-{year}.json` partition on demand. The `?view=overview` selected company study retains its separate 2021–2024 page and SEC period series in `web/dashboard.json`; changing an inventory year does not change a financial period. Raw source rows, tagged occurrences, candidate keys, reviewed providers, selected companies, and accepted topology claims have different grains.
 
 `docs/research/topology-review-queue.json` has one row per unordered inventory candidate pair, keyed by `id`, and an exact `input_sha256` of the discovery index. Its years are inventory observation years, not relationship dates. Each row retains the candidate IDs, shared pinned source categories and years, selection method, and explicit unreviewed status. The queue is a discovery worklist and contributes no accepted relationship edge. `docs/research/market-topology.json` is a reviewed seed import artifact. The dashboard and catalog now project current accepted database reviews through `topology_export.py`; the seed file no longer selects published claims. Each exported claim retains its database ID, actual review record, all supporting and contradicting passages, exact source hashes, time meanings, basis, and unknowns. Unreviewed endpoint identities fail publication. The seed importer restores the prior dated review with explicit day precision and an import rationale; it never appends another acceptance when any review already exists.
 
@@ -186,3 +186,31 @@ identities. Counts show displayed versus eligible totals. Rank is a navigation
 choice, not relationship strength or confidence. Search still covers every
 matching candidate. Focused evidence keeps its separate 60-record paging contract;
 the overview controls reappear when the user returns to the source field.
+
+
+## analyst decision briefs
+
+`decision-brief-view.js` composes a user-authored draft inside the existing pinned
+company comparison. The pure `research-model.js` owns draft parsing, scoped
+source-search ordering, citation selection and export composition. The atlas
+links into that workflow without loading its browser-storage UI.
+
+The draft grain is one analyst question with notes keyed by pilot-company slug.
+It uses versioned browser-local storage; the URL holds company selections, not
+private notes. Invalid drafts are never silently replaced. Storage failure keeps
+the current tab usable and asks the analyst to download before leaving.
+
+A citation is `(company slug, catalog build ID, retained record ID)` plus an
+analyst-authored role: supports, challenges or context. That role cannot accept
+or alter a source claim. The exported JSON separates interpretations from source
+records, preserves available page/SEC/relationship hashes and clocks, and binds
+lazy records to their partition SHA-256. A stale-build or other-company reference
+remains unresolved; the export never substitutes a current record under an old
+build ID. Unpinned notes stay in the browser draft and are not exported.
+
+The comparison year describes reporting periods, not historical availability.
+Exports therefore declare `historical_replay: false`, expose current catalog
+provenance, and state that returns and investability are unevaluated. Browser
+notes are not a durable evidence family or a canonical database write. See the
+[investor discovery audit](research/investor-discovery-audit.md) for the decision
+workflow, validation gaps and outcome-led research direction.

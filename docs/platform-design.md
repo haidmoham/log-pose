@@ -38,7 +38,7 @@ the research desk retains evidence, companies, and sources. comparison appears a
 
 graph surfaces and labels cannot select text during a drag. evidence text outside the map remains selectable. camera gestures clear transient hover without losing persistent selection, and keyboard focus remains visible.
 
-## verification
+## verification of the atlas-first baseline
 
 local checks pass: 59 atlas tests, 111 dashboard tests, 7 committed-asset deployment tests, and 125 Python tests. three atlas and 26 Python database-dependent checks are skipped locally; the required app-and-data-health CI supplies disposable PostgreSQL and audits skips. both immutable snapshot validators pass. browser smoke covers 14 checks, including exact legacy claim links and unavailable reviewed-build recovery. required CI and Vercel results are recorded on PR 22 for the final commit.
 
@@ -61,3 +61,13 @@ bash scripts/render_platform_demo.sh /path/to/captures /path/to/log-pose-atlas.m
 ```
 
 the cut is ten seconds at 30 fps, silent H.264/yuv420p, 1280 × 720. inspect frames 0, 99, 100, 199, 200, and 299. keep generated media outside git.
+
+
+## bounded investor workflow, 2026-09-30
+
+comparison is now reachable before pinning. it includes a local analyst-authored
+decision brief: question, scope, company reasoning, counterevidence, unknowns,
+next action and exact source citations. this closes a research handoff; it does
+not validate discovery ranking or historical investment performance. the atlas
+remains the evidence explorer. see the [deep audit](research/investor-discovery-audit.md)
+and [draft/export contract](architecture.md#analyst-decision-briefs).

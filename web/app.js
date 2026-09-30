@@ -28,6 +28,7 @@ let exploreView;
 let discoveryTopologyView;
 let temporalTopologyView;
 let dataView;
+let decisionBriefView;
 
 function categoryName(value) {
   return {
@@ -490,7 +491,7 @@ function renderCompare() {
   const picker = node('details', '', 'compare-picker-disclosure');
   picker.open = companies.length === 0;
   picker.append(node('summary', 'choose companies'), comparePicker());
-  root.append(picker);
+  root.append(decisionBriefView.render(companies), picker);
   if (!companies.length) {
     root.append(node('p', 'pin two or more companies to begin a comparison.', 'empty-state'));
     const choose = node('button', 'choose companies →', 'quiet-button');
@@ -640,6 +641,10 @@ if (legacyStudyTarget) {
         fieldCategory: 'all', fieldIdentity: 'all', fieldCandidate: null,
         fieldNeighbor: null }, { top: true })
     });
+    decisionBriefView = window.LogPoseDecisionBrief.create({ model, index: dataIndex,
+      pilot: data, state, openRecord: record => commitState({ view: 'data',
+        dataFamily: record.family, dataCompany: 'all', dataYear: 'all',
+        dataQuery: '', dataRecord: record.id }, { top: true, focus: '#data-inspector' }) });
     const fromUrl = routeState();
     Object.assign(state, {
       ...fromUrl,

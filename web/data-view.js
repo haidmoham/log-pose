@@ -188,10 +188,14 @@
       query.setAttribute('aria-label', 'Search retained record metadata');
       query.value = state.dataQuery;
       query.addEventListener('input', () => {
+        const start = query.selectionStart;
+        const end = query.selectionEnd;
         state.dataQuery = query.value.slice(0, 200);
         state.dataRecord = null;
         resultLimit = 18;
         commitState({}, { focus: '#data-query', replace: true });
+        const updated = root.querySelector('#data-query');
+        if (start !== null && end !== null) updated?.setSelectionRange(start, end);
       });
       form.append(query);
       const facets = node('div', '', 'data-facets');
@@ -549,9 +553,9 @@
       root.append(controls());
       const context = companyContext();
       if (context) root.append(context);
-      if ((state.dataFamily === 'all' || state.dataFamily === 'inventory')
-          && !inventoryRecords && !inventoryError) loadInventory();
-      if (inventoryError) {
+      const needsInventory = state.dataFamily === 'all' || state.dataFamily === 'inventory';
+      if (needsInventory && !inventoryRecords && !inventoryError) loadInventory();
+      if (needsInventory && inventoryError) {
         const retry = node('button', 'retry inventory index', 'quiet-button');
         retry.type = 'button';
         retry.addEventListener('click', () => {
@@ -594,9 +598,8 @@
         });
         resultList.append(more);
       }
-      const waitingForInventory = inventoryLoading
-        && (state.dataFamily === 'all' || state.dataFamily === 'inventory');
-      if (!hits.length && !waitingForInventory && !inventoryError) resultList.append(node('p',
+      const waitingForInventory = inventoryLoading && needsInventory;
+      if (!hits.length && !waitingForInventory && !(needsInventory && inventoryError)) resultList.append(node('p',
         'No retained records match these filters. Clear a filter or try a broader term.', 'empty-state'));
       if (state.dataRecord && !selected && !waitingForInventory) resultList.append(node('p',
         'the saved record is unavailable in this filtered collection. '
