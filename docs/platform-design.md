@@ -1,4 +1,34 @@
-# atlas-first research experience
+# investor discovery and the research experience
+
+## durable product intent
+
+the purpose of Log Pose is to help investors discover worthwhile companies and
+choose useful next research actions. a successful workflow makes the investor's
+question explicit, explains why a company deserves attention, shows the source
+evidence and strongest alternative explanation, and identifies what could change
+the decision. a larger graph or a cleaner evidence browser alone does not satisfy
+that purpose. discovery, comparison, and a source-linked diligence handoff are
+the product test; investment performance remains an unproven outcome.
+
+on 2026-09-30 the user proposed learning from companies that would have been good
+investments to reverse-engineer meaningful discovery signals, and explicitly
+asked to preserve this intention. treat that as a research direction: use
+historical successes to generate hypotheses, then test those hypotheses on an
+eligible point-in-time cohort, including comparable unsuccessful and unresolved
+companies, with untouched temporal/company holdouts and named simple baselines.
+do not tune the platform merely to surface remembered winners. future outcome
+labels, later source content, present-day identity judgments, and model knowledge
+can all leak the answer.
+
+the definition of a good investment remains to be agreed. follow-on funding,
+acquisition, operating growth, and investor cash returns are different targets.
+actual returns need dated entry terms, access, dilution, and proceeds; unavailable
+returns stay not estimable. keep this intent independent of a fixed metric,
+model, market, or implementation. the existing [experimental benchmark
+protocol](../experiments/ml/benchmark/PROTOCOL.md) governs evidence replay and its
+limits; it does not validate investment selection.
+
+## atlas-first implementation baseline
 
 the entry page begins with one labelled example: Datadog in the retained CNCF 2024 source, showing 24 of 145 exact neighbors. an explicit source, year, artifact, search, or mode keeps its requested scope instead of inheriting the example. warm paper, plum type, and restrained blue, mint, and coral accents keep the map central.
 
