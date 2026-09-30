@@ -5,7 +5,7 @@ const model = window.LogPoseResearchModel;
 const { node, append, link, title, metric, table } = window.LogPoseUI;
 const seriesChart = (...args) => window.LogPoseUI.seriesChart(model, ...args);
 const state = { view: 'topology', year: 2024, category: 'all', query: '', company: null,
-  dataFamily: 'all', dataQuery: '', dataCompany: 'all', dataYear: 'all', dataRecord: null,
+  dataFamily: 'all', dataQuery: '', dataCompany: 'all', dataYear: 'all', dataRecord: null, dataBuild: '',
   dataMarketDay: null, dataMarketMeasure: 'total_shares', dataMarketParticipant: null,
   searchYear: 'all', searchSource: 'all', searchType: 'all', searchUs: 'all',
   inventoryArtifact: 'cncf-2026', inventoryQuery: '',
@@ -117,7 +117,7 @@ function companyRelationships(slug) {
     open.type = 'button';
     open.dataset.claim = claim.id;
     open.addEventListener('click', () => commitState({ view: 'data', dataFamily: 'topology',
-      dataCompany: 'all', dataYear: 'all', dataQuery: '', dataRecord: claim.id },
+      dataCompany: 'all', dataYear: 'all', dataQuery: '', dataRecord: claim.id, dataBuild: dataIndex.build_id },
     { top: true, focus: '#data-inspector' }));
     section.append(append(node('article', '', 'funding-event'), open,
       node('p', `${claim.claim_status.replaceAll('_', ' ')} · ${claim.scope}`, 'muted')));
@@ -138,7 +138,7 @@ function companyDetail(slug) {
   const openRecords = node('button', 'inspect all retained records →', 'text-button');
   openRecords.type = 'button';
   openRecords.addEventListener('click', () => commitState({ view: 'data', dataFamily: 'all',
-    dataCompany: slug, dataYear: 'all', dataQuery: '', dataRecord: null },
+    dataCompany: slug, dataYear: 'all', dataQuery: '', dataRecord: null, dataBuild: dataIndex.build_id },
   { top: true, focus: '#data-query' }));
   section.append(openRecords);
   const locationReview = locationReviewFor(slug);
@@ -169,7 +169,7 @@ function companyDetail(slug) {
       inspectCapture.type = 'button';
       inspectCapture.addEventListener('click', () => commitState({ view: 'data',
         dataFamily: 'pages', dataCompany: slug, dataYear: 'all', dataQuery: '',
-        dataRecord: `page:${item.snapshot_id}` }, { top: true, focus: '#data-inspector' }));
+        dataRecord: `page:${item.snapshot_id}`, dataBuild: dataIndex.build_id }, { top: true, focus: '#data-inspector' }));
       card.append(inspectCapture);
       if (item.warc_truncated) card.append(node('span', 'WARC body truncated', 'pill warning'));
       const sourceFoot = node('div', '', 'source-foot');
@@ -190,7 +190,7 @@ function companyDetail(slug) {
       inspectFacts.type = 'button';
       inspectFacts.addEventListener('click', () => commitState({ view: 'data',
         dataFamily: 'sec', dataCompany: slug, dataYear: String(year),
-        dataQuery: '', dataRecord: null }, { top: true, focus: '#data-query' }));
+        dataQuery: '', dataRecord: null, dataBuild: dataIndex.build_id }, { top: true, focus: '#data-query' }));
       card.append(inspectFacts);
     }
     grid.append(card);
@@ -262,7 +262,7 @@ function openCompanyEvidence(company) {
 
 function openInventoryRecord(recordId) {
   commitState({ view: 'data', dataFamily: 'inventory', dataQuery: '',
-    dataCompany: 'all', dataYear: 'all', dataRecord: recordId },
+    dataCompany: 'all', dataYear: 'all', dataRecord: recordId, dataBuild: dataIndex.build_id },
   { top: true, focus: '#data-inspector' });
 }
 
@@ -644,7 +644,7 @@ if (legacyStudyTarget) {
     decisionBriefView = window.LogPoseDecisionBrief.create({ model, index: dataIndex,
       pilot: data, state, openRecord: record => commitState({ view: 'data',
         dataFamily: record.family, dataCompany: 'all', dataYear: 'all',
-        dataQuery: '', dataRecord: record.id }, { top: true, focus: '#data-inspector' }) });
+        dataQuery: '', dataRecord: record.id, dataBuild: dataIndex.build_id }, { top: true, focus: '#data-inspector' }) });
     const fromUrl = routeState();
     Object.assign(state, {
       ...fromUrl,

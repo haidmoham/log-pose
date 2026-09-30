@@ -86,6 +86,12 @@ async function verifyDecisionWorkflow(page, baseUrl, report) {
   assert.equal(brief.companies[0].citations[0].role, 'context');
   assert.match(brief.companies[0].citations[0].partition.sha256, /^[a-f0-9]{64}$/);
   assert.equal(brief.companies[1].citations.length, 0, 'uncited company must not acquire automatic evidence');
+  const citedUrl = new URL(brief.companies[0].citations[0].record_url);
+  assert.equal(citedUrl.searchParams.get('dataBuild'), brief.scope.catalog_build_id);
+  await page.goto(citedUrl.href, { waitUntil: 'domcontentloaded', timeout: 30000 });
+  await page.locator('#data-inspector .data-reading').first().waitFor({ state: 'visible' });
+  await page.goBack();
+  await page.locator('#decision-question').waitFor({ state: 'visible' });
   report.checks.push({ name: 'decision-brief-source-restore-download', passed: true,
     catalog_build_id: brief.scope.catalog_build_id });
 

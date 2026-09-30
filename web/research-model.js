@@ -386,6 +386,9 @@
     const dataCompany = requestedDataCompany === 'all' || pilotSlugs.has(requestedDataCompany)
       ? requestedDataCompany : 'all';
     const dataRecord = safeDataRecord(params.get('dataRecord') || '');
+    const requestedDataBuild = params.get('dataBuild') || '';
+    const dataBuild = !requestedDataBuild || /^[a-f0-9]{64}$/.test(requestedDataBuild)
+      ? requestedDataBuild : 'invalid';
     const dataMarketDay = /^20\d{2}-\d{2}-\d{2}$/.test(params.get('dataMarketDay') || '')
       ? params.get('dataMarketDay') : null;
     const allowedMarketMeasures = new Set(['total_shares', 'total_trade_count', 'total_notional']);
@@ -441,7 +444,7 @@
       searchUs: choice('us', allowedUs), category: choice('category', allowedCategory),
       dataFamily: choice('dataFamily', allowedDataFamily),
       dataQuery: (params.get('dataQuery') || '').slice(0, 200), dataCompany,
-      dataYear, dataRecord, dataMarketDay, dataMarketMeasure,
+      dataYear, dataRecord, dataBuild, dataMarketDay, dataMarketMeasure,
       dataMarketParticipant: safeDataRecord(params.get('dataMarketParticipant') || '') || null,
       topologyLayer, fieldQuery: (params.get('fieldQuery') || '').slice(0, 200),
       fieldSource, fieldYear, fieldTag, fieldCategory, fieldIdentity,
@@ -483,6 +486,7 @@
       if (state.dataYear && state.dataYear !== 'all') params.set('dataYear', state.dataYear);
       const dataRecord = safeDataRecord(state.dataRecord);
       if (dataRecord) params.set('dataRecord', dataRecord);
+      if (state.dataBuild) params.set('dataBuild', state.dataBuild);
       if (state.dataFamily === 'market' && dataRecord?.startsWith('market-file:')) {
         if (state.dataMarketDay) params.set('dataMarketDay', state.dataMarketDay);
         if (state.dataMarketMeasure && state.dataMarketMeasure !== 'total_shares')
@@ -570,6 +574,7 @@
   const DECISION_NOTE_FIELDS = ['why', 'counterevidence', 'unknowns', 'next_action'];
   const DECISION_STATUSES = ['undecided', 'investigate', 'watch', 'pass'];
   const CITATION_ROLES = ['supports', 'challenges', 'context'];
+  const MAX_DECISION_CITATIONS = 100;
 
   function emptyDecisionDraft() {
     return { schema_version: '1.0', question: '', scope: '', notes: [] };
@@ -597,7 +602,7 @@
       if (!note || !safeDataRecord(note.slug) || slugs.has(note.slug)
           || !DECISION_STATUSES.includes(note.status)
           || !DECISION_NOTE_FIELDS.every(field => isText(note[field]))
-          || !Array.isArray(note.citations) || note.citations.length > 100) {
+          || !Array.isArray(note.citations) || note.citations.length > MAX_DECISION_CITATIONS) {
         throw new Error('saved company notes are invalid');
       }
       slugs.add(note.slug);
@@ -650,7 +655,7 @@
         const fact = record.family === 'sec' ? pilot.financials.cells.find(item =>
           item.selected?.fact_id === record.fact_id)?.selected : null;
         const route = './index.html?' + new URLSearchParams({ view: 'data',
-          dataFamily: record.family, dataRecord: record.id });
+          dataFamily: record.family, dataRecord: record.id, dataBuild: index.build_id });
         return { ...citation, resolution: 'retained_record_reference',
           record_route: route, record_url: applicationUrl ? new URL(route, applicationUrl).href : null,
           partition: partition ? { path: record.partition_path, sha256: partition.sha256 } : null,
@@ -690,7 +695,7 @@
   }
 
   const model = {
-    DECISION_NOTE_FIELDS, DECISION_STATUSES, CITATION_ROLES,
+    DECISION_NOTE_FIELDS, DECISION_STATUSES, CITATION_ROLES, MAX_DECISION_CITATIONS,
     emptyDecisionDraft, decisionNote, parseDecisionDraft, decisionEvidence, exportDecisionBrief,
     legacyResearchSetTarget,
     MAX_PINNED,

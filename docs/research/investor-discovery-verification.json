@@ -9,7 +9,7 @@
   "checks": [
     {
       "command": "npm run test:dashboard",
-      "passed": 123,
+      "passed": 127,
       "failed": 0,
       "skipped": 0
     },

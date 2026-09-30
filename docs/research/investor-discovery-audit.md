@@ -33,7 +33,7 @@ The next coherent product loop is: state an investor question → find an eligib
 | interrupted source load | Source-browser promises could still construct a detached result after leaving the route. | Ignore responses for disconnected panels, while retaining the shared cache for a later visit. |
 | uncertainty / conflicting claims | The evidence layer has strong claim status, attribution and provenance, but these were not connected to a saved next action. | Let the analyst label explicit citations as supports/challenges/context. These roles remain analyst interpretation; they cannot rewrite a claim review. |
 | diligence handoff | Pinned companies had no investor question or portable decision artifact. Atlas exports intentionally covered inventory premises only. | Add a local browser draft and a JSON decision brief. It includes only pinned-company notes and explicitly cited records, with exact catalog/build/partition references and available source hashes. |
-| stale draft / missing evidence | Reusing a record ID across a new catalog could falsely present old reasoning as newly verified. | Bind each citation to the catalog build. Unavailable, other-company or different-build citations export as unresolved with no substituted record. Invalid saved drafts are not overwritten. |
+| stale draft / missing evidence | Reusing a record ID across a new catalog could falsely present old reasoning as newly verified. | Bind each citation to the catalog build. Unavailable, other-company or different-build citations export as unresolved with no substituted record. Invalid saved drafts are not overwritten. Export links carry the expected catalog build and refuse mismatches. |
 
 The matrix uses plausible investor tasks inferred from the user's stated purpose and public research. It is not a report of customer interviews, user acceptance, measured conversion, or investment outcomes.
 
@@ -45,7 +45,7 @@ The matrix uses plausible investor tasks inferred from the user's stated purpose
 4. Write why each company deserves attention, the strongest counterargument, unknowns, and what evidence or next action could change the decision. Select the next research disposition yourself.
 5. Assign explicit source records to supports/challenges/context. Export a JSON brief after writing a question.
 
-Notes save locally in the same browser, not to an account or shared database. They are not included in URLs. Clearing browser storage can remove the draft, so the UI offers download. If storage is blocked or corrupt, the interface discloses session-only behavior and retains the original stored value. Exported files contain the analyst’s notes and should be reviewed before sharing. The download action requests a file; it does not claim that the browser saved it successfully.
+Notes save locally in the same browser, not to an account or shared database. They are not included in URLs. Clearing browser storage can remove the draft, so the UI offers download. If another tab has changed the stored draft, saving pauses and both the stored version and the in-memory version remain recoverable through reload and export. Citation capacity is enforced before saving, and stale references can be removed. If storage is blocked or corrupt, the interface discloses session-only behavior and retains the original stored value. Exported files contain the analyst’s notes and should be reviewed before sharing. The download action requests a file; it does not claim that the browser saved it successfully.
 
 Unpinning a company excludes its notes from the export without deleting its draft. Citation metadata preserves existing source and review meanings. No company, source, edge, outcome label, benchmark score, accepted claim or database record is added by this workflow.
 
@@ -74,7 +74,7 @@ No cohort, success threshold, acquisition budget, paid data service, ranking alg
 Baseline: 111 dashboard checks passed even though the live company-to-evidence path crashed. The new route tests cover that previously missing journey. The current feature tree has the following local results; see the [machine-readable receipt](investor-discovery-verification.json).
 
 - The audit used the live public UI and repository sources. It did not modify production state.
-- Local JSDOM/model tests cover source-linked navigation, history, draft restoration, blocked/corrupt storage, citation roles, exact provenance, stale-build refusal, scoped sorting and empty/error states.
+- Local JSDOM/model tests cover source-linked navigation, history, draft restoration, blocked/corrupt storage, citation roles, exact provenance, stale-build refusal and locked links, cross-tab conflicts, citation-cap restoration, scoped sorting and empty/error states.
 - Local browser loopback access was blocked by the cloud browser (`ERR_BLOCKED_BY_CLIENT`). Visual review is pending on the feature-branch Vercel preview. No alternate browser path was used to bypass the restriction.
 - Database-dependent checks require a disposable PostgreSQL environment; absence is reported as skipped. Prepared-clone reconciliation remains unmeasured. A green software/data check does not verify publisher claims or investor usefulness.
 - Canonical evidence exports, source artifacts, SQL migrations and graph snapshots remain unchanged.
@@ -82,7 +82,7 @@ Baseline: 111 dashboard checks passed even though the live company-to-evidence p
 
 | check | local result | boundary |
 | --- | --- | --- |
-| `npm run test:dashboard` | 123 passed, 0 skipped | model, DOM routes and interrupted flows |
+| `npm run test:dashboard` | 127 passed, 0 skipped | model, DOM routes and interrupted flows |
 | `npm run test:atlas` | 60 passed, 3 skipped | PostgreSQL-only checks skipped without a disposable DB |
 | `node --test tests/deployment-health.test.mjs` | 7 passed | committed-asset and deployment-check unit tests, not a deployment receipt |
 | `.venv/bin/python -m pytest -q tests` | 125 passed, 26 skipped | DB/prepared-clone checks unavailable locally |

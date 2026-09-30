@@ -197,7 +197,7 @@ links into that workflow without loading its browser-storage UI.
 
 The draft grain is one analyst question with notes keyed by pilot-company slug.
 It uses versioned browser-local storage; the URL holds company selections, not
-private notes. Invalid drafts are never silently replaced. Storage failure keeps
+private notes. Invalid drafts are never silently replaced. A conflicting newer save in another tab pauses local saving and leaves both versions recoverable. Storage failure keeps
 the current tab usable and asks the analyst to download before leaving.
 
 A citation is `(company slug, catalog build ID, retained record ID)` plus an
@@ -206,7 +206,9 @@ or alter a source claim. The exported JSON separates interpretations from source
 records, preserves available page/SEC/relationship hashes and clocks, and binds
 lazy records to their partition SHA-256. A stale-build or other-company reference
 remains unresolved; the export never substitutes a current record under an old
-build ID. Unpinned notes stay in the browser draft and are not exported.
+build ID. Exported record links carry `dataBuild`; the desk refuses an unavailable
+or malformed build before displaying evidence. Citation limits match the draft
+parser, and unavailable citations can be removed explicitly. Unpinned notes stay in the browser draft and are not exported.
 
 The comparison year describes reporting periods, not historical availability.
 Exports therefore declare `historical_replay: false`, expose current catalog

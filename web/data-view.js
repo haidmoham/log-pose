@@ -536,6 +536,16 @@
 
     function render() {
       activeRequest++;
+      if (state.dataBuild && state.dataBuild !== index.build_id) {
+        const openCurrent = node('button', 'open the current collection without this saved record', 'quiet-button');
+        openCurrent.type = 'button';
+        openCurrent.addEventListener('click', () => commitState({ dataBuild: '', dataRecord: null },
+          { focus: '#data-query' }));
+        root.append(title('SAVED EVIDENCE REFERENCE', 'saved evidence build unavailable',
+          'this link names a catalog build that is not available here. no current record has been substituted.'),
+        node('p', `requested build: ${state.dataBuild} · current build: ${index.build_id}`, 'error'), openCurrent);
+        return;
+      }
       root.append(title('RESEARCH DESK / RETAINED EVIDENCE', 'research the record',
         'Search across source rows, dated page captures, reported facts, market activity, and reviewed relationships. Open a row to inspect it here.'));
       if (state.legacyReviewedScope) root.append(node('p',

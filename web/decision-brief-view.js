@@ -16,23 +16,45 @@
     let draft = model.emptyDecisionDraft();
     let storageMessage = 'notes stay in this browser. download a copy before sharing or clearing browser data.';
     let maySave = true;
+    let lastSavedText = null;
+    let visibleStatus = null;
     try {
       const saved = globalScope.localStorage.getItem(STORAGE_KEY);
       if (saved) draft = model.parseDecisionDraft(saved);
+      lastSavedText = saved;
     } catch {
       maySave = false;
       storageMessage = 'the saved draft could not be read. it has not been overwritten. '
         + 'new notes stay in this open tab; download them before leaving.';
     }
 
+    function pauseConflictingSave() {
+      maySave = false;
+      storageMessage = 'another tab changed the saved draft. your notes remain in this tab and have not overwritten it. '
+        + 'download your version before reloading to read the other draft.';
+      if (visibleStatus?.isConnected) visibleStatus.textContent = storageMessage;
+    }
+
+    globalScope.addEventListener('storage', event => {
+      if (event.key === STORAGE_KEY && event.newValue !== lastSavedText) pauseConflictingSave();
+    });
+
     function saveDraft(status) {
       if (maySave) {
         try {
-          globalScope.localStorage.setItem(STORAGE_KEY, JSON.stringify(draft));
+          if (globalScope.localStorage.getItem(STORAGE_KEY) !== lastSavedText) {
+            pauseConflictingSave();
+            status.textContent = storageMessage;
+            return;
+          }
+          const serialized = JSON.stringify(draft);
+          model.parseDecisionDraft(serialized);
+          globalScope.localStorage.setItem(STORAGE_KEY, serialized);
+          lastSavedText = serialized;
           storageMessage = 'saved in this browser only. notes are excluded from page URLs; download a copy to keep or share.';
         } catch {
           maySave = false;
-          storageMessage = 'browser storage is unavailable. notes remain in this open tab; download them before leaving.';
+          storageMessage = 'this draft could not be saved in browser storage. notes remain in this open tab; download them before leaving.';
         }
       }
       status.textContent = storageMessage;
@@ -90,8 +112,16 @@
           && item.catalog_build_id === index.build_id)?.role || '';
         role.addEventListener('change', () => {
           const current = editableNote(company.slug);
-          current.citations = current.citations.filter(item =>
+          const previous = current.citations.find(item =>
+            item.id === record.id && item.catalog_build_id === index.build_id);
+          const retained = current.citations.filter(item =>
             item.id !== record.id || item.catalog_build_id !== index.build_id);
+          if (role.value && retained.length >= model.MAX_DECISION_CITATIONS) {
+            role.value = previous?.role || '';
+            status.textContent = 'citation limit reached. remove a current or unavailable citation before adding another; your saved draft is unchanged.';
+            return;
+          }
+          current.citations = retained;
           if (role.value) current.citations.push({ id: record.id, role: role.value,
             catalog_build_id: index.build_id });
           saveDraft(status);
@@ -102,8 +132,30 @@
       }
       const unresolved = note.citations.filter(citation => citation.catalog_build_id !== index.build_id
         || !records.some(record => record.id === citation.id));
-      if (unresolved.length) details.append(node('p', `${unresolved.length} saved citation(s) belong to another `
-        + 'catalog build or are no longer available here. the export preserves their IDs as unresolved; it does not substitute current evidence.', 'caveat'));
+      if (unresolved.length) {
+        const stale = node('section', '', 'decision-stale-citations');
+        stale.append(node('p', 'these saved citations belong to another catalog build or are unavailable here. '
+          + 'the export preserves their IDs as unresolved. remove a reference only when you no longer need it.', 'caveat'));
+        const rows = node('div');
+        for (const citation of unresolved) {
+          const row = node('div', '', 'decision-stale-citation');
+          const remove = node('button', `remove unavailable citation ${citation.id}`, 'text-button');
+          remove.type = 'button';
+          remove.addEventListener('click', () => {
+            const current = editableNote(company.slug);
+            current.citations = current.citations.filter(item =>
+              item.id !== citation.id || item.catalog_build_id !== citation.catalog_build_id);
+            row.remove();
+            if (!rows.children.length) stale.remove();
+            saveDraft(status);
+            updateSummary();
+          });
+          row.append(node('p', `${citation.id} · ${citation.role} · build ${citation.catalog_build_id.slice(0, 12)}`, 'caption'), remove);
+          rows.append(row);
+        }
+        stale.append(rows);
+        details.append(stale);
+      }
       if (!offered.length) details.append(node('p', 'no retained record is available for this company.', 'muted'));
       return details;
     }
@@ -112,6 +164,7 @@
       const section = node('section', '', 'decision-brief');
       section.setAttribute('aria-labelledby', 'decision-brief-title');
       const status = node('p', storageMessage, 'decision-storage caption');
+      visibleStatus = status;
       status.setAttribute('role', 'status');
       const download = node('button', 'download decision brief · JSON', 'quiet-button');
       download.type = 'button';
@@ -128,6 +181,8 @@
           value => { draft.scope = value; saveDraft(status); }),
         node('p', 'scope is your research note; it does not filter or verify company eligibility. '
           + `this comparison uses ${companies.length} user-pinned companies from ${index.companies.length} selected pilot companies.`, 'caveat'));
+      section.append(node('p', 'company notes persist when you change the question, scope or reporting year. '
+        + 'review earlier reasoning and citations before applying them to a new decision.', 'caption'));
       const cards = node('div', '', 'decision-company-grid');
       for (const company of companies) {
         const note = model.decisionNote(draft, company.slug);
