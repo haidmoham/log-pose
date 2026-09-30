@@ -43,6 +43,18 @@ async function verifyMissingBuildRecovery(page, validUrl, layer, report) {
 }
 
 async function verifyDecisionWorkflow(page, baseUrl, report) {
+  await page.goto(baseUrl.href, { waitUntil: 'domcontentloaded', timeout: 30000 });
+  await page.waitForFunction(() => document.querySelector('#atlas-frame-label')?.dataset.frameId
+    && !document.querySelector('#atlas-regions').disabled);
+  await page.getByRole('link', { name: 'start a company decision brief →', exact: true }).click();
+  await page.locator('#decision-question').waitFor({ state: 'visible', timeout: 30000 });
+  assert.equal(new URL(page.url()).searchParams.get('view'), 'compare');
+  await page.goBack({ waitUntil: 'domcontentloaded' });
+  await page.getByRole('link', { name: 'start a company decision brief →', exact: true })
+    .waitFor({ state: 'visible' });
+  await page.goForward({ waitUntil: 'domcontentloaded' });
+  await page.locator('#decision-question').waitFor({ state: 'visible' });
+  report.checks.push({ name: 'atlas-decision-entry-history', passed: true });
   const companyUrl = new URL('/index.html?view=overview&company=datadog', baseUrl);
   await page.goto(companyUrl.href, { waitUntil: 'domcontentloaded', timeout: 30000 });
   await page.getByRole('button', { name: 'inspect dated evidence →', exact: true }).click();
@@ -100,6 +112,13 @@ async function verifyDecisionWorkflow(page, baseUrl, report) {
     document: document.documentElement.scrollWidth }));
   assert(widths.document <= widths.viewport, 'decision brief must not overflow the mobile page');
   report.checks.push({ name: 'decision-brief-mobile-width', passed: true, ...widths });
+  await page.goto(baseUrl.href, { waitUntil: 'domcontentloaded', timeout: 30000 });
+  const mobileEntry = page.getByRole('link', { name: 'start a company decision brief →', exact: true });
+  await mobileEntry.waitFor({ state: 'visible', timeout: 30000 });
+  await mobileEntry.click();
+  await page.locator('#decision-question').waitFor({ state: 'visible', timeout: 30000 });
+  assert.equal(await page.locator('#decision-question').inputValue(), question);
+  report.checks.push({ name: 'mobile-atlas-decision-entry', passed: true, viewport: 390 });
   await page.setViewportSize({ width: 1365, height: 900 });
 }
 

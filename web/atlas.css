@@ -75,7 +75,7 @@
 .atlas-shell .constellation-map { min-height: 330px; max-height: 61vh; }
 .atlas-shell [hidden] { display: none !important; }
 @media (max-width: 950px) { .atlas-workspace { grid-template-columns: minmax(0, 1fr) 265px; } .atlas-region-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .atlas-candidate-list { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-@media (max-width: 700px) { .atlas-shell main { padding: 14px 16px 32px; } .atlas-heading { display: block; margin-bottom: 10px; } .atlas-heading > p { display: none; } .atlas-controls label { flex: 1 1 100%; } .atlas-workspace { grid-template-columns: 1fr; } #atlas-inspector { max-height: none; } .atlas-candidate-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } .atlas-shell .constellation-map { min-height: 300px; } }
+@media (max-width: 700px) { .atlas-shell main { padding: 14px 16px 32px; } .atlas-heading { display: block; margin-bottom: 10px; } .atlas-heading > p { max-width: none; margin-top: 10px; } .atlas-controls label { flex: 1 1 100%; } .atlas-workspace { grid-template-columns: 1fr; } #atlas-inspector { max-height: none; } .atlas-candidate-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } .atlas-shell .constellation-map { min-height: 300px; } }
 @media (max-width: 700px) { .atlas-shell button, .atlas-shell input, .atlas-shell select, .atlas-shell summary { min-height: 44px; } .atlas-shell summary { display: flex; align-items: center; } }
 @media (max-width: 700px) { .atlas-shell .constellation-label { font-size: 29px; stroke-width: 7px; } }
 @media (max-width: 700px) {
