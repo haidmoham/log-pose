@@ -188,6 +188,84 @@ async function verifyDecisionWorkflow(page, baseUrl, report) {
   await page.setViewportSize({ width: 1365, height: 900 });
 }
 
+async function verifyPhoneCompanyFacts(page, baseUrl, report) {
+  const captureDirectory = path.dirname(process.env.BROWSER_REPORT_PATH || 'browser-smoke.json');
+  for (const width of [320, 375, 390]) {
+    await page.setViewportSize({ width, height: 844 });
+    await page.goto(baseUrl.href, { waitUntil: 'domcontentloaded', timeout: 30000 });
+    await page.locator('.atlas-company-stat strong').first().waitFor({ state: 'visible', timeout: 30000 });
+    assert.deepEqual(await page.locator('.atlas-company-stat strong').allTextContents(), ['$579.9m', '+36.7%', '−73.1%']);
+    await page.locator('.atlas-view-settings > summary').click();
+    const layout = await page.evaluate(() => {
+      const metrics = [...document.querySelectorAll('.atlas-company-stat')].map(element => {
+        const box = element.getBoundingClientRect();
+        const label = element.querySelector('span').getBoundingClientRect();
+        const value = element.querySelector('strong').getBoundingClientRect();
+        return { top: box.top, bottom: box.bottom, labelRight: label.right, valueLeft: value.left,
+          border: getComputedStyle(element).borderTopStyle, padding: parseFloat(getComputedStyle(element).paddingTop) };
+      });
+      const selectors = ['#atlas-controls', '#atlas-inspector', '.atlas-company-stats',
+        '.atlas-density', '.constellation-heading', '.constellation-mode-switch', '.constellation-camera-controls'];
+      const overflow = selectors.filter(selector => {
+        const element = document.querySelector(selector);
+        const box = element.getBoundingClientRect();
+        return box.left < -1 || box.right > window.innerWidth + 1 || element.scrollWidth > element.clientWidth + 1;
+      });
+      return { viewport: window.innerWidth, document: document.documentElement.scrollWidth, metrics, overflow,
+        sourceHeights: [...document.querySelectorAll('.atlas-stat-sources a')].map(element => element.getBoundingClientRect().height),
+        filedDisplay: getComputedStyle(document.querySelector('.atlas-company-filed')).display };
+    });
+    assert(layout.document <= width, `phone page overflow at ${width}px`);
+    assert.deepEqual(layout.overflow, [], `phone controls or facts overflow at ${width}px`);
+    assert.equal(layout.metrics.length, 3);
+    layout.metrics.forEach((metric, index) => {
+      assert(metric.labelRight <= metric.valueLeft - 10, 'metric label and figure need breathing room');
+      assert(metric.padding >= 20, 'metric rows need vertical breathing room');
+      if (index) {
+        assert(metric.top >= layout.metrics[index - 1].bottom - 1, 'phone metrics must stack');
+        assert.equal(metric.border, 'solid', 'metric rows need visible separators');
+      }
+    });
+    assert(layout.sourceHeights.every(height => height >= 44), 'source links need separate touch targets');
+    assert.equal(layout.filedDisplay, 'block');
+    await page.locator('#atlas-inspector').screenshot({ path: path.join(captureDirectory, `browser-phone-${width}-summary.png`) });
+    await page.screenshot({ path: path.join(captureDirectory, `browser-phone-${width}-page.png`), fullPage: true });
+    // Check actual narrow-screen node and edge activation, not a forced DOM click.
+    await page.locator('.constellation-map').scrollIntoViewIfNeeded();
+    const edgePoint = await page.locator('.constellation-edge-hit').evaluateAll(lines => {
+      for (const line of lines) {
+        const point = line.ownerSVGElement.createSVGPoint();
+        point.x = (line.x1.baseVal.value + line.x2.baseVal.value) / 2;
+        point.y = (line.y1.baseVal.value + line.y2.baseVal.value) / 2;
+        const screen = point.matrixTransform(line.getScreenCTM());
+        if (document.elementFromPoint(screen.x, screen.y) === line) return { x: screen.x, y: screen.y };
+      }
+      return null;
+    });
+    assert(edgePoint, 'phone graph needs an exposed edge target');
+    await page.mouse.click(edgePoint.x, edgePoint.y);
+    await page.locator('.atlas-premise').first().waitFor({ state: 'visible' });
+    await page.getByRole('button', { name: 'select GitLab company summary', exact: true })
+      .locator('.constellation-hit').click();
+    await page.locator('.atlas-company-stat strong').first().waitFor({ state: 'visible' });
+    const source = page.locator('.atlas-stat-sources a').first();
+    const record = new URL(await source.getAttribute('href'), page.url()).searchParams.get('dataRecord');
+    await source.click();
+    await page.locator('#data-inspector').waitFor({ state: 'visible' });
+    assert.equal(new URL(page.url()).searchParams.get('dataRecord'), record);
+    await page.goBack({ waitUntil: 'domcontentloaded' });
+    await page.locator('.atlas-company-stat strong').first().waitFor({ state: 'visible' });
+    await page.getByRole('link', { name: 'full stat sheet, sources & further reading →', exact: true }).click();
+    await page.locator('.company-snapshot').waitFor({ state: 'visible' });
+    const detailWidth = await page.evaluate(() => document.documentElement.scrollWidth);
+    assert(detailWidth <= width, `full company sheet overflows at ${width}px`);
+    if (width === 390) await page.locator('.company-snapshot').screenshot({
+      path: path.join(captureDirectory, 'browser-phone-390-detail.png') });
+    report.checks.push({ name: `phone-company-facts-${width}px`, passed: true, ...layout, detail_width: detailWidth });
+  }
+  await page.setViewportSize({ width: 1365, height: 900 });
+}
+
 async function main() {
   const report = { schema_version: '1.0', status: 'failed',
     base_url: process.env.BASE_URL, expected_sha: process.env.EXPECTED_SHA || null,
@@ -376,6 +454,7 @@ async function main() {
     await verifyAccessibleAtlas(browser, inventoryUrl, 'inventory', report);
     await verifyAccessibleAtlas(browser, reviewedUrl, 'contextual', report);
     await verifyDecisionWorkflow(page, baseUrl, report);
+    await verifyPhoneCompanyFacts(page, baseUrl, report);
     assert.deepEqual(report.page_errors, [], 'uncaught browser errors');
     report.status = 'passed';
   } catch (error) {

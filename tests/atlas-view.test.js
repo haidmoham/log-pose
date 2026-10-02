@@ -206,6 +206,8 @@ test('mapped company facts are visible on the graph and node selection stays the
   assert.match(document.querySelector('.atlas-company-summary').textContent, /periods ending 2024.*2023-02-01 to 2024-01-31.*independent of the graph/s);
   assert.equal(new URL(dom.window.location.href).searchParams.get('year'), '2023');
   assert.equal(document.querySelectorAll('.atlas-stat-sources a').length, 5);
+  assert.equal(document.querySelector('.atlas-company-filed').textContent.trim(), 'filed 2024-03-26');
+  assert.match(document.querySelector('.atlas-company-time-note').textContent, /independent of the graph/);
   for (const anchor of document.querySelectorAll('.atlas-stat-sources a')) {
     assert.equal(new URL(anchor.href).searchParams.get('dataCompany'), 'gitlab');
     assert(new URL(anchor.href).searchParams.get('dataBuild'));

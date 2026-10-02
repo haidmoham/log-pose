@@ -81,9 +81,14 @@
           metric.append(links); metrics.append(metric);
         }
         panel.append(metrics);
-        if (current.revenue !== null) panel.append(node('p',
-          `${current.periodStart} to ${current.periodEnd} · filed ${current.filed}`, 'atlas-company-period'));
-        panel.append(node('p', `filings through ${cutoff}. historical company periods; independent of the graph’s inventory year.`, 'atlas-company-period'),
+        if (current.revenue !== null) {
+          const period = node('p', `${current.periodStart} to ${current.periodEnd}`, 'atlas-company-period');
+          period.append(node('span', ` filed ${current.filed}`, 'atlas-company-filed'));
+          panel.append(period);
+        }
+        const provenance = node('p', `filings through ${cutoff}.`, 'atlas-company-period');
+        provenance.append(node('span', ' historical company periods; independent of the graph’s inventory year.', 'atlas-company-time-note'));
+        panel.append(provenance,
           node('p', 'MRR / ARR / retention / cash flow: Unknown in this collection.', 'atlas-company-gaps'));
         const deeper = node('a', 'full stat sheet, sources & further reading →', 'atlas-company-detail-link');
         deeper.href = root.LogPoseAtlasModel.companyRoute(candidate, year);
