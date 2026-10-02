@@ -279,3 +279,197 @@ test('list and density rerenders leave connection inspection in a loadable compa
   assert.equal(new URL(dom.window.location.href).searchParams.has('neighbor'), false);
   assert.equal(document.querySelector('.atlas-company-loading'), null);
 });
+
+const gitlabCandidate = 'db7244f000eedc7a99c9';
+function ready(dom, predicate = () => true) {
+  const document = dom.window.document;
+  return waitFor(() => document.getElementById('atlas-controls').getAttribute('aria-busy') === 'false'
+    && !document.getElementById('atlas-status').textContent && predicate());
+}
+function clickNode(dom, id) {
+  dom.window.document.querySelector(`.constellation-node[data-candidate="${id}"]`)
+    .dispatchEvent(new dom.window.MouseEvent('click', { bubbles: true }));
+}
+function clickEdge(dom, id) {
+  dom.window.document.querySelector(`.constellation-edge-hit[data-neighbor="${id}"]`)
+    .dispatchEvent(new dom.window.MouseEvent('click', { bubbles: true }));
+}
+
+test('company and edge navigation push distinct entries and Back/Forward restore their exact inspector', async t => {
+  const dom = page(t);
+  const document = dom.window.document;
+  await ready(dom, () => document.querySelector('.atlas-company-stat'));
+  const original = dom.window.location.search;
+  const originalLength = dom.window.history.length;
+  const neighbor = document.querySelector('.constellation-edge-hit').dataset.neighbor;
+  clickEdge(dom, neighbor);
+  await ready(dom, () => document.querySelector('.atlas-premise'));
+  const edgeUrl = dom.window.location.search;
+  assert.equal(dom.window.history.length, originalLength + 1);
+  clickNode(dom, gitlabCandidate);
+  await ready(dom, () => !document.querySelector('.atlas-premise'));
+  assert.equal(dom.window.history.length, originalLength + 2);
+  assert.equal(dom.window.location.search, original);
+  clickNode(dom, gitlabCandidate);
+  await ready(dom);
+  assert.equal(dom.window.history.length, originalLength + 2, 'reselecting the same company must not add duplicate history');
+  dom.window.history.back();
+  await ready(dom, () => dom.window.location.search === edgeUrl && document.querySelector('.atlas-premise'));
+  dom.window.history.back();
+  await ready(dom, () => dom.window.location.search === original && !document.querySelector('.atlas-premise'));
+  dom.window.history.forward();
+  await ready(dom, () => dom.window.location.search === edgeUrl && document.querySelector('.atlas-premise'));
+  dom.window.history.forward();
+  await ready(dom, () => dom.window.location.search === original && !document.querySelector('.atlas-premise'));
+});
+
+test('search and year are navigable while density replaces only the current entry', async t => {
+  const dom = page(t);
+  const document = dom.window.document;
+  await ready(dom);
+  const length = dom.window.history.length;
+  const topK = document.getElementById('atlas-top-k');
+  topK.value = '7'; topK.dispatchEvent(new dom.window.Event('change'));
+  await ready(dom, () => new URLSearchParams(dom.window.location.search).get('top_k') === '7');
+  assert.equal(dom.window.history.length, length);
+  document.getElementById('atlas-query').value = 'GitHub';
+  document.getElementById('atlas-controls').dispatchEvent(new dom.window.Event('submit', { cancelable: true }));
+  await ready(dom, () => new URLSearchParams(dom.window.location.search).get('mode') === 'search');
+  const searchUrl = dom.window.location.search;
+  assert.equal(new URLSearchParams(searchUrl).get('query'), 'GitHub');
+  assert.equal(dom.window.history.length, length + 1);
+  document.getElementById('atlas-previous').click();
+  await ready(dom, () => new URLSearchParams(dom.window.location.search).get('year') === '2023');
+  assert.equal(new URLSearchParams(dom.window.location.search).get('query'), 'GitHub');
+  assert.equal(new URLSearchParams(dom.window.location.search).get('mode'), 'search');
+  dom.window.history.back();
+  await ready(dom, () => dom.window.location.search === searchUrl);
+  assert.equal(document.getElementById('atlas-query').value, 'GitHub');
+  const selected = document.querySelector('.atlas-candidate-list button');
+  const selectedId = selected.dataset.candidate;
+  selected.click();
+  await ready(dom, () => new URLSearchParams(dom.window.location.search).get('candidate') === selectedId);
+  dom.window.history.back();
+  await ready(dom, () => dom.window.location.search === searchUrl && document.querySelector('.atlas-candidate-list button'));
+});
+
+test('long legacy edge links and compact reloads resolve the same pinned evidence', async t => {
+  const manifest = handleAtlas(new URLSearchParams('mode=discover&limit=100')).body;
+  const artifact = manifest.artifacts.find(item => item.source === 'cncf' && item.inventory_year === 2024);
+  const fields = { mode: 'focus', build_id: manifest.build_id, source: 'cncf', year: '2024',
+    temporal_mode: 'snapshot', artifact: artifact.artifact_id, candidate: gitlabCandidate, top_k: '5', limit: '5' };
+  const frame = handleAtlas(new URLSearchParams(fields)).body;
+  const neighbor = frame.edges[0].candidate_id;
+  const dom = page(t, `?${new URLSearchParams({ ...fields, neighbor })}`);
+  await ready(dom, () => dom.window.document.querySelector('.atlas-premise'));
+  const compact = new URLSearchParams(dom.window.location.search);
+  assert.equal(compact.get('build_id'), manifest.build_id);
+  assert.equal(compact.get('neighbor'), neighbor);
+  assert.equal(compact.get('top_k'), '5');
+  for (const key of ['mode', 'source', 'temporal_mode', 'artifact', 'limit']) assert.equal(compact.has(key), false);
+  const reloaded = page(t, dom.window.location.search);
+  await ready(reloaded, () => reloaded.window.document.querySelector('.atlas-premise'));
+  assert.equal(reloaded.window.document.getElementById('atlas-frame-label').dataset.frameId, frame.frame_id);
+  assert.equal(reloaded.window.document.getElementById('atlas-inspector').textContent,
+    dom.window.document.getElementById('atlas-inspector').textContent);
+});
+
+test('comparison links restore the same two exact revisions after compact reload', async t => {
+  const dom = page(t);
+  const document = dom.window.document;
+  await ready(dom, () => document.querySelector('.atlas-company-stat'));
+  [...document.querySelectorAll('#atlas-inspector button')]
+    .find(button => button.textContent === 'compare with previous retained year').click();
+  await ready(dom, () => new URLSearchParams(dom.window.location.search).get('mode') === 'compare');
+  const frame = document.getElementById('atlas-frame-label').dataset.frameId;
+  const route = dom.window.location.search;
+  assert.equal(new URLSearchParams(route).get('compare_year'), '2023');
+  assert.equal(new URLSearchParams(route).has('compare_artifact'), false);
+  const reloaded = page(t, route);
+  await ready(reloaded, () => reloaded.window.document.querySelector('#atlas-scene h3')?.textContent === 'compare 2023 → 2024');
+  assert.equal(reloaded.window.document.getElementById('atlas-frame-label').dataset.frameId, frame);
+  assert.equal(reloaded.window.document.getElementById('atlas-scene').textContent, document.getElementById('atlas-scene').textContent);
+});
+
+for (const pendingKind of ['focus', 'explain']) test(`Back cancels a pending ${pendingKind} request without rewriting the returned history entry`, async t => {
+  let delayedId;
+  let release;
+  let requested = false;
+  const pending = new Promise(resolve => { release = resolve; });
+  const dom = page(t, '', async params => {
+    if (params.get('mode') === pendingKind && params.get(pendingKind === 'focus' ? 'candidate' : 'neighbor') === delayedId) {
+      requested = true; await pending;
+    }
+  });
+  const document = dom.window.document;
+  await ready(dom, () => document.querySelector('.atlas-company-stat'));
+  const original = dom.window.location.search;
+  const next = document.querySelector('.constellation-edge-hit').dataset.neighbor;
+  clickNode(dom, next);
+  await ready(dom, () => new URLSearchParams(dom.window.location.search).get('candidate') === next);
+  const second = dom.window.location.search;
+  delayedId = [...document.querySelectorAll('.constellation-edge-hit')]
+    .map(edge => edge.dataset.neighbor).find(id => id !== gitlabCandidate);
+  assert(delayedId);
+  if (pendingKind === 'focus') clickNode(dom, delayedId);
+  else clickEdge(dom, delayedId);
+  await waitFor(() => requested);
+  dom.window.history.back();
+  await ready(dom, () => dom.window.location.search === original && document.querySelector('#atlas-inspector h3')?.textContent === 'GitLab');
+  release();
+  await new Promise(resolve => setTimeout(resolve, 30));
+  assert.equal(dom.window.location.search, original);
+  assert.equal(document.querySelector('#atlas-inspector h3').textContent, 'GitLab');
+  dom.window.history.forward();
+  await ready(dom, () => dom.window.location.search === second && !document.querySelector('.atlas-premise'));
+});
+
+test('revision changes leave revision-bound categories and return to the new year’s categories', async t => {
+  const dom = page(t, '?source=cncf&year=2024');
+  const document = dom.window.document;
+  await ready(dom, () => document.querySelector('.atlas-region'));
+  document.querySelector('.atlas-region').click();
+  await ready(dom, () => new URLSearchParams(dom.window.location.search).has('placement'));
+  const categoryUrl = dom.window.location.search;
+  document.getElementById('atlas-previous').click();
+  await ready(dom, () => new URLSearchParams(dom.window.location.search).get('year') === '2023'
+    && document.querySelector('.atlas-region'));
+  assert.equal(new URLSearchParams(dom.window.location.search).has('placement'), false);
+  dom.window.history.back();
+  await ready(dom, () => dom.window.location.search === categoryUrl && document.querySelector('.atlas-candidate-list'));
+});
+
+test('presentation toggle cannot rewrite a history destination while a different build is restoring', async t => {
+  const current = handleAtlas(new URLSearchParams('mode=discover')).body.build_id;
+  const older = fs.readdirSync(path.join(root, 'api/data/atlas'))
+    .find(name => /^[a-f0-9]{64}\.json$/.test(name) && name !== `${current}.json`).replace('.json', '');
+  let release;
+  let requested = false;
+  let hold = true;
+  const pending = new Promise(resolve => { release = resolve; });
+  const dom = page(t, '', async params => {
+    if (hold && params.get('mode') === 'discover' && params.get('build_id') === older) {
+      requested = true; await pending;
+    }
+  });
+  const document = dom.window.document;
+  await ready(dom, () => document.querySelector('.atlas-company-stat'));
+  clickEdge(dom, document.querySelector('.constellation-edge-hit').dataset.neighbor);
+  await ready(dom, () => document.querySelector('.atlas-premise'));
+  const edgeUrl = dom.window.location.search;
+  const olderUrl = `?build_id=${older}&year=2024&candidate=${gitlabCandidate}`;
+  dom.window.history.pushState(null, '', olderUrl);
+  dom.window.dispatchEvent(new dom.window.PopStateEvent('popstate'));
+  await waitFor(() => requested);
+  const toggle = document.getElementById('atlas-list-toggle');
+  assert.equal(toggle.disabled, true);
+  toggle.click();
+  assert.equal(dom.window.location.search, olderUrl);
+  dom.window.history.back();
+  await ready(dom, () => dom.window.location.search === edgeUrl && document.querySelector('.atlas-premise'));
+  hold = false; release();
+  await new Promise(resolve => setTimeout(resolve, 30));
+  dom.window.history.forward();
+  await ready(dom, () => new URLSearchParams(dom.window.location.search).get('build_id') === older);
+  assert.equal(new URLSearchParams(dom.window.location.search).get('candidate'), gitlabCandidate);
+});

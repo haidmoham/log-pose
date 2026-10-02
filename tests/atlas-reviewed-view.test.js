@@ -166,3 +166,26 @@ test('an unmapped reviewed-claims identity is a coverage gap rather than a retry
   assert.match(body.textContent, /missing claims do not establish that no relationship exists/);
   assert.equal(body.querySelector('button'), null);
 });
+
+test('a cancelled legacy conversion cannot rewrite a newer browser-history destination', async t => {
+  let release;
+  let requested = false;
+  const pending = new Promise(resolve => { release = resolve; });
+  const { dom } = page(t, 'layer=reviewed&entity=datadog', async params => {
+    if (params.get('layer') === 'reviewed' && params.get('mode') === 'focus' && params.get('entity') === 'datadog') {
+      requested = true; await pending;
+    }
+  });
+  await waitFor(() => requested);
+  const next = '?candidate=db7244f000eedc7a99c9&year=2024';
+  dom.window.history.pushState(null, '', next);
+  dom.window.dispatchEvent(new dom.window.PopStateEvent('popstate'));
+  await waitFor(() => dom.window.document.querySelector('.atlas-company-stat')
+    && dom.window.document.getElementById('atlas-controls').getAttribute('aria-busy') === 'false');
+  const restored = dom.window.location.href;
+  release();
+  await new Promise(resolve => setTimeout(resolve, 30));
+  assert.equal(dom.window.location.href, restored);
+  assert.equal(dom.window.document.querySelector('#atlas-inspector h3').textContent, 'GitLab');
+  assert.equal(new URLSearchParams(dom.window.location.search).has('reviewed_neighbor'), false);
+});
