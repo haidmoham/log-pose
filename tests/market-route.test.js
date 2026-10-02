@@ -1452,6 +1452,7 @@ test('stat-sheet derived metrics link every retained input and bottom reading ke
     }
     cards[1].querySelectorAll('a')[1].click();
     assert.equal(new URL(dom.window.location.href).searchParams.get('dataRecord'), `sec:${fact('revenue', 2023).fact_id}`);
+    await waitFor(() => document.querySelector('#data-inspector')?.textContent.includes(fact('revenue', 2023).value));
     assert.deepEqual(dom.window.__routeErrors, []);
   } finally { dom.window.close(); }
 });
