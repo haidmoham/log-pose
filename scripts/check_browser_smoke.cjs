@@ -215,6 +215,9 @@ async function verifyPhoneCompanyFacts(page, baseUrl, report) {
         sourceHeights: [...document.querySelectorAll('.atlas-stat-sources a')].map(element => element.getBoundingClientRect().height),
         filedDisplay: getComputedStyle(document.querySelector('.atlas-company-filed')).display };
     });
+    (report.phone_layouts ||= []).push(layout);
+    await page.locator('#atlas-inspector').screenshot({ path: path.join(captureDirectory, `browser-phone-${width}-summary.png`) });
+    await page.screenshot({ path: path.join(captureDirectory, `browser-phone-${width}-page.png`), fullPage: true });
     assert(layout.document <= width, `phone page overflow at ${width}px`);
     assert.deepEqual(layout.overflow, [], `phone controls or facts overflow at ${width}px`);
     assert.equal(layout.metrics.length, 3);
@@ -228,8 +231,6 @@ async function verifyPhoneCompanyFacts(page, baseUrl, report) {
     });
     assert(layout.sourceHeights.every(height => height >= 44), 'source links need separate touch targets');
     assert.equal(layout.filedDisplay, 'block');
-    await page.locator('#atlas-inspector').screenshot({ path: path.join(captureDirectory, `browser-phone-${width}-summary.png`) });
-    await page.screenshot({ path: path.join(captureDirectory, `browser-phone-${width}-page.png`), fullPage: true });
     // Check actual narrow-screen node and edge activation, not a forced DOM click.
     await page.locator('.constellation-map').scrollIntoViewIfNeeded();
     const edgePoint = await page.locator('.constellation-edge-hit').evaluateAll(lines => {
@@ -417,7 +418,11 @@ async function main() {
     const missingReviewed = new URL(reviewedUrl);
     missingReviewed.searchParams.set('reviewed_build_id', '0'.repeat(64));
     await page.goto(missingReviewed.href, { waitUntil: 'domcontentloaded', timeout: 30000 });
-    await page.locator('.atlas-relationship-body button').waitFor({ state: 'visible', timeout: 30000 });
+    // Initial focus and URL-selected edge restore each create a relationship panel.
+    await page.waitForFunction(() => document.querySelector('#atlas-controls')?.getAttribute('aria-busy') === 'false'
+      && document.querySelector('.atlas-relationship-body button')
+      && /not hosted/.test(document.querySelector('.atlas-relationship-body')?.textContent),
+    null, { timeout: 30000 });
     assert.match(await page.locator('.atlas-relationship-body').innerText(), /not hosted/);
     assert.equal(await page.locator('.atlas-claim').count(), 0, 'unavailable reviewed build must not show a claim');
     assert(await page.locator('.constellation-node').count() > 0, 'independent inventory frame should remain usable');
