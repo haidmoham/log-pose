@@ -12,7 +12,9 @@
       });
       const result = await response.json();
       if (!response.ok) {
-        throw new Error(result.message || result.error || fallbackMessage(response.status));
+        const error = new Error(result.message || result.error || fallbackMessage(response.status));
+        error.code = result.error;
+        throw error;
       }
       if (fields.build_id && result.build_id !== fields.build_id) {
         throw new Error(buildMismatchMessage);

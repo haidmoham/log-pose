@@ -6,7 +6,7 @@ Legacy `/?view=...` links still open the research desk: the local Node and
 Python servers dispatch them directly, and the static atlas document redirects
 them to `/index.html` with the query and fragment intact.
 
-- `npm run dashboard` serves the atlas at `/` and the read-only research desk at `/index.html` from saved JSON exports and bounded read handlers. The atlas initially focuses a pinned Datadog/CNCF 2024 example with a bounded neighbor page; explicit source or year links keep their own frame. Source regions, search, exact co-listing premises, and contextual reviewed claims share one atlas inspector. `web/index.html` loads `research-model.js` for validation, deterministic layouts and URL state; `console-ui.js` for DOM and chart primitives; `data-view.js` for full cross-source search and retained-record inspection; `explore-view.js` for source audits; `discovery-topology-view.js` for legacy full-field links; `temporal-graph.js` and `temporal-topology-view.js` for legacy temporal links; and `app.js` for state and route composition. It does not require Postgres.
+- `npm run dashboard` serves the atlas at `/` and the read-only research desk at `/index.html` from saved JSON exports and bounded read handlers. The atlas initially focuses a pinned GitLab/CNCF 2024 example with a bounded neighbor page; explicit source or year links keep their own frame. Source regions, search, exact co-listing premises, and contextual reviewed claims share one atlas inspector. `web/index.html` loads `research-model.js` for validation, deterministic layouts and URL state; `console-ui.js` for DOM and chart primitives; `data-view.js` for full cross-source search and retained-record inspection; `explore-view.js` for source audits; `discovery-topology-view.js` for legacy full-field links; `temporal-graph.js` and `temporal-topology-view.js` for legacy temporal links; and `app.js` for state and route composition. It does not require Postgres.
 - `npm run dev` serves the same atlas, research desk, scripts, styles, and lazy data partitions. It does not migrate the database or fetch new evidence when opening the interface. An explicit `DATABASE_URL` enables the retained read-only `/api/companies` and `/api/overview` endpoints; the desk itself does not require Postgres. Static paths are confined to `web/`. `/api/market-field` uses the same precomputed graph query module as the production Node function, without a database connection.
 - The temporal route reads a versioned pinned artifact timeline and requests one bounded source/year frame at a time. `api/market-field.js` owns frame eligibility, accumulation, exact overlap sets, and deltas. The browser owns selection, evidence inspection, and rendering. The precomputed candidate layout provides stable display addresses; it is not an evidence measure. The optional 3d view derives stable display depth from candidate IDs in `research-model.js` and projects it through the temporal renderer; depth is presentation only and does not change the retained graph.
 - `temporal-graph.js` owns the accessible SVG, fixed hit targets, and bounded population entrance. New observed nodes spring around their fixed anchors; selecting an edge does not replay the population. The GPU attaches after the entrance settles and caches geometry between interaction updates. Its animation loop changes light only and stops when hidden, offscreen, disconnected, or switched off. Reduced motion sets the initial motion control to off; an explicit user choice can enable it. SVG remains the fallback. See [the visual pass and capture procedure](graph-visuals.md).
@@ -216,3 +216,41 @@ provenance, and state that returns and investability are unevaluated. Browser
 notes are not a durable evidence family or a canonical database write. See the
 [investor discovery audit](research/investor-discovery-audit.md) for the decision
 workflow, validation gaps and outcome-led research direction.
+
+
+## progressive company disclosure
+
+The atlas's discrete line patterns group `supporting_placements` as 1, 2–3 and
+4+ exact retained source/category/revision placements. These are presentation
+bins for co-listing counts, not relationship strength, confidence, independent
+corroboration, market share or an investment ranking. The exact count remains in
+the accessible list and node description. SVG retains the pattern even when GPU
+node rendering is active. Reviewed predicates and statuses remain separately
+explained in the existing relationship inspector with their independent clocks.
+
+Selecting a node with an explicit reviewed `pilot_slug` opens the existing company
+record at `/index.html?view=explore`; other nodes continue to candidate context.
+No fuzzy name match joins economic data to a product or project. The company
+record now begins with a business/economic snapshot, followed by a collapsed
+funding/history/evidence fact sheet and the existing user-authored decision-brief
+workflow. Pilot product descriptions are labelled research context; buyer and
+revenue-model gaps stay explicit. The period selector selects only the retained
+2021–2024 reporting periods, independently of the graph's inventory clock.
+
+Annual revenue stays SEC-reported annual revenue with its exact period, filing
+date, selection cutoff (2025-04-01), and build-bound record link. MRR and ARR are
+unknown because no such metrics are retained. Derived growth and margin are
+labelled with their calculation basis. Funding statements stay attributed and
+dated; the four selected announcements are not a financing history. A separate,
+collapsed fictional RuneScape example teaches run rates and one-off sales. It is
+presentation-only and never enters the catalog, graph, saved evidence or notes.
+
+Source data, immutable snapshots, identifiers, hashes, review status and SQL are
+unchanged. The new route and model tests cover identity gating, count thresholds,
+public/private missingness, exact fact navigation and the fictional/real boundary.
+
+Graph hover and keyboard focus describe the co-listing relationship in plain language. A debounced, cancellable request reads up to three exact premises from the existing explain endpoint, pinned to the displayed build and selection; any remaining placements stay explicitly paged. The count is source/category/revision support, not evidence of a partnership, customer tie or competition. The default GitLab example uses its existing reviewed pilot identity and the unchanged historical annual financial series.
+
+The company stat sheet is scan-first: compact product context, reported annual revenue, derived annual revenue growth, and explicitly labelled net-income margin share a stable order. This order answers a stated first-pass research question rather than assigning a hidden score. Recurring revenue, retention and cash-flow gaps remain compact explicit unknowns. Each headline metric links to its exact retained input(s); bottom Sources & further reading links preserve capture/filing dates and distinguish archived pages from original URLs whose current content may differ. The existing ten-issuer comparison remains available; no economics is inferred for unmapped graph candidates.
+
+Selected atlas nodes now stay on the graph. `atlas-company.js` lazily loads the existing pilot/catalog once, requires an explicit reviewed pilot slug, checks every displayed input against its catalog record, and renders the shared `companyStatsFor` model in the inspector. Latest retained company periods are explicitly independent of inventory time; the deeper sheet remains a separate source-linked navigation. Stale/detached summary results cannot repaint a changed inspector. Missing reviewed relationship identity is displayed as a coverage gap, with retries reserved for loading failures.

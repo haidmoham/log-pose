@@ -125,6 +125,100 @@ function companyRelationships(slug) {
   return section;
 }
 
+function retainedSourceLink(label, company, family, recordId) {
+  const anchor = node('a', label, 'text-button');
+  const fields = { view: 'data', dataFamily: family, dataCompany: company.slug,
+    dataYear: 'all', dataQuery: '', dataRecord: recordId, dataBuild: dataIndex.build_id };
+  anchor.href = `./index.html?${new URLSearchParams({ ...fields, year: String(state.year) })}`;
+  anchor.addEventListener('click', event => {
+    if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    event.preventDefault();
+    commitState(fields, { top: true, focus: '#data-inspector' });
+  });
+  return anchor;
+}
+
+function companySnapshot(company) {
+  const snapshot = node('section', '', 'company-snapshot');
+  const page = evidence(company.slug, state.year);
+  const { current, revenue, priorRevenue, netIncome } = model.companyStatsFor(data, company.slug, state.year);
+  snapshot.append(append(node('div', '', 'section-controls'),
+    append(node('div'), node('p', '02 / company stat sheet', 'eyebrow'), node('h4', 'a quick first pass')), yearControl()),
+    node('p', company.purpose.replace('Company homepage candidate; ', ''), 'company-product'),
+    node('p', 'product: pilot research context · buyer and revenue model: not separately reviewed', 'caption'),
+    node('p', 'first-pass question: what does it sell, how large is it, how fast is it growing, and is it profitable? this ordering is a research lens, not a company score.', 'scan-lens'));
+
+  const metrics = node('div', '', 'company-economic-grid');
+  const metricRows = [
+    { label: 'annual revenue', value: current.revenue === null ? 'Unknown' : money(current.revenue),
+      basis: current.revenue === null ? 'no selected SEC revenue fact' : 'reported · USD',
+      sources: revenue ? [['inspect the exact reported revenue →', revenue]] : [] },
+    { label: 'annual revenue growth', value: current.growth === null ? 'Unknown' : percent(current.growth),
+      basis: current.growth === null ? 'not derivable from retained adjacent annual periods'
+        : 'derived · (current annual revenue ÷ prior annual revenue − 1) × 100',
+      sources: current.growth === null ? [] : [['current revenue →', revenue], ['prior revenue →', priorRevenue]] },
+    { label: 'net-income margin', value: current.margin === null ? 'Unknown' : percent(current.margin),
+      basis: current.margin === null ? 'not derivable from aligned retained revenue and net-income facts'
+        : 'derived · same-period net income ÷ revenue × 100',
+      sources: current.margin === null ? [] : [['net income →', netIncome], ['revenue →', revenue]] }
+  ];
+  for (const item of metricRows) {
+    const card = node('article', '', 'company-economic-card');
+    card.append(node('p', item.label, 'eyebrow'), node('strong', item.value), node('p', item.basis, 'caption'));
+    const sources = node('div', '', 'metric-sources');
+    item.sources.forEach(([label, fact]) => sources.append(retainedSourceLink(label, company, 'sec', `sec:${fact.fact_id}`)));
+    card.append(sources); metrics.append(card);
+  }
+  if (metricRows.every(item => item.value === 'Unknown')) metrics.classList.add('is-unavailable');
+  snapshot.append(metrics);
+  if (current.revenue !== null) snapshot.append(node('p',
+    `reported period ${current.periodStart} to ${current.periodEnd} · filed ${current.filed}.`, 'caption'));
+  snapshot.append(node('p', `filings selected through ${data.financials.as_of}. historical periods, not current financials or a year-end information replay.`, 'caveat'));
+  const gaps = node('p', '', 'company-metric-gaps');
+  gaps.append(node('strong', 'not retained: '), document.createTextNode('MRR: Unknown · ARR: Unknown · retention: Unknown · cash flow: Unknown.'));
+  snapshot.append(gaps, node('p', 'net-income margin is not operating margin, gross margin or cash flow. recurrence and retention need their own company-defined evidence.', 'caption'));
+
+  const definitions = node('details', '', 'metric-definitions');
+  definitions.append(node('summary', 'how to read the metrics'),
+    node('p', 'annual revenue is recognized over a reporting period. MRR and ARR describe recurring-revenue run rates under a stated definition; annual revenue ÷ 12 is not MRR.', 'metric-explanation'),
+    node('p', 'growth compares this company’s adjacent selected annual periods. net-income margin includes all reported net income effects, including taxes and non-operating items. neither number measures valuation or investment quality.', 'metric-explanation'));
+  const learning = node('div', '', 'company-learning');
+  learning.append(definitions);
+  const lesson = node('details', '', 'fictional-example');
+  lesson.append(node('summary', 'learn with a fictional RuneScape example'),
+    node('p', 'imagine a Varrock teleport-pass business: 100 subscribers each pay 10 gp per month. its MRR is 1,000 gp; annualizing that same recurring base gives 12,000 gp ARR.'),
+    node('p', 'another 300 gp from one-off teleport-tab sales is sales revenue, not MRR. subscriber churn, new members and price changes would change the recurring run rate.'),
+    node('p', 'fictional teaching example, not a RuneScape mechanic or company observation. ARR is an annualized snapshot, not guaranteed future revenue; real companies define recurring and usage-based metrics differently.', 'caveat'));
+  learning.append(lesson);
+  const actions = node('div', '', 'snapshot-actions');
+  const brief = node('button', 'form your own judgment · open decision brief →', 'quiet-button');
+  brief.type = 'button';
+  brief.addEventListener('click', () => commitState({ view: 'compare', compareSlugs: [company.slug], company: null }, { top: true, focus: '#decision-question' }));
+  const scan = node('button', `scan the ${data.companies.filter(item => item.cik).length} public-company records →`, 'quiet-button');
+  scan.type = 'button';
+  scan.addEventListener('click', () => commitState({ view: 'overview', company: company.cik ? company.slug : null }, { top: true }));
+  actions.append(scan, brief); learning.append(actions);
+
+  const reading = node('section', '', 'company-further-reading');
+  reading.append(node('h4', 'sources & further reading'));
+  if (page?.snapshot_id) {
+    reading.append(retainedSourceLink(`product page · captured ${page.captured_at?.slice(0, 10) || 'date unavailable'} · ${page.status === 'short' ? 'short text' : page.provider} →`,
+      company, 'pages', `page:${page.snapshot_id}`));
+    if (page.provider === 'wayback' && page.archive_url) reading.append(link('dated archived page ↗', page.archive_url));
+    else if (page.source_url) reading.append(link('original page URL · current content may differ ↗', page.source_url));
+  } else reading.append(node('p', 'no product-page capture retained for this selected period.', 'caption'));
+  for (const [label, fact] of [['annual revenue', revenue], ['net income', netIncome]]) {
+    if (fact) reading.append(retainedSourceLink(`${label} · ${fact.start_date} to ${fact.end_date} · filed ${fact.filed_date} →`,
+      company, 'sec', `sec:${fact.fact_id}`));
+  }
+  const allSources = node('a', 'all retained company records →', 'text-button');
+  allSources.href = `./index.html?${new URLSearchParams({ view: 'data', dataCompany: company.slug, dataBuild: dataIndex.build_id })}`;
+  reading.append(allSources, node('p', 'these links open retained observations, not an exhaustive reading list. funding and relationship evidence continue in the fact sheet below.', 'caption'));
+  const deeper = node('div', '', 'company-reading-grid');
+  deeper.append(learning, reading); snapshot.append(deeper);
+  return snapshot;
+}
+
 function companyDetail(slug) {
   const company = data.companies.find(item => item.slug === slug);
   const section = node('section', '', 'detail-panel');
@@ -133,16 +227,20 @@ function companyDetail(slug) {
   close.addEventListener('click', () => commitState({ company: null },
     { focus: '[aria-label="Search source records"]' }));
   section.append(append(node('div', '', 'detail-head'),
-    append(node('div'), node('p', 'COMPANY RECORD / 2021–2024', 'eyebrow'), node('h3', company.name)),
+    append(node('div'), node('p', 'COMPANY SNAPSHOT / SELECTED 2021–2024 PILOT', 'eyebrow'), node('h3', company.name)),
     close));
+  section.append(companySnapshot(company));
+  const factSheet = node('details', '', 'company-fact-sheet');
+  factSheet.append(node('summary', '03 / fact sheet · funding, history and source evidence'));
+  section.append(factSheet);
   const openRecords = node('button', 'inspect all retained records →', 'text-button');
   openRecords.type = 'button';
   openRecords.addEventListener('click', () => commitState({ view: 'data', dataFamily: 'all',
     dataCompany: slug, dataYear: 'all', dataQuery: '', dataRecord: null, dataBuild: dataIndex.build_id },
   { top: true, focus: '#data-query' }));
-  section.append(openRecords);
+  factSheet.append(openRecords);
   const locationReview = locationReviewFor(slug);
-  if (locationReview) section.append(append(node('div', '', 'location-review'),
+  if (locationReview) factSheet.append(append(node('div', '', 'location-review'),
     node('p', 'U.S. LOCATION REVIEW / ' + locationReview.source_year, 'eyebrow'),
     node('p', locationReview.source_note, 'muted'),
     link('Open location source ↗', locationReview.source_url),
@@ -195,8 +293,8 @@ function companyDetail(slug) {
     }
     grid.append(card);
   }
-  section.append(grid, node('p', 'A company page records what its publisher said at capture time. It does not verify adoption, customer outcomes, or when a feature first appeared.', 'caveat'));
-  section.append(companyRelationships(slug));
+  factSheet.append(grid, node('p', 'A company page records what its publisher said at capture time. It does not verify adoption, customer outcomes, or when a feature first appeared.', 'caveat'));
+  factSheet.append(companyRelationships(slug));
   const announcements = financingFor(slug);
   if (announcements.length) {
     const funding = node('section', '', 'funding-events');
@@ -208,8 +306,20 @@ function companyDetail(slug) {
       ...(event.valuation_basis ? [node('p', event.valuation_basis, 'caption')] : []),
       link('Company announcement ↗', event.source_url))));
     funding.append(node('p', 'Selected company statements. Amounts and valuations are claims in the linked announcements; this is not a complete financing history.', 'caveat'));
-    section.append(funding);
+    factSheet.insertBefore(funding, factSheet.children[1]);
   }
+  if (!announcements.length) factSheet.insertBefore(node('p',
+    'funding history: no selected financing announcement is retained for this company. this does not mean it has not raised funding.', 'caveat'), factSheet.children[1]);
+  const current = financials(slug, state.year);
+  const periodFacts = financialIndex.get(`${slug}:${state.year}`) || {};
+  const operating = node('section', '', 'company-operating');
+  operating.append(node('h4', `operating context · periods ending ${state.year}`),
+    node('p', `net income: ${current.netIncome === null ? 'Unknown' : money(current.netIncome)} · reported for ${periodFacts.net_income?.start_date || 'unknown'} to ${periodFacts.net_income?.end_date || 'unknown'}`),
+    node('p', `assets: ${current.assets === null ? 'Unknown' : money(current.assets)} · reported balance at ${periodFacts.assets?.end_date || 'unknown'}`),
+    node('p', `revenue change: ${current.growth === null ? 'Unknown' : percent(current.growth)} · derived from adjacent selected annual revenues`),
+    node('p', `net income margin: ${current.margin === null ? 'Unknown' : percent(current.margin)} · derived as aligned-period net income ÷ revenue`),
+    node('p', 'these describe the retained periods, not current financial performance. missing values remain unknown.', 'caveat'));
+  factSheet.insertBefore(operating, grid);
   return section;
 }
 
@@ -302,8 +412,8 @@ function overviewCompanyPanel(company) {
     pinButton(company)));
   const numbers = node('div', '', 'inspector-numbers');
   numbers.append(metric(money(current.revenue), 'revenue', 'reported period ending ' + (current.periodEnd || 'unknown')),
-    metric(percent(current.growth), 'change', 'versus prior selected period'),
-    metric(percent(current.margin), 'net income margin', 'aligned reported periods'));
+    metric(percent(current.growth), 'change · derived', 'versus prior selected period'),
+    metric(percent(current.margin), 'net income margin · derived', 'aligned reported periods'));
   section.append(numbers);
   const charts = node('div', '', 'inspector-charts');
   const revenue = append(node('div', '', 'trend-panel'),
@@ -435,8 +545,8 @@ function compareFacts(companies) {
   const measures = [
     ['category', company => categoryName(company.category)],
     [`revenue / ${state.year}`, company => company.cik ? money(financials(company.slug, state.year).revenue) : 'no SEC series'],
-    ['change vs prior', company => company.cik ? percent(financials(company.slug, state.year).growth) : '—'],
-    ['net income margin', company => company.cik ? percent(financials(company.slug, state.year).margin) : '—'],
+    ['revenue change · derived', company => company.cik ? percent(financials(company.slug, state.year).growth) : '—'],
+    ['net income margin · derived', company => company.cik ? percent(financials(company.slug, state.year).margin) : '—'],
     ['reported period', company => {
       const result = company.cik ? financials(company.slug, state.year) : null;
       return result?.periodStart ? `${result.periodStart} to ${result.periodEnd}` : '—';
@@ -557,7 +667,12 @@ function render() {
     else if (state.topologyLayer === 'field') discoveryTopologyView.render();
     else dataView.render();
   }
-  else exploreView.render();
+  else if (state.company) {
+    const detail = companyDetail(state.company);
+    detail.id = 'company-detail';
+    detail.tabIndex = -1;
+    root.append(detail);
+  } else exploreView.render();
 }
 
 tabs.forEach(button => button.addEventListener('click', () => {

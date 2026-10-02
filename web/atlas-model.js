@@ -3,15 +3,48 @@
   function displayPosition(position) {
     return { x: 90 + position.x * 820, y: 80 + position.y * 520 };
   }
+  function placementTier(count) {
+    if (!Number.isSafeInteger(count) || count < 1) return { key: 'unknown', label: 'placement count unavailable' };
+    if (count === 1) return { key: 'one', label: '1 shared placement' };
+    if (count <= 3) return { key: 'few', label: '2–3 shared placements' };
+    return { key: 'many', label: '4+ shared placements' };
+  }
+  function companyRoute(candidate, year) {
+    const slug = candidate.identity_review?.pilot_slug;
+    if (!slug) return null;
+    return `./index.html?${new URLSearchParams({ view: 'explore', company: slug,
+      q: candidate.name, year: String(year) })}#company-detail`;
+  }
+  function connectionDescription(result, edge, evidence) {
+    const count = edge.supporting_placements;
+    const support = Number.isSafeInteger(count) && count > 0
+      ? `${count} shared ${count === 1 ? 'placement' : 'placements'}` : 'placement count unavailable';
+    const source = result.selection.source.toUpperCase();
+    const time = result.selection.temporal_mode === 'accumulated'
+      ? `inventories through ${result.selection.year}` : `inventory ${result.selection.year}`;
+    const categories = [...new Set((evidence?.premises || []).map(premise =>
+      `“${premise.placement.category}” (${premise.placement.source.toUpperCase()} ${premise.placement.inventory_year})`))];
+    const relationship = categories.length
+      ? `co-listed in ${categories.join('; ')}${evidence.next_cursor ? '; more source placements are available on selection' : ''}`
+      : `co-listed in the same source categories in ${source} ${time}`;
+    return `${result.focus.name} and ${edge.candidate.name} are ${relationship}. Evidence: ${support} in ${source} ${time}. `
+      + 'This is unreviewed co-listing evidence; it does not establish competition, partnership or adoption.';
+  }
   function graphFrame(result) {
     const focused = result.operation === 'focus';
-    const candidates = focused ? result.edges.map(edge => ({ ...edge.candidate, position: edge.position }))
+    const edges = focused ? result.edges.map(edge => ({ ...edge, support_tier: placementTier(edge.supporting_placements).key,
+      connection_label: connectionDescription(result, edge) })) : [];
+    const candidates = focused ? edges.map(edge => ({ ...edge.candidate, position: edge.position,
+      connection_label: edge.connection_label }))
       : result.candidates;
     const nodes = candidates.map(candidate => ({ ...candidate, position: displayPosition(candidate.position) }));
     if (focused) nodes.push({ ...result.focus, position: displayPosition(result.position) });
     return { build_id: result.versions.layout, source: result.selection.source, year: result.selection.year,
       temporal_mode: result.selection.temporal_mode, nodes, focus: focused ? result.focus.id : '',
-      focus_present: result.focus_status === 'observed', edges: focused ? result.edges : [], context_edges: [] };
+      focus_present: result.focus_status === 'observed', edges, context_edges: [],
+      semantics: { legend: [['support-one', '1 placement'], ['support-few', '2–3 placements'],
+        ['support-many', '4+ placements'], ['hollow', 'not observed in selected slice']],
+      edgeNote: 'line patterns group exact shared source/category/revision placements: 1, 2–3, or 4+. these are co-listings, not economic strength, confidence or independent corroboration.' } };
   }
   function reviewedGraphFrame(result) {
     const focused = result.operation === 'focus';
@@ -58,5 +91,5 @@
       usage() { return { bytes, entries: entries.size, max_bytes: maxBytes }; }
     };
   }
-  root.LogPoseAtlasModel = { graphFrame, reviewedGraphFrame, createCache };
+  root.LogPoseAtlasModel = { graphFrame, reviewedGraphFrame, createCache, placementTier, companyRoute, connectionDescription };
 })(globalThis);

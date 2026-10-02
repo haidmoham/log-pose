@@ -174,7 +174,10 @@
           body.append(evidence);
         }
       } catch (error) {
-        if (active() && error.name !== 'AbortError') showError(`relationship evidence unavailable: ${error.message}`);
+        if (!active() || error.name === 'AbortError') return;
+        if (error.code === 'unknown_identity') body.replaceChildren(node('p',
+          'no reviewed relationship claims are linked to this candidate in the retained collection. co-listings remain available; missing claims do not establish that no relationship exists.'));
+        else showError(`relationship evidence unavailable: ${error.message}`);
       }
     })();
     let explainGeneration = 0;

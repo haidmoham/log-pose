@@ -110,6 +110,8 @@
         appendLine(lines, positions, edge.left, edge.right, active ? [.96, .75, .45, .74] : [...tint, .04 + threads / 100 * .06]);
       }
       for (const edge of frame.edges) {
+        // Patterned evidence tiers stay in SVG; an unbroken GPU line would erase their meaning.
+        if (edge.support_tier) continue;
         const active = edge.candidate_id === selected || edge.candidate_id === hover;
         const tint = tintFor(edge.candidate_id);
         appendLine(lines, positions, frame.focus, edge.candidate_id, active ? [1, .79, .43, .96] : [...tint, .08 + threads / 100 * .3]);

@@ -29,14 +29,20 @@ function page(t, query, delay = async () => {}) {
   dom.window.performance.getEntriesByType = () => [];
   dom.window.addEventListener('error', event => errors.push(event.message));
   dom.window.fetch = async url => {
-    const params = new URL(url, 'http://localhost').searchParams;
+    const requestUrl = new URL(url, 'http://localhost');
+    const params = requestUrl.searchParams;
+    if (['/dashboard.json', '/data/index.json'].includes(requestUrl.pathname)) {
+      await delay(params, requestUrl.pathname);
+      return { ok: true, status: 200, json: async () => JSON.parse(fs.readFileSync(
+        path.join(root, 'web', requestUrl.pathname.slice(1)), 'utf8')) };
+    }
     requests.push(new URLSearchParams(params));
     await delay(params);
     const result = params.get('layer') === 'reviewed' ? reviewed(params) : handleAtlas(params);
     return { ok: result.status === 200, status: result.status, json: async () => result.body };
   };
   for (const script of ['console-ui.js', 'research-model.js', 'temporal-graph.js', 'atlas-model.js',
-    'atlas-client.js', 'atlas-relationships.js', 'atlas-view.js']) {
+    'atlas-client.js', 'atlas-relationships.js', 'atlas-company.js', 'atlas-view.js']) {
     dom.window.eval(fs.readFileSync(path.join(root, 'web', script), 'utf8'));
   }
   t.after(() => {
@@ -151,4 +157,12 @@ test('legacy mapped entity and external neighbor keep their exact reviewed scope
   assert.equal(document.querySelectorAll('.constellation-map').length, 1);
   assert.match(document.querySelector('.atlas-claim-audit').textContent,
     /64694c906f3c8be8b3fd90d88725fe3598a896533adf3123a24dc684610ffece/);
+});
+
+test('an unmapped reviewed-claims identity is a coverage gap rather than a retryable outage', async t => {
+  const { dom } = page(t, 'candidate=db7244f000eedc7a99c9&source=cncf&year=2024');
+  await waitFor(() => dom.window.document.querySelector('.atlas-relationship-body')?.textContent.includes('no reviewed relationship claims'));
+  const body = dom.window.document.querySelector('.atlas-relationship-body');
+  assert.match(body.textContent, /missing claims do not establish that no relationship exists/);
+  assert.equal(body.querySelector('button'), null);
 });

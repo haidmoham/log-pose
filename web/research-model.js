@@ -319,6 +319,17 @@
     };
   }
 
+  function companyStatsFor(pilot, slug, year) {
+    const company = pilot.companies.find(item => item.slug === slug);
+    if (!company || !pilot.years.includes(year)) return null;
+    const index = buildFinancialIndex(pilot.financials.cells);
+    const selected = concept => index.get(`${slug}:${year}`)?.[concept] || null;
+    return { company, year, current: financialsFor(index, slug, year),
+      revenue: selected('revenue'), netIncome: selected('net_income'),
+      priorRevenue: index.get(`${slug}:${year - 1}`)?.revenue || null,
+      cutoff: pilot.financials.as_of };
+  }
+
   function chartScale(values, width, height, padding = 3) {
     const numeric = values.filter(Number.isFinite);
     const low = Math.min(0, ...numeric);
@@ -462,7 +473,7 @@
   function toUrlParams(state) {
     const params = new URLSearchParams();
     params.set('view', state.view);
-    if (state.view !== 'data' && state.view !== 'explore' && state.year) {
+    if (state.view !== 'data' && (state.view !== 'explore' || state.company) && state.year) {
       params.set('year', String(state.year));
     }
     if (state.company) params.set('company', state.company);
@@ -704,6 +715,7 @@
     buildFinancialIndex,
     validateExports,
     financialsFor,
+    companyStatsFor,
     chartScale,
     contiguousSegments,
     parseUrlState,

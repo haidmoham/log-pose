@@ -46,6 +46,71 @@ async function verifyDecisionWorkflow(page, baseUrl, report) {
   await page.goto(baseUrl.href, { waitUntil: 'domcontentloaded', timeout: 30000 });
   await page.waitForFunction(() => document.querySelector('#atlas-frame-label')?.dataset.frameId
     && !document.querySelector('#atlas-regions').disabled);
+  const hiddenLabels = await page.locator('.constellation-node:not(.has-label):not(.is-focus):not(.is-hovered):not(.is-selected):not(:focus-visible) .constellation-label')
+    .evaluateAll(labels => labels.map(label => getComputedStyle(label).display));
+  assert(hiddenLabels.length > 0, 'default density must exercise collision-hidden labels');
+  assert(hiddenLabels.every(display => display === 'none'), 'hidden labels must not enlarge node hit geometry');
+  const edgePoint = await page.locator('.constellation-edge-hit').evaluateAll(lines => {
+    for (const line of lines) {
+      const point = line.ownerSVGElement.createSVGPoint();
+      point.x = (line.x1.baseVal.value + line.x2.baseVal.value) / 2;
+      point.y = (line.y1.baseVal.value + line.y2.baseVal.value) / 2;
+      const screen = point.matrixTransform(line.getScreenCTM());
+      if (document.elementFromPoint(screen.x, screen.y) === line)
+        return { x: screen.x, y: screen.y, neighbor: line.dataset.neighbor };
+    }
+    return null;
+  });
+  assert(edgePoint, 'at least one displayed edge must have an exposed pointer target');
+  await page.mouse.move(edgePoint.x, edgePoint.y);
+  await page.waitForFunction(() => /GitLab and .*co-listed in “.*Continuous Integration & Delivery/.test(
+    document.querySelector('.constellation-relationship')?.textContent), null, { timeout: 30000 });
+  assert.match(await page.locator('.constellation-relationship').innerText(), /unreviewed co-listing evidence/);
+  report.checks.push({ name: 'relationship-hover-exact-source-category', passed: true });
+  await page.mouse.click(edgePoint.x, edgePoint.y);
+  await page.waitForFunction(neighbor => new URL(location.href).searchParams.get('neighbor') === neighbor,
+    edgePoint.neighbor, { timeout: 30000 });
+  await page.locator('.atlas-premise').first().waitFor({ state: 'visible' });
+  report.checks.push({ name: 'graph-hidden-label-geometry-and-pointer-edge', passed: true });
+  // Target the actual marker circle, not the SVG group's decorative/label bounding box.
+  await page.getByRole('button', { name: 'select GitLab company summary', exact: true })
+    .locator('.constellation-hit').click();
+  await page.locator('.atlas-company-stat strong').first().waitFor({ state: 'visible', timeout: 30000 });
+  assert.equal(new URL(page.url()).searchParams.get('candidate'), 'db7244f000eedc7a99c9');
+  assert.deepEqual(await page.locator('.atlas-company-stat strong').allTextContents(), ['$579.9m', '+36.7%', '−73.1%']);
+  assert.match(await page.locator('.atlas-company-summary').innerText(), /2023-02-01 to 2024-01-31.*2025-04-01/s);
+  assert.equal(await page.locator('.atlas-stat-sources a').count(), 5);
+  report.checks.push({ name: 'selected-company-facts-stay-on-graph', passed: true });
+  await page.getByRole('link', { name: 'full stat sheet, sources & further reading →', exact: true }).click();
+  await page.locator('.company-snapshot').waitFor({ state: 'visible', timeout: 30000 });
+  assert.equal(new URL(page.url()).searchParams.get('company'), 'gitlab');
+  assert.equal(await page.locator('.company-fact-sheet').getAttribute('open'), null);
+  const captionStyle = await page.locator('.company-snapshot .caption').first().evaluate(element => ({
+    size: parseFloat(getComputedStyle(element).fontSize), transform: getComputedStyle(element).textTransform }));
+  assert(captionStyle.size >= 13);
+  assert.equal(captionStyle.transform, 'none');
+  const readingLayout = await page.locator('.company-reading-grid').evaluate(element => {
+    const boxes = [...element.children].map(child => child.getBoundingClientRect());
+    return { width: window.innerWidth, sideBySide: boxes[1].left >= boxes[0].right };
+  });
+  if (readingLayout.width > 900) assert(readingLayout.sideBySide, 'wide source reading must use both columns');
+  assert.match(await page.locator('.company-snapshot').innerText(), /2025-04-01/);
+  assert.deepEqual(await page.locator('.company-economic-card strong').allTextContents(), ['$579.9m', '+36.7%', '−73.1%']);
+  assert.match(await page.locator('.company-metric-gaps').innerText(), /MRR: Unknown.*ARR: Unknown.*retention: Unknown.*cash flow: Unknown/);
+  assert.equal(await page.locator('.company-economic-card a').count(), 5);
+  assert.match(await page.locator('.company-further-reading').innerText(), /sources & further reading.*filed 2024-03-26/s);
+  const priorRevenueLink = page.getByRole('link', { name: 'prior revenue →', exact: true });
+  const priorRecord = new URL(await priorRevenueLink.getAttribute('href'), page.url()).searchParams.get('dataRecord');
+  await priorRevenueLink.click();
+  await page.locator('#data-inspector').waitFor({ state: 'visible' });
+  assert.equal(new URL(page.url()).searchParams.get('dataRecord'), priorRecord);
+  await page.goBack({ waitUntil: 'domcontentloaded' });
+  await page.locator('.company-snapshot').waitFor({ state: 'visible' });
+  report.checks.push({ name: 'stat-sheet-derived-inputs-and-dated-further-reading', passed: true });
+  await page.locator('.fictional-example > summary').click();
+  assert.match(await page.locator('.fictional-example').innerText(), /fictional teaching example/);
+  await page.goBack({ waitUntil: 'domcontentloaded' });
+  report.checks.push({ name: 'graph-company-snapshot-progressive-disclosure', passed: true });
   await page.getByRole('link', { name: 'start a company decision brief →', exact: true }).click();
   await page.locator('#decision-question').waitFor({ state: 'visible', timeout: 30000 });
   assert.equal(new URL(page.url()).searchParams.get('view'), 'compare');
@@ -60,6 +125,7 @@ async function verifyDecisionWorkflow(page, baseUrl, report) {
   await page.getByRole('button', { name: 'inspect dated evidence →', exact: true }).click();
   await page.locator('#company-detail').waitFor({ state: 'visible', timeout: 30000 });
   assert.equal(new URL(page.url()).searchParams.get('view'), 'explore');
+  await page.locator('.company-fact-sheet > summary').click();
   const claim = page.locator('.company-relationships [data-claim]').first();
   const claimId = await claim.getAttribute('data-claim');
   await claim.click();
@@ -119,6 +185,97 @@ async function verifyDecisionWorkflow(page, baseUrl, report) {
   await page.locator('#decision-question').waitFor({ state: 'visible', timeout: 30000 });
   assert.equal(await page.locator('#decision-question').inputValue(), question);
   report.checks.push({ name: 'mobile-atlas-decision-entry', passed: true, viewport: 390 });
+  await page.setViewportSize({ width: 1365, height: 900 });
+}
+
+async function verifyPhoneCompanyFacts(page, baseUrl, report) {
+  const captureDirectory = path.dirname(process.env.BROWSER_REPORT_PATH || 'browser-smoke.json');
+  for (const width of [320, 375, 390]) {
+    await page.setViewportSize({ width, height: 844 });
+    await page.goto(baseUrl.href, { waitUntil: 'domcontentloaded', timeout: 30000 });
+    await page.locator('.atlas-company-stat strong').first().waitFor({ state: 'visible', timeout: 30000 });
+    assert.deepEqual(await page.locator('.atlas-company-stat strong').allTextContents(), ['$579.9m', '+36.7%', '−73.1%']);
+    await page.locator('.atlas-view-settings > summary').click();
+    await page.evaluate(() => document.fonts.ready);
+    if (width === 390) {
+      await page.locator('#atlas-inspector').evaluate(element => element.scrollIntoView({ block: 'start', behavior: 'instant' }));
+      const skipLink = await page.locator('.skip-link').evaluate(element => ({
+        focused: element.matches(':focus'), activeElement: document.activeElement?.tagName,
+        bottom: element.getBoundingClientRect().bottom, viewportWidth: window.innerWidth, viewportHeight: window.innerHeight
+      }));
+      report.phone_viewport = skipLink;
+      assert.equal(skipLink.focused, false);
+      assert(skipLink.bottom <= 0, 'unfocused skip link must remain outside the live viewport');
+      await page.screenshot({ path: path.join(captureDirectory, 'browser-phone-390-viewport.png') });
+    }
+    const layout = await page.evaluate(() => {
+      const metrics = [...document.querySelectorAll('.atlas-company-stat')].map(element => {
+        const box = element.getBoundingClientRect();
+        const label = element.querySelector('span').getBoundingClientRect();
+        const value = element.querySelector('strong').getBoundingClientRect();
+        return { top: box.top, bottom: box.bottom, labelRight: label.right, valueLeft: value.left,
+          border: getComputedStyle(element).borderTopStyle, padding: parseFloat(getComputedStyle(element).paddingTop) };
+      });
+      const selectors = ['#atlas-controls', '#atlas-inspector', '.atlas-company-stats',
+        '.atlas-density', '.constellation-heading', '.constellation-mode-switch', '.constellation-camera-controls'];
+      const overflow = selectors.filter(selector => {
+        const element = document.querySelector(selector);
+        const box = element.getBoundingClientRect();
+        return box.left < -1 || box.right > window.innerWidth + 1 || element.scrollWidth > element.clientWidth + 1;
+      });
+      return { viewport: window.innerWidth, document: document.documentElement.scrollWidth, metrics, overflow,
+        sourceHeights: [...document.querySelectorAll('.atlas-stat-sources a')].map(element => element.getBoundingClientRect().height),
+        filedDisplay: getComputedStyle(document.querySelector('.atlas-company-filed')).display };
+    });
+    (report.phone_layouts ||= []).push(layout);
+    await page.locator('#atlas-inspector').screenshot({ path: path.join(captureDirectory, `browser-phone-${width}-summary.png`) });
+    await page.screenshot({ path: path.join(captureDirectory, `browser-phone-${width}-page.png`), fullPage: true });
+    assert(layout.document <= width, `phone page overflow at ${width}px`);
+    assert.deepEqual(layout.overflow, [], `phone controls or facts overflow at ${width}px`);
+    assert.equal(layout.metrics.length, 3);
+    layout.metrics.forEach((metric, index) => {
+      assert(metric.labelRight <= metric.valueLeft - 10, 'metric label and figure need breathing room');
+      assert(metric.padding >= 20, 'metric rows need vertical breathing room');
+      if (index) {
+        assert(metric.top >= layout.metrics[index - 1].bottom - 1, 'phone metrics must stack');
+        assert.equal(metric.border, 'solid', 'metric rows need visible separators');
+      }
+    });
+    assert(layout.sourceHeights.every(height => height >= 44), 'source links need separate touch targets');
+    assert.equal(layout.filedDisplay, 'block');
+    // Check actual narrow-screen node and edge activation, not a forced DOM click.
+    await page.locator('.constellation-map').scrollIntoViewIfNeeded();
+    const edgePoint = await page.locator('.constellation-edge-hit').evaluateAll(lines => {
+      for (const line of lines) {
+        const point = line.ownerSVGElement.createSVGPoint();
+        point.x = (line.x1.baseVal.value + line.x2.baseVal.value) / 2;
+        point.y = (line.y1.baseVal.value + line.y2.baseVal.value) / 2;
+        const screen = point.matrixTransform(line.getScreenCTM());
+        if (document.elementFromPoint(screen.x, screen.y) === line) return { x: screen.x, y: screen.y };
+      }
+      return null;
+    });
+    assert(edgePoint, 'phone graph needs an exposed edge target');
+    await page.mouse.click(edgePoint.x, edgePoint.y);
+    await page.locator('.atlas-premise').first().waitFor({ state: 'visible' });
+    await page.getByRole('button', { name: 'select GitLab company summary', exact: true })
+      .locator('.constellation-hit').click();
+    await page.locator('.atlas-company-stat strong').first().waitFor({ state: 'visible' });
+    const source = page.locator('.atlas-stat-sources a').first();
+    const record = new URL(await source.getAttribute('href'), page.url()).searchParams.get('dataRecord');
+    await source.click();
+    await page.locator('#data-inspector').waitFor({ state: 'visible' });
+    assert.equal(new URL(page.url()).searchParams.get('dataRecord'), record);
+    await page.goBack({ waitUntil: 'domcontentloaded' });
+    await page.locator('.atlas-company-stat strong').first().waitFor({ state: 'visible' });
+    await page.getByRole('link', { name: 'full stat sheet, sources & further reading →', exact: true }).click();
+    await page.locator('.company-snapshot').waitFor({ state: 'visible' });
+    const detailWidth = await page.evaluate(() => document.documentElement.scrollWidth);
+    assert(detailWidth <= width, `full company sheet overflows at ${width}px`);
+    if (width === 390) await page.locator('.company-snapshot').screenshot({
+      path: path.join(captureDirectory, 'browser-phone-390-detail.png') });
+    report.checks.push({ name: `phone-company-facts-${width}px`, passed: true, ...layout, detail_width: detailWidth });
+  }
   await page.setViewportSize({ width: 1365, height: 900 });
 }
 
@@ -273,7 +430,11 @@ async function main() {
     const missingReviewed = new URL(reviewedUrl);
     missingReviewed.searchParams.set('reviewed_build_id', '0'.repeat(64));
     await page.goto(missingReviewed.href, { waitUntil: 'domcontentloaded', timeout: 30000 });
-    await page.locator('.atlas-relationship-body button').waitFor({ state: 'visible', timeout: 30000 });
+    // Initial focus and URL-selected edge restore each create a relationship panel.
+    await page.waitForFunction(() => document.querySelector('#atlas-controls')?.getAttribute('aria-busy') === 'false'
+      && document.querySelector('.atlas-relationship-body button')
+      && /not hosted/.test(document.querySelector('.atlas-relationship-body')?.textContent),
+    null, { timeout: 30000 });
     assert.match(await page.locator('.atlas-relationship-body').innerText(), /not hosted/);
     assert.equal(await page.locator('.atlas-claim').count(), 0, 'unavailable reviewed build must not show a claim');
     assert(await page.locator('.constellation-node').count() > 0, 'independent inventory frame should remain usable');
@@ -310,6 +471,7 @@ async function main() {
     await verifyAccessibleAtlas(browser, inventoryUrl, 'inventory', report);
     await verifyAccessibleAtlas(browser, reviewedUrl, 'contextual', report);
     await verifyDecisionWorkflow(page, baseUrl, report);
+    await verifyPhoneCompanyFacts(page, baseUrl, report);
     assert.deepEqual(report.page_errors, [], 'uncaught browser errors');
     report.status = 'passed';
   } catch (error) {

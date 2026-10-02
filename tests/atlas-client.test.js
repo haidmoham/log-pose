@@ -116,3 +116,53 @@ test('fallback errors retain provider wording and signals reach fetch unchanged'
   await assert.rejects(pending, error => error.name === 'AbortError');
   assert.strictEqual(observedSignal, controller.signal);
 });
+
+test('co-listing tiers are discrete counts and never mutate evidence or imply confidence', () => {
+  const { model } = loadClient();
+  for (const [count, key] of [[1, 'one'], [2, 'few'], [3, 'few'], [4, 'many'], [40, 'many'],
+    [0, 'unknown'], [null, 'unknown'], [1.5, 'unknown']]) {
+    assert.equal(model.placementTier(count).key, key);
+  }
+  const source = { operation: 'focus', versions: { layout: 'layout-a' },
+    selection: { source: 'cncf', year: 2024, temporal_mode: 'snapshot' },
+    focus: { id: 'company', name: 'Company' }, position: { x: .2, y: .3 }, focus_status: 'observed',
+    edges: [{ candidate_id: 'neighbor', supporting_placements: 3,
+      candidate: { id: 'neighbor', name: 'Neighbor' }, position: { x: .6, y: .7 } }] };
+  const original = JSON.stringify(source);
+  const frame = model.graphFrame(source);
+  assert.equal(frame.edges[0].support_tier, 'few');
+  assert.match(frame.nodes[0].connection_label, /3 shared placements/);
+  assert.match(frame.semantics.edgeNote, /not economic strength, confidence or independent corroboration/);
+  assert.equal(JSON.stringify(source), original);
+});
+
+test('company snapshot routes require an explicit reviewed pilot identity', () => {
+  const { model } = loadClient();
+  assert.equal(model.companyRoute({ id: 'lead', name: 'Unreviewed', identity_review: null }, 2024), null);
+  assert.equal(model.companyRoute({ id: 'lead', name: 'Provider', identity_review: { id: 'review-1' } }, 2024), null);
+  const route = new URL(model.companyRoute({ name: 'Datadog',
+    identity_review: { id: 'review-12', pilot_slug: 'datadog' } }, 2024), 'https://example.test/');
+  assert.equal(route.searchParams.get('company'), 'datadog');
+  assert.equal(route.searchParams.get('year'), '2024');
+  assert.equal(route.searchParams.get('view'), 'explore');
+  assert.equal(route.hash, '#company-detail');
+});
+
+test('relationship descriptions distinguish dated co-listing evidence from business ties', () => {
+  const { model } = loadClient();
+  const result = { focus: { name: 'GitLab' }, selection: { source: 'cncf', year: 2024, temporal_mode: 'snapshot' } };
+  const edge = { candidate: { name: 'Semaphore' }, supporting_placements: 1 };
+  const initial = model.connectionDescription(result, edge);
+  assert.match(initial, /GitLab and Semaphore are co-listed in the same source categories in CNCF inventory 2024/);
+  assert.match(initial, /Evidence: 1 shared placement/);
+  assert.match(initial, /does not establish competition, partnership or adoption/);
+  const evidence = { premises: [{ placement: { category: 'App Definition and Development / Continuous Integration & Delivery',
+    source: 'cncf', inventory_year: 2024 } }], next_cursor: 'more' };
+  const before = JSON.stringify(evidence);
+  const exact = model.connectionDescription(result, edge, evidence);
+  assert.match(exact, /co-listed in “App Definition and Development \/ Continuous Integration & Delivery” \(CNCF 2024\)/);
+  assert.match(exact, /more source placements are available/);
+  assert.equal(JSON.stringify(evidence), before);
+  assert.match(model.connectionDescription({ ...result, selection: { ...result.selection, temporal_mode: 'accumulated' } },
+    { ...edge, supporting_placements: null }), /placement count unavailable in CNCF inventories through 2024/);
+});

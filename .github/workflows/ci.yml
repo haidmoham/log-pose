@@ -123,6 +123,7 @@ jobs:
             ${{ runner.temp }}/data-health.json
             ${{ runner.temp }}/pytest.xml
             ${{ runner.temp }}/browser-smoke.json
+            ${{ runner.temp }}/browser-phone-*.png
             ${{ runner.temp }}/preview.log
           if-no-files-found: warn
           retention-days: 14

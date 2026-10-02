@@ -185,7 +185,7 @@
         if (!point) continue;
         const thread = svgElement('line', { x1: origin.x, y1: origin.y, x2: point.x, y2: point.y,
           class: `constellation-thread${edge.candidate_id === selected ? ' is-selected' : ''}${entering.has(edge.candidate_id) ? ' is-entering' : ''}`,
-          'data-neighbor': edge.candidate_id });
+          'data-neighbor': edge.candidate_id, 'data-support-tier': edge.support_tier || '' });
         if (entering.has(edge.candidate_id)) thread.style.setProperty('--enter-delay', `${enterDelay(edge.candidate_id)}ms`);
         thread.style.setProperty('--edge-tint', tints.get(edge.candidate_id).hex);
         threads.append(thread);
@@ -193,11 +193,50 @@
       }
     }
     field.append(threads);
+    const relationshipEdges = new Map(frame.edges.filter(edge => edge.connection_label)
+      .map(edge => [edge.candidate_id, edge]));
+    const relationshipHint = 'Hover or focus a connected node or line to read why it is connected. Select a line for the retained source rows.';
+    const relationshipPreview = element('p', 'constellation-relationship', relationshipHint);
+    relationshipPreview.setAttribute('role', 'status');
+    relationshipPreview.setAttribute('aria-live', 'polite');
+    let relationshipTimer;
+    let relationshipController;
+    let relationshipGeneration = 0;
+    function describeRelationship(id) {
+      root.clearTimeout(relationshipTimer);
+      relationshipController?.abort();
+      const ticket = ++relationshipGeneration;
+      const edge = relationshipEdges.get(id);
+      relationshipPreview.textContent = edge?.connection_label || relationshipHint;
+      if (!edge || !options.describeRelationship) return;
+      relationshipController = new AbortController();
+      const signal = relationshipController.signal;
+      relationshipTimer = root.setTimeout(async () => {
+        if (!scene.isConnected || signal.aborted) return;
+        try {
+          const description = await options.describeRelationship(id, signal);
+          if (description && scene.isConnected && !signal.aborted && ticket === relationshipGeneration) {
+            relationshipPreview.textContent = description;
+            hitThreadElements.get(id)?.querySelector('title')?.replaceChildren(document.createTextNode(description));
+            const record = labelNodes.find(item => item.id === id);
+            if (record && !record.group.classList.contains('is-absent'))
+              record.group.querySelector('title').textContent = `${record.name} · ${description}`;
+          }
+        } catch (error) {
+          if (scene.isConnected && !signal.aborted && ticket === relationshipGeneration && error.name !== 'AbortError')
+            relationshipPreview.textContent = `${edge.connection_label} Exact category details are unavailable; select the connection to retry.`;
+        }
+      }, 160);
+    }
     const hitThreads = svgElement('g', { class: 'constellation-edge-hits', 'aria-hidden': 'true' });
     const hitThreadElements = new Map();
     for (const [id, thread] of threadElements) {
       const hit = thread.cloneNode(false);
       hit.setAttribute('class', 'constellation-edge-hit');
+      const description = relationshipEdges.get(id)?.connection_label;
+      if (description) {
+        const title = svgElement('title'); title.textContent = description; hit.append(title);
+      }
       hit.addEventListener('click', () => inspect(id));
       hit.addEventListener('pointerenter', () => emphasize(id));
       hit.addEventListener('pointerleave', () => emphasize(''));
@@ -209,6 +248,7 @@
     function emphasize(id) {
       if (id && drag?.owned) return;
       hovered = id;
+      describeRelationship(id);
       for (const [key, thread] of threadElements) thread.classList.toggle('is-hovered', key === id);
       const nearby = new Set();
       if (id) {
@@ -233,6 +273,10 @@
       if (!frame.focus) options.onSelectCandidate?.(id);
       else if (id !== frame.focus) options.onSelectEdge?.(id);
     }
+    function selectNode(id) {
+      if (options.onSelectNode) options.onSelectNode(id);
+      else inspect(id);
+    }
     for (const node of frame.nodes) {
       const point = positions.get(node.id);
       const isFocus = node.id === frame.focus;
@@ -240,14 +284,14 @@
       const isNew = changes.get(node.id)?.status === 'newly_observed_in_selected_frame';
       const group = svgElement('g', { class: `constellation-node${isFocus ? ' is-focus' : ''}${isAbsent ? ' is-absent' : ''}${isNew ? ' is-new' : ''}${node.id === selected ? ' is-selected' : ''}`,
         transform: `translate(${point.x} ${point.y})`, role: 'button', tabindex: '0',
-        'aria-label': !frame.focus ? `explore ${node.name}` : isFocus ? `${node.name}, pinned ${semantics.focusKind || 'candidate'}${isAbsent ? ', absent from this slice' : ''}`
+        'aria-label': options.onSelectNode ? `select ${node.name}${node.identity_review?.pilot_slug ? ' company summary' : ' candidate context'}${isAbsent ? ', absent from selected slice' : ''}${node.connection_label ? `, ${node.connection_label}` : ''}` : !frame.focus ? `explore ${node.name}` : isFocus ? `${node.name}, pinned ${semantics.focusKind || 'candidate'}${isAbsent ? ', absent from this slice' : ''}`
           : `inspect ${node.name}${isAbsent ? ', comparison only' : node.connection_label
             ? `, ${node.connection_label}` : isNew ? ', newly observed in selected slice' : `, ${semantics.neighborKind || 'co-listed'}`}`,
         'aria-pressed': String(node.id === selected), 'data-candidate': node.id });
       group.style.setProperty('--node-tint', tints.get(node.id).hex);
       const name = svgElement('title');
       name.textContent = `${node.name} · ${isAbsent ? 'comparison context, not observed in this slice'
-        : node.identity_label || 'unreviewed inventory candidate'}`;
+        : node.connection_label || node.identity_label || 'unreviewed inventory candidate'}`;
       group.append(name);
       const scale = svgElement('g', { class: 'constellation-scale' });
       scale.append(svgElement('circle', { r: 18, class: 'constellation-hit' }));
@@ -268,9 +312,9 @@
       group.addEventListener('pointerleave', () => emphasize(''));
       group.addEventListener('focus', () => emphasize(node.id));
       group.addEventListener('blur', () => emphasize(''));
-      group.addEventListener('click', () => inspect(node.id));
+      group.addEventListener('click', () => selectNode(node.id));
       group.addEventListener('keydown', event => {
-        if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); inspect(node.id); }
+        if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); selectNode(node.id); }
       });
       labelNodes.push({ id: node.id, group, point, name: node.name, priority: isFocus || node.id === selected });
       field.append(group);
@@ -338,6 +382,7 @@
       updateCamera();
     }
     scene.append(svg);
+    if (relationshipEdges.size) scene.append(relationshipPreview);
     function attachGPU() {
       if (gpu || viewMode !== '2d') return;
       gpu = root.LogPoseTemporalGPU?.attach(scene, svg) || null;
@@ -375,6 +420,7 @@
     footer.append(controls); scene.append(footer);
     controls.title = 'pinch or ctrl/⌘ + scroll to zoom; plain scrolling moves the page';
     scene.append(element('p', 'constellation-note', (frame.context_edges_truncated ? `${(frame.context_edges || []).length.toLocaleString()} of ${(frame.total_context_edges || 0).toLocaleString()} context connections loaded. ` : '') + 'positions stay fixed through time. spacing, depth, color, light and line length carry no evidence meaning or measure of strength.'));
+    if (semantics.edgeNote) scene.append(element('p', 'constellation-note constellation-edge-note', semantics.edgeNote));
 
     const tuning = element('details', 'constellation-tuning');
     tuning.append(element('summary', '', 'view settings'));
