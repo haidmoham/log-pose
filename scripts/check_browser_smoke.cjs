@@ -279,6 +279,88 @@ async function verifyPhoneCompanyFacts(page, baseUrl, report) {
   await page.setViewportSize({ width: 1365, height: 900 });
 }
 
+async function verifyAtlasHistory(page, baseUrl, report) {
+  async function settled() {
+    await page.waitForFunction(() => document.querySelector('#atlas-controls')?.getAttribute('aria-busy') === 'false'
+      && !document.querySelector('#atlas-status')?.textContent, null, { timeout: 30000 });
+  }
+  async function waitRoute(fields, evidence = false) {
+    await page.waitForFunction(({ fields, evidence }) => {
+      const params = new URLSearchParams(location.search);
+      return Object.entries(fields).every(([key, value]) => params.get(key) === value)
+        && document.querySelector('#atlas-controls')?.getAttribute('aria-busy') === 'false'
+        && !document.querySelector('#atlas-status')?.textContent
+        && (evidence ? Boolean(document.querySelector('.atlas-premise')) : !document.querySelector('.atlas-premise'));
+    }, { fields, evidence }, { timeout: 30000 });
+  }
+  await page.goto(baseUrl.href, { waitUntil: 'domcontentloaded', timeout: 30000 });
+  await settled();
+  const initial = new URL(page.url());
+  assert.equal(initial.searchParams.get('candidate'), 'db7244f000eedc7a99c9');
+  assert.equal(initial.searchParams.get('year'), '2024');
+  assert.match(initial.searchParams.get('build_id'), /^[a-f0-9]{64}$/);
+  assert(initial.search.length < 125, 'default URL should omit redundant request fields');
+  for (const key of ['mode', 'source', 'artifact', 'temporal_mode', 'top_k', 'limit']) assert.equal(initial.searchParams.has(key), false);
+  const initialLength = await page.evaluate(() => history.length);
+  await page.locator('.atlas-access > summary').click();
+  const neighbor = await page.locator('.atlas-candidate-list button').first().getAttribute('data-candidate');
+  await page.locator('.atlas-candidate-list button').first().click();
+  await waitRoute({ neighbor }, true);
+  await page.getByRole('button', { name: 'select GitLab company summary', exact: true }).locator('.constellation-hit').click();
+  await waitRoute({ candidate: 'db7244f000eedc7a99c9', neighbor: null });
+  assert.equal(await page.evaluate(() => history.length), initialLength + 2);
+  await page.goBack(); await waitRoute({ neighbor }, true);
+  await page.goBack(); await waitRoute({ candidate: 'db7244f000eedc7a99c9', neighbor: null });
+  await page.goForward(); await waitRoute({ neighbor }, true);
+  await page.goForward(); await waitRoute({ candidate: 'db7244f000eedc7a99c9', neighbor: null });
+  await page.getByRole('button', { name: 'select GitLab company summary', exact: true }).locator('.constellation-hit').click();
+  await settled();
+  assert.equal(await page.evaluate(() => history.length), initialLength + 2, 'same selection must not duplicate history');
+  await page.locator('.atlas-view-settings > summary').click();
+  await page.locator('#atlas-top-k').fill('7'); await page.locator('#atlas-top-k').press('Tab');
+  await waitRoute({ top_k: '7' });
+  assert.equal(await page.evaluate(() => history.length), initialLength + 2, 'density should replace only the current entry');
+  await page.locator('#atlas-query').fill('GitHub');
+  await page.locator('#atlas-controls button[type=submit]').click();
+  await waitRoute({ mode: 'search', query: 'GitHub', year: '2024' });
+  await page.locator('#atlas-previous').click();
+  await waitRoute({ mode: 'search', query: 'GitHub', year: '2023' });
+  await page.goBack(); await waitRoute({ mode: 'search', query: 'GitHub', year: '2024' });
+  const searchUrl = page.url();
+  await page.reload({ waitUntil: 'domcontentloaded' });
+  await waitRoute({ mode: 'search', query: 'GitHub', year: '2024' });
+  assert.equal(page.url(), searchUrl, 'direct reload must retain the compact search state');
+
+  const discoveryUrl = new URL('/api/atlas', baseUrl);
+  discoveryUrl.search = new URLSearchParams({ mode: 'discover', build_id: initial.searchParams.get('build_id'), limit: '100' });
+  const discovery = await (await page.request.get(discoveryUrl.href)).json();
+  const artifact = discovery.artifacts.find(item => item.source === 'cncf' && item.inventory_year === 2024);
+  const legacy = new URL('/atlas.html', baseUrl);
+  legacy.search = new URLSearchParams({ mode: 'focus', build_id: discovery.build_id, source: 'cncf', year: '2024',
+    artifact: artifact.artifact_id, temporal_mode: 'snapshot', candidate: 'db7244f000eedc7a99c9', top_k: '24', neighbor });
+  await page.goto(legacy.href, { waitUntil: 'domcontentloaded', timeout: 30000 });
+  await waitRoute({ neighbor }, true);
+  const legacyFrame = await page.locator('#atlas-frame-label').getAttribute('data-frame-id');
+  const compact = new URL(page.url());
+  assert.equal(compact.searchParams.get('build_id'), discovery.build_id);
+  assert.equal(compact.searchParams.has('artifact'), false);
+  await page.reload({ waitUntil: 'domcontentloaded' });
+  await waitRoute({ neighbor }, true);
+  assert.equal(await page.locator('#atlas-frame-label').getAttribute('data-frame-id'), legacyFrame);
+  await page.getByRole('button', { name: 'select GitLab company summary', exact: true }).locator('.constellation-hit').click();
+  await waitRoute({ neighbor: null });
+  await page.getByRole('button', { name: 'compare with previous retained year', exact: true }).click();
+  await waitRoute({ mode: 'compare', year: '2024', compare_year: '2023' });
+  const compareFrame = await page.locator('#atlas-frame-label').getAttribute('data-frame-id');
+  await page.reload({ waitUntil: 'domcontentloaded' });
+  await waitRoute({ mode: 'compare', year: '2024', compare_year: '2023' });
+  assert.equal(await page.locator('#atlas-frame-label').getAttribute('data-frame-id'), compareFrame);
+  report.checks.push({ name: 'compact-atlas-url-history-and-legacy-reload', passed: true,
+    default_query_length: initial.search.length, build_id: discovery.build_id,
+    company_edge_back_forward: true, repeated_selection_deduplicated: true, density_replaces: true,
+    search_year_history: true, legacy_and_compare_reload: true });
+}
+
 async function main() {
   const report = { schema_version: '1.0', status: 'failed',
     base_url: process.env.BASE_URL, expected_sha: process.env.EXPECTED_SHA || null,
@@ -472,6 +554,7 @@ async function main() {
     await verifyAccessibleAtlas(browser, reviewedUrl, 'contextual', report);
     await verifyDecisionWorkflow(page, baseUrl, report);
     await verifyPhoneCompanyFacts(page, baseUrl, report);
+    await verifyAtlasHistory(page, baseUrl, report);
     assert.deepEqual(report.page_errors, [], 'uncaught browser errors');
     report.status = 'passed';
   } catch (error) {

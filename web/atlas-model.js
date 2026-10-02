@@ -1,5 +1,26 @@
 (function (root) {
   'use strict';
+  function routeParams(fields, artifacts = []) {
+    const params = new URLSearchParams();
+    for (const [key, value] of Object.entries(fields)) {
+      if (value !== undefined && value !== null && String(value) !== '') params.set(key, String(value));
+    }
+    params.delete('limit');
+    if (params.get('mode') === 'focus' && params.has('candidate')) params.delete('mode');
+    if (params.get('source') === 'cncf') params.delete('source');
+    if (params.get('temporal_mode') === 'snapshot') params.delete('temporal_mode');
+    if (params.get('top_k') === '24') params.delete('top_k');
+    const source = fields.source || 'cncf';
+    // Full build identity remains in every saved route. An artifact is redundant
+    // only when that pinned build has one exact revision at the selected stop.
+    for (const [artifactKey, yearKey] of [['artifact', 'year'], ['compare_artifact', 'compare_year']]) {
+      const matches = artifacts.filter(item => item.source === source
+        && String(item.inventory_year) === String(fields[yearKey]));
+      if (/^[a-f0-9]{64}$/.test(params.get('build_id') || '') && matches.length === 1
+          && matches[0].artifact_id === params.get(artifactKey)) params.delete(artifactKey);
+    }
+    return params;
+  }
   function displayPosition(position) {
     return { x: 90 + position.x * 820, y: 80 + position.y * 520 };
   }
@@ -91,5 +112,5 @@
       usage() { return { bytes, entries: entries.size, max_bytes: maxBytes }; }
     };
   }
-  root.LogPoseAtlasModel = { graphFrame, reviewedGraphFrame, createCache, placementTier, companyRoute, connectionDescription };
+  root.LogPoseAtlasModel = { graphFrame, reviewedGraphFrame, createCache, placementTier, companyRoute, connectionDescription, routeParams };
 })(globalThis);

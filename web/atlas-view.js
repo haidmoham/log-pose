@@ -26,12 +26,13 @@
   let disposed = false;
   let controlTimer = null;
   let densityFrame = null;
+  let restoration = 0;
   const featuredCandidate = 'db7244f000eedc7a99c9';
   let featuredExample = false;
 
   function setStartupPending(pending) {
     const controls = document.querySelectorAll('#atlas-controls input, #atlas-controls select, #atlas-controls button, '
-      + '#atlas-previous, #atlas-next, #atlas-density, #atlas-top-k, #atlas-density-reset');
+      + '#atlas-previous, #atlas-next, #atlas-density, #atlas-top-k, #atlas-density-reset, #atlas-list-toggle');
     for (const control of controls) control.disabled = pending;
     byId('atlas-controls').setAttribute('aria-busy', String(pending));
   }
@@ -48,17 +49,21 @@
       artifact: temporalMode === 'snapshot' ? artifact.artifact_id : '' };
   }
 
-  function replaceUrl(fields) {
+  function writeUrl(fields, method = 'push', preserved = new URLSearchParams(location.search)) {
+    if (method === 'none') return;
     const params = new URLSearchParams(fields);
-    params.delete('limit');
-    const existing = new URLSearchParams(location.search);
+    const existing = preserved;
     for (const key of ['reviewed_build_id', 'reviewed_cutoff', 'reviewed_basis',
       'reviewed_predicate', 'reviewed_direction', 'reviewed_neighbor', 'reviewed_claim']) {
       if ((key === 'reviewed_neighbor' || key === 'reviewed_claim')
           && (fields.mode !== 'focus' || (existing.get('candidate') && fields.candidate !== existing.get('candidate')))) continue;
       if (existing.has(key)) params.set(key, existing.get(key));
     }
-    history.replaceState(null, '', `${location.pathname}?${params}`);
+    const query = model.routeParams(Object.fromEntries(params), manifest?.artifacts).toString();
+    const destination = `${location.pathname}${query ? `?${query}` : ''}`;
+    if (destination !== location.pathname + location.search) {
+      history[method === 'push' ? 'pushState' : 'replaceState'](null, '', destination);
+    }
   }
 
   async function normalizeReviewedLink(url, signal) {
@@ -80,17 +85,17 @@
       const exact = await reviewed.request({ ...pinned, mode: 'explain',
         ...(candidate ? { candidate } : { entity }), claim: url.get('claim'), limit: '1' }, signal);
       const record = exact.claims[0];
-      return `./index.html?${new URLSearchParams({ view: 'data', dataFamily: 'topology',
-        dataRecord: record.id, legacyReviewedScope: JSON.stringify(pinned) })}`;
+      return { destination: `./index.html?${new URLSearchParams({ view: 'data', dataFamily: 'topology',
+        dataRecord: record.id, legacyReviewedScope: JSON.stringify(pinned) })}` };
     }
     if (!candidate && entity) {
       const focus = await reviewed.request({ ...pinned, mode: 'focus', entity, top_k: '1', limit: '1' }, signal);
       candidate = focus.focus.candidate_links[0]?.candidate_id || '';
     }
     if (!candidate || url.get('cursor') || url.get('mode') === 'search') {
-      return `./index.html?${new URLSearchParams({ view: 'data', dataFamily: 'topology',
+      return { destination: `./index.html?${new URLSearchParams({ view: 'data', dataFamily: 'topology',
         dataQuery: url.get('query') || entity || '', legacyReviewedScope: JSON.stringify({ ...pinned,
-          cursor: url.get('cursor') || '', mode: url.get('mode') || 'focus' }) })}`;
+          cursor: url.get('cursor') || '', mode: url.get('mode') || 'focus' }) })}` };
     }
     const next = new URLSearchParams({ mode: 'focus', candidate,
       reviewed_build_id: discovery.build_id, reviewed_cutoff: legacySelection.cutoff,
@@ -98,11 +103,11 @@
       reviewed_direction: legacySelection.direction });
     if (url.get('neighbor')) next.set('reviewed_neighbor', url.get('neighbor'));
     for (const key of ['source', 'year', 'artifact']) if (url.get(key)) next.set(key, url.get(key));
-    history.replaceState(null, '', `${location.pathname}?${next}`);
-    return '';
+    return { params: next };
   }
 
-  async function load(fields) {
+  async function load(fields, { history: historyMode = 'push', preserved } = {}) {
+    if (historyMode !== 'none') { restoration += 1; setStartupPending(false); }
     if (fields.candidate !== featuredCandidate || fields.source !== 'cncf' || fields.year !== '2024') {
       featuredExample = false;
     }
@@ -118,7 +123,7 @@
       displayed = result;
       committedRequest = fields;
       inspected = null;
-      replaceUrl(fields);
+      writeUrl(fields, historyMode, preserved);
       render();
       byId('atlas-scene').dataset.frameReadyMs = String(performance.now() - started);
       if (!byId('atlas-scene').dataset.graphReadyMs) {
@@ -193,9 +198,7 @@
     // Presentation-only rerenders return to the company summary, not a stale edge selection.
     if (inspected) {
       inspected = null;
-      const url = new URLSearchParams(location.search);
-      url.delete('neighbor'); url.delete('evidence_cursor');
-      history.replaceState(null, '', `${location.pathname}?${url}`);
+      writeUrl(committedRequest, 'replace');
     }
     relationships.clear(); companies.clear();
     const renderStarted = performance.now();
@@ -272,8 +275,9 @@
     }
   }
 
-  async function inspect(neighbor, cursor = '') {
+  async function inspect(neighbor, cursor = '', { history: historyMode = 'push', preserved } = {}) {
     if (displayed?.operation !== 'focus') return;
+    if (historyMode !== 'none') { restoration += 1; setStartupPending(false); }
     const ticket = ++generation;
     controller?.abort(); controller = new AbortController();
     const frame = displayed;
@@ -320,11 +324,9 @@
       inspector.append(navigate, node('p', 'supporting membership is not competition, adoption, revenue or investment.'));
       relationships.show(frame, neighbor, inspector,
         () => displayed?.frame_id === frame.frame_id && inspected === evidence);
-      const params = new URLSearchParams(location.search); params.set('neighbor', neighbor);
-      if (cursor) params.set('evidence_cursor', cursor);
-      else params.delete('evidence_cursor');
-      history.replaceState(null, '', `${location.pathname}?${params}`);
+      writeUrl({ ...committedRequest, neighbor, ...(cursor ? { evidence_cursor: cursor } : {}) }, historyMode, preserved);
       status('');
+      return evidence;
     } catch (error) {
       if (!disposed && ticket === generation && error.name !== 'AbortError') status(error.message, true);
     }
@@ -336,14 +338,22 @@
       .sort((left, right) => left.inventory_year - right.inventory_year || left.artifact_id.localeCompare(right.artifact_id));
   }
 
+  function scopedRequest(revisionChanged = false) {
+    if (revisionChanged && committedRequest?.placement) return base('regions');
+    if (['focus', 'compare'].includes(displayed?.operation)) return base('focus', { candidate: committedRequest.candidate });
+    if (displayed?.operation === 'search') return base('search', {
+      query: committedRequest.query || '', ...(committedRequest.placement ? { placement: committedRequest.placement } : {})
+    });
+    return base('regions');
+  }
+
   function step(amount) {
     const stops = sourceStops();
     const index = stops.findIndex(item => item.artifact_id === byId('atlas-revision').value);
     const stop = stops[index + amount];
     if (!stop) { status('no retained stop in that direction.'); return; }
     byId('atlas-revision').value = stop.artifact_id;
-    load(base(displayed?.operation === 'focus' ? 'focus' : 'regions',
-      displayed?.operation === 'focus' ? { candidate: displayed.focus.id } : {}));
+    load(scopedRequest(true));
   }
 
   function comparePrevious() {
@@ -378,6 +388,10 @@
   }
 
   async function start() {
+    const restoreTicket = ++restoration;
+    root.clearTimeout(controlTimer);
+    if (densityFrame !== null) { root.cancelAnimationFrame(densityFrame); densityFrame = null; }
+    currentRequest = null;
     setStartupPending(true);
     status('loading retained sources…');
     const ticket = ++generation;
@@ -387,9 +401,11 @@
     try {
       let url = new URLSearchParams(location.search);
       if (url.get('layer') === 'reviewed') {
-        const destination = await normalizeReviewedLink(url, signal);
-        if (destination) { location.replace(destination); return; }
-        url = new URLSearchParams(location.search);
+        const normalized = await normalizeReviewedLink(url, signal);
+        if (disposed || restoreTicket !== restoration || ticket !== generation || signal.aborted) return;
+        if (normalized.destination) { location.replace(normalized.destination); return; }
+        url = normalized.params;
+        history.replaceState(null, '', `${location.pathname}?${url}`);
       }
       const discoveryRequest = { mode: 'discover' };
       if (url.get('build_id')) discoveryRequest.build_id = url.get('build_id');
@@ -424,19 +440,37 @@
       byId('atlas-limitations').replaceChildren(...manifest.limitations.map(text => node('li', text)));
       const isFeaturedEntry = !['candidate', 'mode', 'query', 'placement', 'source', 'year', 'artifact', 'temporal_mode']
         .some(key => url.has(key));
-      const mode = url.get('candidate') || isFeaturedEntry ? 'focus' : url.get('mode') === 'search' ? 'search' : 'regions';
-      const fields = base(mode, isFeaturedEntry ? { candidate: featuredCandidate } : {});
+      const mode = url.get('mode') === 'compare' && url.get('candidate') ? 'compare'
+        : url.get('candidate') || isFeaturedEntry ? 'focus' : url.get('mode') === 'search' ? 'search' : 'regions';
+      let fields = base(mode, isFeaturedEntry ? { candidate: featuredCandidate } : {});
       featuredExample = isFeaturedEntry;
-      for (const key of ['candidate', 'query', 'placement', 'cursor']) if (url.get(key)) fields[key] = url.get(key);
-      let initialFrame = await load(fields);
-      if (isFeaturedEntry && !initialFrame) initialFrame = await load(base('regions'));
-      if (!disposed && initialFrame && displayed === initialFrame && url.get('neighbor') && displayed.operation === 'focus') {
-        await inspect(url.get('neighbor'), url.get('evidence_cursor') || '');
+      for (const key of ['candidate', 'query', 'placement', 'cursor', 'artifact', 'compare_year', 'compare_artifact']) {
+        if (url.get(key)) fields[key] = url.get(key);
+      }
+      if (mode === 'compare' && fields.temporal_mode === 'snapshot' && !fields.compare_artifact) {
+        const prior = manifest.artifacts.filter(item => item.source === fields.source
+          && String(item.inventory_year) === fields.compare_year);
+        if (prior.length === 1) fields.compare_artifact = prior[0].artifact_id;
+      }
+      let initialFrame = await load(fields, { history: 'none' });
+      if (isFeaturedEntry && !initialFrame && restoreTicket === restoration) {
+        fields = base('regions');
+        initialFrame = await load(fields, { history: 'none' });
+      }
+      if (!disposed && restoreTicket === restoration && initialFrame && displayed === initialFrame
+          && url.get('neighbor') && displayed.operation === 'focus') {
+        const evidence = await inspect(url.get('neighbor'), url.get('evidence_cursor') || '', { history: 'none' });
+        if (!evidence) return;
+        fields = { ...fields, neighbor: url.get('neighbor'),
+          ...(url.get('evidence_cursor') ? { evidence_cursor: url.get('evidence_cursor') } : {}) };
+      }
+      if (!disposed && restoreTicket === restoration && initialFrame && displayed === initialFrame) {
+        writeUrl(fields, 'replace', url);
       }
     } catch (error) {
       if (!disposed && ticket === generation && error.name !== 'AbortError') status(error.message, true);
     } finally {
-      if (!disposed && manifest) setStartupPending(false);
+      if (!disposed && restoreTicket === restoration && manifest) setStartupPending(false);
     }
   }
 
@@ -446,8 +480,7 @@
   for (const id of ['atlas-revision', 'atlas-mode', 'atlas-top-k']) byId(id).addEventListener('change', () => {
     root.clearTimeout(controlTimer);
     controlTimer = root.setTimeout(() => {
-      if (manifest) load(base(displayed?.operation === 'focus' ? 'focus' : 'regions',
-        displayed?.operation === 'focus' ? { candidate: displayed.focus.id } : {}));
+      if (manifest) load(scopedRequest(id === 'atlas-revision'), { history: id === 'atlas-top-k' ? 'replace' : 'push' });
     }, 80);
   });
   function previewDensity(value) {
@@ -486,8 +519,9 @@
     if (displayed) render();
   });
   byId('atlas-export').addEventListener('click', exportInvestigation);
+  root.addEventListener('popstate', () => { if (!disposed) start(); });
   root.addEventListener('pagehide', () => {
-    disposed = true; generation += 1; controller?.abort(); root.clearTimeout(controlTimer); client.clear(); relationships.dispose(); companies.clear();
+    restoration += 1; disposed = true; generation += 1; controller?.abort(); root.clearTimeout(controlTimer); client.clear(); relationships.dispose(); companies.clear();
     if (densityFrame !== null) root.cancelAnimationFrame(densityFrame);
   });
   root.addEventListener('pageshow', event => { if (event.persisted) { disposed = false; start(); } });
