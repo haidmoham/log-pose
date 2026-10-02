@@ -30,8 +30,7 @@
 .is-context-off .constellation-context { visibility: hidden; }
 .constellation-thread { stroke: #8b719c; stroke-width: .9; opacity: var(--thread-opacity); vector-effect: non-scaling-stroke; }
 .constellation-thread.is-hovered, .constellation-thread.is-selected { stroke: #ab624e; opacity: .95; stroke-width: 1.2; }
-/* SVG groups include the label/halo gap; make the whole button bounds clickable. */
-.constellation-node { cursor: pointer; outline: none; pointer-events: bounding-box; }
+.constellation-node { cursor: pointer; outline: none; }
 .constellation-hit { fill: transparent; }
 .constellation-aura { fill: var(--node-tint, #cba6ee); pointer-events: none; transform-box: fill-box; transform-origin: center; }
 .constellation-aura-inner { --aura-low: .085; --aura-high: .14; opacity: var(--aura-low); animation: constellation-breathe 5.4s ease-in-out infinite; }
@@ -53,10 +52,11 @@
 .constellation-node.is-nearby:not(.is-absent) .constellation-aura { fill: #cc91a5; }
 .constellation-node.is-nearby:not(.is-absent) .constellation-aura-inner { --aura-low: .15; --aura-high: .24; }
 .constellation-node.is-nearby:not(.is-absent) .constellation-aura-outer { --aura-low: .055; --aura-high: .1; }
-.constellation-label { fill: #4e4359; font: 13px/1 var(--sans); paint-order: stroke; stroke: #fcfbf7; stroke-width: 4px; stroke-linejoin: round; opacity: 0; pointer-events: none; }
-.constellation-node.has-label .constellation-label { opacity: .9; }
+/* Collision-hidden labels leave hit geometry; visible glyphs remain clickable. */
+.constellation-label { display: none; fill: #4e4359; font: 13px/1 var(--sans); paint-order: stroke; stroke: #fcfbf7; stroke-width: 4px; stroke-linejoin: round; opacity: 0; pointer-events: visiblePainted; }
+.constellation-node.has-label .constellation-label { display: block; opacity: .9; }
 .constellation-node.is-focus .constellation-label, .constellation-node.is-selected .constellation-label,
-.constellation-node.is-hovered .constellation-label, .constellation-node:focus-visible .constellation-label { fill: #8e453b; opacity: 1; }
+.constellation-node.is-hovered .constellation-label, .constellation-node:focus-visible .constellation-label { display: block; fill: #8e453b; opacity: 1; }
 .constellation-node:focus-visible .constellation-selection { stroke-width: 2; }
 .constellation-node:focus-visible .constellation-core { stroke-width: 3; }
 .constellation-footer { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 0 24px 8px; }
