@@ -1361,16 +1361,19 @@ test('company snapshot separates reported economics, fictional teaching and deep
     const snapshot = document.querySelector('.company-snapshot');
     assert(snapshot);
     assert.deepEqual([...snapshot.querySelectorAll('.company-economic-card strong')]
-      .map(item => item.textContent), ['$963.6m', 'Unknown', 'Unknown']);
+      .map(item => item.textContent), ['$963.6m', '+24%', '−35.8%']);
     assert.match(snapshot.textContent, /2024-01-01 to 2024-12-31 · filed 2025-02-18/);
     assert.match(snapshot.textContent, /filings selected through 2025-04-01/);
     assert.match(snapshot.textContent, /annual revenue ÷ 12 is not MRR/);
+    assert.match(snapshot.querySelector('.company-metric-gaps').textContent, /MRR: Unknown.*ARR: Unknown.*retention: Unknown.*cash flow: Unknown/);
+    assert.equal(snapshot.lastElementChild.className, 'company-further-reading');
+    assert.equal(snapshot.querySelector('.metric-definitions').open, false);
     assert.match(snapshot.querySelector('.fictional-example').textContent, /fictional teaching example/);
     assert.match(snapshot.querySelector('.fictional-example').textContent, /1,000 gp.*12,000 gp/);
     assert.equal(document.querySelector('.company-fact-sheet').open, false);
     assert.match(document.querySelector('.company-fact-sheet').textContent, /revenue change:.*derived/);
-    [...snapshot.querySelectorAll('button')]
-      .find(button => button.textContent === 'inspect the exact reported revenue →').click();
+    [...snapshot.querySelectorAll('a')]
+      .find(anchor => anchor.textContent === 'inspect the exact reported revenue →').click();
     assert.equal(new URL(dom.window.location.href).searchParams.get('dataRecord'), 'sec:10');
     await waitFor(() => document.querySelector('#data-inspector')?.textContent.includes('963642000'));
     assert.match(document.querySelector('#data-inspector').textContent, /963642000/);
@@ -1384,6 +1387,9 @@ test('private-company snapshot keeps missing revenue unknown and sourced funding
     const { document } = dom.window;
     assert.deepEqual([...document.querySelectorAll('.company-economic-card strong')]
       .map(item => item.textContent), ['Unknown', 'Unknown', 'Unknown']);
+    assert(document.querySelector('.company-economic-grid').classList.contains('is-unavailable'));
+    assert.equal(document.querySelectorAll('.company-economic-card a').length, 0);
+    assert.match(document.querySelector('.company-metric-gaps').textContent, /ARR: Unknown/);
     assert.match(document.querySelector('.company-fact-sheet').textContent, /2022-02-24.*Series D/);
     assert.match(document.querySelector('.company-fact-sheet').textContent, /not a complete financing history/);
     assert.equal(document.querySelector('.company-fact-sheet').open, false);
@@ -1402,8 +1408,8 @@ test('non-default snapshot period survives exact evidence navigation and browser
     const { document, history } = dom.window;
     assert.equal(new URL(dom.window.location.href).searchParams.get('year'), '2022');
     assert.equal(document.querySelector('.company-economic-card strong').textContent, '$585.9m');
-    [...document.querySelectorAll('.company-snapshot button')]
-      .find(button => button.textContent === 'inspect the exact reported revenue →').click();
+    [...document.querySelectorAll('.company-snapshot a')]
+      .find(anchor => anchor.textContent === 'inspect the exact reported revenue →').click();
     assert.equal(new URL(dom.window.location.href).searchParams.get('dataRecord'), 'sec:4');
     history.back();
     await waitFor(() => document.querySelector('.company-snapshot'));
@@ -1413,6 +1419,39 @@ test('non-default snapshot period survives exact evidence navigation and browser
     year.value = '2021'; year.dispatchEvent(new dom.window.Event('change'));
     assert.equal(new URL(dom.window.location.href).searchParams.get('year'), '2021');
     assert.equal(document.querySelector('.company-economic-card strong').textContent, '$387.9m');
+    assert.deepEqual(dom.window.__routeErrors, []);
+  } finally { dom.window.close(); }
+});
+
+
+test('stat-sheet derived metrics link every retained input and bottom reading keeps dates', async () => {
+  const dom = await page('/index.html?view=explore&company=gitlab&year=2024');
+  try {
+    const { document } = dom.window;
+    const cards = [...document.querySelectorAll('.company-economic-card')];
+    assert.deepEqual(cards.map(card => card.querySelector('strong').textContent), ['$579.9m', '+36.7%', '−73.1%']);
+    assert.deepEqual(cards.map(card => card.querySelector('.eyebrow').textContent),
+      ['annual revenue', 'annual revenue growth', 'net-income margin']);
+    const pilot = JSON.parse(fsSync.readFileSync(path.join(web, 'dashboard.json'), 'utf8'));
+    const fact = (concept, year = 2024) => pilot.financials.cells.find(cell =>
+      cell.slug === 'gitlab' && cell.year === year && cell.concept === concept).selected;
+    const inputIds = card => [...card.querySelectorAll('a')].map(anchor => new URL(anchor.href).searchParams.get('dataRecord'));
+    assert.deepEqual(inputIds(cards[1]), [`sec:${fact('revenue').fact_id}`, `sec:${fact('revenue', 2023).fact_id}`]);
+    assert.deepEqual(inputIds(cards[2]), [`sec:${fact('net_income').fact_id}`, `sec:${fact('revenue').fact_id}`]);
+    assert.match(document.querySelector('.company-snapshot').textContent, /2023-02-01 to 2024-01-31 · filed 2024-03-26/);
+    const reading = document.querySelector('.company-further-reading');
+    assert.match(reading.textContent, /sources & further reading.*product page · captured.*filed 2024-03-26/s);
+    assert.match(reading.textContent, /original page URL · current content may differ/);
+    assert.equal(reading.textContent.includes('dated archived page'), false);
+    assert.equal([...reading.querySelectorAll('a')].some(anchor => anchor.href.endsWith('.warc.gz')), false);
+    for (const anchor of cards.flatMap(card => [...card.querySelectorAll('a')])) {
+      const url = new URL(anchor.href);
+      assert.equal(url.searchParams.get('dataCompany'), 'gitlab');
+      assert(url.searchParams.get('dataBuild'));
+      assert.equal(url.searchParams.get('year'), '2024');
+    }
+    cards[1].querySelectorAll('a')[1].click();
+    assert.equal(new URL(dom.window.location.href).searchParams.get('dataRecord'), `sec:${fact('revenue', 2023).fact_id}`);
     assert.deepEqual(dom.window.__routeErrors, []);
   } finally { dom.window.close(); }
 });

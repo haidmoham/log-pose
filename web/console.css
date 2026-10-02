@@ -949,7 +949,7 @@ footer { display: flex; justify-content: space-between; gap: 20px; padding: 18px
   .decision-evidence-row { grid-template-columns: 1fr; }
 }
 
-/* A company starts with meaning, then scale, then the full retained record. */
+/* A compact scan keeps metric basis and deeper source navigation together. */
 .company-snapshot { padding: 18px 0 24px; }
 .company-snapshot h4 { margin: 8px 0 14px; font-size: 18px; }
 .company-business { display: grid; grid-template-columns: 115px minmax(0, 1fr); gap: 8px 16px; margin: 15px 0; }
@@ -971,3 +971,17 @@ footer { display: flex; justify-content: space-between; gap: 20px; padding: 18px
 
 .fictional-example { margin: 14px 0; padding: 12px 15px; border: 1px dashed var(--rule); border-radius: 7px; font-size: 12px; line-height: 1.6; }
 .fictional-example summary { cursor: pointer; color: var(--accent-deep); font-weight: 650; }
+
+.company-product { margin: 4px 0; font-size: 15px; line-height: 1.5; }
+.scan-lens { max-width: 90ch; margin: 10px 0 16px; color: var(--muted-strong); font-size: 12px; line-height: 1.5; }
+.metric-sources { display: flex; flex-wrap: wrap; gap: 5px 12px; margin-top: 10px; }
+.metric-sources .text-button { font-size: 11px; }
+.company-metric-gaps { padding: 10px 12px; border: 1px dashed var(--rule); border-radius: 5px; font-size: 12px; line-height: 1.7; }
+.metric-definitions { margin: 12px 0; font-size: 12px; }
+.metric-definitions > summary { color: var(--accent-deep); cursor: pointer; }
+.snapshot-actions { display: flex; flex-wrap: wrap; gap: 10px; margin: 16px 0; }
+.company-further-reading { margin-top: 20px; padding-top: 14px; border-top: 1px solid var(--rule); }
+.company-further-reading > a { display: block; width: fit-content; margin: 8px 0; font-size: 12px; }
+
+.company-economic-grid.is-unavailable .company-economic-card { padding: 10px 12px; }
+.company-economic-grid.is-unavailable .company-economic-card strong { margin: 4px 0; font-size: 18px; }

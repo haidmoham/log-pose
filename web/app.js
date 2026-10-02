@@ -125,61 +125,100 @@ function companyRelationships(slug) {
   return section;
 }
 
+function retainedSourceLink(label, company, family, recordId) {
+  const anchor = node('a', label, 'text-button');
+  const fields = { view: 'data', dataFamily: family, dataCompany: company.slug,
+    dataYear: 'all', dataQuery: '', dataRecord: recordId, dataBuild: dataIndex.build_id };
+  anchor.href = `./index.html?${new URLSearchParams({ ...fields, year: String(state.year) })}`;
+  anchor.addEventListener('click', event => {
+    if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    event.preventDefault();
+    commitState(fields, { top: true, focus: '#data-inspector' });
+  });
+  return anchor;
+}
+
 function companySnapshot(company) {
   const snapshot = node('section', '', 'company-snapshot');
   const page = evidence(company.slug, state.year);
-  const quote = page && data.reviewed_quotes.find(item => item.snapshot_id === page.snapshot_id);
   const current = financials(company.slug, state.year);
-  const fact = data.financials.cells.find(cell => cell.slug === company.slug
-    && cell.year === state.year && cell.concept === 'revenue')?.selected;
-  snapshot.append(node('p', '02 / understand the business', 'eyebrow'),
-    node('h4', 'business before scale'));
-  const business = node('dl', '', 'company-business');
-  business.append(node('dt', 'product'), node('dd', company.purpose.replace('Company homepage candidate; ', '')),
-    node('dt', 'buyer'), node('dd', 'not separately reviewed in this pilot'),
-    node('dt', 'revenue model'), node('dd', 'subscription, usage and services mix not reviewed here'));
-  snapshot.append(business, node('p', 'product summary is pilot research context. buyer, pricing model and paid adoption need their own evidence.', 'caption'));
-  if (quote) {
-    const source = node('button', `read the product passage · captured ${page.captured_at.slice(0, 10)} →`, 'text-button');
-    source.type = 'button';
-    source.addEventListener('click', () => commitState({ view: 'data', dataFamily: 'pages',
-      dataCompany: company.slug, dataYear: 'all', dataQuery: '', dataRecord: `page:${page.snapshot_id}`,
-      dataBuild: dataIndex.build_id }, { top: true, focus: '#data-inspector' }));
-    snapshot.append(node('p', quote.quote, 'source-quote'), source);
-  }
-  snapshot.append(append(node('div', '', 'section-controls'), node('h4', 'economic snapshot'), yearControl()));
+  const selectedFact = (concept, year = state.year) => data.financials.cells.find(cell =>
+    cell.slug === company.slug && cell.year === year && cell.concept === concept)?.selected;
+  const revenue = selectedFact('revenue');
+  const priorRevenue = selectedFact('revenue', state.year - 1);
+  const netIncome = selectedFact('net_income');
+  snapshot.append(append(node('div', '', 'section-controls'),
+    append(node('div'), node('p', '02 / company stat sheet', 'eyebrow'), node('h4', 'a quick first pass')), yearControl()),
+    node('p', company.purpose.replace('Company homepage candidate; ', ''), 'company-product'),
+    node('p', 'product: pilot research context · buyer and revenue model: not separately reviewed', 'caption'),
+    node('p', 'first-pass question: what does it sell, how large is it, how fast is it growing, and is it profitable? this ordering is a research lens, not a company score.', 'scan-lens'));
+
   const metrics = node('div', '', 'company-economic-grid');
-  for (const [label, value, basis] of [
-    ['annual revenue', current.revenue === null ? 'Unknown' : money(current.revenue),
-      current.revenue === null ? 'no selected SEC revenue fact' : 'reported · USD'],
-    ['MRR', 'Unknown', 'no retained monthly recurring-revenue metric'],
-    ['ARR', 'Unknown', 'no retained annual recurring-revenue metric']
-  ]) {
+  const metricRows = [
+    { label: 'annual revenue', value: current.revenue === null ? 'Unknown' : money(current.revenue),
+      basis: current.revenue === null ? 'no selected SEC revenue fact' : 'reported · USD',
+      sources: revenue ? [['inspect the exact reported revenue →', revenue]] : [] },
+    { label: 'annual revenue growth', value: current.growth === null ? 'Unknown' : percent(current.growth),
+      basis: current.growth === null ? 'not derivable from retained adjacent annual periods'
+        : 'derived · (current annual revenue ÷ prior annual revenue − 1) × 100',
+      sources: current.growth === null ? [] : [['current revenue →', revenue], ['prior revenue →', priorRevenue]] },
+    { label: 'net-income margin', value: current.margin === null ? 'Unknown' : percent(current.margin),
+      basis: current.margin === null ? 'not derivable from aligned retained revenue and net-income facts'
+        : 'derived · same-period net income ÷ revenue × 100',
+      sources: current.margin === null ? [] : [['net income →', netIncome], ['revenue →', revenue]] }
+  ];
+  for (const item of metricRows) {
     const card = node('article', '', 'company-economic-card');
-    card.append(node('p', label, 'eyebrow'), node('strong', value), node('p', basis, 'caption'));
-    metrics.append(card);
+    card.append(node('p', item.label, 'eyebrow'), node('strong', item.value), node('p', item.basis, 'caption'));
+    const sources = node('div', '', 'metric-sources');
+    item.sources.forEach(([label, fact]) => sources.append(retainedSourceLink(label, company, 'sec', `sec:${fact.fact_id}`)));
+    card.append(sources); metrics.append(card);
   }
-  snapshot.append(metrics, node('p', 'annual revenue is recognized over a reporting period. MRR and ARR describe recurring-revenue run rates under a stated definition; annual revenue ÷ 12 is not MRR.', 'metric-explanation'));
+  if (metricRows.every(item => item.value === 'Unknown')) metrics.classList.add('is-unavailable');
+  snapshot.append(metrics);
+  if (current.revenue !== null) snapshot.append(node('p',
+    `reported period ${current.periodStart} to ${current.periodEnd} · filed ${current.filed}.`, 'caption'));
+  snapshot.append(node('p', `filings selected through ${data.financials.as_of}. historical periods, not current financials or a year-end information replay.`, 'caveat'));
+  const gaps = node('p', '', 'company-metric-gaps');
+  gaps.append(node('strong', 'not retained: '), document.createTextNode('MRR: Unknown · ARR: Unknown · retention: Unknown · cash flow: Unknown.'));
+  snapshot.append(gaps, node('p', 'net-income margin is not operating margin, gross margin or cash flow. recurrence and retention need their own company-defined evidence.', 'caption'));
+
+  const definitions = node('details', '', 'metric-definitions');
+  definitions.append(node('summary', 'how to read the metrics'),
+    node('p', 'annual revenue is recognized over a reporting period. MRR and ARR describe recurring-revenue run rates under a stated definition; annual revenue ÷ 12 is not MRR.', 'metric-explanation'),
+    node('p', 'growth compares this company’s adjacent selected annual periods. net-income margin includes all reported net income effects, including taxes and non-operating items. neither number measures valuation or investment quality.', 'metric-explanation'));
+  snapshot.append(definitions);
   const lesson = node('details', '', 'fictional-example');
   lesson.append(node('summary', 'learn with a fictional RuneScape example'),
     node('p', 'imagine a Varrock teleport-pass business: 100 subscribers each pay 10 gp per month. its MRR is 1,000 gp; annualizing that same recurring base gives 12,000 gp ARR.'),
     node('p', 'another 300 gp from one-off teleport-tab sales is sales revenue, not MRR. subscriber churn, new members and price changes would change the recurring run rate.'),
     node('p', 'fictional teaching example, not a RuneScape mechanic or company observation. ARR is an annualized snapshot, not guaranteed future revenue; real companies define recurring and usage-based metrics differently.', 'caveat'));
   snapshot.append(lesson);
-  if (current.revenue !== null) {
-    snapshot.append(node('p', `reported period ${current.periodStart} to ${current.periodEnd} · filed ${current.filed}.`, 'caption'));
-    const source = node('button', 'inspect the exact reported revenue →', 'text-button');
-    source.type = 'button';
-    source.addEventListener('click', () => commitState({ view: 'data', dataFamily: 'sec',
-      dataCompany: company.slug, dataYear: 'all', dataQuery: '', dataRecord: `sec:${fact.fact_id}`,
-      dataBuild: dataIndex.build_id }, { top: true, focus: '#data-inspector' }));
-    snapshot.append(source);
-  }
-  snapshot.append(node('p', `filings selected through ${data.financials.as_of}. this reporting-period view is not evidence available at that year-end or a historical replay.`, 'caveat'));
+  const actions = node('div', '', 'snapshot-actions');
   const brief = node('button', 'form your own judgment · open decision brief →', 'quiet-button');
   brief.type = 'button';
   brief.addEventListener('click', () => commitState({ view: 'compare', compareSlugs: [company.slug], company: null }, { top: true, focus: '#decision-question' }));
-  snapshot.append(brief, node('p', 'use supporting and challenging sources. the next research decision remains yours.', 'caption'));
+  const scan = node('button', `scan the ${data.companies.filter(item => item.cik).length} public-company records →`, 'quiet-button');
+  scan.type = 'button';
+  scan.addEventListener('click', () => commitState({ view: 'overview', company: company.cik ? company.slug : null }, { top: true }));
+  actions.append(scan, brief); snapshot.append(actions);
+
+  const reading = node('section', '', 'company-further-reading');
+  reading.append(node('h4', 'sources & further reading'));
+  if (page?.snapshot_id) {
+    reading.append(retainedSourceLink(`product page · captured ${page.captured_at?.slice(0, 10) || 'date unavailable'} · ${page.status === 'short' ? 'short text' : page.provider} →`,
+      company, 'pages', `page:${page.snapshot_id}`));
+    if (page.provider === 'wayback' && page.archive_url) reading.append(link('dated archived page ↗', page.archive_url));
+    else if (page.source_url) reading.append(link('original page URL · current content may differ ↗', page.source_url));
+  } else reading.append(node('p', 'no product-page capture retained for this selected period.', 'caption'));
+  for (const [label, fact] of [['annual revenue', revenue], ['net income', netIncome]]) {
+    if (fact) reading.append(retainedSourceLink(`${label} · ${fact.start_date} to ${fact.end_date} · filed ${fact.filed_date} →`,
+      company, 'sec', `sec:${fact.fact_id}`));
+  }
+  const allSources = node('a', 'all retained company records →', 'text-button');
+  allSources.href = `./index.html?${new URLSearchParams({ view: 'data', dataCompany: company.slug, dataBuild: dataIndex.build_id })}`;
+  reading.append(allSources, node('p', 'these links open retained observations, not an exhaustive reading list. funding and relationship evidence continue in the fact sheet below.', 'caption'));
+  snapshot.append(reading);
   return snapshot;
 }
 
