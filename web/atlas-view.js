@@ -14,6 +14,7 @@
     buildMismatchMessage: 'snapshot changed; reload to discover its version'
   });
   const relationships = root.LogPoseAtlasRelationships;
+  const companies = root.LogPoseAtlasCompany;
   let manifest = null;
   let displayed = null;
   let inspected = null;
@@ -187,17 +188,16 @@
     return anchor;
   }
 
-  function selectNode(id, result) {
-    const candidate = result.focus?.id === id ? result.focus
-      : result.edges?.find(edge => edge.candidate_id === id)?.candidate
-        || result.candidates?.find(item => item.id === id);
-    const route = candidate && model.companyRoute(candidate, result.selection.year);
-    if (route) root.location.assign(route);
-    else focus(id);
-  }
 
   function render(result = displayed, animate = true) {
-    relationships.clear();
+    // Presentation-only rerenders return to the company summary, not a stale edge selection.
+    if (inspected) {
+      inspected = null;
+      const url = new URLSearchParams(location.search);
+      url.delete('neighbor'); url.delete('evidence_cursor');
+      history.replaceState(null, '', `${location.pathname}?${url}`);
+    }
+    relationships.clear(); companies.clear();
     const renderStarted = performance.now();
     const scene = byId('atlas-scene');
     const results = byId('atlas-results');
@@ -210,8 +210,7 @@
     inspector.dataset.frameId = result.frame_id;
     inspector.replaceChildren(node('p', result.operation === 'focus' ? 'selected candidate' : 'how to use this view', 'eyebrow'),
       node('h3', result.operation === 'focus' ? result.focus.name : 'start with a source'),
-      node('p', result.operation === 'focus'
-        ? `${result.returned} visible co-listings from ${result.count.value} exact neighbors in this source frame. select a connection to inspect its retained rows.`
+      node('p', result.operation === 'focus' ? 'business facts first; connection evidence below.'
         : 'choose a category or search for a candidate. each view stays tied to the source and time shown above.'));
     if (result.operation === 'regions') {
       const grid = node('div', '', 'atlas-region-grid');
@@ -237,7 +236,7 @@
           node('p', 'this search returned no visible candidates in the selected source frame. broaden the search or change the source revision.'));
       } else {
         if (!listOnly) scene.append(root.LogPoseTemporalGraph.render(model.graphFrame(result), {
-          onSelectCandidate: focus, onSelectEdge: inspect, onSelectNode: id => selectNode(id, result),
+          onSelectCandidate: focus, onSelectEdge: inspect, onSelectNode: focus,
           describeRelationship: async (id, signal) => {
             const edge = result.edges?.find(item => item.candidate_id === id);
             if (!edge) return '';
@@ -250,7 +249,9 @@
         results.append(node('p', 'keyboard and list access · the same visible candidates'), renderList(candidates, focused));
       }
       if (focused) {
-        inspector.append(companyLink(result.focus, result.selection.year));
+        companies.show(result.focus, inspector, () => displayed?.frame_id === result.frame_id && inspected === null);
+        if (!result.focus.identity_review?.pilot_slug) inspector.append(companyLink(result.focus, result.selection.year));
+        inspector.append(node('p', `${result.returned} visible co-listings from ${result.count.value} exact neighbors. select a line for retained source rows.`, 'atlas-connection-count'));
         inspector.append(node('p', 'a co-listing is a shared source placement, not evidence of competition or adoption.', 'atlas-inspector-note'));
         const compare = node('button', 'compare with previous retained year', 'quiet-button');
         compare.type = 'button'; compare.addEventListener('click', comparePrevious);
@@ -281,7 +282,7 @@
       const evidence = await client.request({ mode: 'explain', build_id: frame.build_id, ...frame.selection,
         candidate: frame.focus.id, neighbor, cursor }, controller.signal);
       if (disposed || ticket !== generation || displayed.frame_id !== frame.frame_id || evidence.frame_id !== frame.frame_id) return;
-      inspected = evidence;
+      inspected = evidence; companies.clear();
       const inspector = byId('atlas-inspector');
       inspector.replaceChildren(node('h3', `${evidence.subject.name} ↔ ${evidence.object.name}`),
         node('p', `${evidence.count.value} exact shared placements · unreviewed co-listing`),
@@ -486,7 +487,7 @@
   });
   byId('atlas-export').addEventListener('click', exportInvestigation);
   root.addEventListener('pagehide', () => {
-    disposed = true; generation += 1; controller?.abort(); root.clearTimeout(controlTimer); client.clear(); relationships.dispose();
+    disposed = true; generation += 1; controller?.abort(); root.clearTimeout(controlTimer); client.clear(); relationships.dispose(); companies.clear();
     if (densityFrame !== null) root.cancelAnimationFrame(densityFrame);
   });
   root.addEventListener('pageshow', event => { if (event.persisted) { disposed = false; start(); } });

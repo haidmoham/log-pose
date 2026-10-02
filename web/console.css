@@ -985,3 +985,30 @@ footer { display: flex; justify-content: space-between; gap: 20px; padding: 18px
 
 .company-economic-grid.is-unavailable .company-economic-card { padding: 10px 12px; }
 .company-economic-grid.is-unavailable .company-economic-card strong { margin: 4px 0; font-size: 18px; }
+
+/* Company reading hierarchy: fewer boxes, legible captions, two useful columns. */
+.detail-panel:has(.company-snapshot) { padding: 24px 28px; }
+.detail-panel:has(.company-snapshot) .detail-head { margin-bottom: 14px; padding-bottom: 16px; }
+.company-snapshot { padding: 4px 0 20px; }
+.company-snapshot > .section-controls { justify-content: space-between; gap: 18px; margin-bottom: 14px; padding: 0; border: 0; border-radius: 0; box-shadow: none; background: none; }
+.company-snapshot h4 { font-size: 20px; line-height: 1.25; margin: 5px 0 10px; }
+.company-snapshot .caption { font-size: 13px; line-height: 1.5; text-transform: none; letter-spacing: normal; margin: 8px 0 0; }
+.company-product { font-size: 18px; line-height: 1.45; }
+.scan-lens { max-width: none; font-size: 14px; margin: 10px 0 18px; }
+.company-economic-grid { gap: 16px; }
+.company-economic-card { padding: 18px 20px; }
+.company-economic-card .eyebrow { font: 600 14px/1.4 var(--sans); letter-spacing: normal; text-transform: none; }
+.company-economic-card strong { font-size: clamp(32px, 3.2vw, 46px); margin: 10px 0 8px; font-variant-numeric: tabular-nums; }
+.company-snapshot .text-button { display: inline-block; min-height: 0; padding: 2px 0; border: 0; border-radius: 0; background: none; box-shadow: none; font-size: 13px; text-decoration: underline; text-underline-offset: 3px; }
+.company-snapshot .caveat { font-size: 13px; line-height: 1.5; padding: 10px 12px; margin: 12px 0; }
+.company-metric-gaps { font-size: 13px; margin: 12px 0 8px; }
+.company-reading-grid { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 32px; margin-top: 20px; padding-top: 18px; border-top: 1px solid var(--rule); }
+.company-learning { min-width: 0; }
+.metric-definitions { margin-top: 0; font-size: 14px; }
+.metric-explanation, .fictional-example { font-size: 14px; line-height: 1.55; }
+.fictional-example { padding: 12px 14px; }
+.company-further-reading { min-width: 0; margin: 0; padding: 0; border: 0; }
+.company-further-reading > a { display: block; width: fit-content; margin: 9px 0; font-size: 14px; line-height: 1.5; overflow-wrap: anywhere; }
+.snapshot-actions { margin-bottom: 0; }
+@media (max-width: 900px) { .company-reading-grid { grid-template-columns: 1fr; gap: 20px; } }
+@media (max-width: 600px) { .detail-panel:has(.company-snapshot) { padding: 18px; } .company-economic-grid { gap: 10px; } .company-economic-card strong { font-size: 34px; } }

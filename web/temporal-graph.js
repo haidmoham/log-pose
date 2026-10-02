@@ -284,7 +284,7 @@
       const isNew = changes.get(node.id)?.status === 'newly_observed_in_selected_frame';
       const group = svgElement('g', { class: `constellation-node${isFocus ? ' is-focus' : ''}${isAbsent ? ' is-absent' : ''}${isNew ? ' is-new' : ''}${node.id === selected ? ' is-selected' : ''}`,
         transform: `translate(${point.x} ${point.y})`, role: 'button', tabindex: '0',
-        'aria-label': options.onSelectNode ? `open ${node.name}${node.identity_review?.pilot_slug ? ' company snapshot' : ' candidate context'}${isAbsent ? ', absent from selected slice' : ''}${node.connection_label ? `, ${node.connection_label}` : ''}` : !frame.focus ? `explore ${node.name}` : isFocus ? `${node.name}, pinned ${semantics.focusKind || 'candidate'}${isAbsent ? ', absent from this slice' : ''}`
+        'aria-label': options.onSelectNode ? `select ${node.name}${node.identity_review?.pilot_slug ? ' company summary' : ' candidate context'}${isAbsent ? ', absent from selected slice' : ''}${node.connection_label ? `, ${node.connection_label}` : ''}` : !frame.focus ? `explore ${node.name}` : isFocus ? `${node.name}, pinned ${semantics.focusKind || 'candidate'}${isAbsent ? ', absent from this slice' : ''}`
           : `inspect ${node.name}${isAbsent ? ', comparison only' : node.connection_label
             ? `, ${node.connection_label}` : isNew ? ', newly observed in selected slice' : `, ${semantics.neighborKind || 'co-listed'}`}`,
         'aria-pressed': String(node.id === selected), 'data-candidate': node.id });

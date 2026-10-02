@@ -141,12 +141,7 @@ function retainedSourceLink(label, company, family, recordId) {
 function companySnapshot(company) {
   const snapshot = node('section', '', 'company-snapshot');
   const page = evidence(company.slug, state.year);
-  const current = financials(company.slug, state.year);
-  const selectedFact = (concept, year = state.year) => data.financials.cells.find(cell =>
-    cell.slug === company.slug && cell.year === year && cell.concept === concept)?.selected;
-  const revenue = selectedFact('revenue');
-  const priorRevenue = selectedFact('revenue', state.year - 1);
-  const netIncome = selectedFact('net_income');
+  const { current, revenue, priorRevenue, netIncome } = model.companyStatsFor(data, company.slug, state.year);
   snapshot.append(append(node('div', '', 'section-controls'),
     append(node('div'), node('p', '02 / company stat sheet', 'eyebrow'), node('h4', 'a quick first pass')), yearControl()),
     node('p', company.purpose.replace('Company homepage candidate; ', ''), 'company-product'),
@@ -187,13 +182,14 @@ function companySnapshot(company) {
   definitions.append(node('summary', 'how to read the metrics'),
     node('p', 'annual revenue is recognized over a reporting period. MRR and ARR describe recurring-revenue run rates under a stated definition; annual revenue ÷ 12 is not MRR.', 'metric-explanation'),
     node('p', 'growth compares this company’s adjacent selected annual periods. net-income margin includes all reported net income effects, including taxes and non-operating items. neither number measures valuation or investment quality.', 'metric-explanation'));
-  snapshot.append(definitions);
+  const learning = node('div', '', 'company-learning');
+  learning.append(definitions);
   const lesson = node('details', '', 'fictional-example');
   lesson.append(node('summary', 'learn with a fictional RuneScape example'),
     node('p', 'imagine a Varrock teleport-pass business: 100 subscribers each pay 10 gp per month. its MRR is 1,000 gp; annualizing that same recurring base gives 12,000 gp ARR.'),
     node('p', 'another 300 gp from one-off teleport-tab sales is sales revenue, not MRR. subscriber churn, new members and price changes would change the recurring run rate.'),
     node('p', 'fictional teaching example, not a RuneScape mechanic or company observation. ARR is an annualized snapshot, not guaranteed future revenue; real companies define recurring and usage-based metrics differently.', 'caveat'));
-  snapshot.append(lesson);
+  learning.append(lesson);
   const actions = node('div', '', 'snapshot-actions');
   const brief = node('button', 'form your own judgment · open decision brief →', 'quiet-button');
   brief.type = 'button';
@@ -201,7 +197,7 @@ function companySnapshot(company) {
   const scan = node('button', `scan the ${data.companies.filter(item => item.cik).length} public-company records →`, 'quiet-button');
   scan.type = 'button';
   scan.addEventListener('click', () => commitState({ view: 'overview', company: company.cik ? company.slug : null }, { top: true }));
-  actions.append(scan, brief); snapshot.append(actions);
+  actions.append(scan, brief); learning.append(actions);
 
   const reading = node('section', '', 'company-further-reading');
   reading.append(node('h4', 'sources & further reading'));
@@ -218,7 +214,8 @@ function companySnapshot(company) {
   const allSources = node('a', 'all retained company records →', 'text-button');
   allSources.href = `./index.html?${new URLSearchParams({ view: 'data', dataCompany: company.slug, dataBuild: dataIndex.build_id })}`;
   reading.append(allSources, node('p', 'these links open retained observations, not an exhaustive reading list. funding and relationship evidence continue in the fact sheet below.', 'caption'));
-  snapshot.append(reading);
+  const deeper = node('div', '', 'company-reading-grid');
+  deeper.append(learning, reading); snapshot.append(deeper);
   return snapshot;
 }
 

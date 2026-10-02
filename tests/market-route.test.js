@@ -1366,7 +1366,8 @@ test('company snapshot separates reported economics, fictional teaching and deep
     assert.match(snapshot.textContent, /filings selected through 2025-04-01/);
     assert.match(snapshot.textContent, /annual revenue ÷ 12 is not MRR/);
     assert.match(snapshot.querySelector('.company-metric-gaps').textContent, /MRR: Unknown.*ARR: Unknown.*retention: Unknown.*cash flow: Unknown/);
-    assert.equal(snapshot.lastElementChild.className, 'company-further-reading');
+    assert.equal(snapshot.lastElementChild.className, 'company-reading-grid');
+    assert.equal(snapshot.lastElementChild.lastElementChild.className, 'company-further-reading');
     assert.equal(snapshot.querySelector('.metric-definitions').open, false);
     assert.match(snapshot.querySelector('.fictional-example').textContent, /fictional teaching example/);
     assert.match(snapshot.querySelector('.fictional-example').textContent, /1,000 gp.*12,000 gp/);

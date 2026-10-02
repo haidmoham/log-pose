@@ -73,11 +73,27 @@ async function verifyDecisionWorkflow(page, baseUrl, report) {
   await page.locator('.atlas-premise').first().waitFor({ state: 'visible' });
   report.checks.push({ name: 'graph-hidden-label-geometry-and-pointer-edge', passed: true });
   // Target the actual marker circle, not the SVG group's decorative/label bounding box.
-  await page.getByRole('button', { name: 'open GitLab company snapshot', exact: true })
+  await page.getByRole('button', { name: 'select GitLab company summary', exact: true })
     .locator('.constellation-hit').click();
+  await page.locator('.atlas-company-stat strong').first().waitFor({ state: 'visible', timeout: 30000 });
+  assert.equal(new URL(page.url()).searchParams.get('candidate'), 'db7244f000eedc7a99c9');
+  assert.deepEqual(await page.locator('.atlas-company-stat strong').allTextContents(), ['$579.9m', '+36.7%', '−73.1%']);
+  assert.match(await page.locator('.atlas-company-summary').innerText(), /2023-02-01 to 2024-01-31.*2025-04-01/s);
+  assert.equal(await page.locator('.atlas-stat-sources a').count(), 5);
+  report.checks.push({ name: 'selected-company-facts-stay-on-graph', passed: true });
+  await page.getByRole('link', { name: 'full stat sheet, sources & further reading →', exact: true }).click();
   await page.locator('.company-snapshot').waitFor({ state: 'visible', timeout: 30000 });
   assert.equal(new URL(page.url()).searchParams.get('company'), 'gitlab');
   assert.equal(await page.locator('.company-fact-sheet').getAttribute('open'), null);
+  const captionStyle = await page.locator('.company-snapshot .caption').first().evaluate(element => ({
+    size: parseFloat(getComputedStyle(element).fontSize), transform: getComputedStyle(element).textTransform }));
+  assert(captionStyle.size >= 13);
+  assert.equal(captionStyle.transform, 'none');
+  const readingLayout = await page.locator('.company-reading-grid').evaluate(element => {
+    const boxes = [...element.children].map(child => child.getBoundingClientRect());
+    return { width: window.innerWidth, sideBySide: boxes[1].left >= boxes[0].right };
+  });
+  if (readingLayout.width > 900) assert(readingLayout.sideBySide, 'wide source reading must use both columns');
   assert.match(await page.locator('.company-snapshot').innerText(), /2025-04-01/);
   assert.deepEqual(await page.locator('.company-economic-card strong').allTextContents(), ['$579.9m', '+36.7%', '−73.1%']);
   assert.match(await page.locator('.company-metric-gaps').innerText(), /MRR: Unknown.*ARR: Unknown.*retention: Unknown.*cash flow: Unknown/);

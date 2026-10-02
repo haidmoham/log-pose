@@ -486,3 +486,19 @@ test('company snapshots preserve reporting period independently of inventory sea
     assert.equal(restored.year, year);
   }
 });
+
+test('graph and deeper company sheets share the exact historical financial projection', () => {
+  const pilot = require('../web/dashboard.json');
+  const before = JSON.stringify(pilot);
+  const index = model.buildFinancialIndex(pilot.financials.cells);
+  for (const company of pilot.companies) for (const year of pilot.years) {
+    const sheet = model.companyStatsFor(pilot, company.slug, year);
+    assert.deepEqual(sheet.current, model.financialsFor(index, company.slug, year));
+    assert.equal(sheet.cutoff, '2025-04-01');
+    if (sheet.revenue) assert.equal(sheet.revenue.end_date.slice(0, 4), String(year));
+  }
+  assert.equal(model.companyStatsFor(pilot, 'not-a-reviewed-pilot-company', 2024), null);
+  assert.equal(model.companyStatsFor(pilot, 'gitlab', 2026), null);
+  assert.equal(model.companyStatsFor(pilot, 'gitlab', 2024).current.periodStart, '2023-02-01');
+  assert.equal(JSON.stringify(pilot), before);
+});
