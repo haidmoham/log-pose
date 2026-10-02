@@ -160,7 +160,7 @@ test('legacy mapped entity and external neighbor keep their exact reviewed scope
 });
 
 test('an unmapped reviewed-claims identity is a coverage gap rather than a retryable outage', async t => {
-  const dom = page(t, 'candidate=db7244f000eedc7a99c9&source=cncf&year=2024');
+  const { dom } = page(t, 'candidate=db7244f000eedc7a99c9&source=cncf&year=2024');
   await waitFor(() => dom.window.document.querySelector('.atlas-relationship-body')?.textContent.includes('no reviewed relationship claims'));
   const body = dom.window.document.querySelector('.atlas-relationship-body');
   assert.match(body.textContent, /missing claims do not establish that no relationship exists/);
