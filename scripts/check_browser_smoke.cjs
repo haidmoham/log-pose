@@ -196,6 +196,18 @@ async function verifyPhoneCompanyFacts(page, baseUrl, report) {
     await page.locator('.atlas-company-stat strong').first().waitFor({ state: 'visible', timeout: 30000 });
     assert.deepEqual(await page.locator('.atlas-company-stat strong').allTextContents(), ['$579.9m', '+36.7%', '−73.1%']);
     await page.locator('.atlas-view-settings > summary').click();
+    await page.evaluate(() => document.fonts.ready);
+    if (width === 390) {
+      await page.locator('#atlas-inspector').evaluate(element => element.scrollIntoView({ block: 'start', behavior: 'instant' }));
+      const skipLink = await page.locator('.skip-link').evaluate(element => ({
+        focused: element.matches(':focus'), activeElement: document.activeElement?.tagName,
+        bottom: element.getBoundingClientRect().bottom, viewportWidth: window.innerWidth, viewportHeight: window.innerHeight
+      }));
+      report.phone_viewport = skipLink;
+      assert.equal(skipLink.focused, false);
+      assert(skipLink.bottom <= 0, 'unfocused skip link must remain outside the live viewport');
+      await page.screenshot({ path: path.join(captureDirectory, 'browser-phone-390-viewport.png') });
+    }
     const layout = await page.evaluate(() => {
       const metrics = [...document.querySelectorAll('.atlas-company-stat')].map(element => {
         const box = element.getBoundingClientRect();
