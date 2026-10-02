@@ -25,7 +25,7 @@
   let disposed = false;
   let controlTimer = null;
   let densityFrame = null;
-  const featuredCandidate = '4d9ade2bfb2aa6cb4afb';
+  const featuredCandidate = 'db7244f000eedc7a99c9';
   let featuredExample = false;
 
   function setStartupPending(pending) {
@@ -237,7 +237,15 @@
           node('p', 'this search returned no visible candidates in the selected source frame. broaden the search or change the source revision.'));
       } else {
         if (!listOnly) scene.append(root.LogPoseTemporalGraph.render(model.graphFrame(result), {
-          onSelectCandidate: focus, onSelectEdge: inspect, onSelectNode: id => selectNode(id, result), scheduleCamera: true }));
+          onSelectCandidate: focus, onSelectEdge: inspect, onSelectNode: id => selectNode(id, result),
+          describeRelationship: async (id, signal) => {
+            const edge = result.edges?.find(item => item.candidate_id === id);
+            if (!edge) return '';
+            const evidence = await client.request({ mode: 'explain', build_id: result.build_id,
+              ...result.selection, candidate: result.focus.id, neighbor: id, limit: '3' }, signal);
+            if (evidence.frame_id !== result.frame_id) throw new Error('relationship frame changed');
+            return model.connectionDescription(result, edge, evidence);
+          }, scheduleCamera: true }));
         else scene.append(node('p', 'list mode · the same selected frame and evidence, without graph rendering.'));
         results.append(node('p', 'keyboard and list access · the same visible candidates'), renderList(candidates, focused));
       }

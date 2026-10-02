@@ -30,7 +30,7 @@ limits; it does not validate investment selection.
 
 ## atlas-first implementation baseline
 
-the entry page begins with one labelled example: Datadog in the retained CNCF 2024 source, showing 24 of 145 exact neighbors. an explicit source, year, artifact, search, or mode keeps its requested scope instead of inheriting the example. warm paper, plum type, and restrained blue, mint, and coral accents keep the map central.
+the entry page begins with one labelled example: GitLab in the retained CNCF 2024 source, showing 24 of 59 exact neighbors. an explicit source, year, artifact, search, or mode keeps its requested scope instead of inheriting the example. warm paper, plum type, and restrained blue, mint, and coral accents keep the map central.
 
 the standalone reviewed-claims page is retired. reviewed relationships now appear beside an explicitly mapped candidate or selected pair. a short claim card shows its meaning and publication date; scope, unknowns, source quotations, hashes, identifiers, and review history unfold on demand. a pair without an eligible claim does not inherit its focal candidate's claim count. inventory year and source-publication time remain separate.
 
@@ -50,7 +50,7 @@ independent review found no delivery-blocking issue in identity mapping, separat
 
 start `PORT=8092 node scripts/market_field_dev.js`. use the codex in-app browser at its normal desktop viewport. save real viewport screenshots outside git with `tab.screenshot({fullPage:false})`:
 
-1. open `/`; wait for the Datadog example frame. keep the page at the top and save `01-atlas.png`.
+1. open `/?candidate=4d9ade2bfb2aa6cb4afb&source=cncf&year=2024`; wait for the Datadog frame used by this relationship-evidence demo (the landing default is now GitLab). keep the page at the top and save `01-atlas.png`.
 2. select Elastic with the keyboard. reset the graph camera if needed, then focus the search field to bring the page header into view. save `02-connection.png`.
 3. open the contextual claim's scope disclosure and scroll the inspector to its claim, publication date, and limits. retain the surrounding atlas and save `03-evidence.png`.
 

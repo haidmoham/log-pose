@@ -15,13 +15,27 @@
     return `./index.html?${new URLSearchParams({ view: 'explore', company: slug,
       q: candidate.name, year: String(year) })}#company-detail`;
   }
+  function connectionDescription(result, edge, evidence) {
+    const count = edge.supporting_placements;
+    const support = Number.isSafeInteger(count) && count > 0
+      ? `${count} shared ${count === 1 ? 'placement' : 'placements'}` : 'placement count unavailable';
+    const source = result.selection.source.toUpperCase();
+    const time = result.selection.temporal_mode === 'accumulated'
+      ? `inventories through ${result.selection.year}` : `inventory ${result.selection.year}`;
+    const categories = [...new Set((evidence?.premises || []).map(premise =>
+      `“${premise.placement.category}” (${premise.placement.source.toUpperCase()} ${premise.placement.inventory_year})`))];
+    const relationship = categories.length
+      ? `co-listed in ${categories.join('; ')}${evidence.next_cursor ? '; more source placements are available on selection' : ''}`
+      : `co-listed in the same source categories in ${source} ${time}`;
+    return `${result.focus.name} and ${edge.candidate.name} are ${relationship}. Evidence: ${support} in ${source} ${time}. `
+      + 'This is unreviewed co-listing evidence; it does not establish competition, partnership or adoption.';
+  }
   function graphFrame(result) {
     const focused = result.operation === 'focus';
-    const edges = focused ? result.edges.map(edge => ({ ...edge, support_tier: placementTier(edge.supporting_placements).key })) : [];
+    const edges = focused ? result.edges.map(edge => ({ ...edge, support_tier: placementTier(edge.supporting_placements).key,
+      connection_label: connectionDescription(result, edge) })) : [];
     const candidates = focused ? edges.map(edge => ({ ...edge.candidate, position: edge.position,
-      connection_label: `${Number.isSafeInteger(edge.supporting_placements) && edge.supporting_placements > 0
-        ? `${edge.supporting_placements} shared ${edge.supporting_placements === 1 ? 'placement' : 'placements'}`
-        : 'placement count unavailable'} · co-listing only` }))
+      connection_label: edge.connection_label }))
       : result.candidates;
     const nodes = candidates.map(candidate => ({ ...candidate, position: displayPosition(candidate.position) }));
     if (focused) nodes.push({ ...result.focus, position: displayPosition(result.position) });
@@ -77,5 +91,5 @@
       usage() { return { bytes, entries: entries.size, max_bytes: maxBytes }; }
     };
   }
-  root.LogPoseAtlasModel = { graphFrame, reviewedGraphFrame, createCache, placementTier, companyRoute };
+  root.LogPoseAtlasModel = { graphFrame, reviewedGraphFrame, createCache, placementTier, companyRoute, connectionDescription };
 })(globalThis);

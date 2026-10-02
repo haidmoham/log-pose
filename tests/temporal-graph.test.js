@@ -490,3 +490,63 @@ test('company-navigation node labels retain absence and edge inspection stays se
   assert.equal(inspected, 'two');
   dom.window.close();
 });
+
+test('relationship preview follows node focus and ignores stale or detached responses', async () => {
+  const timers = [];
+  const dom = setup(window => {
+    window.setTimeout = callback => { timers.push(callback); return timers.length; };
+    window.clearTimeout = () => {};
+  });
+  const requests = [];
+  const scene = dom.window.LogPoseTemporalGraph.render({ ...frame,
+    nodes: nodes.map(node => ({ ...node, connection_label: node.id === 'two' ? 'one and two are co-listed.' : undefined })),
+    edges: [{ candidate_id: 'two', connection_label: 'one and two are co-listed.' },
+      { candidate_id: 'three', connection_label: 'one and three are co-listed.' }] }, {
+    describeRelationship: (id, signal) => new Promise(resolve => requests.push({ id, signal, resolve }))
+  });
+  dom.window.document.body.append(scene);
+  const preview = scene.querySelector('.constellation-relationship');
+  const two = scene.querySelector('[data-candidate="two"]');
+  assert.match(two.querySelector('title').textContent, /one and two are co-listed/);
+  two.dispatchEvent(new dom.window.Event('focus'));
+  timers.at(-1)();
+  assert.match(preview.textContent, /one and two/);
+  scene.querySelector('[data-candidate="three"]').dispatchEvent(new dom.window.Event('focus'));
+  timers.at(-1)();
+  assert.equal(requests[0].signal.aborted, true);
+  requests[0].resolve('stale first description');
+  await Promise.resolve();
+  assert.match(preview.textContent, /one and three/);
+  requests[1].resolve('current exact category');
+  await Promise.resolve();
+  assert.equal(preview.textContent, 'current exact category');
+  two.dispatchEvent(new dom.window.Event('focus'));
+  timers.at(-1)();
+  scene.remove();
+  requests[2].resolve('detached description');
+  await Promise.resolve();
+  assert.match(preview.textContent, /one and two/);
+  dom.window.close();
+});
+
+test('relationship lookup failures retain semantic fallback and exiting cancels lookup', async () => {
+  const timers = [];
+  const dom = setup(window => {
+    window.setTimeout = callback => { timers.push(callback); return timers.length; };
+    window.clearTimeout = () => {};
+  });
+  let signal;
+  const scene = dom.window.LogPoseTemporalGraph.render({ ...frame,
+    edges: [{ candidate_id: 'two', connection_label: 'one and two are co-listed.' }] }, {
+    describeRelationship: (_id, activeSignal) => { signal = activeSignal; return Promise.reject(new Error('offline')); }
+  });
+  dom.window.document.body.append(scene);
+  const edge = scene.querySelector('.constellation-edge-hit');
+  edge.dispatchEvent(new dom.window.MouseEvent('pointerenter'));
+  await timers.at(-1)();
+  assert.match(scene.querySelector('.constellation-relationship').textContent, /one and two are co-listed.*details are unavailable/);
+  edge.dispatchEvent(new dom.window.MouseEvent('pointerleave'));
+  assert.equal(signal.aborted, true);
+  assert.match(scene.querySelector('.constellation-relationship').textContent, /^Hover or focus/);
+  dom.window.close();
+});

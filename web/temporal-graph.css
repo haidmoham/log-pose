@@ -147,3 +147,5 @@
 .constellation-legend .legend-support-many { width: 24px; height: 0; border-radius: 0; background: none; border-top: 2px solid #76558b; }
 .constellation-legend .legend-support-one { border-top-style: dotted; }
 .constellation-legend .legend-support-few { border-top-style: dashed; }
+
+.constellation-relationship { margin: 0 24px 14px; min-height: 5em; max-width: 80ch; padding: 12px 14px; border-left: 3px solid #78668a; background: rgb(255 254 250 / 92%); color: #403648; font: 12px/1.6 var(--sans); }

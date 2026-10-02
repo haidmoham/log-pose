@@ -62,19 +62,24 @@ async function verifyDecisionWorkflow(page, baseUrl, report) {
     return null;
   });
   assert(edgePoint, 'at least one displayed edge must have an exposed pointer target');
+  await page.mouse.move(edgePoint.x, edgePoint.y);
+  await page.waitForFunction(() => /GitLab and .*co-listed in “.*Continuous Integration & Delivery/.test(
+    document.querySelector('.constellation-relationship')?.textContent), null, { timeout: 30000 });
+  assert.match(await page.locator('.constellation-relationship').innerText(), /unreviewed co-listing evidence/);
+  report.checks.push({ name: 'relationship-hover-exact-source-category', passed: true });
   await page.mouse.click(edgePoint.x, edgePoint.y);
   await page.waitForFunction(neighbor => new URL(location.href).searchParams.get('neighbor') === neighbor,
     edgePoint.neighbor, { timeout: 30000 });
   await page.locator('.atlas-premise').first().waitFor({ state: 'visible' });
   report.checks.push({ name: 'graph-hidden-label-geometry-and-pointer-edge', passed: true });
   // Target the actual marker circle, not the SVG group's decorative/label bounding box.
-  await page.getByRole('button', { name: 'open Datadog company snapshot', exact: true })
+  await page.getByRole('button', { name: 'open GitLab company snapshot', exact: true })
     .locator('.constellation-hit').click();
   await page.locator('.company-snapshot').waitFor({ state: 'visible', timeout: 30000 });
-  assert.equal(new URL(page.url()).searchParams.get('company'), 'datadog');
+  assert.equal(new URL(page.url()).searchParams.get('company'), 'gitlab');
   assert.equal(await page.locator('.company-fact-sheet').getAttribute('open'), null);
   assert.match(await page.locator('.company-snapshot').innerText(), /2025-04-01/);
-  assert.deepEqual(await page.locator('.company-economic-card strong').allTextContents(), ['$2.68b', 'Unknown', 'Unknown']);
+  assert.deepEqual(await page.locator('.company-economic-card strong').allTextContents(), ['$579.9m', 'Unknown', 'Unknown']);
   await page.locator('.fictional-example > summary').click();
   assert.match(await page.locator('.fictional-example').innerText(), /fictional teaching example/);
   await page.goBack({ waitUntil: 'domcontentloaded' });

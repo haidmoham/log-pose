@@ -152,7 +152,7 @@ test('reduced motion skips accepted-frame fades', async t => {
 test('empty entry opens a bounded example while explicit source scope keeps its own frame', async t => {
   const example = page(t);
   await waitFor(() => example.window.document.querySelector('.constellation-map'));
-  assert.match(example.window.document.querySelector('#atlas-inspector h3').textContent, /Datadog/);
+  assert.match(example.window.document.querySelector('#atlas-inspector h3').textContent, /GitLab/);
   assert.match(example.window.document.querySelector('#atlas-frame-label').textContent, /top 24 by shared placements/);
   const scoped = page(t, '?source=lfai&year=2024');
   await waitFor(() => scoped.window.document.querySelector('.atlas-region'));
@@ -168,4 +168,25 @@ test('empty search gives a scoped next action without drawing an empty graph', a
   assert.equal(document.querySelector('.constellation-map'), null);
   document.querySelector('#atlas-scene button').click();
   await waitFor(() => document.querySelector('.atlas-region'));
+});
+
+test('GitLab relationship hover reads exact categories from the displayed frame', async t => {
+  const requests = [];
+  const dom = page(t, '', async params => { requests.push(Object.fromEntries(params)); });
+  const document = dom.window.document;
+  await waitFor(() => document.querySelector('.constellation-edge-hit'));
+  const edge = document.querySelector('.constellation-edge-hit');
+  assert.match(edge.querySelector('title').textContent, /GitLab and .*co-listed/);
+  edge.dispatchEvent(new dom.window.MouseEvent('pointerenter'));
+  await waitFor(() => /co-listed in “/.test(document.querySelector('.constellation-relationship').textContent));
+  assert.match(document.querySelector('.constellation-relationship').textContent, /Continuous Integration & Delivery.*CNCF 2024/);
+  const request = requests.find(item => item.mode === 'explain' && item.limit === '3');
+  assert.equal(request.candidate, 'db7244f000eedc7a99c9');
+  assert.equal(request.neighbor, edge.dataset.neighbor);
+  assert.equal(request.source, 'cncf');
+  assert.equal(request.year, '2024');
+  assert(request.build_id);
+  assert.equal(document.querySelectorAll('.atlas-premise').length, 0, 'hover must not select the evidence inspector');
+  edge.dispatchEvent(new dom.window.MouseEvent('pointerleave'));
+  assert.match(document.querySelector('.constellation-relationship').textContent, /^Hover or focus/);
 });

@@ -147,3 +147,22 @@ test('company snapshot routes require an explicit reviewed pilot identity', () =
   assert.equal(route.searchParams.get('view'), 'explore');
   assert.equal(route.hash, '#company-detail');
 });
+
+test('relationship descriptions distinguish dated co-listing evidence from business ties', () => {
+  const { model } = loadClient();
+  const result = { focus: { name: 'GitLab' }, selection: { source: 'cncf', year: 2024, temporal_mode: 'snapshot' } };
+  const edge = { candidate: { name: 'Semaphore' }, supporting_placements: 1 };
+  const initial = model.connectionDescription(result, edge);
+  assert.match(initial, /GitLab and Semaphore are co-listed in the same source categories in CNCF inventory 2024/);
+  assert.match(initial, /Evidence: 1 shared placement/);
+  assert.match(initial, /does not establish competition, partnership or adoption/);
+  const evidence = { premises: [{ placement: { category: 'App Definition and Development / Continuous Integration & Delivery',
+    source: 'cncf', inventory_year: 2024 } }], next_cursor: 'more' };
+  const before = JSON.stringify(evidence);
+  const exact = model.connectionDescription(result, edge, evidence);
+  assert.match(exact, /co-listed in “App Definition and Development \/ Continuous Integration & Delivery” \(CNCF 2024\)/);
+  assert.match(exact, /more source placements are available/);
+  assert.equal(JSON.stringify(evidence), before);
+  assert.match(model.connectionDescription({ ...result, selection: { ...result.selection, temporal_mode: 'accumulated' } },
+    { ...edge, supporting_placements: null }), /placement count unavailable in CNCF inventories through 2024/);
+});

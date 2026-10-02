@@ -193,11 +193,50 @@
       }
     }
     field.append(threads);
+    const relationshipEdges = new Map(frame.edges.filter(edge => edge.connection_label)
+      .map(edge => [edge.candidate_id, edge]));
+    const relationshipHint = 'Hover or focus a connected node or line to read why it is connected. Select a line for the retained source rows.';
+    const relationshipPreview = element('p', 'constellation-relationship', relationshipHint);
+    relationshipPreview.setAttribute('role', 'status');
+    relationshipPreview.setAttribute('aria-live', 'polite');
+    let relationshipTimer;
+    let relationshipController;
+    let relationshipGeneration = 0;
+    function describeRelationship(id) {
+      root.clearTimeout(relationshipTimer);
+      relationshipController?.abort();
+      const ticket = ++relationshipGeneration;
+      const edge = relationshipEdges.get(id);
+      relationshipPreview.textContent = edge?.connection_label || relationshipHint;
+      if (!edge || !options.describeRelationship) return;
+      relationshipController = new AbortController();
+      const signal = relationshipController.signal;
+      relationshipTimer = root.setTimeout(async () => {
+        if (!scene.isConnected || signal.aborted) return;
+        try {
+          const description = await options.describeRelationship(id, signal);
+          if (description && scene.isConnected && !signal.aborted && ticket === relationshipGeneration) {
+            relationshipPreview.textContent = description;
+            hitThreadElements.get(id)?.querySelector('title')?.replaceChildren(document.createTextNode(description));
+            const record = labelNodes.find(item => item.id === id);
+            if (record && !record.group.classList.contains('is-absent'))
+              record.group.querySelector('title').textContent = `${record.name} · ${description}`;
+          }
+        } catch (error) {
+          if (scene.isConnected && !signal.aborted && ticket === relationshipGeneration && error.name !== 'AbortError')
+            relationshipPreview.textContent = `${edge.connection_label} Exact category details are unavailable; select the connection to retry.`;
+        }
+      }, 160);
+    }
     const hitThreads = svgElement('g', { class: 'constellation-edge-hits', 'aria-hidden': 'true' });
     const hitThreadElements = new Map();
     for (const [id, thread] of threadElements) {
       const hit = thread.cloneNode(false);
       hit.setAttribute('class', 'constellation-edge-hit');
+      const description = relationshipEdges.get(id)?.connection_label;
+      if (description) {
+        const title = svgElement('title'); title.textContent = description; hit.append(title);
+      }
       hit.addEventListener('click', () => inspect(id));
       hit.addEventListener('pointerenter', () => emphasize(id));
       hit.addEventListener('pointerleave', () => emphasize(''));
@@ -209,6 +248,7 @@
     function emphasize(id) {
       if (id && drag?.owned) return;
       hovered = id;
+      describeRelationship(id);
       for (const [key, thread] of threadElements) thread.classList.toggle('is-hovered', key === id);
       const nearby = new Set();
       if (id) {
@@ -251,7 +291,7 @@
       group.style.setProperty('--node-tint', tints.get(node.id).hex);
       const name = svgElement('title');
       name.textContent = `${node.name} · ${isAbsent ? 'comparison context, not observed in this slice'
-        : node.identity_label || 'unreviewed inventory candidate'}`;
+        : node.connection_label || node.identity_label || 'unreviewed inventory candidate'}`;
       group.append(name);
       const scale = svgElement('g', { class: 'constellation-scale' });
       scale.append(svgElement('circle', { r: 18, class: 'constellation-hit' }));
@@ -342,6 +382,7 @@
       updateCamera();
     }
     scene.append(svg);
+    if (relationshipEdges.size) scene.append(relationshipPreview);
     function attachGPU() {
       if (gpu || viewMode !== '2d') return;
       gpu = root.LogPoseTemporalGPU?.attach(scene, svg) || null;
