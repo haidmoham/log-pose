@@ -168,10 +168,32 @@
       button.type = 'button';
       button.dataset.candidate = candidate.id;
       button.append(node('small', isFocus ? 'inspect exact co-listing →' : 'focus candidate →'));
+      if (isFocus) {
+        const edge = displayed?.edges?.find(item => item.candidate_id === candidate.id);
+        if (edge) button.append(node('small', `${edge.supporting_placements} shared placements · ${model.placementTier(edge.supporting_placements).label}`));
+      }
       button.addEventListener('click', () => isFocus ? inspect(candidate.id) : focus(candidate.id));
       list.append(button);
     });
     return list;
+  }
+
+  function companyLink(candidate, year) {
+    const route = model.companyRoute(candidate, year);
+    if (!route) return node('p', 'company identity is not mapped in this pilot. economic information stays unavailable.', 'atlas-identity-gap');
+    const anchor = node('a', `${candidate.name} · company snapshot →`, 'atlas-company-link');
+    anchor.href = route;
+    anchor.title = `current reviewed identity link · source ${candidate.identity_review.source_year || 'date unavailable'}; company snapshot uses the separate 2021–2024 reporting-period series`;
+    return anchor;
+  }
+
+  function selectNode(id, result) {
+    const candidate = result.focus?.id === id ? result.focus
+      : result.edges?.find(edge => edge.candidate_id === id)?.candidate
+        || result.candidates?.find(item => item.id === id);
+    const route = candidate && model.companyRoute(candidate, result.selection.year);
+    if (route) root.location.assign(route);
+    else focus(id);
   }
 
   function render(result = displayed, animate = true) {
@@ -215,11 +237,12 @@
           node('p', 'this search returned no visible candidates in the selected source frame. broaden the search or change the source revision.'));
       } else {
         if (!listOnly) scene.append(root.LogPoseTemporalGraph.render(model.graphFrame(result), {
-          onSelectCandidate: focus, onSelectEdge: inspect, scheduleCamera: true }));
+          onSelectCandidate: focus, onSelectEdge: inspect, onSelectNode: id => selectNode(id, result), scheduleCamera: true }));
         else scene.append(node('p', 'list mode · the same selected frame and evidence, without graph rendering.'));
         results.append(node('p', 'keyboard and list access · the same visible candidates'), renderList(candidates, focused));
       }
       if (focused) {
+        inspector.append(companyLink(result.focus, result.selection.year));
         inspector.append(node('p', 'a co-listing is a shared source placement, not evidence of competition or adoption.', 'atlas-inspector-note'));
         const compare = node('button', 'compare with previous retained year', 'quiet-button');
         compare.type = 'button'; compare.addEventListener('click', comparePrevious);
@@ -253,7 +276,9 @@
       inspected = evidence;
       const inspector = byId('atlas-inspector');
       inspector.replaceChildren(node('h3', `${evidence.subject.name} ↔ ${evidence.object.name}`),
-        node('p', `${evidence.count.value} exact shared placements · unreviewed co-listing`));
+        node('p', `${evidence.count.value} exact shared placements · unreviewed co-listing`),
+        node('p', `why this line: both candidates occur in the source categories below. ${model.placementTier(evidence.count.value).label}; this is a display tier, not a relationship-strength score.`),
+        companyLink(evidence.subject, frame.selection.year), companyLink(evidence.object, frame.selection.year));
       evidence.premises.forEach(premise => {
         const block = append(node('section', '', 'atlas-premise'), node('strong', premise.placement.category),
           node('p', `${premise.placement.source} · inventory year ${premise.placement.inventory_year}`),

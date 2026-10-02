@@ -1353,3 +1353,66 @@ test('leaving a stale saved link can open current in-app citations without carry
     assert.deepEqual(dom.window.__routeErrors, []);
   } finally { dom.window.close(); }
 });
+
+test('company snapshot separates reported economics, fictional teaching and deeper evidence', async () => {
+  const dom = await page('/index.html?view=explore&company=confluent&year=2024');
+  try {
+    const { document } = dom.window;
+    const snapshot = document.querySelector('.company-snapshot');
+    assert(snapshot);
+    assert.deepEqual([...snapshot.querySelectorAll('.company-economic-card strong')]
+      .map(item => item.textContent), ['$963.6m', 'Unknown', 'Unknown']);
+    assert.match(snapshot.textContent, /2024-01-01 to 2024-12-31 · filed 2025-02-18/);
+    assert.match(snapshot.textContent, /filings selected through 2025-04-01/);
+    assert.match(snapshot.textContent, /annual revenue ÷ 12 is not MRR/);
+    assert.match(snapshot.querySelector('.fictional-example').textContent, /fictional teaching example/);
+    assert.match(snapshot.querySelector('.fictional-example').textContent, /1,000 gp.*12,000 gp/);
+    assert.equal(document.querySelector('.company-fact-sheet').open, false);
+    assert.match(document.querySelector('.company-fact-sheet').textContent, /revenue change:.*derived/);
+    [...snapshot.querySelectorAll('button')]
+      .find(button => button.textContent === 'inspect the exact reported revenue →').click();
+    assert.equal(new URL(dom.window.location.href).searchParams.get('dataRecord'), 'sec:10');
+    await waitFor(() => document.querySelector('#data-inspector')?.textContent.includes('963642000'));
+    assert.match(document.querySelector('#data-inspector').textContent, /963642000/);
+    assert.deepEqual(dom.window.__routeErrors, []);
+  } finally { dom.window.close(); }
+});
+
+test('private-company snapshot keeps missing revenue unknown and sourced funding deeper', async () => {
+  const dom = await page('/index.html?view=explore&company=dbt-labs&year=2024');
+  try {
+    const { document } = dom.window;
+    assert.deepEqual([...document.querySelectorAll('.company-economic-card strong')]
+      .map(item => item.textContent), ['Unknown', 'Unknown', 'Unknown']);
+    assert.match(document.querySelector('.company-fact-sheet').textContent, /2022-02-24.*Series D/);
+    assert.match(document.querySelector('.company-fact-sheet').textContent, /not a complete financing history/);
+    assert.equal(document.querySelector('.company-fact-sheet').open, false);
+    [...document.querySelectorAll('.company-snapshot button')]
+      .find(button => button.textContent.includes('open decision brief')).click();
+    assert.equal(document.querySelector('#decision-question').value, '');
+    assert.equal(new URL(dom.window.location.href).searchParams.get('pinned'), 'dbt-labs');
+    assert.deepEqual(dom.window.__routeErrors, []);
+  } finally { dom.window.close(); }
+});
+
+
+test('non-default snapshot period survives exact evidence navigation and browser back', async () => {
+  const dom = await page('/index.html?view=explore&company=confluent&year=2022');
+  try {
+    const { document, history } = dom.window;
+    assert.equal(new URL(dom.window.location.href).searchParams.get('year'), '2022');
+    assert.equal(document.querySelector('.company-economic-card strong').textContent, '$585.9m');
+    [...document.querySelectorAll('.company-snapshot button')]
+      .find(button => button.textContent === 'inspect the exact reported revenue →').click();
+    assert.equal(new URL(dom.window.location.href).searchParams.get('dataRecord'), 'sec:4');
+    history.back();
+    await waitFor(() => document.querySelector('.company-snapshot'));
+    assert.equal(new URL(dom.window.location.href).searchParams.get('year'), '2022');
+    assert.equal(document.querySelector('.company-economic-card strong').textContent, '$585.9m');
+    const year = document.querySelector('[aria-label="Select period-end year"]');
+    year.value = '2021'; year.dispatchEvent(new dom.window.Event('change'));
+    assert.equal(new URL(dom.window.location.href).searchParams.get('year'), '2021');
+    assert.equal(document.querySelector('.company-economic-card strong').textContent, '$387.9m');
+    assert.deepEqual(dom.window.__routeErrors, []);
+  } finally { dom.window.close(); }
+});

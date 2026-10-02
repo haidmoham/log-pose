@@ -475,3 +475,18 @@ test('3d wheel supports line deltas and clamps extreme zoom', () => {
   assert.match(camera.getAttribute('transform'), /scale\(0.65\)/);
   dom.window.close();
 });
+
+
+test('company-navigation node labels retain absence and edge inspection stays separate', () => {
+  const dom = setup(); const api = dom.window.LogPoseTemporalGraph;
+  let opened = null; let inspected = null;
+  const scene = api.render({ ...frame, focus_present: false }, {
+    onSelectNode: id => { opened = id; }, onSelectEdge: id => { inspected = id; } });
+  assert.match(scene.querySelector('[data-candidate="one"]').getAttribute('aria-label'), /absent from selected slice/);
+  scene.querySelector('[data-candidate="two"]').dispatchEvent(new dom.window.KeyboardEvent('keydown', { key: 'Enter' }));
+  assert.equal(opened, 'two');
+  assert.equal(inspected, null);
+  scene.querySelector('.constellation-edge-hit').dispatchEvent(new dom.window.MouseEvent('click'));
+  assert.equal(inspected, 'two');
+  dom.window.close();
+});

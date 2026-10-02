@@ -46,6 +46,16 @@ async function verifyDecisionWorkflow(page, baseUrl, report) {
   await page.goto(baseUrl.href, { waitUntil: 'domcontentloaded', timeout: 30000 });
   await page.waitForFunction(() => document.querySelector('#atlas-frame-label')?.dataset.frameId
     && !document.querySelector('#atlas-regions').disabled);
+  await page.getByRole('button', { name: 'open Datadog company snapshot', exact: true }).click();
+  await page.locator('.company-snapshot').waitFor({ state: 'visible', timeout: 30000 });
+  assert.equal(new URL(page.url()).searchParams.get('company'), 'datadog');
+  assert.equal(await page.locator('.company-fact-sheet').getAttribute('open'), null);
+  assert.match(await page.locator('.company-snapshot').innerText(), /2025-04-01/);
+  assert.deepEqual(await page.locator('.company-economic-card strong').allTextContents(), ['$2.68b', 'Unknown', 'Unknown']);
+  await page.locator('.fictional-example > summary').click();
+  assert.match(await page.locator('.fictional-example').innerText(), /fictional teaching example/);
+  await page.goBack({ waitUntil: 'domcontentloaded' });
+  report.checks.push({ name: 'graph-company-snapshot-progressive-disclosure', passed: true });
   await page.getByRole('link', { name: 'start a company decision brief →', exact: true }).click();
   await page.locator('#decision-question').waitFor({ state: 'visible', timeout: 30000 });
   assert.equal(new URL(page.url()).searchParams.get('view'), 'compare');
@@ -60,6 +70,7 @@ async function verifyDecisionWorkflow(page, baseUrl, report) {
   await page.getByRole('button', { name: 'inspect dated evidence →', exact: true }).click();
   await page.locator('#company-detail').waitFor({ state: 'visible', timeout: 30000 });
   assert.equal(new URL(page.url()).searchParams.get('view'), 'explore');
+  await page.locator('.company-fact-sheet > summary').click();
   const claim = page.locator('.company-relationships [data-claim]').first();
   const claimId = await claim.getAttribute('data-claim');
   await claim.click();

@@ -185,7 +185,7 @@
         if (!point) continue;
         const thread = svgElement('line', { x1: origin.x, y1: origin.y, x2: point.x, y2: point.y,
           class: `constellation-thread${edge.candidate_id === selected ? ' is-selected' : ''}${entering.has(edge.candidate_id) ? ' is-entering' : ''}`,
-          'data-neighbor': edge.candidate_id });
+          'data-neighbor': edge.candidate_id, 'data-support-tier': edge.support_tier || '' });
         if (entering.has(edge.candidate_id)) thread.style.setProperty('--enter-delay', `${enterDelay(edge.candidate_id)}ms`);
         thread.style.setProperty('--edge-tint', tints.get(edge.candidate_id).hex);
         threads.append(thread);
@@ -233,6 +233,10 @@
       if (!frame.focus) options.onSelectCandidate?.(id);
       else if (id !== frame.focus) options.onSelectEdge?.(id);
     }
+    function selectNode(id) {
+      if (options.onSelectNode) options.onSelectNode(id);
+      else inspect(id);
+    }
     for (const node of frame.nodes) {
       const point = positions.get(node.id);
       const isFocus = node.id === frame.focus;
@@ -240,7 +244,7 @@
       const isNew = changes.get(node.id)?.status === 'newly_observed_in_selected_frame';
       const group = svgElement('g', { class: `constellation-node${isFocus ? ' is-focus' : ''}${isAbsent ? ' is-absent' : ''}${isNew ? ' is-new' : ''}${node.id === selected ? ' is-selected' : ''}`,
         transform: `translate(${point.x} ${point.y})`, role: 'button', tabindex: '0',
-        'aria-label': !frame.focus ? `explore ${node.name}` : isFocus ? `${node.name}, pinned ${semantics.focusKind || 'candidate'}${isAbsent ? ', absent from this slice' : ''}`
+        'aria-label': options.onSelectNode ? `open ${node.name}${node.identity_review?.pilot_slug ? ' company snapshot' : ' candidate context'}${isAbsent ? ', absent from selected slice' : ''}${node.connection_label ? `, ${node.connection_label}` : ''}` : !frame.focus ? `explore ${node.name}` : isFocus ? `${node.name}, pinned ${semantics.focusKind || 'candidate'}${isAbsent ? ', absent from this slice' : ''}`
           : `inspect ${node.name}${isAbsent ? ', comparison only' : node.connection_label
             ? `, ${node.connection_label}` : isNew ? ', newly observed in selected slice' : `, ${semantics.neighborKind || 'co-listed'}`}`,
         'aria-pressed': String(node.id === selected), 'data-candidate': node.id });
@@ -268,9 +272,9 @@
       group.addEventListener('pointerleave', () => emphasize(''));
       group.addEventListener('focus', () => emphasize(node.id));
       group.addEventListener('blur', () => emphasize(''));
-      group.addEventListener('click', () => inspect(node.id));
+      group.addEventListener('click', () => selectNode(node.id));
       group.addEventListener('keydown', event => {
-        if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); inspect(node.id); }
+        if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); selectNode(node.id); }
       });
       labelNodes.push({ id: node.id, group, point, name: node.name, priority: isFocus || node.id === selected });
       field.append(group);
@@ -375,6 +379,7 @@
     footer.append(controls); scene.append(footer);
     controls.title = 'pinch or ctrl/⌘ + scroll to zoom; plain scrolling moves the page';
     scene.append(element('p', 'constellation-note', (frame.context_edges_truncated ? `${(frame.context_edges || []).length.toLocaleString()} of ${(frame.total_context_edges || 0).toLocaleString()} context connections loaded. ` : '') + 'positions stay fixed through time. spacing, depth, color, light and line length carry no evidence meaning or measure of strength.'));
+    if (semantics.edgeNote) scene.append(element('p', 'constellation-note constellation-edge-note', semantics.edgeNote));
 
     const tuning = element('details', 'constellation-tuning');
     tuning.append(element('summary', '', 'view settings'));

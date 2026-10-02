@@ -948,3 +948,26 @@ footer { display: flex; justify-content: space-between; gap: 20px; padding: 18px
   .decision-company-grid { grid-template-columns: 1fr; }
   .decision-evidence-row { grid-template-columns: 1fr; }
 }
+
+/* A company starts with meaning, then scale, then the full retained record. */
+.company-snapshot { padding: 18px 0 24px; }
+.company-snapshot h4 { margin: 8px 0 14px; font-size: 18px; }
+.company-business { display: grid; grid-template-columns: 115px minmax(0, 1fr); gap: 8px 16px; margin: 15px 0; }
+.company-business dt { color: var(--muted); font-size: 12px; }
+.company-business dd { margin: 0; font-size: 13px; line-height: 1.5; }
+.company-economic-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.company-economic-card { padding: 17px; border: 1px solid var(--rule); border-radius: 7px; background: var(--surface); }
+.company-economic-card strong { display: block; margin: 8px 0; font: 520 29px/1.2 Bricolage, var(--heading); }
+.metric-explanation { max-width: 760px; font-size: 12px; line-height: 1.6; color: var(--muted-strong); }
+.company-fact-sheet { border-top: 1px solid var(--rule); padding-top: 16px; }
+.company-fact-sheet > summary { cursor: pointer; font-size: 14px; font-weight: 700; color: var(--accent-deep); padding-bottom: 14px; }
+.company-fact-sheet > .text-button { margin: 12px 0; }
+.company-operating { margin: 20px 0; padding: 18px; background: var(--surface); border: 1px solid var(--rule); border-radius: 7px; }
+.company-operating p { margin: 6px 0; font-size: 12px; }
+@media (max-width: 600px) {
+  .company-economic-grid { grid-template-columns: 1fr; }
+  .company-business { grid-template-columns: 85px minmax(0, 1fr); gap: 8px; }
+}
+
+.fictional-example { margin: 14px 0; padding: 12px 15px; border: 1px dashed var(--rule); border-radius: 7px; font-size: 12px; line-height: 1.6; }
+.fictional-example summary { cursor: pointer; color: var(--accent-deep); font-weight: 650; }

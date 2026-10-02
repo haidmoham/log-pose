@@ -3,15 +3,34 @@
   function displayPosition(position) {
     return { x: 90 + position.x * 820, y: 80 + position.y * 520 };
   }
+  function placementTier(count) {
+    if (!Number.isSafeInteger(count) || count < 1) return { key: 'unknown', label: 'placement count unavailable' };
+    if (count === 1) return { key: 'one', label: '1 shared placement' };
+    if (count <= 3) return { key: 'few', label: '2–3 shared placements' };
+    return { key: 'many', label: '4+ shared placements' };
+  }
+  function companyRoute(candidate, year) {
+    const slug = candidate.identity_review?.pilot_slug;
+    if (!slug) return null;
+    return `./index.html?${new URLSearchParams({ view: 'explore', company: slug,
+      q: candidate.name, year: String(year) })}#company-detail`;
+  }
   function graphFrame(result) {
     const focused = result.operation === 'focus';
-    const candidates = focused ? result.edges.map(edge => ({ ...edge.candidate, position: edge.position }))
+    const edges = focused ? result.edges.map(edge => ({ ...edge, support_tier: placementTier(edge.supporting_placements).key })) : [];
+    const candidates = focused ? edges.map(edge => ({ ...edge.candidate, position: edge.position,
+      connection_label: `${Number.isSafeInteger(edge.supporting_placements) && edge.supporting_placements > 0
+        ? `${edge.supporting_placements} shared ${edge.supporting_placements === 1 ? 'placement' : 'placements'}`
+        : 'placement count unavailable'} · co-listing only` }))
       : result.candidates;
     const nodes = candidates.map(candidate => ({ ...candidate, position: displayPosition(candidate.position) }));
     if (focused) nodes.push({ ...result.focus, position: displayPosition(result.position) });
     return { build_id: result.versions.layout, source: result.selection.source, year: result.selection.year,
       temporal_mode: result.selection.temporal_mode, nodes, focus: focused ? result.focus.id : '',
-      focus_present: result.focus_status === 'observed', edges: focused ? result.edges : [], context_edges: [] };
+      focus_present: result.focus_status === 'observed', edges, context_edges: [],
+      semantics: { legend: [['support-one', '1 placement'], ['support-few', '2–3 placements'],
+        ['support-many', '4+ placements'], ['hollow', 'not observed in selected slice']],
+      edgeNote: 'line patterns group exact shared source/category/revision placements: 1, 2–3, or 4+. these are co-listings, not economic strength, confidence or independent corroboration.' } };
   }
   function reviewedGraphFrame(result) {
     const focused = result.operation === 'focus';
@@ -58,5 +77,5 @@
       usage() { return { bytes, entries: entries.size, max_bytes: maxBytes }; }
     };
   }
-  root.LogPoseAtlasModel = { graphFrame, reviewedGraphFrame, createCache };
+  root.LogPoseAtlasModel = { graphFrame, reviewedGraphFrame, createCache, placementTier, companyRoute };
 })(globalThis);

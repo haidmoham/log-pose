@@ -216,3 +216,35 @@ provenance, and state that returns and investability are unevaluated. Browser
 notes are not a durable evidence family or a canonical database write. See the
 [investor discovery audit](research/investor-discovery-audit.md) for the decision
 workflow, validation gaps and outcome-led research direction.
+
+
+## progressive company disclosure
+
+The atlas's discrete line patterns group `supporting_placements` as 1, 2–3 and
+4+ exact retained source/category/revision placements. These are presentation
+bins for co-listing counts, not relationship strength, confidence, independent
+corroboration, market share or an investment ranking. The exact count remains in
+the accessible list and node description. SVG retains the pattern even when GPU
+node rendering is active. Reviewed predicates and statuses remain separately
+explained in the existing relationship inspector with their independent clocks.
+
+Selecting a node with an explicit reviewed `pilot_slug` opens the existing company
+record at `/index.html?view=explore`; other nodes continue to candidate context.
+No fuzzy name match joins economic data to a product or project. The company
+record now begins with a business/economic snapshot, followed by a collapsed
+funding/history/evidence fact sheet and the existing user-authored decision-brief
+workflow. Pilot product descriptions are labelled research context; buyer and
+revenue-model gaps stay explicit. The period selector selects only the retained
+2021–2024 reporting periods, independently of the graph's inventory clock.
+
+Annual revenue stays SEC-reported annual revenue with its exact period, filing
+date, selection cutoff (2025-04-01), and build-bound record link. MRR and ARR are
+unknown because no such metrics are retained. Derived growth and margin are
+labelled with their calculation basis. Funding statements stay attributed and
+dated; the four selected announcements are not a financing history. A separate,
+collapsed fictional RuneScape example teaches run rates and one-off sales. It is
+presentation-only and never enters the catalog, graph, saved evidence or notes.
+
+Source data, immutable snapshots, identifiers, hashes, review status and SQL are
+unchanged. The new route and model tests cover identity gating, count thresholds,
+public/private missingness, exact fact navigation and the fictional/real boundary.

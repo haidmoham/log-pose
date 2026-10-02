@@ -134,3 +134,15 @@
 .temporal-constellation.is-motion-off .constellation-aura,
 .temporal-constellation.is-motion-off .constellation-visual,
 .temporal-constellation.is-motion-off .constellation-thread { animation: none; }
+
+/* Discrete co-listing counts use pattern and text, never red/green or confidence. */
+.constellation-thread[data-support-tier="one"] { stroke-dasharray: 1 5; stroke-linecap: round; stroke-width: 1.5; }
+.constellation-thread[data-support-tier="few"] { stroke-dasharray: 6 5; stroke-width: 1.5; }
+.constellation-thread[data-support-tier="many"] { stroke-dasharray: none; stroke-width: 1.8; }
+.constellation-thread[data-support-tier="unknown"] { stroke-dasharray: 2 7; }
+.has-webgl .constellation-threads:has([data-support-tier="one"], [data-support-tier="few"], [data-support-tier="many"], [data-support-tier="unknown"]) { visibility: visible; }
+.constellation-legend .legend-support-one,
+.constellation-legend .legend-support-few,
+.constellation-legend .legend-support-many { width: 24px; height: 0; border-radius: 0; background: none; border-top: 2px solid #76558b; }
+.constellation-legend .legend-support-one { border-top-style: dotted; }
+.constellation-legend .legend-support-few { border-top-style: dashed; }

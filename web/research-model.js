@@ -462,7 +462,7 @@
   function toUrlParams(state) {
     const params = new URLSearchParams();
     params.set('view', state.view);
-    if (state.view !== 'data' && state.view !== 'explore' && state.year) {
+    if (state.view !== 'data' && (state.view !== 'explore' || state.company) && state.year) {
       params.set('year', String(state.year));
     }
     if (state.company) params.set('company', state.company);

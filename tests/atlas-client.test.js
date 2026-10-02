@@ -116,3 +116,34 @@ test('fallback errors retain provider wording and signals reach fetch unchanged'
   await assert.rejects(pending, error => error.name === 'AbortError');
   assert.strictEqual(observedSignal, controller.signal);
 });
+
+test('co-listing tiers are discrete counts and never mutate evidence or imply confidence', () => {
+  const { model } = loadClient();
+  for (const [count, key] of [[1, 'one'], [2, 'few'], [3, 'few'], [4, 'many'], [40, 'many'],
+    [0, 'unknown'], [null, 'unknown'], [1.5, 'unknown']]) {
+    assert.equal(model.placementTier(count).key, key);
+  }
+  const source = { operation: 'focus', versions: { layout: 'layout-a' },
+    selection: { source: 'cncf', year: 2024, temporal_mode: 'snapshot' },
+    focus: { id: 'company', name: 'Company' }, position: { x: .2, y: .3 }, focus_status: 'observed',
+    edges: [{ candidate_id: 'neighbor', supporting_placements: 3,
+      candidate: { id: 'neighbor', name: 'Neighbor' }, position: { x: .6, y: .7 } }] };
+  const original = JSON.stringify(source);
+  const frame = model.graphFrame(source);
+  assert.equal(frame.edges[0].support_tier, 'few');
+  assert.match(frame.nodes[0].connection_label, /3 shared placements/);
+  assert.match(frame.semantics.edgeNote, /not economic strength, confidence or independent corroboration/);
+  assert.equal(JSON.stringify(source), original);
+});
+
+test('company snapshot routes require an explicit reviewed pilot identity', () => {
+  const { model } = loadClient();
+  assert.equal(model.companyRoute({ id: 'lead', name: 'Unreviewed', identity_review: null }, 2024), null);
+  assert.equal(model.companyRoute({ id: 'lead', name: 'Provider', identity_review: { id: 'review-1' } }, 2024), null);
+  const route = new URL(model.companyRoute({ name: 'Datadog',
+    identity_review: { id: 'review-12', pilot_slug: 'datadog' } }, 2024), 'https://example.test/');
+  assert.equal(route.searchParams.get('company'), 'datadog');
+  assert.equal(route.searchParams.get('year'), '2024');
+  assert.equal(route.searchParams.get('view'), 'explore');
+  assert.equal(route.hash, '#company-detail');
+});
