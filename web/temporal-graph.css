@@ -30,7 +30,8 @@
 .is-context-off .constellation-context { visibility: hidden; }
 .constellation-thread { stroke: #8b719c; stroke-width: .9; opacity: var(--thread-opacity); vector-effect: non-scaling-stroke; }
 .constellation-thread.is-hovered, .constellation-thread.is-selected { stroke: #ab624e; opacity: .95; stroke-width: 1.2; }
-.constellation-node { cursor: pointer; outline: none; }
+/* SVG groups include the label/halo gap; make the whole button bounds clickable. */
+.constellation-node { cursor: pointer; outline: none; pointer-events: bounding-box; }
 .constellation-hit { fill: transparent; }
 .constellation-aura { fill: var(--node-tint, #cba6ee); pointer-events: none; transform-box: fill-box; transform-origin: center; }
 .constellation-aura-inner { --aura-low: .085; --aura-high: .14; opacity: var(--aura-low); animation: constellation-breathe 5.4s ease-in-out infinite; }
